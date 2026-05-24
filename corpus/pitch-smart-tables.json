@@ -1,0 +1,134 @@
+{
+  "$schema_version": "1.0",
+  "description": "Pitch Smart daily pitch limits and required rest by age. These are the canonical youth pitching guardrails endorsed by MLB and USA Baseball. This table is the machine-readable form consumed by the practice compiler and 'Don't do this today' engine. ALWAYS verify against the live Pitch Smart page at release time and re-pin the version.",
+  "source": {
+    "name": "MLB / USA Baseball Pitch Smart",
+    "url": "https://www.mlb.com/pitch-smart/pitching-guidelines",
+    "last_verified": "2026-05-24",
+    "version_note": "Numbers reflect the long-standing Pitch Smart age-banded daily max + required-rest framework. Re-verify before each release; if league rules are stricter, league rules win."
+  },
+  "global_rules": [
+    {
+      "rule_id": "PS_NO_PITCHING_3_4_DAYS_PRE_TOURNEY",
+      "text": "If a youth pitcher pitches in the calendar days leading into a multi-day tournament, applicable rest still governs. Compiler should refuse to schedule a pitching outing that would violate accumulated rest."
+    },
+    {
+      "rule_id": "PS_ANNUAL_TIME_OFF",
+      "text": "All youth pitchers should take at least 4 months off competitive pitching per calendar year, with at least 2-3 of those months continuous and free of overhead throwing."
+    },
+    {
+      "rule_id": "PS_NO_DUAL_LEAGUE_SAMEDAY",
+      "text": "A pitcher should not pitch for multiple teams on the same calendar day."
+    },
+    {
+      "rule_id": "PS_NO_CATCHER_TO_PITCHER_SAMEDAY",
+      "text": "A player should not pitch and catch in the same game beyond the pitch-count threshold that triggers required rest. Specifically: if a player catches 3 or more innings, they should not pitch that day at most youth levels."
+    },
+    {
+      "rule_id": "PS_BREAKING_PITCHES",
+      "text": "Curveballs and other breaking pitches should not be introduced until skeletal maturity is approaching. Pitch Smart guidance: do not throw curveballs prior to roughly age 14. Fastball and change-up are the recommended pitch types for younger players."
+    },
+    {
+      "rule_id": "PS_SORE_ARM_RULE",
+      "text": "Any pitcher reporting arm pain should stop immediately and be evaluated before returning to throwing."
+    }
+  ],
+  "age_tables": [
+    {
+      "age_band": "7-8",
+      "daily_max_pitches": 50,
+      "required_rest": [
+        { "pitches_min": 1,  "pitches_max": 20, "rest_days": 0 },
+        { "pitches_min": 21, "pitches_max": 35, "rest_days": 1 },
+        { "pitches_min": 36, "pitches_max": 50, "rest_days": 2 }
+      ],
+      "allowed_pitch_types": ["fastball", "change-up"],
+      "notes": "Focus on athleticism and fun. Many programs convert this age to coach-pitch or machine-pitch; pitching is optional."
+    },
+    {
+      "age_band": "9-10",
+      "daily_max_pitches": 75,
+      "required_rest": [
+        { "pitches_min": 1,  "pitches_max": 20, "rest_days": 0 },
+        { "pitches_min": 21, "pitches_max": 35, "rest_days": 1 },
+        { "pitches_min": 36, "pitches_max": 50, "rest_days": 2 },
+        { "pitches_min": 51, "pitches_max": 65, "rest_days": 3 },
+        { "pitches_min": 66, "pitches_max": 75, "rest_days": 4 }
+      ],
+      "allowed_pitch_types": ["fastball", "change-up"]
+    },
+    {
+      "age_band": "11-12",
+      "daily_max_pitches": 85,
+      "required_rest": [
+        { "pitches_min": 1,  "pitches_max": 20, "rest_days": 0 },
+        { "pitches_min": 21, "pitches_max": 35, "rest_days": 1 },
+        { "pitches_min": 36, "pitches_max": 50, "rest_days": 2 },
+        { "pitches_min": 51, "pitches_max": 65, "rest_days": 3 },
+        { "pitches_min": 66, "pitches_max": 85, "rest_days": 4 }
+      ],
+      "allowed_pitch_types": ["fastball", "change-up"]
+    },
+    {
+      "age_band": "13-14",
+      "daily_max_pitches": 95,
+      "required_rest": [
+        { "pitches_min": 1,  "pitches_max": 20, "rest_days": 0 },
+        { "pitches_min": 21, "pitches_max": 35, "rest_days": 1 },
+        { "pitches_min": 36, "pitches_max": 50, "rest_days": 2 },
+        { "pitches_min": 51, "pitches_max": 65, "rest_days": 3 },
+        { "pitches_min": 66, "pitches_max": 95, "rest_days": 4 }
+      ],
+      "allowed_pitch_types": ["fastball", "change-up", "curveball (cautious intro ~age 14)"]
+    },
+    {
+      "age_band": "15-16",
+      "daily_max_pitches": 95,
+      "required_rest": [
+        { "pitches_min": 1,  "pitches_max": 30, "rest_days": 0 },
+        { "pitches_min": 31, "pitches_max": 45, "rest_days": 1 },
+        { "pitches_min": 46, "pitches_max": 60, "rest_days": 2 },
+        { "pitches_min": 61, "pitches_max": 75, "rest_days": 3 },
+        { "pitches_min": 76, "pitches_max": 95, "rest_days": 4 }
+      ],
+      "allowed_pitch_types": ["fastball", "change-up", "curveball", "slider (with caution)"]
+    },
+    {
+      "age_band": "17-18",
+      "daily_max_pitches": 105,
+      "required_rest": [
+        { "pitches_min": 1,  "pitches_max": 30, "rest_days": 0 },
+        { "pitches_min": 31, "pitches_max": 45, "rest_days": 1 },
+        { "pitches_min": 46, "pitches_max": 60, "rest_days": 2 },
+        { "pitches_min": 61, "pitches_max": 80, "rest_days": 3 },
+        { "pitches_min": 81, "pitches_max": 105, "rest_days": 4 }
+      ],
+      "allowed_pitch_types": ["fastball", "change-up", "curveball", "slider"]
+    }
+  ],
+  "league_overrides": {
+    "description": "Where a sanctioning league publishes stricter pitch-count or pitch-type rules, those win. The platform must encode each league's rule set as a sibling table and apply MIN(platform_default, league_rule).",
+    "examples": [
+      {
+        "league": "Little League International",
+        "url": "https://www.littleleague.org/playing-rules/pitch-count/",
+        "note": "Little League publishes its own regulation pitch-count and rest schedule; for rostered Little League players the league rule applies."
+      }
+    ]
+  },
+  "compiler_contract": {
+    "function": "canPitchToday(player, plannedPitches, history)",
+    "returns": "{ allowed: bool, reasons: [string], required_rest_days_remaining: number }",
+    "must_block_when": [
+      "plannedPitches + history.todayCount > age_table.daily_max_pitches",
+      "history.daysSinceLastOuting < required_rest_for(history.lastOutingPitches)",
+      "player.reported_soreness_today == true",
+      "player.is_catching_today and history.todayCatchingInnings >= 3",
+      "season.continuous_throwing_days > policy.max_continuous_throwing_days"
+    ],
+    "must_warn_when": [
+      "plannedPitches + history.todayCount > 0.8 * age_table.daily_max_pitches",
+      "history.last7DayPitches > policy.rolling_week_soft_cap"
+    ]
+  }
+}

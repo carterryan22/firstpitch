@@ -1,0 +1,306 @@
+// Prisma schema — implements the data model in core §19.1 + addendum entities.
+// Run `pnpm --filter @platform/db prisma migrate dev` to apply.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------- Identity & tenancy (E1.2, E1.3, addendum §A) ----------
+
+model Org {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  teams     Team[]
+  users     User[]
+}
+
+model User {
+  id              String       @id @default(cuid())
+  email           String       @unique
+  name            String?
+  role            UserRole
+  orgId           String?
+  org             Org?         @relation(fields: [orgId], references: [id])
+  coachOf         TeamMember[] @relation("coach")
+  parentOf        Player[]     @relation("parent")
+  consentVerified Boolean      @default(false) // E22.1 parental consent
+  createdAt       DateTime     @default(now())
+  auditLogs       AuditLog[]
+}
+
+enum UserRole {
+  parent
+  coach
+  player
+  facility_admin
+  org_admin
+  platform_admin
+}
+
+model Team {
+  id        String       @id @default(cuid())
+  orgId     String
+  org       Org          @relation(fields: [orgId], references: [id])
+  name      String
+  ageBand   AgeBand
+  sport     Sport
+  season    String
+  members   TeamMember[]
+  createdAt DateTime     @default(now())
+  plans     Plan[]
+}
+
+model TeamMember {
+  id       String   @id @default(cuid())
+  teamId   String
+  team     Team     @relation(fields: [teamId], references: [id])
+  userId   String?
+  user     User?    @relation("coach", fields: [userId], references: [id])
+  playerId String?
+  player   Player?  @relation(fields: [playerId], references: [id])
+  role     String   // 'head_coach' | 'asst_coach' | 'player' | 'manager'
+  joinedAt DateTime @default(now())
+
+  @@unique([teamId, userId, playerId])
+}
+
+enum AgeBand {
+  AGE_6_8
+  AGE_9_12
+  AGE_13_15
+  AGE_16_PLUS
+}
+
+enum Sport {
+  baseball
+  softball
+  both
+}
+
+// ---------- Player & environment (E2) ----------
+
+model Player {
+  id             String              @id @default(cuid())
+  firstName      String
+  lastName       String
+  dob            DateTime
+  ageBand        AgeBand
+  sport          Sport
+  positions      String[] // ["P","C","SS"]
+  handedness     String? // 'L'|'R'|'S'
+  parents        User[]              @relation("parent")
+  teamMembers    TeamMember[]
+  environments   PlayerEnvironment[]
+  metricEntries  MetricEntry[]
+  goals          Goal[]
+  diagnoses      Diagnosis[]
+  readiness      PlayerReadiness[]
+  guardrails     GuardrailState[]
+  gameStats      GameStat[]
+  gameTags       GameTag[]
+  injuryReports  InjuryReport[]
+  planAssignments PlanAssignment[]
+  createdAt      DateTime            @default(now())
+}
+
+model PlayerEnvironment {
+  id          String   @id @default(cuid())
+  playerId    String
+  player      Player   @relation(fields: [playerId], references: [id])
+  tier        String // 'T1_field'|'T2_cage_gym'|'T3_backyard'|'T4_living_room'
+  equipment   String[]
+  updatedAt   DateTime @updatedAt
+}
+
+// ---------- Metrics, baseline, verification (E3) ----------
+
+model Metric {
+  key         String   @id // 'EV_TEE', 'POP_TIME', ...
+  label       String
+  unit        String
+  sport       Sport
+  ageBands    AgeBand[]
+  entries     MetricEntry[]
+  goals       Goal[]
+}
+
+model MetricEntry {
+  id                String   @id @default(cuid())
+  playerId          String
+  player            Player   @relation(fields: [playerId], references: [id])
+  metricKey         String
+  metric            Metric   @relation(fields: [metricKey], references: [key])
+  value             Float
+  recordedAt        DateTime @default(now())
+  verificationState VerificationState
+  videoUrl          String?
+  source            String? // device | facility | event id
+  notes             String?
+}
+
+enum VerificationState {
+  self_entered
+  video_attached
+  device_captured
+  coach_verified
+  facility_verified
+  event_verified
+}
+
+model Goal {
+  id          String   @id @default(cuid())
+  playerId    String
+  player      Player   @relation(fields: [playerId], references: [id])
+  metricKey   String
+  metric      Metric   @relation(fields: [metricKey], references: [key])
+  targetValue Float
+  dueAt       DateTime?
+  privateOnly Boolean  @default(true)
+  createdAt   DateTime @default(now())
+}
+
+// ---------- Diagnosis & readiness (E10, E5) ----------
+
+model Diagnosis {
+  id                 String   @id @default(cuid())
+  playerId           String
+  player             Player   @relation(fields: [playerId], references: [id])
+  metricKey          String
+  bottleneckDriverKey String
+  confidence         String // 'low'|'medium'|'high'
+  evidence           Json
+  ageBand            AgeBand
+  createdAt          DateTime @default(now())
+}
+
+model PlayerReadiness {
+  id         String   @id @default(cuid())
+  playerId   String
+  player     Player   @relation(fields: [playerId], references: [id])
+  key        String // 'dynamic_warmup_complete', 'no_pain_report_24h'
+  status     String // 'pass'|'fail'|'unknown'
+  verifiedAt DateTime?
+}
+
+model GuardrailState {
+  id           String   @id @default(cuid())
+  playerId     String
+  player       Player   @relation(fields: [playerId], references: [id])
+  key          String // 'pitch_count_today', 'rolling_7d_throws'
+  currentValue Float
+  windowStart  DateTime
+  windowEnd    DateTime
+  updatedAt    DateTime @updatedAt
+}
+
+model InjuryReport {
+  id         String   @id @default(cuid())
+  playerId   String
+  player     Player   @relation(fields: [playerId], references: [id])
+  reportedAt DateTime @default(now())
+  symptom    String
+  severity   String // 'mild'|'moderate'|'severe'
+  escalatedTo String[] // ['parent','coach','clinician']
+  resolvedAt DateTime?
+}
+
+// ---------- Practice plans & drills (E6, E11) ----------
+
+model Plan {
+  id          String           @id @default(cuid())
+  teamId      String?
+  team        Team?            @relation(fields: [teamId], references: [id])
+  name        String
+  ageBand     AgeBand
+  durationMin Int
+  blocks      Json // serialized block list — see compiler
+  qualityScore Float?
+  createdById String
+  createdAt   DateTime         @default(now())
+  assignments PlanAssignment[]
+}
+
+model PlanAssignment {
+  id                  String    @id @default(cuid())
+  playerId            String
+  player              Player    @relation(fields: [playerId], references: [id])
+  planId              String
+  plan                Plan      @relation(fields: [planId], references: [id])
+  drillIds            String[]
+  reasonText          String?
+  assignedAt          DateTime  @default(now())
+  status              String    @default("assigned")
+  retestDueAt         DateTime?
+}
+
+// ---------- Game transfer (E4) ----------
+
+model GameStatImport {
+  id              String   @id @default(cuid())
+  playerId        String
+  uploadedAt      DateTime @default(now())
+  source          String // 'gc_csv'|'gc_filtered_csv'|'manual'
+  scorerIsStaff   Boolean
+  dataConfidence  String // 'low'|'medium'|'high'|'verified'
+  rawRows         Json
+  stats           GameStat[]
+}
+
+model GameStat {
+  id         String           @id @default(cuid())
+  playerId   String
+  player     Player           @relation(fields: [playerId], references: [id])
+  importId   String
+  import     GameStatImport   @relation(fields: [importId], references: [id])
+  date       DateTime
+  context    String // 'league'|'tournament'|'scrimmage'
+  batting    Json?
+  pitching   Json?
+  fielding   Json?
+  baserunning Json?
+}
+
+model GameTag {
+  id          String   @id @default(cuid())
+  playerId    String
+  player      Player   @relation(fields: [playerId], references: [id])
+  gameDate    DateTime
+  skillArea   String
+  tag         String
+  note        String?
+  createdById String
+  createdAt   DateTime @default(now())
+}
+
+// ---------- AI + audit (E8, E1.4) ----------
+
+model AiCall {
+  id                 String   @id @default(cuid())
+  userId             String?
+  promptId           String // §1..§5 from ai-system-prompts.md
+  userRole           String
+  ageBand            String?
+  retrievedRecordIds String[]
+  applicableRuleIds  String[]
+  responseText       String
+  postFilterActions  String[]
+  escalationTriggered Boolean
+  createdAt          DateTime @default(now())
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  action    String
+  resource  String
+  metadata  Json?
+  createdAt DateTime @default(now())
+}

@@ -1,0 +1,278 @@
+{
+  "$schema_version": "1.0",
+  "description": "Age-band matrix: for each band, what is REQUIRED, ALLOWED with conditions, and FORBIDDEN across every training topic. This is the deepest layer of the safety/guardrail stack — every AI suggestion, compiler block, and drill prescription must pass this matrix before reaching a player.",
+  "bands": [
+    {
+      "age_band": "6-8",
+      "stage": "FUNdamentals",
+      "primary_outcomes": ["enjoyment", "physical literacy", "broad movement competence", "social belonging"],
+      "session_structure": {
+        "max_session_minutes": 60,
+        "ideal_active_minutes": 45,
+        "max_continuous_skill_block_minutes": 8,
+        "rest_or_water_break_every_minutes": 12,
+        "sessions_per_week_max": 3
+      },
+      "topics": {
+        "throwing": {
+          "required": ["proper warmup", "short distances first", "low-volume catch play"],
+          "allowed_with_conditions": [
+            { "item": "pitching", "conditions": ["Pitch Smart 7-8 table caps", "fastball + change-up only", "supervised by an adult"] }
+          ],
+          "forbidden": ["curveballs", "sliders", "showcase events", "pitching for multiple teams on same day", "long-toss programs"]
+        },
+        "strength": {
+          "required": ["bodyweight only", "play-based loading"],
+          "allowed_with_conditions": [
+            { "item": "light medicine ball", "conditions": ["1-2 kg max", "qualified supervision", "technique-first"] }
+          ],
+          "forbidden": ["barbell training", "1RM testing", "loaded squats/deadlifts", "competitive strength contests", "performance supplements"]
+        },
+        "speed": {
+          "required": ["games and tag", "varied locomotion", "fun chase drills"],
+          "allowed_with_conditions": [],
+          "forbidden": ["timed prolonged sprints", "ladder-drill-only sessions", "punitive conditioning"]
+        },
+        "reaction": {
+          "required": ["ball drops", "simple visual cues", "partner reaction games"],
+          "allowed_with_conditions": [
+            { "item": "light pods", "conditions": ["short blocks", "fun framing", "engagement only — not performance metric"] }
+          ],
+          "forbidden": ["reaction-tech as primary practice driver"]
+        },
+        "mental": {
+          "required": ["effort praise", "mistake-tolerant culture", "name-and-belonging routines"],
+          "allowed_with_conditions": [],
+          "forbidden": ["public skill rankings", "AI-driven mental-health classification", "shame language"]
+        },
+        "nutrition_hydration": {
+          "required": ["water available", "snack option", "family-led food choices"],
+          "allowed_with_conditions": [],
+          "forbidden": ["caffeinated sports drinks", "supplement recommendations", "individualized meal plans"]
+        },
+        "recovery_sleep": {
+          "required": ["9-12 hrs/night target communicated to family", "no consecutive long-format days"],
+          "allowed_with_conditions": [],
+          "forbidden": ["sleep extension protocols", "sleep tracking devices on minors without parent consent"]
+        }
+      },
+      "assessment_rules": {
+        "verification_max_level": "coach_verified",
+        "public_leaderboards": "forbidden",
+        "private_progress_view": "allowed_with_parent",
+        "metrics_emphasized": ["participation_count", "fun_rating", "fundamental_skill_unlocks"]
+      }
+    },
+    {
+      "age_band": "9-12",
+      "stage": "Learn-to-train",
+      "primary_outcomes": ["skill acquisition", "physical literacy", "begin sport-specific load", "intrinsic motivation"],
+      "session_structure": {
+        "max_session_minutes": 90,
+        "ideal_active_minutes": 70,
+        "max_continuous_skill_block_minutes": 12,
+        "rest_or_water_break_every_minutes": 15,
+        "sessions_per_week_max": 4
+      },
+      "topics": {
+        "throwing": {
+          "required": ["dynamic warmup", "progressive throwing program", "rest-day enforcement"],
+          "allowed_with_conditions": [
+            { "item": "pitching", "conditions": ["Pitch Smart 9-10 or 11-12 table caps", "fastball + change-up only", "no consecutive-day pitching at high counts"] },
+            { "item": "long toss", "conditions": ["age-scaled distances", "no max-effort throws"] }
+          ],
+          "forbidden": ["curveballs", "sliders", "pitching for multiple teams on same day", "year-round competitive pitching", "showcase pitching for radar gun readings"]
+        },
+        "strength": {
+          "required": ["bodyweight movement competence", "qualified supervision when loaded", "dynamic warmup 5-10 min"],
+          "allowed_with_conditions": [
+            { "item": "medicine ball + light dumbbells", "conditions": ["technique-first", "3 sets x 10-15 reps", "manageable weight"] }
+          ],
+          "forbidden": ["1RM testing", "max-effort barbell lifts", "unsupervised loaded training", "performance supplements"]
+        },
+        "speed": {
+          "required": ["acceleration mechanics", "max-speed exposure under control", "change-of-direction in game contexts"],
+          "allowed_with_conditions": [
+            { "item": "timed sprints", "conditions": ["short (≤20 m)", "full recovery between reps", "no fatigue-based ranking"] }
+          ],
+          "forbidden": ["punitive conditioning", "fatigue-state max sprints"]
+        },
+        "reaction": {
+          "required": ["pitch tracking", "live reads", "decision-based drills"],
+          "allowed_with_conditions": [
+            { "item": "light pods / vision tech", "conditions": ["≤ 10 min per session", "engagement add-on", "no primary performance claim"] }
+          ],
+          "forbidden": ["reaction-tech as primary practice", "marketing as 'gets you faster'"]
+        },
+        "mental": {
+          "required": ["effort over outcome language", "mistake-response routine", "PCA-aligned culture"],
+          "allowed_with_conditions": [
+            { "item": "goal-setting", "conditions": ["process goals", "athlete-led", "private to athlete unless shared"] }
+          ],
+          "forbidden": ["AI mental-health diagnosis", "public skill rankings without consent"]
+        },
+        "nutrition_hydration": {
+          "required": ["pre-practice hydration", "water break every ≤ 15 min", "post-practice fueling info"],
+          "allowed_with_conditions": [
+            { "item": "sports drinks", "conditions": ["only in extended heat/multi-session", "parent informed"] }
+          ],
+          "forbidden": ["individualized meal plans", "supplement recommendations", "weight-management content"]
+        },
+        "recovery_sleep": {
+          "required": ["9-12 hrs/night target", "recovery score considers sleep + soreness + last 7-day throws"],
+          "allowed_with_conditions": [],
+          "forbidden": ["consecutive max-effort days", "tournament back-to-back days without recovery messaging"]
+        }
+      },
+      "assessment_rules": {
+        "verification_max_level": "facility_verified",
+        "public_leaderboards": "team_only_opt_in",
+        "private_progress_view": "default",
+        "metrics_emphasized": ["personal_best_movement", "consistency_rate", "skill_unlocks", "9BOX_SCORE for pitchers"]
+      }
+    },
+    {
+      "age_band": "13-15",
+      "stage": "Train-to-train",
+      "primary_outcomes": ["aerobic and strength foundations", "sport-specific skill depth", "self-regulation"],
+      "session_structure": {
+        "max_session_minutes": 120,
+        "ideal_active_minutes": 95,
+        "max_continuous_skill_block_minutes": 20,
+        "rest_or_water_break_every_minutes": 20,
+        "sessions_per_week_max": 5
+      },
+      "topics": {
+        "throwing": {
+          "required": ["periodized throwing program", "rest-day enforcement", "soreness self-report"],
+          "allowed_with_conditions": [
+            { "item": "pitching", "conditions": ["Pitch Smart 13-14 table caps", "league rules apply if stricter"] },
+            { "item": "curveball", "conditions": ["~age 14+", "qualified instruction", "limited volume"] },
+            { "item": "long toss", "conditions": ["periodized", "monitored intent"] }
+          ],
+          "forbidden": ["pitching on multiple teams same day", "year-round competitive pitching"]
+        },
+        "strength": {
+          "required": ["dynamic warmup 5-10 min", "2-3 sessions/wk nonconsecutive", "technique before load", "qualified supervision"],
+          "allowed_with_conditions": [
+            { "item": "barbell movements", "conditions": ["sub-maximal", "3 sets x 10-15 reps", "no 1RM"] }
+          ],
+          "forbidden": ["1RM testing", "powerlifting meets without medical/coach clearance", "performance supplements"]
+        },
+        "speed": {
+          "required": ["acceleration, max speed, deceleration, COD blocks"],
+          "allowed_with_conditions": [
+            { "item": "timed testing", "conditions": ["standardized protocol", "rested state"] }
+          ],
+          "forbidden": ["punitive conditioning"]
+        },
+        "reaction": {
+          "required": ["live decision drills", "pitch recognition reps"],
+          "allowed_with_conditions": [
+            { "item": "vision/reaction tech", "conditions": ["add-on only", "tracked as a metric but never as a sole proxy for performance"] }
+          ],
+          "forbidden": []
+        },
+        "mental": {
+          "required": ["pre-performance routine", "effort/process language", "open channel for mental-health concerns"],
+          "allowed_with_conditions": [
+            { "item": "self-talk and visualization", "conditions": ["coach guidance available", "athlete-led"] }
+          ],
+          "forbidden": ["AI diagnosis", "AI return-to-play after mental-health event"]
+        },
+        "nutrition_hydration": {
+          "required": ["pre-hydration", "during-practice water", "post-practice fueling education"],
+          "allowed_with_conditions": [
+            { "item": "sports drinks", "conditions": ["heat / >60 min sessions"] }
+          ],
+          "forbidden": ["individualized meal plans", "supplement recommendations", "weight-cut content"]
+        },
+        "recovery_sleep": {
+          "required": ["8-10 hrs/night target", "recovery score gates next-session intensity"],
+          "allowed_with_conditions": [
+            { "item": "sleep tracking", "conditions": ["athlete + parent consent", "data private to athlete"] }
+          ],
+          "forbidden": []
+        }
+      },
+      "assessment_rules": {
+        "verification_max_level": "facility_verified",
+        "public_leaderboards": "team_or_org_opt_in",
+        "private_progress_view": "default",
+        "metrics_emphasized": ["EV_TEE", "STRIKE_PCT", "POP_TIME", "HOME_TO_FIRST", "9BOX_SCORE"]
+      }
+    },
+    {
+      "age_band": "16+",
+      "stage": "Train-to-compete",
+      "primary_outcomes": ["competitive readiness", "individualized periodization", "transfer to game"],
+      "session_structure": {
+        "max_session_minutes": 150,
+        "ideal_active_minutes": 120,
+        "max_continuous_skill_block_minutes": 25,
+        "rest_or_water_break_every_minutes": 20,
+        "sessions_per_week_max": 6
+      },
+      "topics": {
+        "throwing": {
+          "required": ["periodized program", "soreness self-report", "annual time-off block"],
+          "allowed_with_conditions": [
+            { "item": "pitching", "conditions": ["Pitch Smart 15-16 or 17-18 table caps", "league rules apply if stricter"] },
+            { "item": "full pitch arsenal", "conditions": ["qualified instruction", "monitored volume per pitch type"] }
+          ],
+          "forbidden": ["pitching on multiple teams same day", "year-round competitive pitching with no off-block"]
+        },
+        "strength": {
+          "required": ["qualified supervision OR documented coach certification", "technique screen before load progression"],
+          "allowed_with_conditions": [
+            { "item": "max-effort lifts", "conditions": ["18+ only", "documented prior training base", "qualified S&C oversight"] }
+          ],
+          "forbidden": ["1RM testing in minors (under 18)", "supplement prescriptions by platform"]
+        },
+        "speed": {
+          "required": ["periodized speed work", "qualified coaching cues"],
+          "allowed_with_conditions": [],
+          "forbidden": ["punitive conditioning"]
+        },
+        "reaction": {
+          "required": ["live decision drills"],
+          "allowed_with_conditions": [
+            { "item": "vision/reaction tech", "conditions": ["add-on or assessment", "not sole driver"] }
+          ],
+          "forbidden": []
+        },
+        "mental": {
+          "required": ["competition routine", "open channel for mental-health support"],
+          "allowed_with_conditions": [
+            { "item": "performance psychology referrals", "conditions": ["qualified professional", "athlete consent"] }
+          ],
+          "forbidden": ["AI diagnosis", "AI clinical decisions"]
+        },
+        "nutrition_hydration": {
+          "required": ["pre/during/post fueling education", "individualized education delivered by qualified pro only"],
+          "allowed_with_conditions": [],
+          "forbidden": ["platform-generated individualized meal plans", "supplement recommendations"]
+        },
+        "recovery_sleep": {
+          "required": ["8-10 hrs/night target (or adult guideline if 18+)", "recovery score consulted"],
+          "allowed_with_conditions": [
+            { "item": "sleep extension", "conditions": ["athlete-led", "data private"] }
+          ],
+          "forbidden": []
+        }
+      },
+      "assessment_rules": {
+        "verification_max_level": "facility_verified",
+        "public_leaderboards": "athlete_opt_in",
+        "private_progress_view": "default",
+        "metrics_emphasized": ["EV_TEE", "EV_BP", "STRIKE_PCT", "POP_TIME", "60_YARD", "9BOX_SCORE"]
+      }
+    }
+  ],
+  "matrix_query_contract": {
+    "function": "isAllowed(age_band, topic, item, conditions_met)",
+    "returns": "'required' | 'allowed' | 'forbidden'",
+    "evaluation_order": ["forbidden_check", "required_check", "allowed_with_conditions_check"],
+    "fallback": "forbidden"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "platform",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "npm run --workspaces --if-present build",
+    "build:web": "npm run build --workspace @platform/web",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "dev": "npm run dev --workspace @platform/web",
+    "start": "npm run start --workspace @platform/web",
+    "typecheck": "npm run --workspaces --if-present typecheck",
+    "eval": "tsx packages/eval/src/cli.ts",
+    "seed": "tsx packages/db/src/seed.ts",
+    "verify": "npm run test && npm run eval && npm run build:web"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.4.0",
+    "vitest": "^1.4.0"
+  }
+}
