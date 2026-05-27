@@ -34,9 +34,13 @@ export interface Repos {
     upsert(input: Omit<UserRecord, "id" | "createdAt"> & { id?: string }): Promise<UserRecord>;
   };
   players: {
-    list(): Promise<PlayerRecord[]>;
+    list(filter?: { teamId?: string; includeArchived?: boolean }): Promise<PlayerRecord[]>;
     byId(id: string): Promise<PlayerRecord | undefined>;
+    byTeam(teamId: string, opts?: { includeArchived?: boolean }): Promise<PlayerRecord[]>;
     create(input: Omit<PlayerRecord, "id" | "createdAt">): Promise<PlayerRecord>;
+    update(id: string, patch: Partial<Omit<PlayerRecord, "id" | "createdAt">>): Promise<PlayerRecord | undefined>;
+    archive(id: string): Promise<PlayerRecord | undefined>;
+    unarchive(id: string): Promise<PlayerRecord | undefined>;
     byParent(userId: string): Promise<PlayerRecord[]>;
   };
   plans: {
@@ -111,12 +115,44 @@ export function makeRepos(store: Store): Repos {
       },
     },
     players: {
-      list: async () => (await store.read()).players.slice(),
+      async list(filter) {
+        const all = (await store.read()).players;
+        return all.filter(
+          (p) =>
+            (!filter?.teamId || p.teamId === filter.teamId) &&
+            (filter?.includeArchived || !p.archivedAt)
+        );
+      },
       byId: async (id) => (await store.read()).players.find((p) => p.id === id),
+      byTeam: async (teamId, opts) =>
+        (await store.read()).players.filter(
+          (p) => p.teamId === teamId && (opts?.includeArchived || !p.archivedAt)
+        ),
       create: (input) =>
         mutate((db) => {
           const rec: PlayerRecord = { ...input, id: cid("ply"), createdAt: new Date().toISOString() };
           db.players.push(rec);
+          return rec;
+        }),
+      update: (id, patch) =>
+        mutate((db) => {
+          const rec = db.players.find((p) => p.id === id);
+          if (!rec) return undefined;
+          Object.assign(rec, patch);
+          return rec;
+        }),
+      archive: (id) =>
+        mutate((db) => {
+          const rec = db.players.find((p) => p.id === id);
+          if (!rec) return undefined;
+          rec.archivedAt = new Date().toISOString();
+          return rec;
+        }),
+      unarchive: (id) =>
+        mutate((db) => {
+          const rec = db.players.find((p) => p.id === id);
+          if (!rec) return undefined;
+          delete rec.archivedAt;
           return rec;
         }),
       byParent: async (userId) =>

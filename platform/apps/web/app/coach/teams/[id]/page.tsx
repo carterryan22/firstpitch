@@ -34,12 +34,20 @@ export default async function TeamDetailPage({
             Age band {team.ageBand} · slug <code className="bg-slate-100 px-1">{team.slug}</code>
           </p>
         </div>
-        <Link
-          href={`/practice/new?teamId=${team.id}`}
-          className="btn-primary no-underline hover:no-underline"
-        >
-          Build practice for this team
-        </Link>
+        <div className="flex gap-2">
+          <Link
+            href={`/coach/teams/${team.id}/roster`}
+            className="btn-ghost no-underline hover:no-underline"
+          >
+            Manage roster
+          </Link>
+          <Link
+            href={`/practice/new?teamId=${team.id}`}
+            className="btn-primary no-underline hover:no-underline"
+          >
+            Build practice
+          </Link>
+        </div>
       </header>
 
       <div className="grid gap-6 lg:grid-cols-2">
