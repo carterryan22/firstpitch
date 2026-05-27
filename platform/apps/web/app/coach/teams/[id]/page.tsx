@@ -42,6 +42,12 @@ export default async function TeamDetailPage({
             Games
           </Link>
           <Link
+            href={`/coach/teams/${team.id}/pitching`}
+            className="btn-ghost no-underline hover:no-underline"
+          >
+            Pitching
+          </Link>
+          <Link
             href={`/coach/teams/${team.id}/roster`}
             className="btn-ghost no-underline hover:no-underline"
           >
