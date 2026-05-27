@@ -91,6 +91,14 @@ export interface TeamMembershipRecord {
   createdAt: string;
 }
 
+export interface MetricEntryAttachment {
+  url: string;
+  kind: "video" | "image" | "doc" | "link";
+  label?: string;
+  addedAt: string;
+  addedByUserId: string;
+}
+
 export interface MetricEntryRecord {
   id: string;
   playerId: string;
@@ -106,6 +114,7 @@ export interface MetricEntryRecord {
     | "event_verified";
   source?: string;
   notes?: string;
+  attachments?: MetricEntryAttachment[];
 }
 
 export interface MissionCompletionRecord {

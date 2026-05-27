@@ -16,6 +16,7 @@ import { Sparkline } from "../../../../../components/Sparkline";
 import { MetricEntryForm } from "./MetricEntryForm";
 import { GoalForm } from "./GoalForm";
 import { GoalActions } from "./GoalActions";
+import { AttachmentsCell } from "./AttachmentsCell";
 import { computeGoalProgress, GOAL_STATUS_BADGE } from "../../../../../lib/goals";
 
 export const metadata = { title: "Player baselines" };
@@ -253,6 +254,7 @@ export default async function PlayerBaselinePage({
                   <th className="px-4 py-3">Verification</th>
                   <th className="px-4 py-3">Tier</th>
                   <th className="px-4 py-3">Notes</th>
+                  <th className="px-4 py-3">Attachments</th>
                 </tr>
               </thead>
               <tbody>
@@ -276,6 +278,9 @@ export default async function PlayerBaselinePage({
                         {tier ? <span className={TIER_BADGE[tier]}>{tier}</span> : null}
                       </td>
                       <td className="px-4 py-2 text-slate-500">{e.notes ?? ""}</td>
+                      <td className="px-4 py-2">
+                        <AttachmentsCell entryId={e.id} initial={e.attachments ?? []} />
+                      </td>
                     </tr>
                   );
                 })}

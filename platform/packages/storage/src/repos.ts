@@ -72,8 +72,10 @@ export interface Repos {
   };
   metricEntries: {
     list(filter?: { playerId?: string; metricKey?: string }): Promise<MetricEntryRecord[]>;
+    byId(id: string): Promise<MetricEntryRecord | undefined>;
     create(input: Omit<MetricEntryRecord, "id">): Promise<MetricEntryRecord>;
     bulkCreate(rows: Array<Omit<MetricEntryRecord, "id">>): Promise<MetricEntryRecord[]>;
+    update(id: string, patch: Partial<Omit<MetricEntryRecord, "id" | "playerId">>): Promise<MetricEntryRecord | undefined>;
   };
   goals: {
     list(filter?: { playerId?: string; status?: GoalRecord["status"]; teamId?: string }): Promise<GoalRecord[]>;
@@ -290,6 +292,7 @@ export function makeRepos(store: Store): Repos {
             (!filter?.metricKey || e.metricKey === filter.metricKey)
         );
       },
+      byId: async (id) => (await store.read()).metricEntries.find((e) => e.id === id),
       create: (input) =>
         mutate((db) => {
           const rec: MetricEntryRecord = { ...input, id: cid("me") };
@@ -301,6 +304,13 @@ export function makeRepos(store: Store): Repos {
           const created = rows.map((r) => ({ ...r, id: cid("me") }));
           db.metricEntries.push(...created);
           return created;
+        }),
+      update: (id, patch) =>
+        mutate((db) => {
+          const rec = db.metricEntries.find((e) => e.id === id);
+          if (!rec) return undefined;
+          Object.assign(rec, patch);
+          return rec;
         }),
     },
     goals: {
