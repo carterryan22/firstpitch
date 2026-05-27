@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { loadDrills, loadSources } from "@platform/corpus";
 
-export const dynamic = "force-dynamic";
 
 export default function CoachPage() {
   const drills = loadDrills();

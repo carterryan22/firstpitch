@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { loadDrills } from "@platform/corpus";
 
-export const dynamic = "force-dynamic";
 
 export default async function DrillsPage({ searchParams }: { searchParams: Promise<Record<string, string>> }) {
   const sp = await searchParams;

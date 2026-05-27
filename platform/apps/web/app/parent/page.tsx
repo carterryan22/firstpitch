@@ -2,7 +2,6 @@ import Link from "next/link";
 import { missionsForAge } from "@platform/missions";
 import { homeMission } from "@platform/compiler";
 
-export const dynamic = "force-dynamic";
 
 export default async function ParentPage({ searchParams }: { searchParams: Promise<Record<string, string>> }) {
   const sp = await searchParams;

@@ -15,3 +15,5 @@ data/
 **/data/
 bulletproof-out.log
 .vscode/
+*.tsbuildinfo
+**/*.tsbuildinfo

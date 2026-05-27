@@ -11,7 +11,14 @@ export const SESSION_COOKIE = "platform_session";
 export const SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 7; // 7 days
 
 function getSecret(): string {
-  return process.env.PLATFORM_AUTH_SECRET ?? "dev-insecure-secret-change-me";
+  const s = process.env.PLATFORM_AUTH_SECRET;
+  if (!s && process.env.NODE_ENV === "production") {
+    throw new Error(
+      "PLATFORM_AUTH_SECRET must be set in production. Generate 32 bytes of " +
+        "random and add it to the Vercel project's environment variables."
+    );
+  }
+  return s ?? "dev-insecure-secret-change-me";
 }
 
 function sign(value: string): string {
