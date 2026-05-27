@@ -286,6 +286,31 @@ Stories use ID format `E<epic>.<story>` (e.g., `E3.4`).
 | E24.4 | Parent-acquisition story (anti-showcase, safety-first) | market §7, §15 | Landing copy + 3 case studies | P2 |
 | E24.5 | League / club partner program | market §12 | First two leagues signed | P2 |
 
+### Epic E25 — Team Operations Surfaces (WoS-parity IA)
+
+> Maps to [whosonsecond-ui-reference.md §2.1, §3.2–§3.12](whosonsecond-ui-reference.md). The current platform exposes coach + parent dashboards but no `/teams/{slug}/...` team-centric surfaces (roster, games, lineup, pitching board, fairness, press box). E16 captures borrowed *patterns*; this epic captures the *surfaces themselves*.
+
+| ID | Story | Source | DoD | Phase | Deps |
+|---|---|---|---|---|---|
+| E25.1 | URL grammar `/teams/{slug}` + team switcher in header | WoS §2.1, §2.2 | Slug-based routing live; multi-team account switches in <300ms | P1 | E1.3 |
+| E25.2 | Team home `/teams/{slug}` — Next Game card + quick-action row + activity feed | WoS §3.2 | Next Game shows opponent/date/venue + days-until + CTA | P1 | E25.1, E4.2 |
+| E25.3 | Roster `/teams/{slug}/roster` with Positions / Stats tabs | WoS §3.3 | Player cards show number, B/T, position chips, capability badges | P1 | E25.1, E2.1 |
+| E25.4 | Player detail `/teams/{slug}/roster/{playerId}` with position-rating sliders, availability, pitch history, parent links | WoS §3.4 | Editing rating affects auto-lineup; pitch history reflects safety rules | P2 | E25.3, E5.2 |
+| E25.5 | Add Player form `/teams/{slug}/roster/new` (jersey, DOB, B/T, capabilities, position ratings, parent email invite) | WoS §3.5 | Player created in one form pass; parent invite sent | P1 | E25.3 |
+| E25.6 | Games list `/teams/{slug}/games` (Upcoming / Past grouping, status badges) | WoS §3.6 | Games sorted + filterable; status grammar matches `Scheduled / In Progress / Completed` | P1 | E25.1, E4.2 |
+| E25.7 | New Game form `/teams/{slug}/games/new` (opponent, datetime, venue, innings) | WoS §3.7 | Save lands on game page | P1 | E25.6 |
+| E25.8 | Game page `/teams/{slug}/games/{gameId}` with **Field / Roster / Summary** tabs | WoS §3.8 | All three tabs render; tab state in URL | P1 | E25.7 |
+| E25.9 | Lineup builder (Field tab): per-inning × player grid, auto-generate, inline rule warnings | WoS §3.8 | Auto-lineup respects pitch-rest + age matrix; warnings cite rule_id | P2 | E25.8, E5.4 |
+| E25.10 | Tools dropdown pattern (Edit details / Duplicate / Reset Lineup / Mark Complete / Delete) — no `/edit` route | WoS §3.8 | All five actions reachable from game page; no orphan route | P2 | E25.8 |
+| E25.11 | Game Stats `/teams/{slug}/games/{gameId}/stats` (post-game review, read-only once Completed, pitch-count entry per pitcher) | WoS §3.9 | Counts persist; locked when game = Completed | P2 | E25.8, E4.2 |
+| E25.12 | Pitching availability board `/teams/{slug}/pitching` (last-pitched, rest pill, forward calendar) | WoS §3.10 | Rest pills computed from `canPitchToday()`; forward projection per next game | P2 | E25.6, E5.2 |
+| E25.13 | Fairness table `/teams/{slug}/fairness` (games/innings/bench/infield/outfield/positions/at-bats per player, heat-map cells) | WoS §3.11 | Numbers reconcile to game-stat entries; heat-map highlights imbalance | P2 | E25.11 |
+| E25.14 | Press Box `/teams/{slug}/press-box` (parent-facing public share — schedule, lineups after start, pitch counts, snack-duty) | WoS §3.12 | Shareable link works without auth; no PII beyond first names | P2 | E16.7, E25.11 |
+| E25.15 | More menu `/teams/{slug}/more` (Settings, Fairness, Press Box, Help, Subscription) + bottom-tab parity | WoS §2.3, §3.13 | 5-tab nav (Home / Games / Roster / Pitching / More) on web + iOS | P2 | E16.1, E25.1 |
+| E25.16 | Apply-rule-set wizard `/teams/{slug}/apply-rule-set?returnTo=…` (full-page, not modal) | WoS §2.1 | Tournament rulebook selectable; layers correctly with safety rules | P2 | E13.5, E25.1 |
+| E25.17 | Snack-duty / volunteer rotation (Press-Box opt-in) | WoS §3.12 | Rotation auto-balances; parents notified | P3 | E25.14 |
+| E25.18 | Team settings accordion (rules, communication, members, billing) | WoS §3.13 | Each section reachable; rule-source badges visible | P2 | E16.2, E25.15 |
+
 ---
 
 ## Top-Risk Items (track separately, review monthly)
@@ -306,8 +331,8 @@ Stories use ID format `E<epic>.<story>` (e.g., `E3.4`).
 - **M0 — Validation complete** (Phase 0 done): proceed/no-proceed decision.
 - **M1 — Coach MVP demo**: E1, E2.1–E2.4, E5.1–E5.4, E6.1–E6.8, E7.1.
 - **M2 — Closed-loop alpha**: + E3.3, E4.1–E4.2, E6.9, E7.2–E7.3, E8.1–E8.4.
-- **M3 — Public launch (Phase 1 complete)**: + E4.3–E4.4, E5.5–E5.7, E8.5–E8.6, E9, E16.6, E22.1–E22.4, E23.1–E23.3, E24.1, E24.3.
-- **M4 — Training engine GA (Phase 2 complete)**: + E10, E11, E12, E13, E14, E15, E16.
+- **M3 — Public launch (Phase 1 complete)**: + E4.3–E4.4, E5.5–E5.7, E8.5–E8.6, E9, E16.6, E22.1–E22.4, E23.1–E23.3, E24.1, E24.3, E25.1–E25.3, E25.5–E25.8.
+- **M4 — Training engine GA (Phase 2 complete)**: + E10, E11, E12, E13, E14, E15, E16, E25.4, E25.9–E25.16, E25.18.
 - **M5 — Trust layer GA (Phase 3 complete)**: + E17, E18, E19.
 - **M6 — Recruiting beta (Phase 4)**: + E20.
 
