@@ -65,6 +65,12 @@ export type AutoLineupInput = {
    * positions + high battingSkill weighted toward premium spots). Default 0.3.
    */
   competitiveWeight?: number;
+  /**
+   * Player ids that must NOT be assigned to pitcher this game (e.g. because
+   * they're on Pitch Smart required rest from a prior outing). The caller
+   * computes this from recent pitch history + age band.
+   */
+  pitcherUnavailable?: string[];
 };
 
 export type AutoLineupResult = {
@@ -95,6 +101,7 @@ export function autoLineup(input: AutoLineupInput): AutoLineupResult {
     input.positions ?? PRESET_POSITIONS[input.preset ?? "standard9"];
   const competitiveWeight = Math.max(0, Math.min(1, input.competitiveWeight ?? 0.3));
   const fairnessWeight = 1 - competitiveWeight;
+  const pitcherBlocked = new Set(input.pitcherUnavailable ?? []);
   const active = input.players.filter((p) => {
     if (p.injured) return false;
     if (input.present && !input.present.includes(p.id)) return false;
@@ -145,9 +152,15 @@ export function autoLineup(input: AutoLineupInput): AutoLineupResult {
       const alreadyFilled = Object.values(inning).some((s) => s === pos);
       if (alreadyFilled) continue;
 
-      const candidates = active
+      const baseEligible = active
         .filter((p) => !used.has(p.id) && eligible(p, pos))
-        .filter((p) => !(pos === "P" && prevPitcher === p.id))
+        .filter((p) => !(pos === "P" && pitcherBlocked.has(p.id)));
+      // Prefer to honor the no-back-to-back-pitcher rule, but fall back to
+      // allowing the same pitcher again rather than leaving the slot empty.
+      let pool = baseEligible.filter((p) => !(pos === "P" && prevPitcher === p.id));
+      if (pool.length === 0) pool = baseEligible;
+
+      const candidates = pool
         .map((p) => {
           const rating = ratingScore(p, pos); // -1..3
           const skill = (p.battingSkill ?? 3) - 3; // -2..+2

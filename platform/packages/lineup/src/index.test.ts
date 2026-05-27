@@ -130,6 +130,25 @@ describe("autoLineup", () => {
     expect(["P", "C", "SS", "CF"]).toContain(starSlot);
   });
 
+  it("pitcherUnavailable blocks players from being assigned to P", () => {
+    const players: LineupPlayer[] = [
+      p("rested", { canPitch: true }),
+      p("tired1", { canPitch: true }),
+      p("tired2", { canPitch: true }),
+      ...["d", "e", "f", "g", "h", "i"].map((id) => p(id, { canCatch: id === "d" })),
+    ];
+    const { innings, warnings } = autoLineup({
+      innings: 3,
+      players,
+      pitcherUnavailable: ["tired1", "tired2"],
+    });
+    expect(warnings).toEqual([]);
+    for (const inn of innings) {
+      const pitcher = Object.entries(inn).find(([, s]) => s === "P")?.[0];
+      expect(pitcher).toBe("rested");
+    }
+  });
+
   it("toCsv emits header + one row per player", () => {
     const players: LineupPlayer[] = ["a", "b", "c", "d", "e", "f", "g", "h", "i"].map((id) =>
       p(id, { canPitch: true, canCatch: true }),

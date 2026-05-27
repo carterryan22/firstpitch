@@ -1,12 +1,21 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { getRepos } from "@platform/storage";
+import { canPitchToday } from "@platform/safety";
 import { getSession } from "../../../../../lib/session";
 import { userCanManageTeam } from "../../../../../lib/teams";
-import { sortRoster, fullName } from "../../../../../lib/players";
+import { ageFromDob, sortRoster, fullName } from "../../../../../lib/players";
 import { formatGameWhen, statusLabel } from "../../../../../lib/games";
 import { GameTabs } from "./GameTabs";
 import { FieldBoard, fieldBoardRosterFrom } from "./FieldBoard";
+import { BattingOrder } from "./BattingOrder";
+
+function ageBandCenter(band: string): number {
+  if (band.startsWith("6-8")) return 8;
+  if (band.startsWith("9-12")) return 11;
+  if (band.startsWith("13-15")) return 14;
+  return 16;
+}
 
 export const metadata = { title: "Game" };
 
@@ -34,6 +43,39 @@ export default async function GamePage({
   if (!team || !game || game.teamId !== id) notFound();
   const roster = sortRoster(players);
   const status = statusLabel(game.status);
+
+  // Pitch-Smart fatigue: compute list of pitchers who must NOT take the bump today
+  // based on outings from PRIOR games (exclude the current one) + age band.
+  const allGames = await repos.games.list({ teamId: id });
+  const otherGames = allGames.filter((g) => g.id !== game.id);
+  const gameDate = new Date(game.startsAt);
+  const fallbackAge = ageBandCenter(team.ageBand);
+  const pitcherUnavailable: string[] = [];
+  for (const p of roster) {
+    if (!p.canPitch) continue;
+    const outingsByDate: Record<string, number> = {};
+    for (const g of otherGames) {
+      const entry = g.pitchCounts?.[p.id];
+      if (!entry || !entry.pitches) continue;
+      const day = (g.startsAt ?? "").slice(0, 10);
+      if (!day) continue;
+      outingsByDate[day] = (outingsByDate[day] ?? 0) + entry.pitches;
+    }
+    const age = p.dob ? ageFromDob(p.dob) : fallbackAge;
+    const check = canPitchToday({
+      age,
+      date: gameDate,
+      plannedPitches: 1,
+      history: {
+        outingsByDate,
+        todayCount: 0,
+        soreToday: false,
+        todayCatchingInnings: 0,
+        continuousThrowingDays: 0,
+      },
+    });
+    if (!check.allowed) pitcherUnavailable.push(p.id);
+  }
 
   return (
     <div className="space-y-6">
@@ -137,6 +179,15 @@ export default async function GamePage({
                 : [],
             )}
           initial={(game.lineup ?? []) as unknown as import("@platform/lineup").Inning[]}
+          pitcherUnavailable={pitcherUnavailable}
+        />
+      ) : null}
+
+      {tab === "field" ? (
+        <BattingOrder
+          gameId={game.id}
+          roster={roster.map((p) => ({ id: p.id, name: fullName(p), jerseyNumber: p.jerseyNumber }))}
+          initial={game.battingOrder ?? []}
         />
       ) : null}
     </div>
