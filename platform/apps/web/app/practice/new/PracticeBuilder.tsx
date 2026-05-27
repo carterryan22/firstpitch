@@ -18,11 +18,19 @@ const FOCUS_OPTIONS = [
   "baserunning", "pitching", "mental_recovery",
 ];
 
+// Equipment keys must match `equipment_required` strings in corpus/drills/starter-library.json.
 const EQUIPMENT_PRESETS: Record<EnvironmentTier, string[]> = {
-  T1_field: ["tee", "5 baseballs", "cone", "stopwatch", "open space", "partner", "reaction ball", "bat"],
-  T2_cage_gym: ["tee", "5 baseballs", "cone", "stopwatch", "partner", "bat"],
-  T3_backyard: ["tee", "5 baseballs", "cone", "partner"],
-  T4_living_room: ["partner", "reaction ball"],
+  T1_field: [
+    "tee", "5_baseballs", "10_baseballs", "bat", "base",
+    "cones", "stopwatch_or_gates", "stopwatches",
+    "reaction_ball", "L-screen", "catcher_gear",
+  ],
+  T2_cage_gym: [
+    "tee", "5_baseballs", "10_baseballs", "bat",
+    "cones", "stopwatch_or_gates", "L-screen", "reaction_ball",
+  ],
+  T3_backyard: ["tee", "5_baseballs", "bat", "cones", "reaction_ball"],
+  T4_living_room: ["reaction_ball"],
 };
 
 interface TeamLite {
@@ -105,7 +113,7 @@ export function PracticeBuilder({
       return;
     }
     const data = (await res.json()) as PlanSummary & { planId?: string };
-    setPlan({ ...data, name: name.trim() || undefined, focus });
+    setPlan({ ...data, durationMin: duration, name: name.trim() || undefined, focus });
     if (data.planId) {
       setSavedId(data.planId);
       router.refresh();
