@@ -72,6 +72,12 @@ export default async function TeamDetailPage({
             Fairness
           </Link>
           <Link
+            href={`/coach/teams/${team.id}/ask`}
+            className="btn-ghost no-underline hover:no-underline"
+          >
+            Ask AI
+          </Link>
+          <Link
             href={`/coach/teams/${team.id}/roster`}
             className="btn-ghost no-underline hover:no-underline"
           >
