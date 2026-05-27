@@ -16,6 +16,7 @@
     "@platform/diagnosis": "*",
     "@platform/ingest": "*",
     "@platform/missions": "*",
+    "@platform/lineup": "*",
     "@platform/eval": "*",
     "@platform/storage": "*",
     "@platform/auth": "*",

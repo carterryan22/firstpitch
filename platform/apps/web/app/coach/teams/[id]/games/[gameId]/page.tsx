@@ -5,8 +5,8 @@ import { getSession } from "../../../../../lib/session";
 import { userCanManageTeam } from "../../../../../lib/teams";
 import { sortRoster, fullName } from "../../../../../lib/players";
 import { formatGameWhen, statusLabel } from "../../../../../lib/games";
-import { Card } from "../../../../../components/ui";
 import { GameTabs } from "./GameTabs";
+import { FieldBoard, fieldBoardRosterFrom } from "./FieldBoard";
 
 export const metadata = { title: "Game" };
 
@@ -99,13 +99,31 @@ export default async function GamePage({
       />
 
       {tab === "field" ? (
-        <Card>
-          <p className="text-sm text-slate-500">
-            The visual lineup grid (inning × player) lands in the next slice. For now use the
-            Roster tab to mark attendance and the Summary tab to set the final score / mark the
-            game complete.
-          </p>
-        </Card>
+        <FieldBoard
+          gameId={game.id}
+          innings={game.innings}
+          roster={fieldBoardRosterFrom(
+            roster.map((p) => ({
+              id: p.id,
+              name: fullName(p),
+              jerseyNumber: p.jerseyNumber,
+              canPitch: !!p.canPitch,
+              canCatch: !!p.canCatch,
+              injured: !!p.injured,
+              positionRatings: (p.positionRatings ?? {}) as Record<string, string>,
+            })),
+          )}
+          present={Object.entries(game.attendance ?? {})
+            .filter(([, v]) => v === "present")
+            .map(([k]) => k)
+            // default to everyone if attendance unset
+            .concat(
+              Object.keys(game.attendance ?? {}).length === 0
+                ? roster.map((p) => p.id)
+                : [],
+            )}
+          initial={(game.lineup ?? []) as unknown as import("@platform/lineup").Inning[]}
+        />
       ) : null}
     </div>
   );

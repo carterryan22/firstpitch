@@ -63,8 +63,8 @@ export function Wordmark({ size = "sm" }: { size?: "sm" | "lg" }) {
         className="inline-block h-5 w-5 rounded-full bg-gradient-to-br from-brand-500 to-brand-900 ring-2 ring-white"
       />
       <span>
-        <span className="text-slate-900">Diamond</span>
-        <span className="text-brand-700">PD</span>
+        <span className="text-slate-900">First </span>
+        <span className="text-brand-700">Pitch</span>
       </span>
     </span>
   );

@@ -7,8 +7,8 @@ import { getSession } from "./lib/session";
 
 export const metadata = {
   title: {
-    default: "DiamondPD — Safer youth baseball practices",
-    template: "%s · DiamondPD",
+    default: "First Pitch — Safer youth baseball practices",
+    template: "%s · First Pitch",
   },
   description:
     "Compile age-appropriate, safety-checked baseball practice plans. Backed by USA Baseball Pitch Smart, NSCA, and CDC.",
@@ -75,7 +75,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <Link className="text-slate-600 no-underline hover:underline" href="/admin/status">
                 Platform status
               </Link>
-              <span>© {new Date().getFullYear()} DiamondPD</span>
+              <span>© {new Date().getFullYear()} First Pitch</span>
             </p>
           </div>
         </footer>
