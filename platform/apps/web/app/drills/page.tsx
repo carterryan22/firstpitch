@@ -25,11 +25,40 @@ export default async function DrillsPage({ searchParams }: { searchParams: Promi
       <ul style={{ listStyle: "none", padding: 0 }}>
         {drills.map((d) => (
           <li key={d.drill_id} style={{ border: "1px solid #ddd", padding: 12, marginBottom: 8, borderRadius: 6 }}>
-            <strong>{d.name}</strong> — <code>{d.drill_id}</code>
+            <Link href={`/drills/${d.drill_id}`} style={{ fontSize: 16, fontWeight: 700, textDecoration: "none", color: "inherit" }}>
+              {d.name}
+            </Link>{" "}
+            — <code>{d.drill_id}</code>
             <div style={{ fontSize: 13, color: "#555" }}>
               {d.topic} · {d.environment_tier} · {d.duration_minutes}min · ages {d.age_band.join(", ")} · status {d.review_status}
             </div>
             <div style={{ marginTop: 6 }}>{d.short_description}</div>
+            {d.kid_friendly ? (
+              <div
+                style={{
+                  marginTop: 10,
+                  padding: 10,
+                  borderRadius: 6,
+                  background: "#f0f7ff",
+                  border: "1px solid #cfe4ff",
+                  fontSize: 13,
+                  lineHeight: 1.45,
+                }}
+              >
+                <div style={{ fontWeight: 600, color: "#1d4ed8", marginBottom: 6, fontSize: 12, letterSpacing: 0.3, textTransform: "uppercase" }}>
+                  Coach → kids
+                </div>
+                <div style={{ marginBottom: 4 }}>
+                  <strong>How to explain it:</strong> {d.kid_friendly.explain}
+                </div>
+                <div style={{ marginBottom: 4 }}>
+                  <strong>What good looks like:</strong> {d.kid_friendly.goal}
+                </div>
+                <div>
+                  <strong>Why it matters:</strong> {d.kid_friendly.why}
+                </div>
+              </div>
+            ) : null}
           </li>
         ))}
       </ul>

@@ -7,8 +7,10 @@ import { userCanManageTeam } from "../../../../../lib/teams";
 import { ageFromDob, sortRoster, fullName } from "../../../../../lib/players";
 import { formatGameWhen, statusLabel } from "../../../../../lib/games";
 import { GameTabs } from "./GameTabs";
-import { FieldBoard, fieldBoardRosterFrom } from "./FieldBoard";
+import { FieldBoard } from "./FieldBoard";
 import { BattingOrder } from "./BattingOrder";
+import { GameNotes } from "./GameNotes";
+import { GameStatsImporter } from "./GameStatsImporter";
 
 function ageBandCenter(band: string): number {
   if (band.startsWith("6-8")) return 8;
@@ -28,7 +30,7 @@ export default async function GamePage({
 }) {
   const { id, gameId } = await params;
   const sp = await searchParams;
-  const tab = (sp.tab ?? "field") as "field" | "roster" | "summary";
+  const tab = (sp.tab ?? "field") as "field" | "roster" | "summary" | "notes" | "stats";
 
   const session = await getSession();
   if (!session) redirect("/login");
@@ -108,12 +110,13 @@ export default async function GamePage({
               Report
             </Link>
             <span className={status.cls}>{status.label}</span>
+            {game.isScrimmage ? <span className="badge-warn">Scrimmage</span> : null}
           </div>
         </div>
       </header>
 
       <nav className="flex gap-1 border-b border-slate-200 text-sm">
-        {(["field", "roster", "summary"] as const).map((t) => (
+        {(["field", "roster", "stats", "summary", "notes"] as const).map((t) => (
           <Link
             key={t}
             href={`/coach/teams/${id}/games/${gameId}?tab=${t}`}
@@ -142,6 +145,7 @@ export default async function GamePage({
           attendance: game.attendance ?? {},
           finalScore: game.finalScore,
           pitchCounts: game.pitchCounts ?? {},
+          isScrimmage: game.isScrimmage,
         }}
         roster={roster.map((p) => ({
           id: p.id,
@@ -158,17 +162,19 @@ export default async function GamePage({
         <FieldBoard
           gameId={game.id}
           innings={game.innings}
-          roster={fieldBoardRosterFrom(
-            roster.map((p) => ({
-              id: p.id,
-              name: fullName(p),
-              jerseyNumber: p.jerseyNumber,
-              canPitch: !!p.canPitch,
-              canCatch: !!p.canCatch,
-              injured: !!p.injured,
-              positionRatings: (p.positionRatings ?? {}) as Record<string, string>,
-            })),
-          )}
+          roster={roster.map((p) => ({
+            id: p.id,
+            name: fullName(p),
+            jerseyNumber: p.jerseyNumber,
+            canPitch: !!p.canPitch,
+            canCatch: !!p.canCatch,
+            injured: !!p.injured,
+            battingSkill: p.battingSkill,
+            positionRatings: (p.positionRatings ?? {}) as Record<
+              import("@platform/lineup").Slot,
+              "preferred" | "ok" | "avoid"
+            >,
+          }))}
           present={Object.entries(game.attendance ?? {})
             .filter(([, v]) => v === "present")
             .map(([k]) => k)
@@ -188,6 +194,42 @@ export default async function GamePage({
           gameId={game.id}
           roster={roster.map((p) => ({ id: p.id, name: fullName(p), jerseyNumber: p.jerseyNumber }))}
           initial={game.battingOrder ?? []}
+        />
+      ) : null}
+
+      {tab === "stats" ? (
+        <GameStatsImporter
+          gameId={game.id}
+          roster={roster.map((p) => ({
+            id: p.id,
+            name: fullName(p),
+            jerseyNumber: p.jerseyNumber,
+          }))}
+          initial={await repos.playerGameStats.list({ gameId: game.id })}
+          canEdit
+        />
+      ) : null}
+
+      {tab === "notes" ? (
+        <GameNotes
+          gameId={game.id}
+          innings={game.innings}
+          roster={roster.map((p) => ({ id: p.id, name: fullName(p), jerseyNumber: p.jerseyNumber }))}
+          initialNotes={(await repos.gameNotes.list({ gameId: game.id }))
+            .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
+            .map((n) => ({
+              id: n.id,
+              gameId: n.gameId,
+              playerId: n.playerId,
+              authorUserId: n.authorUserId,
+              playLabel: n.playLabel,
+              inningIdx: n.inningIdx,
+              body: n.body,
+              shareWithParents: n.shareWithParents,
+              shareWithPlayer: n.shareWithPlayer,
+              createdAt: n.createdAt,
+              updatedAt: n.updatedAt,
+            }))}
         />
       ) : null}
     </div>

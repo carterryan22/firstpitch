@@ -12,6 +12,12 @@ export async function POST(req: NextRequest) {
     if (typeof csv !== "string") {
       return NextResponse.json({ error: "csv (string) required" }, { status: 400 });
     }
+    if (csv.length > 5_000_000) {
+      return NextResponse.json(
+        { error: "csv too large (max 5MB)" },
+        { status: 413 },
+      );
+    }
 
     // Device adapters: rapsodo / blast / hittrax → entries
     if (source && source !== "gameChanger") {

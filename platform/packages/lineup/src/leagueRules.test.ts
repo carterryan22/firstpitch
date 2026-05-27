@@ -1,0 +1,151 @@
+import { describe, it, expect } from "vitest";
+import {
+  autoLineup,
+  buildLocks,
+  shuffleNonLocked,
+  type LineupPlayer,
+  type Inning,
+  type Slot,
+} from "./index";
+import {
+  defaultLeagueRules,
+  validateLineup,
+  pairLocksToLockMap,
+  mergeLockMaps,
+  OUTFIELD_POSITIONS,
+} from "./leagueRules";
+
+function p(id: string, extras: Partial<LineupPlayer> = {}): LineupPlayer {
+  return { id, canPitch: false, canCatch: false, ...extras };
+}
+
+describe("validateLineup — Dugout Edge feature-request rules", () => {
+  it("flags minFieldInnings violations (Coach DJ)", () => {
+    const innings: Inning[] = [
+      { a: "1B", b: "BN", c: "BN" },
+      { a: "1B", b: "BN", c: "2B" },
+    ];
+    const v = validateLineup(innings, { minFieldInnings: 2 }, ["a", "b", "c"]);
+    const ids = v.filter((x) => x.rule === "minFieldInnings").map((x) => x.playerId);
+    expect(ids).toContain("b"); // 0 field
+    expect(ids).toContain("c"); // 1 field
+    expect(ids).not.toContain("a"); // 2 field
+  });
+
+  it("flags infieldRequiredByInning violations (Coach DJ)", () => {
+    const innings: Inning[] = [
+      { a: "LF", b: "1B" },
+      { a: "RF", b: "BN" },
+      { a: "CF", b: "BN" },
+      { a: "LF", b: "BN" }, // player a is all-outfield through inning 4
+    ];
+    const v = validateLineup(innings, { infieldRequiredByInning: 4 }, ["a", "b"]);
+    expect(v.find((x) => x.rule === "infieldRequiredByInning" && x.playerId === "a")).toBeTruthy();
+    expect(v.find((x) => x.rule === "infieldRequiredByInning" && x.playerId === "b")).toBeFalsy();
+  });
+
+  it("flags maxConsecutiveBench (Coach DJ)", () => {
+    const innings: Inning[] = [
+      { a: "BN" },
+      { a: "BN" },
+      { a: "1B" },
+    ];
+    const v = validateLineup(innings, { maxConsecutiveBench: 1 }, ["a"]);
+    expect(v.find((x) => x.rule === "maxConsecutiveBench")).toBeTruthy();
+  });
+
+  it("flags maxConsecutiveOutfield (Coach Ryan)", () => {
+    const innings: Inning[] = [
+      { a: "LF" },
+      { a: "CF" },
+      { a: "RF" }, // 3 OF in a row
+    ];
+    const v = validateLineup(innings, { maxConsecutiveOutfield: 2 }, ["a"]);
+    expect(v.find((x) => x.rule === "maxConsecutiveOutfield" && x.inning === 2)).toBeTruthy();
+  });
+
+  it("flags pitcherBenchInningBefore (Coach Josh)", () => {
+    const innings: Inning[] = [
+      { a: "SS" }, // not benched
+      { a: "P" }, // pitches without warmup window
+    ];
+    const v = validateLineup(innings, { pitcherBenchInningBefore: true }, ["a"]);
+    expect(v.find((x) => x.rule === "pitcherBenchInningBefore" && x.inning === 1)).toBeTruthy();
+
+    const ok: Inning[] = [{ a: "BN" }, { a: "P" }];
+    expect(validateLineup(ok, { pitcherBenchInningBefore: true }, ["a"])).toEqual([]);
+  });
+
+  it("flags pairedPositions violations (Coach Phillip)", () => {
+    const innings: Inning[] = [{ a: "P", b: "1B" }];
+    const v = validateLineup(
+      innings,
+      { pairedPositions: [{ playerA: "a", positionA: "P", playerB: "b", positionB: "C" }] },
+      ["a", "b"]
+    );
+    expect(v.find((x) => x.rule === "pairedPositions")).toBeTruthy();
+  });
+});
+
+describe("autoLineup with leagueRules", () => {
+  it("avoids 3-in-a-row outfield when maxConsecutiveOutfield=2", () => {
+    const players: LineupPlayer[] = [
+      p("p1", { canPitch: true }),
+      p("c1", { canCatch: true }),
+      ...["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"].map((id) => p(id)),
+    ];
+    const { innings, warnings } = autoLineup({
+      innings: 6,
+      players,
+      leagueRules: { maxConsecutiveOutfield: 2 },
+    });
+    expect(warnings).toEqual([]);
+    const v = validateLineup(
+      innings,
+      { maxConsecutiveOutfield: 2 },
+      players.map((pl) => pl.id)
+    );
+    expect(v.filter((x) => x.rule === "maxConsecutiveOutfield")).toEqual([]);
+  });
+
+  it("pairLocksToLockMap → mergeLockMaps enforces tandem locks through shuffleNonLocked", () => {
+    const players: LineupPlayer[] = [
+      p("ace", { canPitch: true, positionRatings: { P: "preferred" } }),
+      p("mitt", { canCatch: true, positionRatings: { C: "preferred" } }),
+      ...["a", "b", "c", "d", "e", "f", "g"].map((id) => p(id)),
+    ];
+    const first = autoLineup({ innings: 3, players });
+    const pairLocks = pairLocksToLockMap(
+      [
+        { playerA: "ace", positionA: "P", playerB: "mitt", positionB: "C", innings: [0, 1] },
+      ],
+      3
+    );
+    const merged = mergeLockMaps(buildLocks(first.innings, new Set()), pairLocks);
+    const second = autoLineup({ innings: 3, players, locks: merged });
+    expect(second.innings[0]?.ace).toBe("P");
+    expect(second.innings[0]?.mitt).toBe("C");
+    expect(second.innings[1]?.ace).toBe("P");
+    expect(second.innings[1]?.mitt).toBe("C");
+  });
+
+  it("default rules and helpers are exported", () => {
+    const r = defaultLeagueRules();
+    expect(r.maxConsecutiveOutfield).toBeGreaterThan(0);
+    expect(OUTFIELD_POSITIONS.has("CF" as never)).toBe(true);
+    // shuffleNonLocked retains a leagueRules-aware base. With slack on the
+    // roster (>9 players) the OF rotation rule should be satisfiable.
+    const players: LineupPlayer[] = [
+      "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l",
+    ].map((id) => p(id, { canPitch: true, canCatch: true }));
+    const first = autoLineup({ innings: 3, players, leagueRules: { maxConsecutiveOutfield: 1 } });
+    const out = shuffleNonLocked(first.innings, new Set(), {
+      innings: 3,
+      players,
+      leagueRules: { maxConsecutiveOutfield: 1 },
+    });
+    // No player should be OF twice in a row.
+    const ofViol = validateLineup(out.innings, { maxConsecutiveOutfield: 1 }, players.map((x) => x.id));
+    expect(ofViol.filter((x) => x.rule === "maxConsecutiveOutfield")).toEqual([]);
+  });
+});

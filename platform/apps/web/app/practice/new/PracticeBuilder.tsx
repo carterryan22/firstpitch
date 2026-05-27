@@ -64,6 +64,11 @@ export function PracticeBuilder({
   const [environment, setEnvironment] = useState<EnvironmentTier>("T1_field");
   const [coaches, setCoaches] = useState<number>(1);
   const [players, setPlayers] = useState<number>(8);
+  const [fullField, setFullField] = useState<number>(1);
+  const [battingCage, setBattingCage] = useState<number>(0);
+  const [bullpen, setBullpen] = useState<number>(0);
+  const [infieldOnly, setInfieldOnly] = useState<number>(0);
+  const [openSpace, setOpenSpace] = useState<number>(0);
   const [name, setName] = useState<string>("");
   const [saveToTeam, setSaveToTeam] = useState<boolean>(true);
   const [scheduledAt, setScheduledAt] = useState<string>("");
@@ -92,6 +97,13 @@ export function PracticeBuilder({
     setErr(null);
     setSavedId(null);
     const persist = canPersist && saveToTeam;
+    const fieldResources = {
+      fullField,
+      battingCage,
+      bullpen,
+      infieldOnly,
+      openSpace,
+    };
     const res = await fetch("/api/compile", {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -103,6 +115,7 @@ export function PracticeBuilder({
         coaches,
         players,
         focus,
+        fieldResources,
         persist,
         teamId: persist && teamId ? teamId : undefined,
         name: name.trim() || undefined,
@@ -242,6 +255,46 @@ export function PracticeBuilder({
             />
           </div>
         </div>
+
+        <fieldset className="space-y-2 rounded-lg border border-slate-200 p-3">
+          <legend className="label px-1">Field resources</legend>
+          <p className="text-xs text-slate-500">
+            What's available today? Drives parallel station planning.
+          </p>
+          {([
+            ["Full field", fullField, setFullField, "Complete diamond with outfield"],
+            ["Batting cage", battingCage, setBattingCage, "Enclosed hitting area"],
+            ["Bullpen", bullpen, setBullpen, "Pitching mound area"],
+            ["Infield only", infieldOnly, setInfieldOnly, "Diamond without outfield"],
+            ["Open space", openSpace, setOpenSpace, "Gym, turf, grass field"],
+          ] as Array<[string, number, (n: number) => void, string]>).map(([label, value, set, hint]) => (
+            <div key={label} className="flex items-center justify-between gap-2">
+              <div className="min-w-0">
+                <div className="text-sm font-medium text-slate-700">{label}</div>
+                <div className="text-xs text-slate-500">{hint}</div>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  className="h-7 w-7 rounded border border-slate-300 text-slate-700 hover:border-brand-500"
+                  onClick={() => set(Math.max(0, value - 1))}
+                  aria-label={`Decrease ${label}`}
+                >
+                  −
+                </button>
+                <span className="w-6 text-center text-sm font-semibold tabular-nums">{value}</span>
+                <button
+                  type="button"
+                  className="h-7 w-7 rounded border border-slate-300 text-slate-700 hover:border-brand-500"
+                  onClick={() => set(Math.min(99, value + 1))}
+                  aria-label={`Increase ${label}`}
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          ))}
+        </fieldset>
 
         {canPersist ? (
           <div className="space-y-3 rounded-lg bg-slate-50 p-3">

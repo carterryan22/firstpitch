@@ -4,6 +4,7 @@ import { getSession } from "../../lib/session";
 import { getTeamsForUser, slugify, uniqueSlug } from "../../lib/teams";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export async function GET() {
   const session = await getSession();
@@ -28,6 +29,12 @@ export async function POST(req: NextRequest) {
   const ageBand = body.ageBand;
   if (!name || !ageBand) {
     return NextResponse.json({ error: "name and ageBand are required" }, { status: 400 });
+  }
+  if (name.length > 80) {
+    return NextResponse.json({ error: "name must be 80 characters or fewer" }, { status: 400 });
+  }
+  if (!["6-8", "9-12", "13-15", "16+"].includes(ageBand)) {
+    return NextResponse.json({ error: "invalid ageBand" }, { status: 400 });
   }
   const repos = getRepos();
   const team = await repos.teams.create({

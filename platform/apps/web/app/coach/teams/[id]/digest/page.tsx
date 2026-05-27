@@ -5,6 +5,7 @@ import { getSession } from "../../../../lib/session";
 import { userCanManageTeam } from "../../../../lib/teams";
 import { buildTeamDigest } from "../../../../lib/digest";
 import { Card } from "../../../../components/ui";
+import { ShareDigestButton } from "./ShareDigestButton";
 
 export const metadata = { title: "Weekly digest" };
 export const dynamic = "force-dynamic";
@@ -16,18 +17,15 @@ export default async function DigestPage({ params }: { params: Promise<{ id: str
   if (!(await userCanManageTeam(session.user.id, id))) redirect("/coach");
 
   const repos = getRepos();
-  const [team, players, games, allPlans, goals, metricEntries] = await Promise.all([
-    repos.teams.byId(id),
-    repos.players.byTeam(id),
-    repos.games.list({ teamId: id }),
-    repos.plans.list({}),
-    repos.goals.list({ teamId: id }),
-    repos.metricEntries.list({}),
-  ]);
+  const team = await repos.teams.byId(id);
   if (!team) notFound();
-  const plans = allPlans.filter((p) => p.teamId === id);
-  const playerIds = new Set(players.map((p) => p.id));
-  const teamMetricEntries = metricEntries.filter((e) => playerIds.has(e.playerId));
+  const players = await repos.players.byTeam(id);
+  const [games, plans, goals, teamMetricEntries] = await Promise.all([
+    repos.games.list({ teamId: id }),
+    repos.plans.list({ teamId: id }),
+    repos.goals.list({ teamId: id }),
+    repos.metricEntries.list({ playerIds: players.map((p) => p.id) }),
+  ]);
 
   const digest = buildTeamDigest({
     team,
@@ -60,6 +58,37 @@ export default async function DigestPage({ params }: { params: Promise<{ id: str
           Window: {new Date(digest.windowStart).toLocaleDateString()} →{" "}
           {new Date(digest.windowEnd).toLocaleDateString()}
         </p>
+        <div className="mt-3">
+          <ShareDigestButton
+            url={`/coach/teams/${id}/digest`}
+            digest={{
+              teamName: team.name,
+              windowStart: digest.windowStart,
+              windowEnd: digest.windowEnd,
+              upcomingGames: digest.upcomingGames.map((g) => ({
+                opponent: g.opponent,
+                homeAway: g.homeAway,
+                startsAt: g.startsAt,
+              })),
+              upcomingPractices: digest.upcomingPractices.map((p) => ({
+                name: p.name,
+                scheduledAt: p.scheduledAt,
+              })),
+              pitcherReturns: digest.pitcherReturns.map((p) => ({
+                name: p.name,
+                availableOn: p.availableOn,
+              })),
+              goalsAchievedThisWeek: digest.goalsAchievedThisWeek.map((g) => ({
+                name: g.name,
+                metricKey: g.metricKey,
+              })),
+              goalsAtRisk: digest.goalsAtRisk.map((g) => ({
+                name: g.name,
+                metricKey: g.metricKey,
+              })),
+            }}
+          />
+        </div>
       </header>
 
       {!has ? (

@@ -25,6 +25,7 @@ type GameLite = {
   attendance: Record<string, Attendance>;
   pitchCounts: Record<string, PitchEntry>;
   finalScore?: { us: number; them: number };
+  isScrimmage?: boolean;
 };
 
 export function GameTabs({
@@ -36,7 +37,7 @@ export function GameTabs({
   teamId: string;
   game: GameLite;
   roster: RosterLite[];
-  tab: "field" | "roster" | "summary";
+  tab: "field" | "roster" | "summary" | "notes" | "stats";
 }) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
@@ -254,8 +255,26 @@ export function GameTabs({
               Mark complete
             </button>
           ) : (
-            <span className="badge-ok">Read-only — game completed</span>
+            <>
+              <span className="badge-ok">Read-only — game completed</span>
+              <button
+                className="btn-ghost"
+                disabled={busy}
+                onClick={() => patch({ revertToDraft: true })}
+              >
+                Revert to draft
+              </button>
+            </>
           )}
+          <button
+            type="button"
+            className={`btn-ghost ${game.isScrimmage ? "bg-amber-50 text-amber-900 ring-amber-200" : ""}`}
+            disabled={busy}
+            onClick={() => patch({ isScrimmage: !game.isScrimmage })}
+            title="Scrimmages are excluded from season stats"
+          >
+            {game.isScrimmage ? "✓ Scrimmage" : "Mark as scrimmage"}
+          </button>
           <button
             className="btn-ghost"
             disabled={busy}

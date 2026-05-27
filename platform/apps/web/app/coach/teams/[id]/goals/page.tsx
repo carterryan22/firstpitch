@@ -24,13 +24,13 @@ export default async function TeamGoalsPage({
   if (!(await userCanManageTeam(session.user.id, id))) redirect("/coach");
 
   const repos = getRepos();
-  const [team, players, goals, entries] = await Promise.all([
-    repos.teams.byId(id),
-    repos.players.list({ teamId: id }),
-    repos.goals.list({ teamId: id }),
-    repos.metricEntries.list(),
-  ]);
+  const team = await repos.teams.byId(id);
   if (!team) notFound();
+  const players = await repos.players.list({ teamId: id });
+  const [goals, entries] = await Promise.all([
+    repos.goals.list({ teamId: id }),
+    repos.metricEntries.list({ playerIds: players.map((p) => p.id) }),
+  ]);
 
   const statusFilter = (statusParam === "all" ? "all" : statusParam) ?? "active";
   const filtered = goals.filter((g) => statusFilter === "all" || g.status === statusFilter);

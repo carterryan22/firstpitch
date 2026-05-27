@@ -1,0 +1,19 @@
+{
+  "name": "@platform/ux-agent",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Persona-driven UX/UI agent. Runs realistic coach/parent/player journeys against the running web app, instruments every step (clicks, keystrokes, time, dead-ends) and emits prioritized workflow-improvement suggestions.",
+  "scripts": {
+    "ux": "tsx src/run.ts",
+    "ux:headed": "UX_HEADED=1 tsx src/run.ts",
+    "install:browser": "playwright install chromium"
+  },
+  "dependencies": {
+    "playwright": "^1.45.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.7.0",
+    "typescript": "^5.4.0"
+  }
+}

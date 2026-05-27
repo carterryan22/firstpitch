@@ -1,17 +1,47 @@
 import "./globals.css";
 import Link from "next/link";
+import { Bungee, Rye, Special_Elite, Roboto_Slab } from "next/font/google";
 import { Nav } from "./components/Nav";
 import { LogoutButton } from "./components/LogoutButton";
+import { MobileRefresh } from "./components/MobileRefresh";
+import { UpdateBanner } from "./components/UpdateBanner";
 import { Wordmark } from "./components/ui";
 import { getSession } from "./lib/session";
 
+// Adopted from dugout-dirt.com: Bungee (display), Rye (western emphasis),
+// Special Elite (typewriter meta), Roboto Slab (body).
+const display = Bungee({ subsets: ["latin"], weight: "400", variable: "--font-display", display: "swap" });
+const western = Rye({ subsets: ["latin"], weight: "400", variable: "--font-western", display: "swap" });
+const typeFace = Special_Elite({ subsets: ["latin"], weight: "400", variable: "--font-type", display: "swap" });
+const slab = Roboto_Slab({ subsets: ["latin"], variable: "--font-slab", display: "swap" });
+
 export const metadata = {
   title: {
-    default: "First Pitch — Safer youth baseball practices",
+    default: "First Pitch — Real dirt on every diamond, every drill",
     template: "%s · First Pitch",
   },
   description:
-    "Compile age-appropriate, safety-checked baseball practice plans. Backed by USA Baseball Pitch Smart, NSCA, and CDC.",
+    "Safer youth baseball practices, honest scouting reports on local fields, and lineups that don't get gamed. Backed by USA Baseball Pitch Smart, NSCA, and CDC.",
+  manifest: "/manifest.webmanifest",
+  applicationName: "First Pitch",
+  appleWebApp: {
+    capable: true,
+    title: "First Pitch",
+    statusBarStyle: "black-translucent" as const,
+  },
+  formatDetection: { telephone: false },
+  other: {
+    "mobile-web-app-capable": "yes",
+  },
+};
+
+export const viewport = {
+  themeColor: "#1f1a17",
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover" as const,
+  // Allow pinch zoom for accessibility; do NOT lock user-scalable=no
+  maximumScale: 5,
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -23,33 +53,38 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     session = null;
   }
   const role = session?.user.role ?? null;
+  const fontVars = `${display.variable} ${western.variable} ${typeFace.variable} ${slab.variable}`;
 
   return (
-    <html lang="en">
-      <body className="min-h-screen bg-slate-50 font-sans text-slate-900">
+    <html lang="en" className={fontVars}>
+      <body className="min-h-screen bg-cream font-sans text-ink pb-safe pt-safe">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-brand-700 focus:px-3 focus:py-2 focus:text-sm focus:text-white"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-none focus:bg-ink focus:px-3 focus:py-2 focus:text-sm focus:text-cream"
         >
-          Skip to main content
+          Skip to content
         </a>
-        <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/85 backdrop-blur">
+        <UpdateBanner />
+        <header className="sticky top-0 z-30 border-b-2 border-ink bg-ink text-cream">
           <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-3">
             <Link href="/" className="no-underline hover:no-underline">
-              <Wordmark />
+              <Wordmark dark />
             </Link>
             <Nav role={role} />
-            <div className="flex items-center gap-3 text-sm text-slate-600">
+            <div className="flex items-center gap-3 text-sm text-cream/80">
               {session ? (
                 <>
-                  <span className="hidden md:inline">
+                  <span className="hidden md:inline quote text-cream/70">
                     {session.user.name ?? session.user.email}
                   </span>
-                  <span className="badge-info">{session.user.role}</span>
+                  <span className="badge border-cream/40 text-cream/90">{session.user.role}</span>
                   <LogoutButton />
                 </>
               ) : (
-                <Link href="/login" className="btn-ghost text-sm no-underline hover:no-underline">
+                <Link
+                  href="/login"
+                  className="btn border-[3px] border-cream bg-transparent text-cream hover:bg-cream hover:text-ink no-underline hover:no-underline"
+                >
                   Sign in
                 </Link>
               )}
@@ -59,22 +94,22 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <main id="main" className="mx-auto max-w-6xl px-6 py-10">
           {children}
         </main>
-        <footer className="border-t border-slate-200 bg-white">
-          <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-8 text-xs text-slate-500 md:flex-row md:items-center md:justify-between">
-            <p>
-              Sourced from{" "}
-              <a className="text-slate-700 no-underline hover:underline" href="https://www.mlb.com/pitch-smart">
+        {/* Pushes new web deploys into the iOS/iPad Capacitor shell and
+            installed PWAs without requiring a TestFlight rebuild. */}
+        <MobileRefresh />
+        <footer className="border-t-2 border-ink bg-cream">
+          <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-8 text-xs text-dirt-700 md:flex-row md:items-center md:justify-between">
+            <p className="quote">
+              &quot;If the dugout&apos;s got splinters, we&apos;ll tell ya.&quot; · Sourced from{" "}
+              <a className="text-ink no-underline hover:underline" href="https://www.mlb.com/pitch-smart">
                 USA Baseball Pitch Smart
               </a>
               {" · "}NSCA YT&amp;C · CDC Heads Up · Stop Sports Injuries
             </p>
-            <p className="flex items-center gap-3">
-              <Link className="text-slate-600 no-underline hover:underline" href="/safety">
-                Safety
-              </Link>
-              <Link className="text-slate-600 no-underline hover:underline" href="/admin/status">
-                Platform status
-              </Link>
+            <p className="flex items-center gap-3 quote">
+              <Link className="text-ink no-underline hover:underline" href="/fields">Fields</Link>
+              <Link className="text-ink no-underline hover:underline" href="/safety">Safety</Link>
+              <Link className="text-ink no-underline hover:underline" href="/admin/status">Status</Link>
               <span>© {new Date().getFullYear()} First Pitch</span>
             </p>
           </div>

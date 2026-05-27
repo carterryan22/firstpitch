@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180">
+  <rect width="180" height="180" fill="#1f1a17"/>
+  <circle cx="90" cy="90" r="62" fill="#f6efd9" stroke="#8a1c1c" stroke-width="5"/>
+  <path d="M40 64 Q90 86 140 64" fill="none" stroke="#8a1c1c" stroke-width="4"/>
+  <path d="M40 116 Q90 94 140 116" fill="none" stroke="#8a1c1c" stroke-width="4"/>
+  <text x="90" y="106" font-family="Impact, Arial Black, sans-serif" font-size="54" text-anchor="middle" fill="#1f1a17">FP</text>
+</svg>

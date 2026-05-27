@@ -24,6 +24,10 @@ export async function POST(req: NextRequest) {
     res.cookies.set(SESSION_COOKIE, session.cookieValue, {
       httpOnly: true,
       sameSite: "lax",
+      // Secure required for iOS WKWebView (Capacitor shell loads over https)
+      // and for any modern browser when SameSite=Lax is set on cross-site
+      // redirects. Disabled in dev so localhost still works.
+      secure: process.env.NODE_ENV === "production",
       path: "/",
       maxAge: Math.floor(SESSION_TTL_MS / 1000),
     });

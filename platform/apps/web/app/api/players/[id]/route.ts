@@ -15,6 +15,8 @@ interface PatchBody {
   dob?: string;
   bats?: Bats;
   throws?: Throws;
+  gender?: "M" | "F" | "X";
+  battingSkill?: number;
   canPitch?: boolean;
   canCatch?: boolean;
   injured?: boolean;
@@ -70,6 +72,13 @@ export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: strin
   }
   if (body.bats !== undefined) patch.bats = body.bats;
   if (body.throws !== undefined) patch.throws = body.throws;
+  if (body.gender !== undefined) {
+    patch.gender = body.gender === "M" || body.gender === "F" || body.gender === "X" ? body.gender : undefined;
+  }
+  if (body.battingSkill !== undefined) {
+    const n = Math.round(Number(body.battingSkill));
+    patch.battingSkill = n >= 1 && n <= 5 ? (n as 1 | 2 | 3 | 4 | 5) : undefined;
+  }
   if (body.canPitch !== undefined) patch.canPitch = !!body.canPitch;
   if (body.canCatch !== undefined) patch.canCatch = !!body.canCatch;
   if (body.injured !== undefined) patch.injured = !!body.injured;

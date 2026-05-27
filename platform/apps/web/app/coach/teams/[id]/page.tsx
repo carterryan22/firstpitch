@@ -1,11 +1,20 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
+import { getRepos } from "@platform/storage";
 import { getSession } from "../../../lib/session";
 import { getTeamRoster, plansForTeam, userCanManageTeam } from "../../../lib/teams";
 import { Card } from "../../../components/ui";
 import { AddMemberForm } from "./AddMemberForm";
 
-export const metadata = { title: "Team" };
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const team = await getRepos().teams.byId(id);
+  return { title: team ? `${team.name} · Team` : "Team" };
+}
 
 export default async function TeamDetailPage({
   params,
@@ -70,6 +79,12 @@ export default async function TeamDetailPage({
             className="btn-ghost no-underline hover:no-underline"
           >
             Fairness
+          </Link>
+          <Link
+            href={`/coach/teams/${team.id}/import`}
+            className="btn-ghost no-underline hover:no-underline"
+          >
+            Import CSV
           </Link>
           <Link
             href={`/coach/teams/${team.id}/ask`}

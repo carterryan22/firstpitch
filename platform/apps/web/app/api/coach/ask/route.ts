@@ -12,6 +12,9 @@ function ageBandSport(band: string): "baseball" | "softball" | "both" {
   return "baseball";
 }
 
+const DAY_MS = 24 * 3600 * 1000;
+const RECENT_BASELINE_WINDOW_DAYS = 30;
+
 function clip(s: string, max: number): string {
   return s.length > max ? s.slice(0, max - 1) + "…" : s;
 }
@@ -29,14 +32,14 @@ export async function POST(req: NextRequest) {
     }
 
     const repos = getRepos();
-    const [team, players, allGames, goals, metricEntries] = await Promise.all([
-      repos.teams.byId(body.teamId),
-      repos.players.byTeam(body.teamId),
+    const team = await repos.teams.byId(body.teamId);
+    if (!team) return NextResponse.json({ error: "team not found" }, { status: 404 });
+    const players = await repos.players.byTeam(body.teamId);
+    const [allGames, goals, metricEntries] = await Promise.all([
       repos.games.list({ teamId: body.teamId }),
       repos.goals.list({ teamId: body.teamId, status: "active" }),
-      repos.metricEntries.list({}),
+      repos.metricEntries.list({ playerIds: players.map((p) => p.id) }),
     ]);
-    if (!team) return NextResponse.json({ error: "team not found" }, { status: 404 });
 
     const recentGames = allGames
       .slice()
@@ -44,9 +47,8 @@ export async function POST(req: NextRequest) {
       .slice(0, 5);
 
     const playerById = new Map(players.map((p) => [p.id, p]));
-    const cutoff = Date.now() - 30 * 24 * 3600 * 1000;
+    const cutoff = Date.now() - RECENT_BASELINE_WINDOW_DAYS * DAY_MS;
     const recentEntries = metricEntries
-      .filter((e) => playerById.has(e.playerId))
       .filter((e) => new Date(e.recordedAt).getTime() >= cutoff)
       .sort((a, b) => b.recordedAt.localeCompare(a.recordedAt));
 

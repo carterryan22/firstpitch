@@ -61,6 +61,14 @@ export default async function PlayerBaselinePage({
         <p className="mt-1 text-sm text-slate-500">
           Age band {team.ageBand} · {entries.length} total entries
         </p>
+        <div className="mt-2">
+          <Link
+            href={`/coach/teams/${id}/baselines/${playerId}/diagnose`}
+            className="btn-ghost no-underline"
+          >
+            Diagnose underperformance →
+          </Link>
+        </div>
       </header>
 
       <Card>

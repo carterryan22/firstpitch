@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { MetricEntryAttachment } from "@platform/storage";
+import { captureFromCamera, isNative } from "../../../../../lib/native";
 
 const KIND_LABEL: Record<MetricEntryAttachment["kind"], string> = {
   video: "🎥",
@@ -56,6 +57,33 @@ export function AttachmentsCell({
     });
     setBusy(false);
     if (!res.ok) return;
+    const j = (await res.json()) as { entry?: { attachments?: MetricEntryAttachment[] } };
+    setItems(j.entry?.attachments ?? []);
+  }
+
+  // Native-only quick-capture: opens the iOS / iPadOS camera, uploads the
+  // resulting data URL as an `image` attachment. On web this button is
+  // hidden — the regular "+ Add" flow already accepts pasted image URLs.
+  async function quickCapture() {
+    setBusy(true);
+    setErr(null);
+    const photo = await captureFromCamera();
+    if (!photo) {
+      setBusy(false);
+      setErr("Camera unavailable");
+      return;
+    }
+    const res = await fetch(`/api/metric-entries/${entryId}/attachments`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ url: photo.dataUrl, kind: "image", label: "Camera capture" }),
+    });
+    setBusy(false);
+    if (!res.ok) {
+      const j = (await res.json().catch(() => ({}))) as { error?: string };
+      setErr(j.error ?? "Upload failed");
+      return;
+    }
     const j = (await res.json()) as { entry?: { attachments?: MetricEntryAttachment[] } };
     setItems(j.entry?.attachments ?? []);
   }
@@ -128,13 +156,25 @@ export function AttachmentsCell({
           </div>
         </form>
       ) : (
-        <button
-          type="button"
-          className="text-[10px] text-teal-700 hover:underline"
-          onClick={() => setOpen(true)}
-        >
-          + Add
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            className="text-[10px] text-teal-700 hover:underline"
+            onClick={() => setOpen(true)}
+          >
+            + Add
+          </button>
+          {isNative() ? (
+            <button
+              type="button"
+              className="text-[10px] text-teal-700 hover:underline"
+              disabled={busy}
+              onClick={quickCapture}
+            >
+              📷 Camera
+            </button>
+          ) : null}
+        </div>
       )}
     </div>
   );

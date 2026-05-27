@@ -1,8 +1,11 @@
 import { loadSafetyRules, loadDrills, loadAgeMatrix, loadPitchSmart } from "@platform/corpus";
 import { runAll } from "@platform/eval";
+import { redirect } from "next/navigation";
 import { StatCard, Card, Badge } from "../../components/ui";
+import { getSession } from "../../lib/session";
 
 export const metadata = { title: "Platform status" };
+export const dynamic = "force-dynamic";
 
 const APIS: Array<{ path: string; group: string; note: string }> = [
   { path: "/api/compile", group: "Practice", note: "Compile a practice plan from age + duration + focus." },
@@ -19,7 +22,11 @@ const APIS: Array<{ path: string; group: string; note: string }> = [
   { path: "/api/auth/session", group: "Auth", note: "Read the current session." },
 ];
 
-export default function StatusPage() {
+export default async function StatusPage() {
+  const session = await getSession();
+  if (!session) redirect("/login");
+  if (session.user.role !== "admin") redirect("/");
+
   const rules = loadSafetyRules().rules;
   const drills = loadDrills();
   const matrix = loadAgeMatrix();

@@ -13,6 +13,8 @@ interface CreateBody {
   dob?: string;
   bats?: Bats;
   throws?: Throws;
+  gender?: "M" | "F" | "X";
+  battingSkill?: number;
   canPitch?: boolean;
   canCatch?: boolean;
   injured?: boolean;
@@ -51,6 +53,12 @@ export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string
   if (!firstName || !lastName) {
     return NextResponse.json({ error: "firstName and lastName required" }, { status: 400 });
   }
+  if (firstName.length > 40 || lastName.length > 40) {
+    return NextResponse.json({ error: "name must be 40 characters or fewer" }, { status: 400 });
+  }
+  if ((body.parentEmail ?? "").length > 200) {
+    return NextResponse.json({ error: "parentEmail too long" }, { status: 400 });
+  }
 
   let parentUserId: string | undefined;
   if (body.parentEmail && body.parentEmail.includes("@")) {
@@ -74,6 +82,16 @@ export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string
     positions: [],
     bats: body.bats,
     throws: body.throws,
+    gender:
+      body.gender === "M" || body.gender === "F" || body.gender === "X"
+        ? body.gender
+        : undefined,
+    battingSkill:
+      body.battingSkill !== undefined &&
+      Math.round(Number(body.battingSkill)) >= 1 &&
+      Math.round(Number(body.battingSkill)) <= 5
+        ? (Math.round(Number(body.battingSkill)) as 1 | 2 | 3 | 4 | 5)
+        : undefined,
     canPitch: !!body.canPitch,
     canCatch: !!body.canCatch,
     injured: !!body.injured,

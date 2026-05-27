@@ -35,7 +35,15 @@ export default function LoginPage() {
       setErr(j.error ?? "Sign-in failed");
       return;
     }
-    router.push(role === "parent" ? "/parent" : role === "coach" ? "/coach" : "/");
+    router.push(
+      role === "parent"
+        ? "/parent"
+        : role === "coach"
+          ? "/coach"
+          : role === "player"
+            ? "/missions"
+            : "/",
+    );
     router.refresh();
   }
 
@@ -49,14 +57,20 @@ export default function LoginPage() {
       </header>
 
       <fieldset className="space-y-3">
-        <legend className="label">I am a&hellip;</legend>
-        <div className="grid gap-3 sm:grid-cols-2">
+        <legend id="role-legend" className="label">I am a&hellip;</legend>
+        <div
+          role="radiogroup"
+          aria-labelledby="role-legend"
+          className="grid gap-3 sm:grid-cols-2"
+        >
           {ROLES.map((r) => {
             const active = role === r.role;
             return (
               <button
                 key={r.role}
                 type="button"
+                role="radio"
+                aria-checked={active}
                 onClick={() => setRole(r.role)}
                 className={`rounded-xl border p-4 text-left transition ${
                   active

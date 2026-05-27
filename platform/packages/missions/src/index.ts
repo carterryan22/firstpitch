@@ -3,6 +3,8 @@
 
 import { getAgeBandKeyForAge, type AgeBandKey } from "@platform/corpus";
 
+export * from "./homework";
+
 export type MissionKind = "fun_streak" | "pr_challenge" | "position_ladder" | "verified_pr_only";
 
 export interface Mission {
@@ -89,7 +91,11 @@ export interface Completion {
 
 const LEVEL_RANK = { self_entered: 0, video_attached: 1, device_captured: 2, coach_verified: 3 };
 
-export function streakFor(mission: Mission, completions: Completion[]): {
+export function streakFor(
+  mission: Mission,
+  completions: Completion[],
+  now: Date = new Date(),
+): {
   current: number;
   longest: number;
   qualifies: boolean;
@@ -116,7 +122,7 @@ export function streakFor(mission: Mission, completions: Completion[]): {
   }
 
   // Current streak ends today (or yesterday)
-  const today = new Date();
+  const today = new Date(now.getTime());
   today.setUTCHours(0, 0, 0, 0);
   const last = valid[valid.length - 1]!;
   const gapFromToday = (today.getTime() - last) / 86_400_000;

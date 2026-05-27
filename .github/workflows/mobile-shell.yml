@@ -1,0 +1,98 @@
+name: mobile-shell
+
+# Validates the Capacitor iOS / iPadOS / Android shell whenever either the
+# shell config OR the web app changes. We do NOT need to rebuild the native
+# binaries for every web change — the shell loads the deployed URL via
+# `server.url` in capacitor.config.ts, so web deploys reach the app live —
+# but this job ensures the shell *config* still installs and syncs cleanly,
+# and that the web build still produces the manifest + icons the app expects.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "platform/mobile/**"
+      - "platform/apps/web/public/manifest.webmanifest"
+      - "platform/apps/web/public/icons/**"
+      - "platform/apps/web/app/icon.svg"
+      - "platform/apps/web/app/apple-icon.svg"
+      - "platform/apps/web/app/layout.tsx"
+      - ".github/workflows/mobile-shell.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "platform/mobile/**"
+      - "platform/apps/web/public/manifest.webmanifest"
+      - "platform/apps/web/public/icons/**"
+      - "platform/apps/web/app/icon.svg"
+      - "platform/apps/web/app/apple-icon.svg"
+      - "platform/apps/web/app/layout.tsx"
+      - ".github/workflows/mobile-shell.yml"
+  workflow_dispatch:
+
+jobs:
+  shell-sync:
+    name: capacitor sync (macOS)
+    runs-on: macos-14
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: platform/mobile
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Install shell deps
+        run: npm install --no-audit --no-fund
+
+      - name: Add iOS platform
+        run: npx cap add ios
+        env:
+          FIRST_PITCH_APP_URL: ${{ vars.FIRST_PITCH_APP_URL || 'https://firstpitch.app' }}
+
+      - name: Add Android platform
+        run: npx cap add android
+
+      - name: Capacitor sync
+        run: npx cap sync
+        env:
+          FIRST_PITCH_APP_URL: ${{ vars.FIRST_PITCH_APP_URL || 'https://firstpitch.app' }}
+
+      - name: Verify Info.plist app-bound domains match config
+        run: |
+          set -e
+          plist=ios/App/App/Info.plist
+          if ! grep -q "WKAppBoundDomains" "$plist"; then
+            echo "::warning::WKAppBoundDomains not yet declared in $plist."
+            echo "When you're ready for App Store submission, add the same"
+            echo "hosts listed in server.allowNavigation in capacitor.config.ts."
+          fi
+
+  web-pwa-check:
+    name: web manifest + icons present
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: platform
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "npm"
+          cache-dependency-path: platform/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - name: Typecheck web
+        run: npx tsc --noEmit --project apps/web
+      - name: Verify PWA assets exist in build output
+        run: |
+          set -e
+          test -f apps/web/public/manifest.webmanifest
+          test -f apps/web/app/icon.svg
+          test -f apps/web/app/apple-icon.svg
+          echo "PWA assets present."

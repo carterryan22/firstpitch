@@ -146,7 +146,30 @@ export interface RetrieveOptions {
   tierMax?: number;
 }
 
+// Tiny LRU keyed on canonical(query, opts). The corpus is immutable at
+// runtime so memoizing per-query top-k is safe and cheap. Map preserves
+// insertion order in JS, so deleting + re-setting moves an entry to "most
+// recently used"; we evict the oldest when we exceed MAX_ENTRIES.
+const MAX_ENTRIES = 128;
+const QUERY_CACHE = new Map<string, RetrievedRecord[]>();
+
+function cacheKey(query: string, opts: RetrieveOptions): string {
+  const k = opts.k ?? 5;
+  const kinds = (opts.kinds ?? ["source", "drill"]).slice().sort().join(",");
+  const tierMax = opts.tierMax ?? -1;
+  return `${query.trim().toLowerCase()}|k=${k}|kinds=${kinds}|tier=${tierMax}`;
+}
+
 export function retrieve(query: string, opts: RetrieveOptions = {}): RetrievedRecord[] {
+  const key = cacheKey(query, opts);
+  const cached = QUERY_CACHE.get(key);
+  if (cached) {
+    // Touch for LRU ordering.
+    QUERY_CACHE.delete(key);
+    QUERY_CACHE.set(key, cached);
+    return cached;
+  }
+
   const docs = buildIndex();
   const q = tokenize(query);
   if (q.length === 0) return [];
@@ -161,7 +184,7 @@ export function retrieve(query: string, opts: RetrieveOptions = {}): RetrievedRe
     .sort((a, b) => b.s - a.s)
     .slice(0, k);
 
-  return scored.map(({ d, s }) => ({
+  const result = scored.map(({ d, s }) => ({
     kind: d.kind,
     id: d.id,
     title: d.title,
@@ -169,6 +192,13 @@ export function retrieve(query: string, opts: RetrieveOptions = {}): RetrievedRe
     score: Number(s.toFixed(4)),
     citation: { id: d.id, url: d.url, tier: d.tier },
   }));
+
+  QUERY_CACHE.set(key, result);
+  if (QUERY_CACHE.size > MAX_ENTRIES) {
+    const oldest = QUERY_CACHE.keys().next().value;
+    if (oldest !== undefined) QUERY_CACHE.delete(oldest);
+  }
+  return result;
 }
 
 /** Test/CLI helper to reset cache (e.g., after corpus edits). */
@@ -176,4 +206,5 @@ export function resetRetrievalCache(): void {
   CACHED = null;
   AVGDL = 0;
   IDF = new Map();
+  QUERY_CACHE.clear();
 }

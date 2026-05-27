@@ -17,3 +17,8 @@ bulletproof-out.log
 .vscode/
 *.tsbuildinfo
 **/*.tsbuildinfo
+
+.devdata/
+**/.devdata/
+qa-report/
+**/qa-report/

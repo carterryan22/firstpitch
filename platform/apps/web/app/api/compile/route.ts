@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
-import { compile, type CompileInput } from "@platform/compiler";
+import { compile, antiLineCheck, type CompileInput } from "@platform/compiler";
 import { postFilter } from "@platform/ai";
 import { getRepos } from "@platform/storage";
 import { getSession } from "../../lib/session";
 import { userCanManageTeam } from "../../lib/teams";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
   let body: Partial<CompileInput> & {
@@ -37,11 +38,20 @@ export async function POST(req: Request) {
     coaches: body.coaches ?? 1,
     players: body.players ?? 8,
     focus: body.focus ?? ["throwing"],
+    fieldResources: body.fieldResources,
     pitchHistoryByPlayer: body.pitchHistoryByPlayer,
     date: body.date ? new Date(body.date) : undefined,
     overrides: body.overrides,
   };
   const result = compile(input);
+
+  // Compiler v2 — run the anti-line check up front so the UI can surface
+  // station-density violations next to the safety warnings.
+  const antiLine = antiLineCheck(result, {
+    players: input.players,
+    coaches: input.coaches,
+    fieldResources: input.fieldResources,
+  });
 
   // Defensive sweep: run post-filter on every drill note so any future
   // AI-authored content can't bypass the runtime guard.
@@ -92,6 +102,6 @@ export async function POST(req: Request) {
     planId = plan.id;
   }
 
-  return NextResponse.json({ ...result, postFilterActions: filterActions, planId });
+  return NextResponse.json({ ...result, antiLine, postFilterActions: filterActions, planId });
 }
 

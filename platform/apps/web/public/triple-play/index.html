@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Triple Play Baseball - Think Fast, Play Smart!</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Fireworks canvas for streak celebrations -->
+    <canvas id="fireworks-canvas"></canvas>
+
+    <!-- WELCOME SCREEN (name entry) -->
+    <div id="welcome-screen" class="welcome-screen">
+        <div class="welcome-box">
+            <h1><span class="logo-accent">TRIPLE</span> PLAY</h1>
+            <p class="welcome-sub">Little League Edition</p>
+            <div class="welcome-form">
+                <label for="player-name-input">What's your name, player?</label>
+                <input type="text" id="player-name-input" class="name-input" placeholder="Enter your name" maxlength="20" autocomplete="off" aria-label="Player name">
+
+                <label for="position-select" class="sub-label">What position do you play?</label>
+                <select id="position-select" class="name-input" aria-label="Favorite position">
+                    <option value="all">Any position</option>
+                    <option value="p">Pitcher</option>
+                    <option value="c">Catcher</option>
+                    <option value="1b">First Base</option>
+                    <option value="2b">Second Base</option>
+                    <option value="ss">Shortstop</option>
+                    <option value="3b">Third Base</option>
+                    <option value="lf">Left Field</option>
+                    <option value="cf">Center Field</option>
+                    <option value="rf">Right Field</option>
+                </select>
+
+                <label class="check-row">
+                    <input type="checkbox" id="two-player-toggle"> <span>Pass &amp; Play (2 players)</span>
+                </label>
+                <input type="text" id="player-name-2" class="name-input hidden" placeholder="Player 2 name" maxlength="20" autocomplete="off" aria-label="Second player name">
+
+                <button id="start-btn" class="btn btn-primary btn-large">Play Ball! ⚾</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="app hidden" id="app-main">
+        <!-- HEADER -->
+        <header class="header">
+            <div class="header-top">
+                <h1><span class="logo-accent">TRIPLE</span> PLAY</h1>
+                <p class="tagline"><span id="player-greeting"></span> &middot; Think Fast, Play Smart</p>
+                <div class="header-actions">
+                    <span id="day-streak-chip" class="day-chip hidden" title="Days played in a row"><span id="day-streak-num">0</span>📅</span>
+                    <button id="stats-btn" class="icon-btn" title="My Stats" aria-label="View stats">📊</button>
+                    <button id="coach-btn" class="icon-btn" title="Coach Sheet" aria-label="Open coach cheat sheet">📋</button>
+                </div>
+            </div>
+            <div class="stats-bar">
+                <div class="stat">
+                    <span class="stat-label">Correct</span>
+                    <span id="correct-count" class="stat-value">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Total</span>
+                    <span id="total-count" class="stat-value">0</span>
+                </div>
+                <div class="stat streak-stat">
+                    <span class="stat-label">Streak 🔥</span>
+                    <span id="streak-count" class="stat-value">0</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- LEVEL / XP BAR -->
+        <div class="level-bar">
+            <div class="level-info">
+                <span id="current-level" class="level-name">Tee Ball</span>
+                <span id="xp-text" class="xp-text">0 / 50 XP</span>
+            </div>
+            <div class="xp-track">
+                <div id="xp-fill" class="xp-fill" style="width:0%"></div>
+            </div>
+            <div class="level-milestones">
+                <span class="ms" data-lvl="0">Tee Ball</span>
+                <span class="ms" data-lvl="1">A</span>
+                <span class="ms" data-lvl="2">AA</span>
+                <span class="ms" data-lvl="3">AAA</span>
+                <span class="ms" data-lvl="4">Minors</span>
+                <span class="ms" data-lvl="5">Majors</span>
+            </div>
+        </div>
+
+        <!-- STREAK QUOTE BANNER (hidden by default) -->
+        <div id="streak-banner" class="streak-banner hidden">
+            <p id="streak-quote" class="streak-quote"></p>
+        </div>
+
+        <!-- TURN BANNER (pass-and-play) -->
+        <div id="turn-banner" class="turn-banner hidden">
+            <span id="turn-name" class="turn-name"></span>'s turn
+        </div>
+
+        <!-- CATEGORY TABS -->
+        <nav class="category-tabs" id="category-tabs">
+            <button class="tab active" data-cat="all">All</button>
+            <button class="tab" data-cat="throwTo">Where to Throw</button>
+            <button class="tab" data-cat="coverBase">Base Coverage</button>
+            <button class="tab" data-cat="backup">Backup</button>
+            <button class="tab" data-cat="baserunning">Baserunning</button>
+            <button class="tab" data-cat="fielding">Fielding</button>
+            <button class="tab" data-cat="pitching">Pitching</button>
+            <button class="tab" data-cat="catcher">Catcher</button>
+        </nav>
+
+        <!-- MAIN GAME AREA -->
+        <main class="game-area">
+            <!-- BASEBALL DIAMOND -->
+            <div class="diamond-wrap">
+                <svg id="diamond-svg" class="diamond" viewBox="0 0 340 310">
+                    <defs>
+                        <linearGradient id="grass-base" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#3d8a32"/>
+                            <stop offset="100%" stop-color="#4a9e40"/>
+                        </linearGradient>
+                        <pattern id="stripes" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse" patternTransform="rotate(0)">
+                            <rect width="20" height="20" fill="#4a9a3c"/>
+                            <rect x="0" y="0" width="10" height="20" fill="#3f8a34"/>
+                        </pattern>
+                        <radialGradient id="dirt" cx="50%" cy="55%" r="55%">
+                            <stop offset="0%" stop-color="#d4b87a"/>
+                            <stop offset="100%" stop-color="#b89058"/>
+                        </radialGradient>
+                        <radialGradient id="infield-grass" cx="50%" cy="55%" r="50%">
+                            <stop offset="0%" stop-color="#4ca840"/>
+                            <stop offset="100%" stop-color="#449838"/>
+                        </radialGradient>
+                        <clipPath id="field-clip">
+                            <path d="M170 285 L22 137 A210 210 0 0 1 318 137 Z"/>
+                        </clipPath>
+                        <filter id="glow"><feGaussianBlur stdDeviation="2.5" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                        <filter id="shadow"><feDropShadow dx="0" dy="1" stdDeviation="1.5" flood-opacity=".25"/></filter>
+                    </defs>
+
+                    <!-- Outfield grass fan shape -->
+                    <path d="M170 285 L22 137 A210 210 0 0 1 318 137 Z" fill="url(#grass-base)" stroke="#2a7020" stroke-width="2"/>
+                    <!-- Mow stripes -->
+                    <path d="M170 285 L22 137 A210 210 0 0 1 318 137 Z" fill="url(#stripes)" opacity=".3"/>
+                    <!-- Warning track -->
+                    <path d="M30 143 A202 202 0 0 1 310 143" fill="none" stroke="#b08850" stroke-width="7" opacity=".3" clip-path="url(#field-clip)"/>
+
+                    <!-- Foul lines (45° from vertical, through 1B and 3B to outfield) -->
+                    <line x1="170" y1="285" x2="318" y2="137" stroke="rgba(255,255,255,.6)" stroke-width="1.2"/>
+                    <line x1="170" y1="285" x2="22" y2="137" stroke="rgba(255,255,255,.6)" stroke-width="1.2"/>
+
+                    <!-- Infield dirt: rounded skin area -->
+                    <path d="M216 239 Q230 225 230 210 L200 180 Q170 155 140 180 L110 210 Q110 225 124 239 L150 265 Q170 280 190 265 Z" fill="url(#dirt)" stroke="#a07840" stroke-width=".6"/>
+                    <!-- Mound circle -->
+                    <circle cx="170" cy="238" r="10" fill="#c8a468" stroke="#a08050" stroke-width=".6"/>
+                    <!-- Pitcher's rubber -->
+                    <rect x="166" y="236.5" width="8" height="2" rx=".5" fill="white" opacity=".8"/>
+
+                    <!-- Infield grass cutout -->
+                    <path d="M170 256 L198 228 Q170 200 142 228 Z" fill="url(#infield-grass)"/>
+
+                    <!-- Base paths -->
+                    <line x1="170" y1="269" x2="216" y2="223" stroke="rgba(255,255,255,.65)" stroke-width="1"/>
+                    <line x1="216" y1="223" x2="170" y2="177" stroke="rgba(255,255,255,.65)" stroke-width="1"/>
+                    <line x1="170" y1="177" x2="124" y2="223" stroke="rgba(255,255,255,.65)" stroke-width="1"/>
+                    <line x1="124" y1="223" x2="170" y2="269" stroke="rgba(255,255,255,.65)" stroke-width="1"/>
+
+                    <!-- Home plate area dirt -->
+                    <circle cx="170" cy="275" r="14" fill="#c8a468" stroke="#a08050" stroke-width=".5"/>
+                    <!-- Bases -->
+                    <rect id="base-home" x="165" y="264" width="10" height="10" rx="1" fill="white" stroke="#ddd" stroke-width=".5" transform="rotate(45,170,269)"/>
+                    <rect id="base-1" x="211" y="218" width="10" height="10" fill="white" stroke="#ddd" stroke-width=".5" transform="rotate(45,216,223)"/>
+                    <rect id="base-2" x="165" y="172" width="10" height="10" fill="white" stroke="#ddd" stroke-width=".5" transform="rotate(45,170,177)"/>
+                    <rect id="base-3" x="119" y="218" width="10" height="10" fill="white" stroke="#ddd" stroke-width=".5" transform="rotate(45,124,223)"/>
+
+                    <!-- Batter boxes -->
+                    <rect x="157" y="275" width="7" height="14" rx=".5" fill="none" stroke="rgba(255,255,255,.4)" stroke-width=".5"/>
+                    <rect x="176" y="275" width="7" height="14" rx=".5" fill="none" stroke="rgba(255,255,255,.4)" stroke-width=".5"/>
+
+                    <!-- Fielder dots -->
+                    <circle id="pos-p"  class="fielder-dot" cx="170" cy="238" r="5" filter="url(#shadow)"/>
+                    <circle id="pos-c"  class="fielder-dot" cx="170" cy="294" r="5" filter="url(#shadow)"/>
+                    <circle id="pos-1b" class="fielder-dot" cx="222" cy="218" r="5" filter="url(#shadow)"/>
+                    <circle id="pos-2b" class="fielder-dot" cx="198" cy="198" r="5" filter="url(#shadow)"/>
+                    <circle id="pos-ss" class="fielder-dot" cx="142" cy="198" r="5" filter="url(#shadow)"/>
+                    <circle id="pos-3b" class="fielder-dot" cx="118" cy="218" r="5" filter="url(#shadow)"/>
+                    <circle id="pos-lf" class="fielder-dot" cx="72"  cy="172" r="5" filter="url(#shadow)"/>
+                    <circle id="pos-cf" class="fielder-dot" cx="170" cy="140" r="5" filter="url(#shadow)"/>
+                    <circle id="pos-rf" class="fielder-dot" cx="268" cy="172" r="5" filter="url(#shadow)"/>
+                    <!-- Position labels -->
+                    <text x="170" y="250" class="pos-label" text-anchor="middle">P</text>
+                    <text x="170" y="306" class="pos-label" text-anchor="middle">C</text>
+                    <text x="232" y="215" class="pos-label" text-anchor="start">1B</text>
+                    <text x="204" y="194" class="pos-label" text-anchor="start">2B</text>
+                    <text x="130" y="194" class="pos-label" text-anchor="end">SS</text>
+                    <text x="106" y="215" class="pos-label" text-anchor="end">3B</text>
+                    <text x="72"  y="164" class="pos-label" text-anchor="middle">LF</text>
+                    <text x="170" y="132" class="pos-label" text-anchor="middle">CF</text>
+                    <text x="268" y="164" class="pos-label" text-anchor="middle">RF</text>
+
+                    <!-- Runner indicators -->
+                    <circle id="runner-1" class="runner hidden" cx="216" cy="223" r="7"/>
+                    <circle id="runner-2" class="runner hidden" cx="170" cy="177" r="7"/>
+                    <circle id="runner-3" class="runner hidden" cx="124" cy="223" r="7"/>
+
+                    <!-- Animated elements -->
+                    <ellipse id="anim-ball-shadow" class="anim-ball-shadow hidden" cx="0" cy="0" rx="4" ry="1.5" fill="rgba(0,0,0,.45)"/>
+                    <circle id="anim-ball" class="anim-ball hidden" cx="0" cy="0" r="4" fill="#fff" stroke="#333" stroke-width=".8" filter="url(#glow)"/>
+                    <circle id="anim-runner" class="anim-runner hidden" cx="0" cy="0" r="6"/>
+                    <line id="anim-trail" class="anim-trail hidden" x1="0" y1="0" x2="0" y2="0"/>
+                    <text id="out-text" class="out-text hidden" x="170" y="225" text-anchor="middle">OUT!</text>
+
+                    <!-- Outs -->
+                    <g transform="translate(228,294)">
+                        <rect x="-26" y="-10" width="52" height="15" rx="4" fill="rgba(0,0,0,.55)" stroke="rgba(255,255,255,.15)" stroke-width=".5"/>
+                        <text text-anchor="middle" y="1" fill="#fff" font-size="9" font-weight="800" letter-spacing=".3" style="font-family:'Segoe UI',system-ui,sans-serif">
+                            OUTS <tspan id="diamond-outs" fill="#f5c542">0</tspan>
+                        </text>
+                    </g>
+                </svg>
+                <button id="setup-replay-btn" class="setup-replay-btn" type="button" aria-label="Replay the play setup">↻ Replay Setup</button>
+            </div>
+
+            <!-- SITUATION CARD -->
+            <div class="card">
+                <div class="card-header">
+                    <span id="q-number" class="q-number">#1</span>
+                    <span id="cat-badge" class="cat-badge">Where to Throw</span>
+                    <span id="diff-badge" class="diff-badge beginner">Beginner</span>
+                </div>
+
+                <p id="situation-text" class="situation-text">Loading…</p>
+
+                <div id="answers-container" class="answers"></div>
+
+                <div id="feedback" class="feedback hidden">
+                    <p id="feedback-icon" class="feedback-icon"></p>
+                    <p id="feedback-msg" class="feedback-msg"></p>
+                    <p id="feedback-detail" class="feedback-detail"></p>
+                    <ul id="feedback-wrong-list" class="feedback-wrong-list hidden" aria-label="Why other answers were wrong"></ul>
+                </div>
+
+                <div class="card-actions">
+                    <button id="next-btn" class="btn btn-primary hidden">Next Question →</button>
+                </div>
+                <p class="keyboard-hint">Tip: press <kbd>1</kbd>–<kbd>4</kbd> to answer, <kbd>Enter</kbd> for next, <kbd>R</kbd> to replay</p>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>Made for Little League players &amp; parents &middot; <a href="https://github.com" target="_blank" rel="noopener">Host free on GitHub Pages</a></p>
+            <button id="reset-btn" class="btn btn-small btn-muted">Reset All Progress</button>
+        </footer>
+    </div>
+
+    <!-- PLAY REPLAY OVERLAY -->
+    <div id="play-overlay" class="play-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="play-overlay-msg">
+        <div class="play-overlay-inner">
+            <div id="play-overlay-diamond" class="play-overlay-diamond"></div>
+            <div class="play-overlay-text">
+                <p id="play-overlay-icon" class="play-overlay-icon"></p>
+                <p id="play-overlay-msg" class="play-overlay-msg"></p>
+                <p id="play-overlay-detail" class="play-overlay-detail"></p>
+                <div class="overlay-actions">
+                    <button id="play-overlay-replay" class="btn btn-secondary">↻ Replay</button>
+                    <button id="play-overlay-close" class="btn btn-primary">Got It! →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- STATS MODAL -->
+    <div id="stats-modal" class="app-modal hidden" role="dialog" aria-modal="true" aria-labelledby="stats-title">
+        <div class="app-modal-inner">
+            <button class="modal-close" data-close="stats-modal" aria-label="Close stats">×</button>
+            <h2 id="stats-title">My Stats</h2>
+            <div id="stats-body"></div>
+        </div>
+    </div>
+
+    <!-- COACH SHEET MODAL -->
+    <div id="coach-modal" class="app-modal hidden" role="dialog" aria-modal="true" aria-labelledby="coach-title">
+        <div class="app-modal-inner coach-inner">
+            <button class="modal-close no-print" data-close="coach-modal" aria-label="Close coach sheet">×</button>
+            <div class="coach-toolbar no-print">
+                <h2 id="coach-title">Coach Cheat Sheet</h2>
+                <button id="coach-print" class="btn btn-small btn-primary">🖨 Print / Save PDF</button>
+            </div>
+            <div id="coach-body"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

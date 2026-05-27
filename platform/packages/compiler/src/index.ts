@@ -18,11 +18,43 @@ export interface CompileInput {
   coaches: number;
   players: number;
   focus: string[]; // e.g. ['throwing','speed','reaction']
+  /**
+   * Optional venue inventory — number of each kind of work area available.
+   * Mirrors the Dugout Edge Practice Planner "Field Resources" input. Used
+   * by `stationCount()` and the anti-line check to size parallel work.
+   */
+  fieldResources?: FieldResources;
   /** Player-level pitch history for any player who would pitch in this session. */
   pitchHistoryByPlayer?: Record<string, Parameters<typeof canPitchToday>[0]["history"]>;
   date?: Date;
   /** Allow override of forbidden topics for a specific (rare) league-approved case. */
   overrides?: string[];
+}
+
+export interface FieldResources {
+  fullField?: number;
+  battingCage?: number;
+  bullpen?: number;
+  infieldOnly?: number;
+  openSpace?: number;
+}
+
+/**
+ * Effective station count: a coach can supervise at most one area, and each
+ * physical area is one station. So we cap available areas by available coaches.
+ * Falls back to coach count when no resources were declared.
+ */
+export function stationCount(input: Pick<CompileInput, "coaches" | "fieldResources">): number {
+  const r = input.fieldResources;
+  // Clamp each resource value to a sane non-negative integer so a bad input
+  // (e.g. -1 or 99999) can't blow up downstream packing math.
+  const clamp = (n: number | undefined): number =>
+    Math.max(0, Math.min(99, Math.floor(Number(n) || 0)));
+  const areas = r
+    ? clamp(r.fullField) + clamp(r.battingCage) + clamp(r.bullpen) + clamp(r.infieldOnly) + clamp(r.openSpace)
+    : 0;
+  const fromAreas = areas > 0 ? Math.min(areas, Math.max(1, input.coaches)) : Math.max(1, input.coaches);
+  return fromAreas;
 }
 
 export interface CompiledBlock {

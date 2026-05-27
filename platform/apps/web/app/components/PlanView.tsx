@@ -13,6 +13,11 @@ export interface PlanBlock {
     safety_flags?: string[];
     throw_count_contribution?: number;
     intensity?: string;
+    kid_friendly?: {
+      explain: string;
+      goal: string;
+      why: string;
+    };
   } | null;
   notes: string[];
 }
@@ -27,6 +32,10 @@ export interface PlanSummary {
   totalThrowingLoad?: number;
   qualityScore?: number;
   focus?: string[];
+  antiLine?: {
+    ok: boolean;
+    flaggedBlocks: Array<{ blockId: string; ratio: number; suggestedStations: number }>;
+  };
 }
 
 const TYPE_LABEL: Record<PlanBlock["type"], string> = {
@@ -91,7 +100,9 @@ export function PlanHeader({ plan }: { plan: PlanSummary }) {
 export function PlanWarnings({ plan }: { plan: PlanSummary }) {
   const hasBlocked = (plan.blocked?.length ?? 0) > 0;
   const hasWarn = (plan.warnings?.length ?? 0) > 0;
-  if (!hasBlocked && !hasWarn) return null;
+  const antiLine = plan.antiLine;
+  const hasAntiLine = !!(antiLine && !antiLine.ok && antiLine.flaggedBlocks.length > 0);
+  if (!hasBlocked && !hasWarn && !hasAntiLine) return null;
   return (
     <div className="space-y-3">
       {hasBlocked ? (
@@ -122,6 +133,28 @@ export function PlanWarnings({ plan }: { plan: PlanSummary }) {
               <li key={i}>{w}</li>
             ))}
           </ul>
+        </Card>
+      ) : null}
+      {hasAntiLine ? (
+        <Card className="border-warn/30 bg-warn-soft/40">
+          <div className="flex items-center gap-2">
+            <Badge tone="warn">Too many in line</Badge>
+            <span className="font-medium text-warn">
+              {antiLine!.flaggedBlocks.length} block
+              {antiLine!.flaggedBlocks.length === 1 ? "" : "s"} would crowd one station
+            </span>
+          </div>
+          <ul className="mt-2 list-disc pl-6 text-sm text-slate-800">
+            {antiLine!.flaggedBlocks.map((f) => (
+              <li key={f.blockId}>
+                <code className="text-xs">{f.blockId}</code> — about {f.ratio} players per station.
+                Split into <strong>{f.suggestedStations}</strong> stations to keep everyone active.
+              </li>
+            ))}
+          </ul>
+          <p className="mt-2 text-xs text-slate-600">
+            Add more coaches or field resources on the left to lift the cap.
+          </p>
         </Card>
       ) : null}
     </div>
@@ -159,6 +192,33 @@ export function PlanTimeline({ blocks }: { blocks: PlanBlock[] }) {
                     <li key={j}>{c}</li>
                   ))}
                 </ul>
+              ) : null}
+              {b.drill?.kid_friendly ? (
+                <details className="mt-3 rounded-md border border-brand-100 bg-brand-50/60 p-3 text-sm text-slate-800 open:bg-brand-50">
+                  <summary className="cursor-pointer font-medium text-brand-700">
+                    How to explain it to the kids
+                  </summary>
+                  <dl className="mt-2 space-y-2 leading-snug">
+                    <div>
+                      <dt className="text-[11px] font-semibold uppercase tracking-wide text-brand-700">
+                        Say this
+                      </dt>
+                      <dd className="text-slate-800">{b.drill.kid_friendly.explain}</dd>
+                    </div>
+                    <div>
+                      <dt className="text-[11px] font-semibold uppercase tracking-wide text-brand-700">
+                        What good looks like
+                      </dt>
+                      <dd className="text-slate-800">{b.drill.kid_friendly.goal}</dd>
+                    </div>
+                    <div>
+                      <dt className="text-[11px] font-semibold uppercase tracking-wide text-brand-700">
+                        Why it matters
+                      </dt>
+                      <dd className="text-slate-800">{b.drill.kid_friendly.why}</dd>
+                    </div>
+                  </dl>
+                </details>
               ) : null}
               {b.notes?.length ? (
                 <p className="mt-2 text-xs italic text-slate-500">{b.notes.join(" · ")}</p>

@@ -71,6 +71,18 @@ export type AutoLineupInput = {
    * computes this from recent pitch history + age band.
    */
   pitcherUnavailable?: string[];
+  /**
+   * Optional league rules applied as soft constraints during generation and
+   * available as a validator after. See `leagueRules.ts`.
+   */
+  leagueRules?: import("./leagueRules").LeagueRules;
+  /**
+   * Optional deterministic seed. When set, repeated `autoLineup` calls with
+   * the same input produce the same lineup — useful for "Shuffle" UX so
+   * unrelated cells don't churn between runs. Default omitted (mild jitter
+   * derived from player ids only).
+   */
+  seed?: number;
 };
 
 export type AutoLineupResult = {
@@ -94,6 +106,7 @@ function eligible(p: LineupPlayer, pos: Position): boolean {
 
 /** Positions considered "premium" for skill-weighted assignment. */
 const PREMIUM_POSITIONS: ReadonlySet<Position> = new Set(["P", "C", "SS", "CF"]);
+const OUTFIELD: ReadonlySet<Position> = new Set(["LF", "CF", "RF", "RV"]);
 
 export function autoLineup(input: AutoLineupInput): AutoLineupResult {
   const warnings: string[] = [];
@@ -102,6 +115,9 @@ export function autoLineup(input: AutoLineupInput): AutoLineupResult {
   const competitiveWeight = Math.max(0, Math.min(1, input.competitiveWeight ?? 0.3));
   const fairnessWeight = 1 - competitiveWeight;
   const pitcherBlocked = new Set(input.pitcherUnavailable ?? []);
+  // Deterministic tie-breaker. Defaults to 0 when no seed provided, which
+  // (combined with the player-id hash) is stable across runs.
+  const rng = mulberry32((input.seed ?? 0) >>> 0);
   const active = input.players.filter((p) => {
     if (p.injured) return false;
     if (input.present && !input.present.includes(p.id)) return false;
@@ -116,12 +132,18 @@ export function autoLineup(input: AutoLineupInput): AutoLineupResult {
   const fieldCount: Record<string, number> = {};
   const benchCount: Record<string, number> = {};
   const posCount: Record<string, Partial<Record<Position, number>>> = {};
+  // Per-player run-length state for league-rule soft constraints.
+  const ofRun: Record<string, number> = {};
+  const benchRun: Record<string, number> = {};
   for (const p of active) {
     fieldCount[p.id] = 0;
     benchCount[p.id] = 0;
     posCount[p.id] = {};
+    ofRun[p.id] = 0;
+    benchRun[p.id] = 0;
   }
   let prevPitcher: string | null = null;
+  const rules = input.leagueRules;
 
   const innings: Inning[] = [];
   for (let i = 0; i < input.innings; i++) {
@@ -160,6 +182,14 @@ export function autoLineup(input: AutoLineupInput): AutoLineupResult {
       let pool = baseEligible.filter((p) => !(pos === "P" && prevPitcher === p.id));
       if (pool.length === 0) pool = baseEligible;
 
+      // League-rule hard filters (with fallback to the unfiltered pool so we
+      // never leave a slot empty just to honor a soft rule).
+      if (rules?.maxConsecutiveOutfield !== undefined && OUTFIELD.has(pos)) {
+        const cap = rules.maxConsecutiveOutfield;
+        const strict = pool.filter((p) => (ofRun[p.id] ?? 0) < cap);
+        if (strict.length > 0) pool = strict;
+      }
+
       const candidates = pool
         .map((p) => {
           const rating = ratingScore(p, pos); // -1..3
@@ -171,12 +201,19 @@ export function autoLineup(input: AutoLineupInput): AutoLineupResult {
           // Fairness score rewards low past field count + variety at this
           // position so far.
           const fair = -((fieldCount[p.id] ?? 0) * 6) - ((posCount[p.id] ?? {})[pos] ?? 0) * 4;
+          // League-rule soft penalty: Ryan — don't exceed maxConsecutiveOutfield.
+          let rulePenalty = 0;
+          if (rules?.maxConsecutiveOutfield !== undefined && OUTFIELD.has(pos)) {
+            if ((ofRun[p.id] ?? 0) >= rules.maxConsecutiveOutfield) rulePenalty -= 50;
+          }
           return {
             p,
             score:
               skillScore * competitiveWeight +
               fair * fairnessWeight +
-              (hash(p.id) % 7) * 0.01,
+              rulePenalty +
+              (hash(p.id) % 7) * 0.01 +
+              rng() * 0.001,
           };
         })
         .sort((a, b) => b.score - a.score);
@@ -204,6 +241,18 @@ export function autoLineup(input: AutoLineupInput): AutoLineupResult {
         benchCount[p.id] = (benchCount[p.id] ?? 0) + 1;
       }
     }
+
+    // Update run-length counters for league-rule soft constraints.
+    for (const p of active) {
+      const slot = inning[p.id];
+      if (slot && slot !== "BN" && OUTFIELD.has(slot as Position)) {
+        ofRun[p.id] = (ofRun[p.id] ?? 0) + 1;
+      } else {
+        ofRun[p.id] = 0;
+      }
+      if (slot === "BN") benchRun[p.id] = (benchRun[p.id] ?? 0) + 1;
+      else benchRun[p.id] = 0;
+    }
     innings.push(inning);
   }
 
@@ -214,6 +263,18 @@ function hash(s: string): number {
   let h = 0;
   for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
   return Math.abs(h);
+}
+
+/** Mulberry32 — tiny deterministic PRNG used as a stable tie-breaker. */
+function mulberry32(seed: number): () => number {
+  let a = seed | 0;
+  return function () {
+    a = (a + 0x6d2b79f5) | 0;
+    let t = a;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
 }
 
 /** Summary stats for the fairness page. */
@@ -295,3 +356,6 @@ function escape(v: string): string {
   if (/[",\n]/.test(v)) return `"${v.replace(/"/g, '""')}"`;
   return v;
 }
+
+export * from "./leagueRules";
+export * from "./explain";

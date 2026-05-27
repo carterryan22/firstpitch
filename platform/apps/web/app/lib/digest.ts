@@ -220,12 +220,19 @@ export function buildTeamDigest(input: BuildDigestInput): TeamDigest {
   const weekAgo = new Date(now.getTime() - 7 * DAY_MS);
   const goalsAtRisk: DigestGoalAtRisk[] = [];
   const goalsAchievedThisWeek: DigestGoalAtRisk[] = [];
+  // Pre-group metricEntries by `${playerId}::${metricKey}` so the goals loop is
+  // O(G) instead of O(G × M).
+  const entriesByPlayerMetric = new Map<string, typeof input.metricEntries>();
+  for (const e of input.metricEntries) {
+    const key = `${e.playerId}::${e.metricKey}`;
+    const arr = entriesByPlayerMetric.get(key) ?? [];
+    arr.push(e);
+    entriesByPlayerMetric.set(key, arr);
+  }
   for (const g of input.goals) {
     const player = playerById.get(g.playerId);
     if (!player) continue;
-    const entries = input.metricEntries.filter(
-      (e) => e.playerId === g.playerId && e.metricKey === g.metricKey,
-    );
+    const entries = entriesByPlayerMetric.get(`${g.playerId}::${g.metricKey}`) ?? [];
     const prog = computeGoalProgress(g, entries, now);
     const summary: DigestGoalAtRisk = {
       goalId: g.id,

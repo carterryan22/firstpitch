@@ -3,6 +3,9 @@ import { cookies } from "next/headers";
 import { getRepos } from "@platform/storage";
 import { SESSION_COOKIE, decodeCookie, logout } from "@platform/auth";
 
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 export async function POST() {
   const store = await cookies();
   const raw = store.get(SESSION_COOKIE)?.value;

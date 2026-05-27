@@ -33,6 +33,8 @@ interface PatchBody {
   finalScore?: { us: number; them: number };
   markCompleted?: boolean;
   resetLineup?: boolean;
+  revertToDraft?: boolean;
+  isScrimmage?: boolean;
 }
 
 export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
@@ -70,6 +72,13 @@ export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: strin
   if (body.markCompleted) {
     patch.status = "completed";
     patch.completedAt = new Date().toISOString();
+  }
+  if (body.revertToDraft) {
+    patch.status = "scheduled";
+    patch.completedAt = undefined;
+  }
+  if (typeof body.isScrimmage === "boolean") {
+    patch.isScrimmage = body.isScrimmage;
   }
 
   const updated = await repos.games.update(id, patch);

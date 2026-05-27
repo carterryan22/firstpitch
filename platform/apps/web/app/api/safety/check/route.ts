@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { canPitchToday } from "@platform/safety";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 interface CheckBody {
   age?: number;

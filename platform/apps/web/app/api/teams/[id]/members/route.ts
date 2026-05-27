@@ -4,6 +4,7 @@ import { getSession } from "../../../../lib/session";
 import { userCanManageTeam } from "../../../../lib/teams";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export async function POST(
   req: NextRequest,

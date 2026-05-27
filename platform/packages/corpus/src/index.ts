@@ -1,6 +1,11 @@
 // @platform/corpus — typed loader for the JSON knowledge stack at workspace `corpus/`.
 // Source of truth for `tier1-safety-rules.json`, `pitch-smart-tables.json`,
 // `age-band-matrix.json`, `sources.seed.json`, `drills/starter-library.json`.
+//
+// SERVER-ONLY BY CONVENTION. This module inlines all corpus JSON into its
+// bundle. Importing it from a `"use client"` component will balloon the
+// browser bundle and ship rule sources to the client. Audit before adding
+// new call sites: today only server components / route handlers import it.
 
 // Static JSON imports: the bundler (Next/SWC, Vite/Vitest) inlines these into
 // the output, so the corpus travels with the code on Vercel — no fs, no
@@ -177,6 +182,19 @@ export interface Drill {
   created_at: string;
   last_reviewed_at: string;
   review_status: "draft" | "reviewed" | "published" | "retired";
+  /**
+   * Coach-facing, kid-friendly framing of the drill. Lets a coach explain it
+   * in 10 seconds without paraphrasing the technical description on the fly.
+   * - `explain`: how to tell the kids what we're about to do (1-2 sentences,
+   *   age-appropriate language, action verbs).
+   * - `goal`: what "good" looks like to a player (one observable outcome).
+   * - `why`: why this drill matters in a real game (link to game transfer).
+   */
+  kid_friendly?: {
+    explain: string;
+    goal: string;
+    why: string;
+  };
 }
 
 // ---------- Loader ----------

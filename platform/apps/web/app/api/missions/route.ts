@@ -9,6 +9,12 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "age query required" }, { status: 400 });
   }
   const age = Number(ageParam);
+  if (!Number.isInteger(age) || age < 4 || age > 18) {
+    return NextResponse.json(
+      { error: "age must be an integer between 4 and 18" },
+      { status: 400 },
+    );
+  }
   const missions = missionsForAge(age);
   return NextResponse.json({ age, count: missions.length, missions });
 }

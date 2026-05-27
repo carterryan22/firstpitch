@@ -4,11 +4,18 @@
 import type {
   AuditLogRecord,
   DbShape,
+  FavoriteRecord,
+  FieldBookingRecord,
+  FieldBookingStatus,
+  FieldRecord,
+  FieldReviewRecord,
+  GameNoteRecord,
   GameRecord,
   GoalRecord,
   MetricEntryRecord,
   MissionCompletionRecord,
   PlanRecord,
+  PlayerGameStatsRecord,
   PlayerRecord,
   SessionRecord,
   TeamMembershipRecord,
@@ -70,8 +77,22 @@ export interface Repos {
     update(id: string, patch: Partial<Omit<GameRecord, "id" | "createdAt" | "teamId">>): Promise<GameRecord | undefined>;
     delete(id: string): Promise<void>;
   };
+  gameNotes: {
+    list(filter?: { gameId?: string; teamId?: string; playerId?: string; authorUserId?: string }): Promise<GameNoteRecord[]>;
+    byId(id: string): Promise<GameNoteRecord | undefined>;
+    create(input: Omit<GameNoteRecord, "id" | "createdAt">): Promise<GameNoteRecord>;
+    update(id: string, patch: Partial<Omit<GameNoteRecord, "id" | "createdAt" | "gameId" | "teamId" | "playerId" | "authorUserId">>): Promise<GameNoteRecord | undefined>;
+    delete(id: string): Promise<void>;
+  };
+  playerGameStats: {
+    list(filter?: { teamId?: string; gameId?: string; playerId?: string }): Promise<PlayerGameStatsRecord[]>;
+    byId(id: string): Promise<PlayerGameStatsRecord | undefined>;
+    upsert(input: Omit<PlayerGameStatsRecord, "id" | "createdAt">): Promise<PlayerGameStatsRecord>;
+    delete(id: string): Promise<void>;
+    deleteByGame(gameId: string): Promise<number>;
+  };
   metricEntries: {
-    list(filter?: { playerId?: string; metricKey?: string }): Promise<MetricEntryRecord[]>;
+    list(filter?: { playerId?: string; playerIds?: string[]; metricKey?: string }): Promise<MetricEntryRecord[]>;
     byId(id: string): Promise<MetricEntryRecord | undefined>;
     create(input: Omit<MetricEntryRecord, "id">): Promise<MetricEntryRecord>;
     bulkCreate(rows: Array<Omit<MetricEntryRecord, "id">>): Promise<MetricEntryRecord[]>;
@@ -97,6 +118,29 @@ export interface Repos {
     create(userId: string, ttlMs: number): Promise<SessionRecord>;
     delete(id: string): Promise<void>;
     purgeExpired(): Promise<number>;
+  };
+  fields: {
+    list(filter?: { city?: string; state?: string; surface?: string; lights?: boolean; type?: string; query?: string }): Promise<FieldRecord[]>;
+    byId(id: string): Promise<FieldRecord | undefined>;
+    bySlug(slug: string): Promise<FieldRecord | undefined>;
+    upsert(input: Omit<FieldRecord, "id" | "createdAt"> & { id?: string }): Promise<FieldRecord>;
+    bulkSeedIfEmpty(records: Array<Omit<FieldRecord, "id" | "createdAt">>): Promise<number>;
+  };
+  fieldReviews: {
+    list(filter?: { fieldId?: string; authorUserId?: string }): Promise<FieldReviewRecord[]>;
+    create(input: Omit<FieldReviewRecord, "id" | "createdAt">): Promise<FieldReviewRecord>;
+    delete(id: string): Promise<void>;
+  };
+  fieldBookings: {
+    list(filter?: { fieldId?: string; requestedByUserId?: string; status?: FieldBookingStatus }): Promise<FieldBookingRecord[]>;
+    byId(id: string): Promise<FieldBookingRecord | undefined>;
+    create(input: Omit<FieldBookingRecord, "id" | "createdAt" | "status"> & { status?: FieldBookingStatus }): Promise<FieldBookingRecord>;
+    setStatus(id: string, status: FieldBookingStatus): Promise<FieldBookingRecord | undefined>;
+  };
+  favorites: {
+    list(filter: { userId: string; kind?: "field" }): Promise<FavoriteRecord[]>;
+    has(userId: string, kind: "field", targetId: string): Promise<boolean>;
+    toggle(userId: string, kind: "field", targetId: string): Promise<{ favorited: boolean }>;
   };
 }
 
@@ -284,11 +328,95 @@ export function makeRepos(store: Store): Repos {
           if (i >= 0) db.games.splice(i, 1);
         }),
     },
+    gameNotes: {
+      async list(filter) {
+        const all = (await store.read()).gameNotes ?? [];
+        return all.filter(
+          (n) =>
+            (!filter?.gameId || n.gameId === filter.gameId) &&
+            (!filter?.teamId || n.teamId === filter.teamId) &&
+            (!filter?.playerId || n.playerId === filter.playerId) &&
+            (!filter?.authorUserId || n.authorUserId === filter.authorUserId),
+        );
+      },
+      byId: async (id) => ((await store.read()).gameNotes ?? []).find((n) => n.id === id),
+      create: (input) =>
+        mutate((db) => {
+          if (!db.gameNotes) db.gameNotes = [];
+          const rec: GameNoteRecord = {
+            ...input,
+            id: cid("gn"),
+            createdAt: new Date().toISOString(),
+          };
+          db.gameNotes.push(rec);
+          return rec;
+        }),
+      update: (id, patch) =>
+        mutate((db) => {
+          if (!db.gameNotes) db.gameNotes = [];
+          const rec = db.gameNotes.find((n) => n.id === id);
+          if (!rec) return undefined;
+          Object.assign(rec, patch, { updatedAt: new Date().toISOString() });
+          return rec;
+        }),
+      delete: (id) =>
+        mutate((db) => {
+          if (!db.gameNotes) db.gameNotes = [];
+          const i = db.gameNotes.findIndex((n) => n.id === id);
+          if (i >= 0) db.gameNotes.splice(i, 1);
+        }),
+    },
+    playerGameStats: {
+      async list(filter) {
+        const all = (await store.read()).playerGameStats ?? [];
+        return all.filter(
+          (s) =>
+            (!filter?.teamId || s.teamId === filter.teamId) &&
+            (!filter?.gameId || s.gameId === filter.gameId) &&
+            (!filter?.playerId || s.playerId === filter.playerId),
+        );
+      },
+      byId: async (id) =>
+        ((await store.read()).playerGameStats ?? []).find((s) => s.id === id),
+      upsert: (input) =>
+        mutate((db) => {
+          if (!db.playerGameStats) db.playerGameStats = [];
+          const existing = db.playerGameStats.find(
+            (s) => s.gameId === input.gameId && s.playerId === input.playerId,
+          );
+          if (existing) {
+            Object.assign(existing, input, { updatedAt: new Date().toISOString() });
+            return existing;
+          }
+          const rec: PlayerGameStatsRecord = {
+            ...input,
+            id: cid("pgs"),
+            createdAt: new Date().toISOString(),
+          };
+          db.playerGameStats.push(rec);
+          return rec;
+        }),
+      delete: (id) =>
+        mutate((db) => {
+          if (!db.playerGameStats) db.playerGameStats = [];
+          const i = db.playerGameStats.findIndex((s) => s.id === id);
+          if (i >= 0) db.playerGameStats.splice(i, 1);
+        }),
+      deleteByGame: (gameId) =>
+        mutate((db) => {
+          if (!db.playerGameStats) db.playerGameStats = [];
+          const before = db.playerGameStats.length;
+          db.playerGameStats = db.playerGameStats.filter((s) => s.gameId !== gameId);
+          return before - db.playerGameStats.length;
+        }),
+    },
     metricEntries: {
       async list(filter) {
+        const ids = filter?.playerIds ? new Set(filter.playerIds) : undefined;
         return (await store.read()).metricEntries.filter(
           (e) =>
             (!filter?.playerId || e.playerId === filter.playerId) &&
+            (!ids || ids.has(e.playerId)) &&
             (!filter?.metricKey || e.metricKey === filter.metricKey)
         );
       },
@@ -404,6 +532,143 @@ export function makeRepos(store: Store): Repos {
           return before - db.sessions.length;
         });
       },
+    },
+    fields: {
+      async list(filter) {
+        const all = (await store.read()).fields ?? [];
+        const q = filter?.query?.trim().toLowerCase();
+        return all.filter(
+          (f) =>
+            (!filter?.city || f.city.toLowerCase() === filter.city.toLowerCase()) &&
+            (!filter?.state || f.state.toLowerCase() === filter.state.toLowerCase()) &&
+            (!filter?.surface || f.surface === filter.surface) &&
+            (!filter?.type || f.type === filter.type) &&
+            (filter?.lights === undefined || f.lights === filter.lights) &&
+            (!q ||
+              f.name.toLowerCase().includes(q) ||
+              f.city.toLowerCase().includes(q) ||
+              f.slug.toLowerCase().includes(q))
+        );
+      },
+      byId: async (id) => ((await store.read()).fields ?? []).find((f) => f.id === id),
+      bySlug: async (slug) => ((await store.read()).fields ?? []).find((f) => f.slug === slug),
+      upsert: (input) =>
+        mutate((db) => {
+          if (!db.fields) db.fields = [];
+          const existing =
+            (input.id && db.fields.find((f) => f.id === input.id)) ||
+            db.fields.find((f) => f.slug === input.slug);
+          if (existing) {
+            Object.assign(existing, input);
+            return existing;
+          }
+          const rec: FieldRecord = {
+            ...input,
+            id: input.id ?? cid("fld"),
+            createdAt: new Date().toISOString(),
+          };
+          db.fields.push(rec);
+          return rec;
+        }),
+      bulkSeedIfEmpty: (records) =>
+        mutate((db) => {
+          if (!db.fields) db.fields = [];
+          if (db.fields.length > 0) return 0;
+          for (const r of records) {
+            db.fields.push({ ...r, id: cid("fld"), createdAt: new Date().toISOString() });
+          }
+          return records.length;
+        }),
+    },
+    fieldReviews: {
+      async list(filter) {
+        const all = (await store.read()).fieldReviews ?? [];
+        return all.filter(
+          (r) =>
+            (!filter?.fieldId || r.fieldId === filter.fieldId) &&
+            (!filter?.authorUserId || r.authorUserId === filter.authorUserId)
+        );
+      },
+      create: (input) =>
+        mutate((db) => {
+          if (!db.fieldReviews) db.fieldReviews = [];
+          const rec: FieldReviewRecord = {
+            ...input,
+            id: cid("frv"),
+            createdAt: new Date().toISOString(),
+          };
+          db.fieldReviews.push(rec);
+          return rec;
+        }),
+      delete: (id) =>
+        mutate((db) => {
+          if (!db.fieldReviews) db.fieldReviews = [];
+          const i = db.fieldReviews.findIndex((r) => r.id === id);
+          if (i >= 0) db.fieldReviews.splice(i, 1);
+        }),
+    },
+    fieldBookings: {
+      async list(filter) {
+        const all = (await store.read()).fieldBookings ?? [];
+        return all.filter(
+          (b) =>
+            (!filter?.fieldId || b.fieldId === filter.fieldId) &&
+            (!filter?.requestedByUserId || b.requestedByUserId === filter.requestedByUserId) &&
+            (!filter?.status || b.status === filter.status)
+        );
+      },
+      byId: async (id) => ((await store.read()).fieldBookings ?? []).find((b) => b.id === id),
+      create: (input) =>
+        mutate((db) => {
+          if (!db.fieldBookings) db.fieldBookings = [];
+          const rec: FieldBookingRecord = {
+            ...input,
+            status: input.status ?? "requested",
+            id: cid("fbk"),
+            createdAt: new Date().toISOString(),
+          };
+          db.fieldBookings.push(rec);
+          return rec;
+        }),
+      setStatus: (id, status) =>
+        mutate((db) => {
+          if (!db.fieldBookings) db.fieldBookings = [];
+          const rec = db.fieldBookings.find((b) => b.id === id);
+          if (!rec) return undefined;
+          rec.status = status;
+          return rec;
+        }),
+    },
+    favorites: {
+      async list(filter) {
+        const all = (await store.read()).favorites ?? [];
+        return all.filter(
+          (f) => f.userId === filter.userId && (!filter.kind || f.kind === filter.kind)
+        );
+      },
+      async has(userId, kind, targetId) {
+        const all = (await store.read()).favorites ?? [];
+        return all.some((f) => f.userId === userId && f.kind === kind && f.targetId === targetId);
+      },
+      toggle: (userId, kind, targetId) =>
+        mutate((db) => {
+          if (!db.favorites) db.favorites = [];
+          const i = db.favorites.findIndex(
+            (f) => f.userId === userId && f.kind === kind && f.targetId === targetId
+          );
+          if (i >= 0) {
+            db.favorites.splice(i, 1);
+            return { favorited: false };
+          }
+          db.favorites.push({
+            id: cid("fav"),
+            userId,
+            kind,
+            targetId,
+            createdAt: new Date().toISOString(),
+          });
+          return { favorited: true };
+        }),
     },
   };
 }

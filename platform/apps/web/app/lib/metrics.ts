@@ -132,6 +132,20 @@ export const TIERS: Partial<Record<MetricKey, TierTable>> = {
     "13-15": [68, 80, 90],
     "16+": [85, 95, 102],
   },
+  exit_velo_live: {
+    // Live pitching is typically 3-5 mph below tee at the same age.
+    "6-8": [36, 44, 52],
+    "9-12": [55, 65, 73],
+    "13-15": [65, 77, 86],
+    "16+": [82, 92, 99],
+  },
+  bat_speed: {
+    // Directional. Roughly correlated with EV; bat ≈ EV − 10 mph at youth ages.
+    "6-8": [32, 40, 48],
+    "9-12": [48, 58, 66],
+    "13-15": [58, 68, 78],
+    "16+": [70, 78, 85],
+  },
   fb_velo: {
     "6-8": [40, 48, 55],
     "9-12": [55, 65, 72],

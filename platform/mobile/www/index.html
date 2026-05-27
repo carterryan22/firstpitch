@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>First Pitch</title>
+    <style>
+      :root { color-scheme: light; }
+      html, body {
+        margin: 0;
+        height: 100%;
+        background: #1f1a17;
+        color: #f6efd9;
+        font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: env(safe-area-inset-top) 1.5rem env(safe-area-inset-bottom);
+      }
+      h1 { font-size: 1.5rem; margin: 0 0 0.5rem; letter-spacing: 0.04em; text-transform: uppercase; }
+      p  { opacity: 0.8; line-height: 1.4; max-width: 22rem; }
+      .dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #8a1c1c; margin-right: 0.5rem; animation: pulse 1.4s ease-in-out infinite; }
+      @keyframes pulse { 0%,100% { opacity: 0.35 } 50% { opacity: 1 } }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p><span class="dot"></span></p>
+      <h1>First Pitch</h1>
+      <p>Connecting to your dugout&hellip;<br />Make sure you have a network connection.</p>
+    </main>
+  </body>
+</html>

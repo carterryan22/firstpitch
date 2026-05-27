@@ -1,0 +1,9 @@
+# Ignore generated native projects — regenerate with `cap add ios|android`.
+ios/
+android/
+node_modules/
+package-lock.json
+
+# Capacitor scratch
+.capacitor/
+*.log

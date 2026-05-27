@@ -54,17 +54,19 @@ export function ProgressBar({ pct, tone = "info" }: { pct: number; tone?: "info"
 
 // ---------- Marketing / product surfaces ----------
 
-export function Wordmark({ size = "sm" }: { size?: "sm" | "lg" }) {
-  const wrap = size === "lg" ? "text-2xl" : "text-base";
+export function Wordmark({ size = "sm", dark = false }: { size?: "sm" | "lg"; dark?: boolean }) {
+  const wrap = size === "lg" ? "text-3xl" : "text-lg";
+  const ink = dark ? "text-cream" : "text-ink";
+  const accent = dark ? "text-field-400" : "text-field-700";
   return (
-    <span className={`inline-flex items-center gap-2 font-semibold tracking-tight text-slate-900 ${wrap}`}>
+    <span className={`wordmark inline-flex items-center gap-2 ${wrap} ${ink}`}>
       <span
         aria-hidden
-        className="inline-block h-5 w-5 rounded-full bg-gradient-to-br from-brand-500 to-brand-900 ring-2 ring-white"
-      />
+        className={`inline-flex h-6 w-6 items-center justify-center border-2 ${dark ? "border-cream" : "border-ink"} text-[12px]`}
+      >⚾</span>
       <span>
-        <span className="text-slate-900">First </span>
-        <span className="text-brand-700">Pitch</span>
+        <span>First</span>
+        <span className={accent}> Pitch</span>
       </span>
     </span>
   );
@@ -76,24 +78,37 @@ export function Hero({
   description,
   primary,
   secondary,
+  stats,
+  ticker,
 }: {
   eyebrow: string;
   title: React.ReactNode;
   description: string;
   primary: { href: string; label: string };
   secondary?: { href: string; label: string };
+  stats?: Array<{ value: string | number; label: string }>;
+  ticker?: string;
 }) {
   return (
-    <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white p-8 shadow-card md:p-12">
-      <div className="max-w-2xl">
-        <span className="badge-info uppercase tracking-wider">{eyebrow}</span>
-        <h1 className="mt-4 text-4xl font-semibold leading-tight tracking-tight text-slate-900 md:text-5xl">
-          {title}
-        </h1>
-        <p className="mt-4 text-lg text-slate-600">{description}</p>
-        <div className="mt-6 flex flex-wrap gap-3">
+    <section className="overflow-hidden border-2 border-ink bg-chalk p-8 shadow-card md:p-12">
+      <div className="max-w-3xl">
+        <span className="eyebrow">{eyebrow}</span>
+        <h1 className="mt-4 text-5xl leading-[1.02] md:text-6xl">{title}</h1>
+        <p className="mt-5 max-w-2xl text-lg leading-relaxed text-ink/80">{description}</p>
+        {stats && stats.length > 0 ? (
+          <dl className="mt-6 flex flex-wrap gap-x-10 gap-y-3">
+            {stats.map((s) => (
+              <div key={s.label} className="flex items-baseline gap-2">
+                <dt className="sr-only">{s.label}</dt>
+                <dd className="text-3xl text-ink" style={{ fontFamily: "var(--font-display)" }}>{s.value}</dd>
+                <span className="text-[11px] uppercase tracking-[0.18em] text-dirt-300" style={{ fontFamily: "var(--font-type)" }}>{s.label}</span>
+              </div>
+            ))}
+          </dl>
+        ) : null}
+        <div className="mt-7 flex flex-wrap gap-3">
           <Link href={primary.href} className="btn-primary no-underline hover:no-underline">
-            {primary.label}
+            ⚾ {primary.label} →
           </Link>
           {secondary ? (
             <Link href={secondary.href} className="btn-ghost no-underline hover:no-underline">
@@ -101,6 +116,11 @@ export function Hero({
             </Link>
           ) : null}
         </div>
+        {ticker ? (
+          <div className="mt-7">
+            <span className="ticker">⚾ {ticker} ⚾</span>
+          </div>
+        ) : null}
       </div>
     </section>
   );
@@ -115,9 +135,9 @@ export function FeatureGrid({
     <div className="grid gap-4 md:grid-cols-3">
       {items.map((it) => (
         <div key={it.title} className="card">
-          {it.icon ? <div className="text-brand-700">{it.icon}</div> : null}
-          <h3 className="mt-2 text-slate-900">{it.title}</h3>
-          <p className="mt-1 text-sm leading-relaxed text-slate-600">{it.description}</p>
+          {it.icon ? <div className="text-field-700">{it.icon}</div> : null}
+          <h3 className="mt-2">{it.title}</h3>
+          <p className="mt-2 text-sm leading-relaxed text-ink/75">{it.description}</p>
         </div>
       ))}
     </div>
@@ -138,11 +158,11 @@ export function RoleTile({
   return (
     <Link
       href={href}
-      className="group block rounded-xl border border-slate-200 bg-white p-6 no-underline shadow-card transition hover:border-brand-500/60 hover:shadow-md hover:no-underline"
+      className="group block border-2 border-dirt-700 bg-chalk p-6 no-underline shadow-card transition hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-hard hover:no-underline"
     >
-      <h3 className="text-slate-900 group-hover:text-brand-900">{title}</h3>
-      <p className="mt-1 text-sm text-slate-600">{description}</p>
-      <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-brand-700">
+      <h3 className="group-hover:text-field-700">{title}</h3>
+      <p className="mt-2 text-sm text-ink/75">{description}</p>
+      <span className="mt-4 inline-flex items-center gap-1 text-xs uppercase tracking-[0.18em] text-field-700" style={{ fontFamily: "var(--font-type)" }}>
         {cta} <span aria-hidden>→</span>
       </span>
     </Link>

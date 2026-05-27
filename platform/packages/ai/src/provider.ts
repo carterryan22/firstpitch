@@ -53,21 +53,35 @@ export class OpenAIProvider implements LLMProvider {
     }
     const base = this.opts.baseUrl ?? "https://api.openai.com";
     const f = this.opts.fetchImpl ?? fetch;
-    const res = await f(`${base}/v1/chat/completions`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${this.opts.apiKey}`,
-      },
-      body: JSON.stringify({
-        model: this.opts.model ?? "gpt-4o-mini",
-        temperature: 0.2,
-        messages: [
-          { role: "system", content: input.system },
-          { role: "user", content: input.user },
-        ],
-      }),
-    });
+    const controller = new AbortController();
+    const timeoutMs = Number(process.env.OPENAI_TIMEOUT_MS) || 30_000;
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    let res: Response;
+    try {
+      res = await f(`${base}/v1/chat/completions`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${this.opts.apiKey}`,
+        },
+        body: JSON.stringify({
+          model: this.opts.model ?? "gpt-4o-mini",
+          temperature: 0.2,
+          messages: [
+            { role: "system", content: input.system },
+            { role: "user", content: input.user },
+          ],
+        }),
+        signal: controller.signal,
+      });
+    } catch (err) {
+      if ((err as { name?: string })?.name === "AbortError") {
+        throw new Error(`OpenAI request timed out after ${timeoutMs}ms`);
+      }
+      throw err;
+    } finally {
+      clearTimeout(timer);
+    }
     if (!res.ok) {
       throw new Error(`OpenAI ${res.status}: ${await res.text().catch(() => "")}`);
     }

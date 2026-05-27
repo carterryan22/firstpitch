@@ -219,6 +219,22 @@ A non-cheesy coach progression that unlocks capability as the coach demonstrates
 
 Optional coach badges tied to real behavior: Low-Line Practice, Baseline Week Complete, Safe Workload Streak, Game Transfer Detected, Parent Follow-Up Sent. Plus an optional **team culture layer** — coach picks team values ("Every throw counts," "Next pitch win it") that the compiler weaves into challenge names (great for U10/U12).
 
+### 9.1 Non-Negotiables (default team-culture pack)
+
+The compiler ships with a default **Non-Negotiables** pack the coach can enable in one tap. When on, these phrases seed challenge names, dugout cards, parent recap copy, and player mission titles. Coaches can edit, reorder, or disable any line.
+
+| # | Non-Negotiable | Meaning |
+|---|---|---|
+| 1 | **Team first** | We before me. |
+| 2 | **Be ready** | Look ready. Think ahead. Know the play. |
+| 3 | **Every throw counts** | Catch it. Throw it. Back it up. |
+| 4 | **Hustle is free** | Run everything out. Move with purpose. |
+| 5 | **Earn trust** | Do your job every rep. |
+| 6 | **Find a way to help** | On the field, in the dugout, in the lineup. |
+| 7 | **Next pitch** | Win the next one. Don't carry the last one. |
+
+These map directly to existing platform surfaces: #2/#3 → fielding + cutoff drills, #4 → baserunning + transition blocks, #5/#6 → role/lineup missions, #7 → the mental-reset routine in [corpus/drills/starter-library.json](corpus/drills/starter-library.json). The pack is corpus-bound (no AI invention) and safe across all age bands.
+
 ---
 
 ## 10. Position-Specific Tracks

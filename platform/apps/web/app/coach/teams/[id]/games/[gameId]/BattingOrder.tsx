@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import { battingRoleFor } from "../../../../../lib/roles";
 
 type Player = { id: string; name: string; jerseyNumber?: string };
 
@@ -76,6 +78,9 @@ export function BattingOrder({
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h2 className="m-0 text-sm uppercase tracking-wide text-slate-500">Batting order</h2>
         <div className="flex items-center gap-2">
+          <Link href="/learn/roles#batting" className="text-xs text-slate-500 underline-offset-2 hover:underline" target="_blank">
+            What’s my role?
+          </Link>
           <button type="button" className="btn-ghost text-xs" onClick={autoBuild}>
             Sort by jersey #
           </button>
@@ -90,9 +95,19 @@ export function BattingOrder({
         {order.map((pid, i) => {
           const p = rosterById.get(pid);
           if (!p) return null;
+          const role = battingRoleFor(i + 1);
           return (
             <li key={pid} className="flex items-center gap-3 py-2 text-sm">
               <span className="w-6 text-right font-mono text-xs text-slate-400">{i + 1}.</span>
+              {role ? (
+                <span
+                  className="hidden sm:inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-700"
+                  title={role.tagline}
+                >
+                  <span aria-hidden>{role.emoji}</span>
+                  <span className="font-medium">{role.name}</span>
+                </span>
+              ) : null}
               <span className="flex-1 text-slate-800">
                 {p.name}
                 {p.jerseyNumber ? <span className="ml-2 font-mono text-xs text-slate-400">#{p.jerseyNumber}</span> : null}

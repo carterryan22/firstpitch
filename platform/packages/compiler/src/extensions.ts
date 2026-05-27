@@ -1,7 +1,7 @@
 // Compiler v2 extensions: home-mission picker, plan→markdown, anti-line, season weighting.
 
 import { loadDrills, type Drill } from "@platform/corpus";
-import type { CompileResult, CompiledBlock, CompileInput } from "./index";
+import { stationCount, type CompileResult, type CompiledBlock, type CompileInput } from "./index";
 
 export type SeasonState = "preseason" | "in_season" | "tournament" | "postseason" | "offseason";
 
@@ -62,6 +62,13 @@ export function planToMarkdown(plan: CompileResult, meta?: { title?: string; dat
         lines.push("**Coaching cues:**");
         for (const c of b.drill.coaching_cues) lines.push(`- ${c}`);
       }
+      if (b.drill.kid_friendly) {
+        lines.push("");
+        lines.push("**How to explain it to the kids:**");
+        lines.push(`- *Say this:* ${b.drill.kid_friendly.explain}`);
+        lines.push(`- *What good looks like:* ${b.drill.kid_friendly.goal}`);
+        lines.push(`- *Why it matters:* ${b.drill.kid_friendly.why}`);
+      }
     }
     for (const n of b.notes) lines.push(`> ${n}`);
     lines.push("");
@@ -76,11 +83,11 @@ export interface AntiLineReport {
 }
 export function antiLineCheck(
   plan: CompileResult,
-  ctx: { players: number; coaches: number; maxPlayersPerStation?: number }
+  ctx: { players: number; coaches: number; maxPlayersPerStation?: number; fieldResources?: CompileInput["fieldResources"] }
 ): AntiLineReport {
   const cap = ctx.maxPlayersPerStation ?? 4;
-  // Assume coaches each supervise 1 station unless a drill specifies stations/lines.
-  const stations = Math.max(1, ctx.coaches);
+  // Use declared field resources when available; otherwise one station per coach.
+  const stations = stationCount({ coaches: ctx.coaches, fieldResources: ctx.fieldResources });
   const ratio = ctx.players / stations;
   const flagged: AntiLineReport["flaggedBlocks"] = [];
   for (const b of plan.blocks) {

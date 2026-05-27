@@ -22,10 +22,17 @@ export default async function BaselinesPage({ params }: { params: Promise<{ id: 
   if (!team) notFound();
   const roster = sortRoster(players);
 
-  // Latest per (player, metric)
-  const entries = await Promise.all(
-    roster.map((p) => repos.metricEntries.list({ playerId: p.id })),
-  );
+  // Latest per (player, metric) — single query, grouped in memory.
+  const allEntries = await repos.metricEntries.list({
+    playerIds: roster.map((p) => p.id),
+  });
+  const entriesByPlayer = new Map<string, typeof allEntries>();
+  for (const e of allEntries) {
+    const arr = entriesByPlayer.get(e.playerId) ?? [];
+    arr.push(e);
+    entriesByPlayer.set(e.playerId, arr);
+  }
+  const entries = roster.map((p) => entriesByPlayer.get(p.id) ?? []);
   const latest: Map<string, Map<string, { value: number; verificationState: string; recordedAt: string }>> = new Map();
   roster.forEach((p, i) => {
     const map = new Map<string, { value: number; verificationState: string; recordedAt: string }>();

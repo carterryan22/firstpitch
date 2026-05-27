@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { missionsForAge } from "@platform/missions";
+import { missionsForAge, tailoredHomework } from "@platform/missions";
 import { homeMission } from "@platform/compiler";
+import { summarizeForParents, skillsForPositions, type Inning, type LineupPlayer } from "@platform/lineup";
 import { getRepos } from "@platform/storage";
 import { getSession } from "../lib/session";
 import { getTeamsForUser } from "../lib/teams";
@@ -96,15 +97,62 @@ export default async function ParentDashboard() {
 
   const childData = await Promise.all(
     kids.map(async (k) => {
-      const [entries, goals] = await Promise.all([
+      const [entries, goals, teamGames] = await Promise.all([
         repos.metricEntries.list({ playerId: k.id }),
         repos.goals.list({ playerId: k.id, status: "active" }),
+        k.teamId ? repos.games.list({ teamId: k.teamId }) : Promise.resolve([]),
       ]);
       const sorted = entries.slice().sort((a, b) => (a.recordedAt < b.recordedAt ? 1 : -1));
       const latestByMetric = new Map<string, (typeof sorted)[number]>();
       for (const e of sorted) if (!latestByMetric.has(e.metricKey)) latestByMetric.set(e.metricKey, e);
       const goalProgress = goals.map((g) => computeGoalProgress(g, entries));
-      return { player: k, latestByMetric, goalProgress };
+
+      // Pick the most relevant game: next upcoming with a lineup, else most
+      // recent past game with a lineup. Used to surface why this player is
+      // being placed in particular positions.
+      const withLineup = teamGames.filter(
+        (g) => Array.isArray(g.lineup) && (g.lineup as unknown[]).length > 0,
+      );
+      const upcomingWithLineup = withLineup
+        .filter((g) => new Date(g.startsAt).getTime() >= Date.now() - 1000 * 60 * 60 * 6)
+        .sort((a, b) => (a.startsAt < b.startsAt ? -1 : 1));
+      const pastWithLineup = withLineup
+        .filter((g) => new Date(g.startsAt).getTime() < Date.now() - 1000 * 60 * 60 * 6)
+        .sort((a, b) => (a.startsAt < b.startsAt ? 1 : -1));
+      const focusGame = upcomingWithLineup[0] ?? pastWithLineup[0];
+      let positionPlan: ReturnType<typeof summarizeForParents> | null = null;
+      let homework: ReturnType<typeof tailoredHomework> | null = null;
+      if (focusGame) {
+        const lineupPlayer: LineupPlayer = {
+          id: k.id,
+          canPitch: !!k.canPitch,
+          canCatch: !!k.canCatch,
+          positionRatings: k.positionRatings,
+        };
+        positionPlan = summarizeForParents(
+          (focusGame.lineup ?? []) as unknown as Inning[],
+          lineupPlayer,
+        );
+        const focusPositions =
+          positionPlan.improvementAreas.length > 0
+            ? positionPlan.improvementAreas
+            : positionPlan.positions;
+        const skills = skillsForPositions(focusPositions);
+        const age = k.dob
+          ? Math.max(6, Math.min(18, Math.floor((Date.now() - new Date(k.dob).getTime()) / (1000 * 60 * 60 * 24 * 365))))
+          : AGE_FROM_BAND[k.ageBand] ?? 11;
+        homework = tailoredHomework({ age, targetCategories: skills, maxDrills: 3 });
+      }
+
+      // Game notes shared with this parent's account.
+      const notes = (await repos.gameNotes.list({ playerId: k.id })).filter(
+        (n) => n.shareWithParents,
+      );
+      const recentNotes = notes
+        .slice()
+        .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
+        .slice(0, 5);
+      return { player: k, latestByMetric, goalProgress, focusGame, positionPlan, homework, recentNotes };
     })
   );
 
@@ -184,7 +232,7 @@ export default async function ParentDashboard() {
         <section className="space-y-4">
           <h2 className="m-0">Your players</h2>
           <div className="grid gap-4 md:grid-cols-2">
-            {childData.map(({ player, latestByMetric, goalProgress }) => {
+            {childData.map(({ player, latestByMetric, goalProgress, focusGame, positionPlan, homework, recentNotes }) => {
               const team = player.teamId ? teamById.get(player.teamId) : undefined;
               return (
                 <Card key={player.id}>
@@ -192,6 +240,84 @@ export default async function ParentDashboard() {
                     <h3 className="m-0 text-base">{fullName(player)}</h3>
                     {team ? <span className="badge-info">{team.name}</span> : null}
                   </header>
+
+                  {positionPlan && focusGame ? (
+                    <div className="mt-3 rounded bg-emerald-50 px-3 py-2 text-sm">
+                      <div className="flex items-baseline justify-between gap-2">
+                        <h4 className="m-0 text-xs uppercase tracking-wide text-emerald-700">
+                          Position plan
+                        </h4>
+                        <span className="text-xs text-slate-500">
+                          {focusGame.homeAway === "home" ? "vs" : "@"} {focusGame.opponent}
+                        </span>
+                      </div>
+                      <p className="mt-1 text-slate-800">{positionPlan.parentSummary}</p>
+                    </div>
+                  ) : null}
+
+                  {homework && homework.drills.length > 0 ? (
+                    <div className="mt-3">
+                      <h4 className="m-0 text-xs uppercase tracking-wide text-slate-500">
+                        Home training plan
+                        <span className="ml-1 text-slate-400">
+                          (~{homework.totalMinutes} min · targets {homework.targetCategories.join(", ")})
+                        </span>
+                      </h4>
+                      <ul className="mt-2 space-y-1.5 text-sm">
+                        {homework.drills.map((d) => (
+                          <li key={d.drillId} className="rounded bg-slate-50 px-2 py-1.5">
+                            <div className="flex items-baseline justify-between gap-2">
+                              <strong className="text-slate-800">{d.name}</strong>
+                              <span className="text-xs text-slate-500">{d.durationMinutes} min</span>
+                            </div>
+                            <p className="text-slate-600">{d.shortDescription}</p>
+                            <p className="text-xs text-slate-500">{d.rationale}</p>
+                            {d.kidFriendly ? (
+                              <details className="mt-1.5 rounded bg-white p-2 text-xs text-slate-700">
+                                <summary className="cursor-pointer font-medium text-brand-700">
+                                  How to explain it
+                                </summary>
+                                <p className="mt-1">
+                                  <strong>Say this:</strong> {d.kidFriendly.explain}
+                                </p>
+                                <p className="mt-1">
+                                  <strong>Goal:</strong> {d.kidFriendly.goal}
+                                </p>
+                                <p className="mt-1">
+                                  <strong>Why it matters:</strong> {d.kidFriendly.why}
+                                </p>
+                              </details>
+                            ) : null}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
+
+                  {recentNotes.length > 0 ? (
+                    <div className="mt-3">
+                      <h4 className="m-0 text-xs uppercase tracking-wide text-slate-500">
+                        Coach notes
+                      </h4>
+                      <ul className="mt-2 space-y-1.5 text-sm">
+                        {recentNotes.map((n) => (
+                          <li key={n.id} className="rounded bg-amber-50 px-2 py-1.5">
+                            <div className="flex items-baseline justify-between gap-2">
+                              {n.playLabel ? (
+                                <strong className="text-slate-800">{n.playLabel}</strong>
+                              ) : (
+                                <strong className="text-slate-800">Coach note</strong>
+                              )}
+                              <span className="text-xs text-slate-500">
+                                {new Date(n.createdAt).toLocaleDateString()}
+                              </span>
+                            </div>
+                            <p className="text-slate-700">{n.body}</p>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
 
                   <div className="mt-3">
                     <h4 className="m-0 text-xs uppercase tracking-wide text-slate-500">

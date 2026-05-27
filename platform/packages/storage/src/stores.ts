@@ -33,7 +33,22 @@ export class JsonFileStore implements Store {
   async read(): Promise<DbShape> {
     if (this.cache) return this.cache;
     const raw = fs.readFileSync(this.filePath, "utf-8");
-    const parsed = JSON.parse(raw) as Partial<DbShape>;
+    let parsed: Partial<DbShape> = {};
+    try {
+      parsed = JSON.parse(raw) as Partial<DbShape>;
+    } catch (err) {
+      // Corrupt DB file: keep a backup and start fresh rather than crash on boot.
+      const backup = `${this.filePath}.corrupt-${Date.now()}`;
+      try {
+        fs.renameSync(this.filePath, backup);
+      } catch {
+        // best-effort
+      }
+      console.error(
+        `[JsonFileStore] Failed to parse ${this.filePath}; quarantined to ${backup}`,
+        err,
+      );
+    }
     this.cache = { ...EMPTY_DB, ...parsed };
     return this.cache;
   }

@@ -18,6 +18,9 @@ export interface PlayerFormValues {
   dob?: string;
   bats?: Bats;
   throws?: Throws;
+  gender?: "M" | "F" | "X";
+  /** 1–5 scale; undefined = not rated. */
+  battingSkill?: 1 | 2 | 3 | 4 | 5;
   canPitch: boolean;
   canCatch: boolean;
   injured: boolean;
@@ -48,6 +51,8 @@ export function PlayerForm({
     dob: initial?.dob,
     bats: initial?.bats,
     throws: initial?.throws,
+    gender: initial?.gender,
+    battingSkill: initial?.battingSkill,
     canPitch: initial?.canPitch ?? false,
     canCatch: initial?.canCatch ?? false,
     injured: initial?.injured ?? false,
@@ -187,6 +192,61 @@ export function PlayerForm({
             <option value="L">L</option>
             <option value="R">R</option>
           </select>
+        </div>
+      </div>
+
+      <div className="grid gap-3 sm:grid-cols-2">
+        <div>
+          <label className="label" htmlFor="gender">Gender</label>
+          <select
+            id="gender"
+            className="input"
+            value={v.gender ?? ""}
+            onChange={(e) =>
+              set(
+                "gender",
+                (e.target.value || undefined) as "M" | "F" | "X" | undefined,
+              )
+            }
+          >
+            <option value="">—</option>
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+            <option value="X">Non-binary / prefer not</option>
+          </select>
+          <p className="mt-1 text-xs text-slate-500">
+            Used by co-ed leagues that enforce gender-alternating batting orders.
+          </p>
+        </div>
+        <div>
+          <label className="label" htmlFor="battingSkill">Batting skill (1–5)</label>
+          <div className="flex items-center gap-2">
+            <input
+              id="battingSkill"
+              type="range"
+              min={1}
+              max={5}
+              step={1}
+              value={v.battingSkill ?? 3}
+              onChange={(e) =>
+                set("battingSkill", Number(e.target.value) as 1 | 2 | 3 | 4 | 5)
+              }
+              className="w-full accent-teal-600"
+            />
+            <span className="w-6 text-right tabular-nums text-sm text-slate-700">
+              {v.battingSkill ?? 3}
+            </span>
+            <button
+              type="button"
+              className="text-xs text-slate-500 underline-offset-2 hover:underline"
+              onClick={() => set("battingSkill", undefined)}
+            >
+              clear
+            </button>
+          </div>
+          <p className="mt-1 text-xs text-slate-500">
+            Feeds the auto-lineup engine. 3 is the neutral default; higher = better hitter.
+          </p>
         </div>
       </div>
 
