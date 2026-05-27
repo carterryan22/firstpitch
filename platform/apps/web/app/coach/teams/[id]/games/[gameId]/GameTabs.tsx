@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import type { Attendance, GameStatus, HomeAway, PitchEntry } from "@platform/storage";
+import type { Attendance, GameStatus, HomeAway, PitchEntry } from "@platform/storage/types";
 
 type RosterLite = {
   id: string;

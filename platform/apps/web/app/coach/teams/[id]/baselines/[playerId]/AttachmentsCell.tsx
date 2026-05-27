@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { MetricEntryAttachment } from "@platform/storage";
+import type { MetricEntryAttachment } from "@platform/storage/types";
 import { captureFromCamera, isNative } from "../../../../../lib/native";
 
 const KIND_LABEL: Record<MetricEntryAttachment["kind"], string> = {

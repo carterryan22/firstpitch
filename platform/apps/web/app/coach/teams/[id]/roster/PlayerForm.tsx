@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { POSITIONS, type Position, type PositionRating, type Bats, type Throws } from "@platform/storage";
+import { POSITIONS, type Position, type PositionRating, type Bats, type Throws } from "@platform/storage/types";
 
 const RATINGS: Array<{ value: PositionRating | ""; label: string; color: string }> = [
   { value: "", label: "—", color: "bg-slate-50 text-slate-400" },

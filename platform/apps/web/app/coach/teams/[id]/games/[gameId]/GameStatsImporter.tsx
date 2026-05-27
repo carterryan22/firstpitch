@@ -6,7 +6,7 @@ import type {
   PlayerGameStatsRecord,
   PlayerGameBattingStats,
   PlayerGamePitchingStats,
-} from "@platform/storage";
+} from "@platform/storage/types";
 
 type RosterLite = {
   id: string;
