@@ -1,0 +1,19 @@
+{
+  "name": "@platform/qa-agent",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Headless UI scenario runner that drives the running web app and reports bugs (console errors, failed requests, broken redirects, assertion failures) before promotion to prod.",
+  "scripts": {
+    "qa": "tsx src/run.ts",
+    "qa:headed": "QA_HEADED=1 tsx src/run.ts",
+    "install:browser": "playwright install chromium"
+  },
+  "dependencies": {
+    "playwright": "^1.45.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.7.0",
+    "typescript": "^5.4.0"
+  }
+}
