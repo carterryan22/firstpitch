@@ -14,8 +14,10 @@ export default async function CoachDashboard() {
     redirect("/parent");
   }
 
-  const teams = getTeamsForUser(session.user.id);
-  const teamCards = teams.map((t) => ({ team: t, plans: plansForTeam(t.id).slice(0, 3) }));
+  const teams = await getTeamsForUser(session.user.id);
+  const teamCards = await Promise.all(
+    teams.map(async (t) => ({ team: t, plans: (await plansForTeam(t.id)).slice(0, 3) }))
+  );
 
   return (
     <div className="space-y-10">

@@ -32,26 +32,26 @@ describe("cookie sign/verify", () => {
 });
 
 describe("login/resolve/logout", () => {
-  it("creates user + session and resolves", () => {
+  it("creates user + session and resolves", async () => {
     const repos = fresh();
-    const s = loginOrRegister(repos, { email: "coach@x.com", role: "coach" });
-    const resolved = resolveSession(repos, s.cookieValue);
+    const s = await loginOrRegister(repos, { email: "coach@x.com", role: "coach" });
+    const resolved = await resolveSession(repos, s.cookieValue);
     expect(resolved?.user.email).toBe("coach@x.com");
     expect(resolved?.user.role).toBe("coach");
   });
-  it("rejects invalid email", () => {
+  it("rejects invalid email", async () => {
     const repos = fresh();
-    expect(() => loginOrRegister(repos, { email: "bad", role: "coach" })).toThrow();
+    await expect(loginOrRegister(repos, { email: "bad", role: "coach" })).rejects.toThrow();
   });
-  it("logout invalidates session", () => {
+  it("logout invalidates session", async () => {
     const repos = fresh();
-    const s = loginOrRegister(repos, { email: "c@x.com", role: "coach" });
-    logout(repos, s.sessionId);
-    expect(resolveSession(repos, s.cookieValue)).toBe(null);
+    const s = await loginOrRegister(repos, { email: "c@x.com", role: "coach" });
+    await logout(repos, s.sessionId);
+    expect(await resolveSession(repos, s.cookieValue)).toBe(null);
   });
-  it("requireRole enforces allowed roles", () => {
+  it("requireRole enforces allowed roles", async () => {
     const repos = fresh();
-    const s = loginOrRegister(repos, { email: "p@x.com", role: "parent" });
+    const s = await loginOrRegister(repos, { email: "p@x.com", role: "parent" });
     expect(() => requireRole(s, ["coach"])).toThrowError(AuthError);
     expect(requireRole(s, ["parent", "coach"]).user.role).toBe("parent");
   });

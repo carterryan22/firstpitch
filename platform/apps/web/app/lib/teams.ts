@@ -12,44 +12,47 @@ export function slugify(input: string): string {
     .slice(0, 60);
 }
 
-export function uniqueSlug(base: string): string {
+export async function uniqueSlug(base: string): Promise<string> {
   const repos = getRepos();
   let candidate = base || "team";
   let n = 1;
-  while (repos.teams.bySlug(candidate)) {
+  // eslint-disable-next-line no-await-in-loop
+  while (await repos.teams.bySlug(candidate)) {
     n += 1;
     candidate = `${base}-${n}`;
   }
   return candidate;
 }
 
-export interface TeamWithRoster {
-  team: TeamRecord;
-  membership: TeamMembershipRecord;
-  coaches: Array<{ user: UserRecord; membership: TeamMembershipRecord }>;
-  players: Array<{ user: UserRecord; membership: TeamMembershipRecord }>;
-  parents: Array<{ user: UserRecord; membership: TeamMembershipRecord }>;
-}
-
-export function getTeamsForUser(userId: string): TeamRecord[] {
+export async function getTeamsForUser(userId: string): Promise<TeamRecord[]> {
   const repos = getRepos();
-  const ids = new Set(repos.teamMemberships.list({ userId }).map((m) => m.teamId));
-  return repos.teams.list().filter((t) => ids.has(t.id));
+  const memberships = await repos.teamMemberships.list({ userId });
+  const ids = new Set(memberships.map((m) => m.teamId));
+  const all = await repos.teams.list();
+  return all.filter((t) => ids.has(t.id));
 }
 
-export function getTeamRoster(teamId: string): {
+export async function getTeamRoster(teamId: string): Promise<{
   team: TeamRecord | undefined;
   coaches: Array<{ user: UserRecord; membership: TeamMembershipRecord }>;
   players: Array<{ user: UserRecord; membership: TeamMembershipRecord }>;
   parents: Array<{ user: UserRecord; membership: TeamMembershipRecord }>;
-} {
+}> {
   const repos = getRepos();
-  const team = repos.teams.byId(teamId);
-  const memberships = repos.teamMemberships.list({ teamId });
+  const team = await repos.teams.byId(teamId);
+  const memberships = await repos.teamMemberships.list({ teamId });
+  const userIds = Array.from(new Set(memberships.map((m) => m.userId)));
+  const users = new Map<string, UserRecord>();
+  await Promise.all(
+    userIds.map(async (id) => {
+      const u = await repos.users.byId(id);
+      if (u) users.set(id, u);
+    })
+  );
   const hydrate = (role: "coach" | "player" | "parent") =>
     memberships
       .filter((m) => m.role === role)
-      .map((m) => ({ user: repos.users.byId(m.userId)!, membership: m }))
+      .map((m) => ({ user: users.get(m.userId)!, membership: m }))
       .filter((row) => row.user);
   return {
     team,
@@ -59,28 +62,28 @@ export function getTeamRoster(teamId: string): {
   };
 }
 
-export function userCanReadTeam(userId: string, teamId: string): boolean {
+export async function userCanReadTeam(userId: string, teamId: string): Promise<boolean> {
   const repos = getRepos();
-  return repos.teamMemberships.list({ teamId, userId }).length > 0;
+  const m = await repos.teamMemberships.list({ teamId, userId });
+  return m.length > 0;
 }
 
-export function userCanManageTeam(userId: string, teamId: string): boolean {
+export async function userCanManageTeam(userId: string, teamId: string): Promise<boolean> {
   const repos = getRepos();
-  const m = repos.teamMemberships.list({ teamId, userId });
+  const m = await repos.teamMemberships.list({ teamId, userId });
   return m.some((row) => row.role === "coach");
 }
 
-export function plansForUser(userId: string): PlanRecord[] {
+export async function plansForUser(userId: string): Promise<PlanRecord[]> {
   const repos = getRepos();
-  const teamIds = repos.teamMemberships.list({ userId }).map((m) => m.teamId);
+  const memberships = await repos.teamMemberships.list({ userId });
+  const teamIds = memberships.map((m) => m.teamId);
   if (teamIds.length === 0) return [];
-  return repos.plans
-    .list({ teamIds })
-    .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+  const plans = await repos.plans.list({ teamIds });
+  return plans.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
 }
 
-export function plansForTeam(teamId: string): PlanRecord[] {
-  return getRepos()
-    .plans.list({ teamId })
-    .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+export async function plansForTeam(teamId: string): Promise<PlanRecord[]> {
+  const plans = await getRepos().plans.list({ teamId });
+  return plans.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
 }

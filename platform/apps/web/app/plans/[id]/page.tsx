@@ -13,12 +13,12 @@ export default async function PlanPage({ params }: { params: Promise<{ id: strin
   if (!session) redirect(`/login?next=/plans/${id}`);
 
   const repos = getRepos();
-  const plan = repos.plans.byId(id);
+  const plan = await repos.plans.byId(id);
   if (!plan) notFound();
-  if (!plan.teamId || !userCanReadTeam(session.user.id, plan.teamId)) {
+  if (!plan.teamId || !(await userCanReadTeam(session.user.id, plan.teamId))) {
     redirect("/");
   }
-  const team = repos.teams.byId(plan.teamId);
+  const team = await repos.teams.byId(plan.teamId);
   const blocks = Array.isArray(plan.blocks) ? (plan.blocks as PlanBlock[]) : [];
 
   return (

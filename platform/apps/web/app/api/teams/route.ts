@@ -8,7 +8,7 @@ export const runtime = "nodejs";
 export async function GET() {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
-  const teams = getTeamsForUser(session.user.id);
+  const teams = await getTeamsForUser(session.user.id);
   return NextResponse.json({ teams });
 }
 
@@ -30,13 +30,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "name and ageBand are required" }, { status: 400 });
   }
   const repos = getRepos();
-  const team = repos.teams.create({
+  const team = await repos.teams.create({
     name,
-    slug: uniqueSlug(slugify(name)),
+    slug: await uniqueSlug(slugify(name)),
     ageBand,
     ownerCoachUserId: session.user.id,
   });
-  repos.teamMemberships.upsert({ teamId: team.id, userId: session.user.id, role: "coach" });
-  repos.audit.log({ userId: session.user.id, action: "team_created", resource: `team:${team.id}` });
+  await repos.teamMemberships.upsert({ teamId: team.id, userId: session.user.id, role: "coach" });
+  await repos.audit.log({ userId: session.user.id, action: "team_created", resource: `team:${team.id}` });
   return NextResponse.json({ team });
 }

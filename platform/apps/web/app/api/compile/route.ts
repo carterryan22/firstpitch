@@ -57,14 +57,14 @@ export async function POST(req: Request) {
         { status: 403 }
       );
     }
-    if (body.teamId && !userCanManageTeam(session.user.id, body.teamId)) {
+    if (body.teamId && !(await userCanManageTeam(session.user.id, body.teamId))) {
       return NextResponse.json(
         { error: "You are not a coach on that team." },
         { status: 403 }
       );
     }
     const repos = getRepos();
-    const plan = repos.plans.create({
+    const plan = await repos.plans.create({
       name: body.name ?? `Practice ${new Date().toISOString().slice(0, 10)}`,
       ageBand,
       durationMin: input.durationMin,
@@ -77,7 +77,7 @@ export async function POST(req: Request) {
       createdByUserId: session.user.id,
       teamId: body.teamId,
     });
-    repos.audit.log({ userId: session.user.id, action: "plan_compiled", resource: `plan:${plan.id}` });
+    await repos.audit.log({ userId: session.user.id, action: "plan_compiled", resource: `plan:${plan.id}` });
     planId = plan.id;
   }
 

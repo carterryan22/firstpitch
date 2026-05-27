@@ -1,4 +1,4 @@
-// Repos = uniform interface against any DbShape store.
+// Repos = uniform async interface against any DbShape store.
 // Pure CRUD + a few query helpers. No business logic here.
 
 import type {
@@ -16,8 +16,8 @@ import type {
 } from "./types";
 
 export interface Store {
-  read(): DbShape;
-  write(db: DbShape): void;
+  read(): Promise<DbShape>;
+  write(db: DbShape): Promise<void>;
 }
 
 let counter = 0;
@@ -28,67 +28,67 @@ export function cid(prefix = "rec"): string {
 
 export interface Repos {
   users: {
-    list(): UserRecord[];
-    byId(id: string): UserRecord | undefined;
-    byEmail(email: string): UserRecord | undefined;
-    upsert(input: Omit<UserRecord, "id" | "createdAt"> & { id?: string }): UserRecord;
+    list(): Promise<UserRecord[]>;
+    byId(id: string): Promise<UserRecord | undefined>;
+    byEmail(email: string): Promise<UserRecord | undefined>;
+    upsert(input: Omit<UserRecord, "id" | "createdAt"> & { id?: string }): Promise<UserRecord>;
   };
   players: {
-    list(): PlayerRecord[];
-    byId(id: string): PlayerRecord | undefined;
-    create(input: Omit<PlayerRecord, "id" | "createdAt">): PlayerRecord;
-    byParent(userId: string): PlayerRecord[];
+    list(): Promise<PlayerRecord[]>;
+    byId(id: string): Promise<PlayerRecord | undefined>;
+    create(input: Omit<PlayerRecord, "id" | "createdAt">): Promise<PlayerRecord>;
+    byParent(userId: string): Promise<PlayerRecord[]>;
   };
   plans: {
-    list(filter?: { teamId?: string; createdByUserId?: string; teamIds?: string[] }): PlanRecord[];
-    byId(id: string): PlanRecord | undefined;
-    create(input: Omit<PlanRecord, "id" | "createdAt">): PlanRecord;
+    list(filter?: { teamId?: string; createdByUserId?: string; teamIds?: string[] }): Promise<PlanRecord[]>;
+    byId(id: string): Promise<PlanRecord | undefined>;
+    create(input: Omit<PlanRecord, "id" | "createdAt">): Promise<PlanRecord>;
   };
   teams: {
-    list(): TeamRecord[];
-    byId(id: string): TeamRecord | undefined;
-    bySlug(slug: string): TeamRecord | undefined;
-    create(input: Omit<TeamRecord, "id" | "createdAt">): TeamRecord;
+    list(): Promise<TeamRecord[]>;
+    byId(id: string): Promise<TeamRecord | undefined>;
+    bySlug(slug: string): Promise<TeamRecord | undefined>;
+    create(input: Omit<TeamRecord, "id" | "createdAt">): Promise<TeamRecord>;
   };
   teamMemberships: {
-    list(filter?: { teamId?: string; userId?: string; role?: TeamMemberRole }): TeamMembershipRecord[];
-    upsert(input: Omit<TeamMembershipRecord, "id" | "createdAt">): TeamMembershipRecord;
-    remove(id: string): void;
+    list(filter?: { teamId?: string; userId?: string; role?: TeamMemberRole }): Promise<TeamMembershipRecord[]>;
+    upsert(input: Omit<TeamMembershipRecord, "id" | "createdAt">): Promise<TeamMembershipRecord>;
+    remove(id: string): Promise<void>;
   };
   metricEntries: {
-    list(filter?: { playerId?: string; metricKey?: string }): MetricEntryRecord[];
-    create(input: Omit<MetricEntryRecord, "id">): MetricEntryRecord;
-    bulkCreate(rows: Array<Omit<MetricEntryRecord, "id">>): MetricEntryRecord[];
+    list(filter?: { playerId?: string; metricKey?: string }): Promise<MetricEntryRecord[]>;
+    create(input: Omit<MetricEntryRecord, "id">): Promise<MetricEntryRecord>;
+    bulkCreate(rows: Array<Omit<MetricEntryRecord, "id">>): Promise<MetricEntryRecord[]>;
   };
   missionCompletions: {
-    list(filter?: { playerId?: string; missionId?: string }): MissionCompletionRecord[];
-    create(input: Omit<MissionCompletionRecord, "id">): MissionCompletionRecord;
+    list(filter?: { playerId?: string; missionId?: string }): Promise<MissionCompletionRecord[]>;
+    create(input: Omit<MissionCompletionRecord, "id">): Promise<MissionCompletionRecord>;
   };
   audit: {
-    list(filter?: { userId?: string; resource?: string }): AuditLogRecord[];
-    log(input: Omit<AuditLogRecord, "id" | "createdAt">): AuditLogRecord;
+    list(filter?: { userId?: string; resource?: string }): Promise<AuditLogRecord[]>;
+    log(input: Omit<AuditLogRecord, "id" | "createdAt">): Promise<AuditLogRecord>;
   };
   sessions: {
-    byId(id: string): SessionRecord | undefined;
-    create(userId: string, ttlMs: number): SessionRecord;
-    delete(id: string): void;
-    purgeExpired(): number;
+    byId(id: string): Promise<SessionRecord | undefined>;
+    create(userId: string, ttlMs: number): Promise<SessionRecord>;
+    delete(id: string): Promise<void>;
+    purgeExpired(): Promise<number>;
   };
 }
 
 export function makeRepos(store: Store): Repos {
-  const mutate = <T>(fn: (db: DbShape) => T): T => {
-    const db = store.read();
+  const mutate = async <T>(fn: (db: DbShape) => T): Promise<T> => {
+    const db = await store.read();
     const result = fn(db);
-    store.write(db);
+    await store.write(db);
     return result;
   };
   return {
     users: {
-      list: () => store.read().users.slice(),
-      byId: (id) => store.read().users.find((u) => u.id === id),
-      byEmail: (email) =>
-        store.read().users.find((u) => u.email.toLowerCase() === email.toLowerCase()),
+      list: async () => (await store.read()).users.slice(),
+      byId: async (id) => (await store.read()).users.find((u) => u.id === id),
+      byEmail: async (email) =>
+        (await store.read()).users.find((u) => u.email.toLowerCase() === email.toLowerCase()),
       upsert(input) {
         return mutate((db) => {
           const existing =
@@ -111,19 +111,20 @@ export function makeRepos(store: Store): Repos {
       },
     },
     players: {
-      list: () => store.read().players.slice(),
-      byId: (id) => store.read().players.find((p) => p.id === id),
+      list: async () => (await store.read()).players.slice(),
+      byId: async (id) => (await store.read()).players.find((p) => p.id === id),
       create: (input) =>
         mutate((db) => {
           const rec: PlayerRecord = { ...input, id: cid("ply"), createdAt: new Date().toISOString() };
           db.players.push(rec);
           return rec;
         }),
-      byParent: (userId) => store.read().players.filter((p) => p.parentUserId === userId),
+      byParent: async (userId) =>
+        (await store.read()).players.filter((p) => p.parentUserId === userId),
     },
     plans: {
-      list(filter) {
-        const all = store.read().plans;
+      async list(filter) {
+        const all = (await store.read()).plans;
         return all.filter(
           (p) =>
             (!filter?.teamId || p.teamId === filter.teamId) &&
@@ -131,7 +132,7 @@ export function makeRepos(store: Store): Repos {
             (!filter?.teamIds || (p.teamId !== undefined && filter.teamIds.includes(p.teamId)))
         );
       },
-      byId: (id) => store.read().plans.find((p) => p.id === id),
+      byId: async (id) => (await store.read()).plans.find((p) => p.id === id),
       create: (input) =>
         mutate((db) => {
           const rec: PlanRecord = { ...input, id: cid("pln"), createdAt: new Date().toISOString() };
@@ -140,9 +141,9 @@ export function makeRepos(store: Store): Repos {
         }),
     },
     teams: {
-      list: () => store.read().teams.slice(),
-      byId: (id) => store.read().teams.find((t) => t.id === id),
-      bySlug: (slug) => store.read().teams.find((t) => t.slug === slug),
+      list: async () => (await store.read()).teams.slice(),
+      byId: async (id) => (await store.read()).teams.find((t) => t.id === id),
+      bySlug: async (slug) => (await store.read()).teams.find((t) => t.slug === slug),
       create: (input) =>
         mutate((db) => {
           const rec: TeamRecord = { ...input, id: cid("tm"), createdAt: new Date().toISOString() };
@@ -151,8 +152,8 @@ export function makeRepos(store: Store): Repos {
         }),
     },
     teamMemberships: {
-      list(filter) {
-        return store.read().teamMemberships.filter(
+      async list(filter) {
+        return (await store.read()).teamMemberships.filter(
           (m) =>
             (!filter?.teamId || m.teamId === filter.teamId) &&
             (!filter?.userId || m.userId === filter.userId) &&
@@ -187,8 +188,8 @@ export function makeRepos(store: Store): Repos {
         }),
     },
     metricEntries: {
-      list(filter) {
-        return store.read().metricEntries.filter(
+      async list(filter) {
+        return (await store.read()).metricEntries.filter(
           (e) =>
             (!filter?.playerId || e.playerId === filter.playerId) &&
             (!filter?.metricKey || e.metricKey === filter.metricKey)
@@ -208,8 +209,8 @@ export function makeRepos(store: Store): Repos {
         }),
     },
     missionCompletions: {
-      list(filter) {
-        return store.read().missionCompletions.filter(
+      async list(filter) {
+        return (await store.read()).missionCompletions.filter(
           (c) =>
             (!filter?.playerId || c.playerId === filter.playerId) &&
             (!filter?.missionId || c.missionId === filter.missionId)
@@ -223,8 +224,8 @@ export function makeRepos(store: Store): Repos {
         }),
     },
     audit: {
-      list(filter) {
-        return store.read().auditLogs.filter(
+      async list(filter) {
+        return (await store.read()).auditLogs.filter(
           (a) =>
             (!filter?.userId || a.userId === filter.userId) &&
             (!filter?.resource || a.resource === filter.resource)
@@ -242,7 +243,7 @@ export function makeRepos(store: Store): Repos {
         }),
     },
     sessions: {
-      byId: (id) => store.read().sessions.find((s) => s.id === id),
+      byId: async (id) => (await store.read()).sessions.find((s) => s.id === id),
       create: (userId, ttlMs) =>
         mutate((db) => {
           const rec: SessionRecord = {

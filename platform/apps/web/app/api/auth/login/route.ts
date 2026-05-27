@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "invalid role" }, { status: 400 });
   }
   try {
-    const session = loginOrRegister(getRepos(), {
+    const session = await loginOrRegister(getRepos(), {
       email: body.email,
       role: body.role as (typeof validRoles)[number],
       name: body.name,

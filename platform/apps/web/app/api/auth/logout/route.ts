@@ -7,7 +7,7 @@ export async function POST() {
   const store = await cookies();
   const raw = store.get(SESSION_COOKIE)?.value;
   const id = decodeCookie(raw);
-  if (id) logout(getRepos(), id);
+  if (id) await logout(getRepos(), id);
   const res = NextResponse.json({ ok: true });
   res.cookies.delete(SESSION_COOKIE);
   return res;

@@ -15,11 +15,11 @@ export default async function TeamDetailPage({
   const { id } = await params;
   const session = await getSession();
   if (!session) redirect("/login");
-  if (!userCanManageTeam(session.user.id, id)) redirect("/coach");
+  if (!(await userCanManageTeam(session.user.id, id))) redirect("/coach");
 
-  const { team, coaches, players, parents } = getTeamRoster(id);
+  const { team, coaches, players, parents } = await getTeamRoster(id);
   if (!team) notFound();
-  const plans = plansForTeam(id);
+  const plans = await plansForTeam(id);
 
   return (
     <div className="space-y-10">

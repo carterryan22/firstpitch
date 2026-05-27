@@ -54,37 +54,40 @@ export interface AuthSession {
 }
 
 /** Create or find a user by email + role and mint a session. Dev/local auth. */
-export function loginOrRegister(
+export async function loginOrRegister(
   repos: Repos,
   input: { email: string; role: Role; name?: string }
-): AuthSession {
+): Promise<AuthSession> {
   if (!input.email.includes("@")) {
     throw new Error("Invalid email");
   }
-  const user = repos.users.upsert({ email: input.email, role: input.role, name: input.name });
-  const session = repos.sessions.create(user.id, SESSION_TTL_MS);
-  repos.audit.log({ userId: user.id, action: "login", resource: `session:${session.id}` });
+  const user = await repos.users.upsert({ email: input.email, role: input.role, name: input.name });
+  const session = await repos.sessions.create(user.id, SESSION_TTL_MS);
+  await repos.audit.log({ userId: user.id, action: "login", resource: `session:${session.id}` });
   return { user, sessionId: session.id, cookieValue: encodeCookie(session.id) };
 }
 
 /** Resolve a session from a raw cookie value. Returns null if invalid or expired. */
-export function resolveSession(repos: Repos, rawCookie: string | null | undefined): AuthSession | null {
+export async function resolveSession(
+  repos: Repos,
+  rawCookie: string | null | undefined
+): Promise<AuthSession | null> {
   const id = decodeCookie(rawCookie);
   if (!id) return null;
-  const session = repos.sessions.byId(id);
+  const session = await repos.sessions.byId(id);
   if (!session) return null;
   if (Date.parse(session.expiresAt) <= Date.now()) {
-    repos.sessions.delete(id);
+    await repos.sessions.delete(id);
     return null;
   }
-  const user = repos.users.byId(session.userId);
+  const user = await repos.users.byId(session.userId);
   if (!user) return null;
   return { user, sessionId: session.id, cookieValue: encodeCookie(session.id) };
 }
 
-export function logout(repos: Repos, sessionId: string): void {
-  repos.sessions.delete(sessionId);
-  repos.audit.log({ action: "logout", resource: `session:${sessionId}` });
+export async function logout(repos: Repos, sessionId: string): Promise<void> {
+  await repos.sessions.delete(sessionId);
+  await repos.audit.log({ action: "logout", resource: `session:${sessionId}` });
 }
 
 export class AuthError extends Error {

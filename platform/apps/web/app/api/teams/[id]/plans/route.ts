@@ -11,8 +11,8 @@ export async function GET(
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   const { id: teamId } = await ctx.params;
-  if (!userCanReadTeam(session.user.id, teamId)) {
+  if (!(await userCanReadTeam(session.user.id, teamId))) {
     return NextResponse.json({ error: "forbidden" }, { status: 403 });
   }
-  return NextResponse.json({ plans: plansForTeam(teamId) });
+  return NextResponse.json({ plans: await plansForTeam(teamId) });
 }

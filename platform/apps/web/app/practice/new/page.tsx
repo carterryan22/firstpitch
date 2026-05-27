@@ -11,7 +11,7 @@ export default async function NewPracticePage({
 }) {
   const sp = await searchParams;
   const session = await getSession();
-  const teams = session ? getTeamsForUser(session.user.id) : [];
+  const teams = session ? await getTeamsForUser(session.user.id) : [];
   const presetTeamId = sp.teamId && teams.some((t) => t.id === sp.teamId) ? sp.teamId : undefined;
   const canPersist = !!session && (session.user.role === "coach" || session.user.role === "admin");
 

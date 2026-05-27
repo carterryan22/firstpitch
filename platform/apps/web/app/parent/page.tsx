@@ -21,12 +21,15 @@ export default async function ParentDashboard() {
   if (!session) redirect("/login");
 
   const repos = getRepos();
-  const teams = getTeamsForUser(session.user.id);
-  const memberships = repos.teamMemberships.list({ userId: session.user.id });
-  const teamCards = teams.map((t) => {
-    const role = memberships.find((m) => m.teamId === t.id)?.role ?? "player";
-    return { team: t, role, plans: plansForTeam(t.id).slice(0, 5) };
-  });
+  const teams = await getTeamsForUser(session.user.id);
+  const memberships = await repos.teamMemberships.list({ userId: session.user.id });
+  const teamCards = await Promise.all(
+    teams.map(async (t) => {
+      const role = memberships.find((m) => m.teamId === t.id)?.role ?? "player";
+      const plans = (await plansForTeam(t.id)).slice(0, 5);
+      return { team: t, role, plans };
+    })
+  );
   const primaryAge = teams[0] ? AGE_FROM_BAND[teams[0].ageBand] ?? 11 : 11;
   const missions = missionsForAge(primaryAge);
   const home = homeMission({ age: primaryAge, focus: ["mental_recovery", "speed"] });

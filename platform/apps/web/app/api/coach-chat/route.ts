@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
       userMessage: body.message,
     });
 
-    getRepos().audit.log({
+    await getRepos().audit.log({
       userId: session!.user.id,
       action: "coach_chat",
       resource: `prompt:${promptId}`,

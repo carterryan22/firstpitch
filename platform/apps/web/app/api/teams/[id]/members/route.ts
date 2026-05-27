@@ -12,7 +12,7 @@ export async function POST(
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   const { id: teamId } = await ctx.params;
-  if (!userCanManageTeam(session.user.id, teamId)) {
+  if (!(await userCanManageTeam(session.user.id, teamId))) {
     return NextResponse.json({ error: "forbidden" }, { status: 403 });
   }
   let body: { email?: string; name?: string; role?: "coach" | "player" | "parent"; playerId?: string };
@@ -28,14 +28,14 @@ export async function POST(
   }
   const repos = getRepos();
   // Auto-provision the user so an invite works before they ever sign in.
-  const user = repos.users.upsert({ email, name: body.name, role });
-  const membership = repos.teamMemberships.upsert({
+  const user = await repos.users.upsert({ email, name: body.name, role });
+  const membership = await repos.teamMemberships.upsert({
     teamId,
     userId: user.id,
     role,
     playerId: body.playerId,
   });
-  repos.audit.log({
+  await repos.audit.log({
     userId: session.user.id,
     action: "team_member_added",
     resource: `team:${teamId}`,

@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
         const session = await getSession();
         if (session) {
           const repos = getRepos();
-          const created = repos.metricEntries.bulkCreate(
+          const created = await repos.metricEntries.bulkCreate(
             device.entries.map((e) => ({
               playerId,
               metricKey: e.metricKey,
@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
             }))
           );
           writtenCount = created.length;
-          repos.audit.log({ userId: session.user.id, action: "ingest_device", resource: `player:${playerId}`, metadata: { source, count: created.length } });
+          await repos.audit.log({ userId: session.user.id, action: "ingest_device", resource: `player:${playerId}`, metadata: { source, count: created.length } });
         }
       }
       return NextResponse.json({ ...device, writtenCount });
