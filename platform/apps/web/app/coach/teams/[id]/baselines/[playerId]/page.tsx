@@ -14,6 +14,9 @@ import {
 import { Card } from "../../../../../components/ui";
 import { Sparkline } from "../../../../../components/Sparkline";
 import { MetricEntryForm } from "./MetricEntryForm";
+import { GoalForm } from "./GoalForm";
+import { GoalActions } from "./GoalActions";
+import { computeGoalProgress, GOAL_STATUS_BADGE } from "../../../../../lib/goals";
 
 export const metadata = { title: "Player baselines" };
 
@@ -37,6 +40,13 @@ export default async function PlayerBaselinePage({
   const sorted = entries.slice().sort((a, b) => (a.recordedAt < b.recordedAt ? 1 : -1));
   const latestByMetric = new Map<string, (typeof sorted)[number]>();
   for (const e of sorted) if (!latestByMetric.has(e.metricKey)) latestByMetric.set(e.metricKey, e);
+
+  const goals = await repos.goals.list({ playerId });
+  const goalProgress = goals.map((g) => computeGoalProgress(g, entries));
+  const latestValueMap: Record<string, number | undefined> = {};
+  for (const [k, v] of latestByMetric) latestValueMap[k] = v.value;
+  const activeGoals = goalProgress.filter((g) => g.goal.status === "active");
+  const otherGoals = goalProgress.filter((g) => g.goal.status !== "active");
 
   return (
     <div className="space-y-6">
@@ -137,6 +147,95 @@ export default async function PlayerBaselinePage({
             );
           })}
         </div>
+      </section>
+
+      <section>
+        <h2>Goals</h2>
+        <Card>
+          <h3 className="m-0 text-sm uppercase tracking-wide text-slate-500">Add a goal</h3>
+          <div className="mt-3">
+            <GoalForm playerId={player.id} latestByMetric={latestValueMap} />
+          </div>
+        </Card>
+
+        {activeGoals.length > 0 ? (
+          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {activeGoals.map((p) => {
+              const def = metricByKey(p.goal.metricKey);
+              const badge = GOAL_STATUS_BADGE[p.status];
+              const pct = Math.max(0, Math.min(1, p.fraction));
+              const barCls =
+                p.status === "achieved"
+                  ? "bg-emerald-500"
+                  : p.status === "regression"
+                  ? "bg-red-500"
+                  : p.status === "behind"
+                  ? "bg-amber-500"
+                  : "bg-teal-600";
+              return (
+                <div key={p.goal.id} className="card">
+                  <div className="flex items-baseline justify-between">
+                    <div className="text-xs uppercase tracking-wide text-slate-500">
+                      {def?.label ?? p.goal.metricKey}
+                    </div>
+                    <span className={badge.cls}>{badge.label}</span>
+                  </div>
+                  <div className="mt-1 text-sm text-slate-700">
+                    <span className="font-mono">{p.goal.baseline}</span>
+                    <span className="text-slate-400"> → </span>
+                    <span className="font-mono font-semibold">{p.targetValue}</span>
+                    <span className="text-slate-500"> {def?.unit}</span>
+                  </div>
+                  <div className="mt-1 text-xs text-slate-500">
+                    Current: <span className="font-mono">{p.currentValue ?? "—"}</span>
+                    {p.goal.targetDate ? (
+                      <> · Due {new Date(p.goal.targetDate).toLocaleDateString()}</>
+                    ) : null}
+                  </div>
+                  <div className="mt-2 h-2 w-full rounded-full bg-slate-100">
+                    <div
+                      className={`h-full rounded-full ${barCls}`}
+                      style={{ width: `${Math.round(pct * 100)}%` }}
+                    />
+                  </div>
+                  {p.goal.notes ? (
+                    <p className="mt-2 text-xs text-slate-500">{p.goal.notes}</p>
+                  ) : null}
+                  <div className="mt-3">
+                    <GoalActions goalId={p.goal.id} status={p.goal.status} />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <p className="mt-3 text-sm text-slate-500">No active goals yet.</p>
+        )}
+
+        {otherGoals.length > 0 ? (
+          <details className="mt-4">
+            <summary className="cursor-pointer text-sm text-slate-500">
+              {otherGoals.length} closed / archived goal{otherGoals.length === 1 ? "" : "s"}
+            </summary>
+            <ul className="mt-2 space-y-1 text-sm text-slate-600">
+              {otherGoals.map((p) => {
+                const def = metricByKey(p.goal.metricKey);
+                return (
+                  <li key={p.goal.id} className="flex items-center gap-3">
+                    <span className="badge-info">{p.goal.status}</span>
+                    <span>{def?.label ?? p.goal.metricKey}</span>
+                    <span className="font-mono text-xs text-slate-500">
+                      {p.goal.baseline} → {p.targetValue} {def?.unit}
+                    </span>
+                    <span className="ml-auto">
+                      <GoalActions goalId={p.goal.id} status={p.goal.status} />
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+          </details>
+        ) : null}
       </section>
 
       <section>

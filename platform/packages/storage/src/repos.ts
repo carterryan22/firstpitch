@@ -5,6 +5,7 @@ import type {
   AuditLogRecord,
   DbShape,
   GameRecord,
+  GoalRecord,
   MetricEntryRecord,
   MissionCompletionRecord,
   PlanRecord,
@@ -71,6 +72,13 @@ export interface Repos {
     list(filter?: { playerId?: string; metricKey?: string }): Promise<MetricEntryRecord[]>;
     create(input: Omit<MetricEntryRecord, "id">): Promise<MetricEntryRecord>;
     bulkCreate(rows: Array<Omit<MetricEntryRecord, "id">>): Promise<MetricEntryRecord[]>;
+  };
+  goals: {
+    list(filter?: { playerId?: string; status?: GoalRecord["status"]; teamId?: string }): Promise<GoalRecord[]>;
+    byId(id: string): Promise<GoalRecord | undefined>;
+    create(input: Omit<GoalRecord, "id" | "createdAt">): Promise<GoalRecord>;
+    update(id: string, patch: Partial<Omit<GoalRecord, "id" | "createdAt" | "playerId">>): Promise<GoalRecord | undefined>;
+    delete(id: string): Promise<void>;
   };
   missionCompletions: {
     list(filter?: { playerId?: string; missionId?: string }): Promise<MissionCompletionRecord[]>;
@@ -278,6 +286,37 @@ export function makeRepos(store: Store): Repos {
           const created = rows.map((r) => ({ ...r, id: cid("me") }));
           db.metricEntries.push(...created);
           return created;
+        }),
+    },
+    goals: {
+      async list(filter) {
+        const db = await store.read();
+        const playerTeam = new Map(db.players.map((p) => [p.id, p.teamId]));
+        return db.goals.filter(
+          (g) =>
+            (!filter?.playerId || g.playerId === filter.playerId) &&
+            (!filter?.status || g.status === filter.status) &&
+            (!filter?.teamId || playerTeam.get(g.playerId) === filter.teamId)
+        );
+      },
+      byId: async (id) => (await store.read()).goals.find((g) => g.id === id),
+      create: (input) =>
+        mutate((db) => {
+          const rec: GoalRecord = { ...input, id: cid("gl"), createdAt: new Date().toISOString() };
+          db.goals.push(rec);
+          return rec;
+        }),
+      update: (id, patch) =>
+        mutate((db) => {
+          const rec = db.goals.find((g) => g.id === id);
+          if (!rec) return undefined;
+          Object.assign(rec, patch);
+          return rec;
+        }),
+      delete: (id) =>
+        mutate((db) => {
+          const i = db.goals.findIndex((g) => g.id === id);
+          if (i >= 0) db.goals.splice(i, 1);
         }),
     },
     missionCompletions: {

@@ -60,6 +60,12 @@ export default async function TeamDetailPage({
             Baselines
           </Link>
           <Link
+            href={`/coach/teams/${team.id}/goals`}
+            className="btn-ghost no-underline hover:no-underline"
+          >
+            Goals
+          </Link>
+          <Link
             href={`/coach/teams/${team.id}/fairness`}
             className="btn-ghost no-underline hover:no-underline"
           >

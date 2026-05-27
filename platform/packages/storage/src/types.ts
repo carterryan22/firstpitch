@@ -166,6 +166,7 @@ export interface DbShape {
   plans: PlanRecord[];
   games: GameRecord[];
   metricEntries: MetricEntryRecord[];
+  goals: GoalRecord[];
   missionCompletions: MissionCompletionRecord[];
   auditLogs: AuditLogRecord[];
   sessions: SessionRecord[];
@@ -179,7 +180,35 @@ export const EMPTY_DB: DbShape = {
   plans: [],
   games: [],
   metricEntries: [],
+  goals: [],
   missionCompletions: [],
   auditLogs: [],
   sessions: [],
 };
+
+/**
+ * Player development goals. Targets attach to Measurable / Skill metrics
+ * only (game-context stats are not goal-able per spec).
+ */
+export type GoalType = "delta" | "absolute";
+export type GoalStatus = "active" | "achieved" | "archived";
+
+export interface GoalRecord {
+  id: string;
+  playerId: string;
+  metricKey: string;
+  type: GoalType;
+  /** For "delta" goals: the +/- change from baseline. Lower-is-better metrics use negative deltas. */
+  /** For "absolute" goals: the target value the player must reach. */
+  target: number;
+  /** Baseline captured at goal creation so progress is stable even as the metric registry changes. */
+  baseline: number;
+  /** Optional target date (ISO). */
+  targetDate?: string;
+  status: GoalStatus;
+  createdByUserId: string;
+  createdAt: string;
+  achievedAt?: string;
+  archivedAt?: string;
+  notes?: string;
+}
