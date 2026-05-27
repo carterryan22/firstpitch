@@ -155,6 +155,8 @@ export interface GameRecord {
   notes?: string;
   /** Player attendance for this game. Map of playerId -> present|absent. */
   attendance?: Record<string, Attendance>;
+  /** Parent / player RSVPs collected ahead of the game. */
+  rsvp?: Record<string, "yes" | "no" | "maybe">;
   /** Position assignment per inning. lineup[inningIndex][playerId] = positionCode ("P","C",..., "BN"). */
   lineup?: Array<Record<string, string>>;
   /** Batting order: ordered array of playerIds. */
