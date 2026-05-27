@@ -66,6 +66,8 @@ export function PracticeBuilder({
   const [players, setPlayers] = useState<number>(8);
   const [name, setName] = useState<string>("");
   const [saveToTeam, setSaveToTeam] = useState<boolean>(true);
+  const [scheduledAt, setScheduledAt] = useState<string>("");
+  const [location, setLocation] = useState<string>("");
 
   const [busy, setBusy] = useState(false);
   const [savedId, setSavedId] = useState<string | null>(null);
@@ -104,6 +106,8 @@ export function PracticeBuilder({
         persist,
         teamId: persist && teamId ? teamId : undefined,
         name: name.trim() || undefined,
+        scheduledAt: persist && scheduledAt ? new Date(scheduledAt).toISOString() : undefined,
+        location: persist && location.trim() ? location.trim() : undefined,
       }),
     });
     setBusy(false);
@@ -262,6 +266,30 @@ export function PracticeBuilder({
               Save & publish to{" "}
               <strong>{selectedTeam?.name ?? "selected team"}</strong>
             </label>
+            {teamId && saveToTeam ? (
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="label" htmlFor="sched">When (optional)</label>
+                  <input
+                    id="sched"
+                    type="datetime-local"
+                    className="input"
+                    value={scheduledAt}
+                    onChange={(e) => setScheduledAt(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label className="label" htmlFor="loc">Location</label>
+                  <input
+                    id="loc"
+                    className="input"
+                    placeholder="e.g. Field 3"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                  />
+                </div>
+              </div>
+            ) : null}
             {!teamId ? (
               <p className="text-xs text-slate-500">
                 Pick a team to share this plan with players and parents.

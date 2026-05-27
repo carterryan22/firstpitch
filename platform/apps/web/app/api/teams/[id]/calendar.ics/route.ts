@@ -63,6 +63,35 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
       "END:VEVENT",
     );
   }
+
+  const plans = await repos.plans.list({ teamId: id, scheduled: true });
+  for (const p of plans) {
+    if (!p.scheduledAt) continue;
+    const start = icsDate(p.scheduledAt);
+    if (!start) continue;
+    const endDate = new Date(p.scheduledAt);
+    endDate.setUTCMinutes(endDate.getUTCMinutes() + p.durationMin);
+    const end = icsDate(endDate.toISOString());
+    const desc = [
+      `${p.durationMin} min practice`,
+      p.focus?.length ? `Focus: ${p.focus.join(", ")}` : null,
+      p.notes ? `Notes: ${p.notes}` : null,
+    ]
+      .filter(Boolean)
+      .join("\\n");
+    lines.push(
+      "BEGIN:VEVENT",
+      `UID:practice-${p.id}@player-development-platform`,
+      `DTSTAMP:${icsDate(p.createdAt) || start}`,
+      `DTSTART:${start}`,
+      `DTEND:${end}`,
+      `SUMMARY:${escapeText(`Practice — ${p.name}`)}`,
+      ...(p.location ? [`LOCATION:${escapeText(p.location)}`] : []),
+      `DESCRIPTION:${escapeText(desc)}`,
+      "END:VEVENT",
+    );
+  }
+
   lines.push("END:VCALENDAR");
 
   return new NextResponse(lines.join("\r\n"), {

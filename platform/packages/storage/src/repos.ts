@@ -46,9 +46,11 @@ export interface Repos {
     byParent(userId: string): Promise<PlayerRecord[]>;
   };
   plans: {
-    list(filter?: { teamId?: string; createdByUserId?: string; teamIds?: string[] }): Promise<PlanRecord[]>;
+    list(filter?: { teamId?: string; createdByUserId?: string; teamIds?: string[]; scheduled?: boolean }): Promise<PlanRecord[]>;
     byId(id: string): Promise<PlanRecord | undefined>;
     create(input: Omit<PlanRecord, "id" | "createdAt">): Promise<PlanRecord>;
+    update(id: string, patch: Partial<Omit<PlanRecord, "id" | "createdAt">>): Promise<PlanRecord | undefined>;
+    delete(id: string): Promise<void>;
   };
   teams: {
     list(): Promise<TeamRecord[]>;
@@ -181,7 +183,8 @@ export function makeRepos(store: Store): Repos {
           (p) =>
             (!filter?.teamId || p.teamId === filter.teamId) &&
             (!filter?.createdByUserId || p.createdByUserId === filter.createdByUserId) &&
-            (!filter?.teamIds || (p.teamId !== undefined && filter.teamIds.includes(p.teamId)))
+            (!filter?.teamIds || (p.teamId !== undefined && filter.teamIds.includes(p.teamId))) &&
+            (filter?.scheduled === undefined || (filter.scheduled ? Boolean(p.scheduledAt) : !p.scheduledAt))
         );
       },
       byId: async (id) => (await store.read()).plans.find((p) => p.id === id),
@@ -190,6 +193,18 @@ export function makeRepos(store: Store): Repos {
           const rec: PlanRecord = { ...input, id: cid("pln"), createdAt: new Date().toISOString() };
           db.plans.push(rec);
           return rec;
+        }),
+      update: (id, patch) =>
+        mutate((db) => {
+          const rec = db.plans.find((p) => p.id === id);
+          if (!rec) return undefined;
+          Object.assign(rec, patch);
+          return rec;
+        }),
+      delete: (id) =>
+        mutate((db) => {
+          const i = db.plans.findIndex((p) => p.id === id);
+          if (i >= 0) db.plans.splice(i, 1);
         }),
     },
     teams: {

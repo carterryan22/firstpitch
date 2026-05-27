@@ -106,42 +106,126 @@ export default async function TeamDetailPage({
         </section>
 
         <section className="space-y-4">
-          <h2 className="m-0">Published plans ({plans.length})</h2>
-          {plans.length === 0 ? (
-            <Card>
-              <p className="text-sm text-slate-600">
-                No plans yet. Build one for the team and players / parents will see it on their
-                dashboards.
-              </p>
-            </Card>
-          ) : (
-            <ul className="space-y-2">
-              {plans.map((p) => (
-                <li key={p.id}>
-                  <Card>
-                    <div className="flex flex-wrap items-baseline justify-between gap-2">
-                      <Link
-                        href={`/plans/${p.id}`}
-                        className="text-base font-medium text-slate-900 no-underline hover:underline"
-                      >
-                        {p.name}
-                      </Link>
-                      <span className="text-xs text-slate-500">
-                        {new Date(p.createdAt).toLocaleString()}
-                      </span>
-                    </div>
-                    <p className="mt-1 text-xs text-slate-500">
-                      {p.durationMin} min · age {p.ageBand}
-                      {p.focus?.length ? ` · ${p.focus.join(", ")}` : ""}
-                    </p>
-                  </Card>
-                </li>
-              ))}
-            </ul>
-          )}
+          <h2 className="m-0">Practices</h2>
+          <PlansSection plans={plans} />
         </section>
       </div>
     </div>
+  );
+}
+
+function PlansSection({
+  plans,
+}: {
+  plans: Array<{
+    id: string;
+    name: string;
+    durationMin: number;
+    ageBand: string;
+    focus?: string[];
+    createdAt: string;
+    scheduledAt?: string;
+    location?: string;
+  }>;
+}) {
+  const now = Date.now();
+  const upcoming = plans
+    .filter((p) => p.scheduledAt && new Date(p.scheduledAt).getTime() >= now - 1000 * 60 * 60 * 6)
+    .sort((a, b) => (a.scheduledAt! < b.scheduledAt! ? -1 : 1));
+  const past = plans
+    .filter((p) => p.scheduledAt && new Date(p.scheduledAt).getTime() < now - 1000 * 60 * 60 * 6)
+    .sort((a, b) => (a.scheduledAt! < b.scheduledAt! ? 1 : -1));
+  const drafts = plans.filter((p) => !p.scheduledAt);
+
+  return (
+    <>
+      <div>
+        <h3 className="m-0 text-sm uppercase tracking-wide text-slate-500">
+          Upcoming ({upcoming.length})
+        </h3>
+        {upcoming.length === 0 ? (
+          <p className="mt-2 text-sm text-slate-500">
+            Nothing scheduled. Build a practice and pick a date to put it on the calendar.
+          </p>
+        ) : (
+          <ul className="mt-2 space-y-2">
+            {upcoming.map((p) => (
+              <li key={p.id}>
+                <Card>
+                  <div className="flex flex-wrap items-baseline justify-between gap-2">
+                    <Link
+                      href={`/plans/${p.id}`}
+                      className="text-base font-medium text-slate-900 no-underline hover:underline"
+                    >
+                      {p.name}
+                    </Link>
+                    <span className="badge-info">
+                      {new Date(p.scheduledAt!).toLocaleString()}
+                    </span>
+                  </div>
+                  <p className="mt-1 text-xs text-slate-500">
+                    {p.durationMin} min · age {p.ageBand}
+                    {p.location ? ` · ${p.location}` : ""}
+                    {p.focus?.length ? ` · ${p.focus.join(", ")}` : ""}
+                  </p>
+                </Card>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      {drafts.length > 0 ? (
+        <div className="mt-4">
+          <h3 className="m-0 text-sm uppercase tracking-wide text-slate-500">
+            Drafts ({drafts.length})
+          </h3>
+          <ul className="mt-2 space-y-2">
+            {drafts.map((p) => (
+              <li key={p.id}>
+                <Card>
+                  <div className="flex flex-wrap items-baseline justify-between gap-2">
+                    <Link
+                      href={`/plans/${p.id}`}
+                      className="text-base font-medium text-slate-900 no-underline hover:underline"
+                    >
+                      {p.name}
+                    </Link>
+                    <span className="text-xs text-slate-500">
+                      Saved {new Date(p.createdAt).toLocaleDateString()}
+                    </span>
+                  </div>
+                  <p className="mt-1 text-xs text-slate-500">
+                    {p.durationMin} min · age {p.ageBand}
+                    {p.focus?.length ? ` · ${p.focus.join(", ")}` : ""}
+                  </p>
+                </Card>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+
+      {past.length > 0 ? (
+        <details className="mt-4">
+          <summary className="cursor-pointer text-sm text-slate-500">
+            {past.length} past practice{past.length === 1 ? "" : "s"}
+          </summary>
+          <ul className="mt-2 space-y-1 text-sm text-slate-600">
+            {past.slice(0, 20).map((p) => (
+              <li key={p.id}>
+                <Link href={`/plans/${p.id}`} className="no-underline hover:underline">
+                  {p.name}
+                </Link>
+                <span className="ml-2 text-xs text-slate-400">
+                  {new Date(p.scheduledAt!).toLocaleDateString()}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </details>
+      ) : null}
+    </>
   );
 }
 

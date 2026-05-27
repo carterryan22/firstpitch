@@ -8,12 +8,20 @@ import { userCanManageTeam } from "../../lib/teams";
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
-  let body: Partial<CompileInput> & { name?: string; persist?: boolean; teamId?: string };
+  let body: Partial<CompileInput> & {
+    name?: string;
+    persist?: boolean;
+    teamId?: string;
+    scheduledAt?: string;
+    location?: string;
+  };
   try {
     body = (await req.json()) as Partial<CompileInput> & {
       name?: string;
       persist?: boolean;
       teamId?: string;
+      scheduledAt?: string;
+      location?: string;
     };
   } catch {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
@@ -76,6 +84,9 @@ export async function POST(req: Request) {
       focus: input.focus,
       createdByUserId: session.user.id,
       teamId: body.teamId,
+      scheduledAt: body.scheduledAt,
+      location: body.location,
+      status: body.scheduledAt ? "scheduled" : undefined,
     });
     await repos.audit.log({ userId: session.user.id, action: "plan_compiled", resource: `plan:${plan.id}` });
     planId = plan.id;

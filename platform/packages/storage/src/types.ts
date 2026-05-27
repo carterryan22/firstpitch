@@ -59,6 +59,14 @@ export interface PlanRecord {
   focus?: string[];
   createdByUserId: string;
   teamId?: string;
+  /** When set, the plan is scheduled on the team calendar. ISO datetime. */
+  scheduledAt?: string;
+  location?: string;
+  /** Optional per-player RSVP / attendance state once scheduled. */
+  rsvp?: Record<string, "yes" | "no" | "maybe">;
+  attendance?: Record<string, "present" | "absent">;
+  status?: "scheduled" | "completed" | "canceled";
+  notes?: string;
   createdAt: string;
 }
 

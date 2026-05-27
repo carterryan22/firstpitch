@@ -56,9 +56,10 @@ export default async function CalendarPage({
   if (!(await userCanReadTeam(session.user.id, id))) redirect("/coach");
 
   const repos = getRepos();
-  const [team, games] = await Promise.all([
+  const [team, games, plans] = await Promise.all([
     repos.teams.byId(id),
     repos.games.list({ teamId: id }),
+    repos.plans.list({ teamId: id, scheduled: true }),
   ]);
   if (!team) notFound();
 
@@ -69,15 +70,40 @@ export default async function CalendarPage({
   const daysInMonth = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
   const startWeekday = first.getUTCDay();
 
-  // Bucket games into ISO-date keys (using local-ish date from startsAt slice 0,10)
-  const buckets = new Map<string, typeof games>();
+  type CalendarItem =
+    | { kind: "game"; id: string; href: string; label: string; title: string }
+    | { kind: "practice"; id: string; href: string; label: string; title: string };
+
+  const buckets = new Map<string, CalendarItem[]>();
   for (const g of games) {
     const d = new Date(g.startsAt);
     if (Number.isNaN(d.getTime())) continue;
     if (d.getUTCFullYear() !== y || d.getUTCMonth() !== m) continue;
     const key = d.toISOString().slice(0, 10);
     const arr = buckets.get(key) ?? [];
-    arr.push(g);
+    arr.push({
+      kind: "game",
+      id: g.id,
+      href: `/coach/teams/${id}/games/${g.id}`,
+      label: `${g.homeAway === "home" ? "vs" : "@"} ${g.opponent}`,
+      title: formatGameWhen(g.startsAt),
+    });
+    buckets.set(key, arr);
+  }
+  for (const p of plans) {
+    if (!p.scheduledAt) continue;
+    const d = new Date(p.scheduledAt);
+    if (Number.isNaN(d.getTime())) continue;
+    if (d.getUTCFullYear() !== y || d.getUTCMonth() !== m) continue;
+    const key = d.toISOString().slice(0, 10);
+    const arr = buckets.get(key) ?? [];
+    arr.push({
+      kind: "practice",
+      id: p.id,
+      href: `/plans/${p.id}`,
+      label: `🏟 ${p.name}`,
+      title: `${p.durationMin} min${p.location ? ` · ${p.location}` : ""}`,
+    });
     buckets.set(key, arr);
   }
 
@@ -154,14 +180,18 @@ export default async function CalendarPage({
                 </div>
               ) : null}
               <ul className="mt-1 space-y-1">
-                {list.map((g) => (
-                  <li key={g.id}>
+                {list.map((it) => (
+                  <li key={it.id}>
                     <Link
-                      href={`/coach/teams/${id}/games/${g.id}`}
-                      className="block truncate rounded bg-teal-50 px-1.5 py-0.5 text-[11px] text-teal-800 no-underline hover:bg-teal-100 hover:no-underline"
-                      title={formatGameWhen(g.startsAt)}
+                      href={it.href}
+                      className={`block truncate rounded px-1.5 py-0.5 text-[11px] no-underline hover:no-underline ${
+                        it.kind === "game"
+                          ? "bg-teal-50 text-teal-800 hover:bg-teal-100"
+                          : "bg-amber-50 text-amber-800 hover:bg-amber-100"
+                      }`}
+                      title={it.title}
                     >
-                      {g.homeAway === "home" ? "vs" : "@"} {g.opponent}
+                      {it.label}
                     </Link>
                   </li>
                 ))}
