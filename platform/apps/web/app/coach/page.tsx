@@ -1,51 +1,103 @@
 import Link from "next/link";
-import { loadDrills, loadSources } from "@platform/corpus";
+import { redirect } from "next/navigation";
+import { getSession } from "../lib/session";
+import { getTeamsForUser, plansForTeam } from "../lib/teams";
+import { Card } from "../components/ui";
+import { CreateTeamForm } from "./CreateTeamForm";
 
+export const metadata = { title: "Coach dashboard" };
 
-export default function CoachPage() {
-  const drills = loadDrills();
-  const sources = loadSources();
+export default async function CoachDashboard() {
+  const session = await getSession();
+  if (!session) redirect("/login");
+  if (session.user.role !== "coach" && session.user.role !== "admin") {
+    redirect("/parent");
+  }
+
+  const teams = getTeamsForUser(session.user.id);
+  const teamCards = teams.map((t) => ({ team: t, plans: plansForTeam(t.id).slice(0, 3) }));
+
   return (
-    <main style={{ maxWidth: 1100, margin: "2rem auto", padding: "0 1rem", fontFamily: "system-ui" }}>
-      <h1>Coach console</h1>
-      <p><Link href="/">← Home</Link></p>
-
-      <section>
-        <h2>Quick actions</h2>
-        <ul>
-          <li><Link href="/practice/new">▶︎ Build today's practice plan</Link></li>
-          <li><Link href="/drills">▶︎ Browse drill library</Link> ({drills.length} drills)</li>
-          <li><Link href="/safety">▶︎ Review safety rules</Link></li>
-          <li><Link href="/missions?age=11">▶︎ Manage player missions</Link></li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Library snapshot</h2>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12 }}>
-          <Card label="Drills" value={drills.length} />
-          <Card label="Published" value={drills.filter((d) => d.review_status === "published").length} />
-          <Card label="Cited sources" value={sources.length} />
+    <div className="space-y-10">
+      <header className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h1>Coach dashboard</h1>
+          <p className="mt-2 text-slate-600">
+            Manage your teams, build today's practice, and publish it to your roster.
+          </p>
         </div>
+        <Link href="/practice/new" className="btn-primary no-underline hover:no-underline">
+          + New practice
+        </Link>
+      </header>
+
+      <section className="space-y-4">
+        <h2 className="m-0">Your teams</h2>
+        {teamCards.length === 0 ? (
+          <Card>
+            <p className="text-sm text-slate-600">
+              You don't have any teams yet. Create one to start sharing plans with players and parents.
+            </p>
+          </Card>
+        ) : (
+          <div className="grid gap-4 md:grid-cols-2">
+            {teamCards.map(({ team, plans }) => (
+              <Card key={team.id} className="flex flex-col gap-3">
+                <header className="flex items-baseline justify-between gap-3">
+                  <Link
+                    href={`/coach/teams/${team.id}`}
+                    className="text-lg font-semibold text-slate-900 no-underline hover:underline"
+                  >
+                    {team.name}
+                  </Link>
+                  <span className="badge-info">{team.ageBand}</span>
+                </header>
+                {plans.length === 0 ? (
+                  <p className="text-sm text-slate-500">No plans yet for this team.</p>
+                ) : (
+                  <ul className="space-y-1 text-sm">
+                    {plans.map((p) => (
+                      <li key={p.id} className="flex items-center justify-between gap-2">
+                        <Link
+                          href={`/plans/${p.id}`}
+                          className="truncate text-slate-700 no-underline hover:underline"
+                        >
+                          {p.name}
+                        </Link>
+                        <span className="text-xs text-slate-500">
+                          {new Date(p.createdAt).toLocaleDateString()}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <footer className="flex gap-2 pt-1">
+                  <Link
+                    href={`/practice/new?teamId=${team.id}`}
+                    className="btn-primary text-sm no-underline hover:no-underline"
+                  >
+                    Build practice
+                  </Link>
+                  <Link
+                    href={`/coach/teams/${team.id}`}
+                    className="btn-ghost text-sm no-underline hover:no-underline"
+                  >
+                    Manage roster
+                  </Link>
+                </footer>
+              </Card>
+            ))}
+          </div>
+        )}
       </section>
 
-      <section style={{ marginTop: 24 }}>
-        <h2>Featured drills</h2>
-        <ul>
-          {drills.slice(0, 5).map((d) => (
-            <li key={d.drill_id}><strong>{d.name}</strong> — {d.short_description}</li>
-          ))}
-        </ul>
+      <section className="space-y-4">
+        <h2 className="m-0">Create a team</h2>
+        <Card>
+          <CreateTeamForm />
+        </Card>
       </section>
-    </main>
-  );
-}
-
-function Card({ label, value }: { label: string; value: number }) {
-  return (
-    <div style={{ border: "1px solid #ddd", padding: 16, borderRadius: 8 }}>
-      <div style={{ fontSize: 12, color: "#666" }}>{label}</div>
-      <div style={{ fontSize: 28, fontWeight: 700 }}>{value}</div>
     </div>
   );
 }
+

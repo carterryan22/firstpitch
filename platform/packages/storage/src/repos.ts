@@ -9,6 +9,9 @@ import type {
   PlanRecord,
   PlayerRecord,
   SessionRecord,
+  TeamMembershipRecord,
+  TeamMemberRole,
+  TeamRecord,
   UserRecord,
 } from "./types";
 
@@ -37,9 +40,20 @@ export interface Repos {
     byParent(userId: string): PlayerRecord[];
   };
   plans: {
-    list(filter?: { teamId?: string; createdByUserId?: string }): PlanRecord[];
+    list(filter?: { teamId?: string; createdByUserId?: string; teamIds?: string[] }): PlanRecord[];
     byId(id: string): PlanRecord | undefined;
     create(input: Omit<PlanRecord, "id" | "createdAt">): PlanRecord;
+  };
+  teams: {
+    list(): TeamRecord[];
+    byId(id: string): TeamRecord | undefined;
+    bySlug(slug: string): TeamRecord | undefined;
+    create(input: Omit<TeamRecord, "id" | "createdAt">): TeamRecord;
+  };
+  teamMemberships: {
+    list(filter?: { teamId?: string; userId?: string; role?: TeamMemberRole }): TeamMembershipRecord[];
+    upsert(input: Omit<TeamMembershipRecord, "id" | "createdAt">): TeamMembershipRecord;
+    remove(id: string): void;
   };
   metricEntries: {
     list(filter?: { playerId?: string; metricKey?: string }): MetricEntryRecord[];
@@ -113,7 +127,8 @@ export function makeRepos(store: Store): Repos {
         return all.filter(
           (p) =>
             (!filter?.teamId || p.teamId === filter.teamId) &&
-            (!filter?.createdByUserId || p.createdByUserId === filter.createdByUserId)
+            (!filter?.createdByUserId || p.createdByUserId === filter.createdByUserId) &&
+            (!filter?.teamIds || (p.teamId !== undefined && filter.teamIds.includes(p.teamId)))
         );
       },
       byId: (id) => store.read().plans.find((p) => p.id === id),
@@ -122,6 +137,53 @@ export function makeRepos(store: Store): Repos {
           const rec: PlanRecord = { ...input, id: cid("pln"), createdAt: new Date().toISOString() };
           db.plans.push(rec);
           return rec;
+        }),
+    },
+    teams: {
+      list: () => store.read().teams.slice(),
+      byId: (id) => store.read().teams.find((t) => t.id === id),
+      bySlug: (slug) => store.read().teams.find((t) => t.slug === slug),
+      create: (input) =>
+        mutate((db) => {
+          const rec: TeamRecord = { ...input, id: cid("tm"), createdAt: new Date().toISOString() };
+          db.teams.push(rec);
+          return rec;
+        }),
+    },
+    teamMemberships: {
+      list(filter) {
+        return store.read().teamMemberships.filter(
+          (m) =>
+            (!filter?.teamId || m.teamId === filter.teamId) &&
+            (!filter?.userId || m.userId === filter.userId) &&
+            (!filter?.role || m.role === filter.role)
+        );
+      },
+      upsert: (input) =>
+        mutate((db) => {
+          const existing = db.teamMemberships.find(
+            (m) =>
+              m.teamId === input.teamId &&
+              m.userId === input.userId &&
+              (input.playerId ? m.playerId === input.playerId : true)
+          );
+          if (existing) {
+            existing.role = input.role;
+            if (input.playerId) existing.playerId = input.playerId;
+            return existing;
+          }
+          const rec: TeamMembershipRecord = {
+            ...input,
+            id: cid("tmm"),
+            createdAt: new Date().toISOString(),
+          };
+          db.teamMemberships.push(rec);
+          return rec;
+        }),
+      remove: (id) =>
+        mutate((db) => {
+          const i = db.teamMemberships.findIndex((m) => m.id === id);
+          if (i >= 0) db.teamMemberships.splice(i, 1);
         }),
     },
     metricEntries: {

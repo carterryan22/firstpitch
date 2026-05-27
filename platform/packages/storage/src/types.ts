@@ -29,8 +29,33 @@ export interface PlanRecord {
   durationMin: number;
   blocks: unknown; // serialized compiler output
   qualityScore?: number;
+  warnings?: string[];
+  blocked?: string[];
+  totalThrowingLoad?: number;
+  focus?: string[];
   createdByUserId: string;
   teamId?: string;
+  createdAt: string;
+}
+
+export interface TeamRecord {
+  id: string;
+  name: string;
+  slug: string;
+  ageBand: "6-8" | "9-12" | "13-15" | "16+";
+  ownerCoachUserId: string;
+  createdAt: string;
+}
+
+export type TeamMemberRole = "coach" | "player" | "parent";
+
+export interface TeamMembershipRecord {
+  id: string;
+  teamId: string;
+  userId: string;
+  role: TeamMemberRole;
+  /** For parent memberships, links the parent to the specific player on the team. */
+  playerId?: string;
   createdAt: string;
 }
 
@@ -78,6 +103,8 @@ export interface SessionRecord {
 export interface DbShape {
   users: UserRecord[];
   players: PlayerRecord[];
+  teams: TeamRecord[];
+  teamMemberships: TeamMembershipRecord[];
   plans: PlanRecord[];
   metricEntries: MetricEntryRecord[];
   missionCompletions: MissionCompletionRecord[];
@@ -88,6 +115,8 @@ export interface DbShape {
 export const EMPTY_DB: DbShape = {
   users: [],
   players: [],
+  teams: [],
+  teamMemberships: [],
   plans: [],
   metricEntries: [],
   missionCompletions: [],

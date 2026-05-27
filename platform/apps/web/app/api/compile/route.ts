@@ -3,13 +3,18 @@ import { compile, type CompileInput } from "@platform/compiler";
 import { postFilter } from "@platform/ai";
 import { getRepos } from "@platform/storage";
 import { getSession } from "../../lib/session";
+import { userCanManageTeam } from "../../lib/teams";
 
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
-  let body: Partial<CompileInput> & { name?: string; persist?: boolean };
+  let body: Partial<CompileInput> & { name?: string; persist?: boolean; teamId?: string };
   try {
-    body = (await req.json()) as Partial<CompileInput> & { name?: string; persist?: boolean };
+    body = (await req.json()) as Partial<CompileInput> & {
+      name?: string;
+      persist?: boolean;
+      teamId?: string;
+    };
   } catch {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
@@ -42,24 +47,40 @@ export async function POST(req: Request) {
     });
   });
 
-  // Optional persistence — only if caller asked AND is signed in as coach/admin.
+  // Optional persistence — coach/admin only; requires team membership when teamId is set.
   let planId: string | undefined;
   if (body.persist) {
     const session = await getSession();
-    if (session && (session.user.role === "coach" || session.user.role === "admin")) {
-      const repos = getRepos();
-      const plan = repos.plans.create({
-        name: body.name ?? `Practice ${new Date().toISOString().slice(0, 10)}`,
-        ageBand,
-        durationMin: input.durationMin,
-        blocks: result.blocks,
-        qualityScore: result.qualityScore,
-        createdByUserId: session.user.id,
-      });
-      repos.audit.log({ userId: session.user.id, action: "plan_compiled", resource: `plan:${plan.id}` });
-      planId = plan.id;
+    if (!session || (session.user.role !== "coach" && session.user.role !== "admin")) {
+      return NextResponse.json(
+        { error: "Only coaches can save plans. Sign in as a coach." },
+        { status: 403 }
+      );
     }
+    if (body.teamId && !userCanManageTeam(session.user.id, body.teamId)) {
+      return NextResponse.json(
+        { error: "You are not a coach on that team." },
+        { status: 403 }
+      );
+    }
+    const repos = getRepos();
+    const plan = repos.plans.create({
+      name: body.name ?? `Practice ${new Date().toISOString().slice(0, 10)}`,
+      ageBand,
+      durationMin: input.durationMin,
+      blocks: result.blocks,
+      qualityScore: result.qualityScore,
+      warnings: result.warnings,
+      blocked: result.blocked,
+      totalThrowingLoad: result.totalThrowingLoad,
+      focus: input.focus,
+      createdByUserId: session.user.id,
+      teamId: body.teamId,
+    });
+    repos.audit.log({ userId: session.user.id, action: "plan_compiled", resource: `plan:${plan.id}` });
+    planId = plan.id;
   }
 
   return NextResponse.json({ ...result, postFilterActions: filterActions, planId });
 }
+

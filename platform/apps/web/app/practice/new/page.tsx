@@ -1,55 +1,35 @@
-"use client";
-import { useState } from "react";
+import { getSession } from "../../lib/session";
+import { getTeamsForUser } from "../../lib/teams";
+import { PracticeBuilder } from "./PracticeBuilder";
 
-export default function NewPracticePage() {
-  const [age, setAge] = useState(11);
-  const [duration, setDuration] = useState(60);
-  const [focus, setFocus] = useState("throwing,speed,reaction");
-  const [result, setResult] = useState<unknown>(null);
-  const [loading, setLoading] = useState(false);
+export const metadata = { title: "New practice" };
 
-  async function submit(e: React.FormEvent) {
-    e.preventDefault();
-    setLoading(true);
-    const res = await fetch("/api/compile", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        age,
-        durationMin: duration,
-        environmentTier: "T1_field",
-        equipmentAvailable: ["tee", "5 baseballs", "cone", "stopwatch", "open space", "partner", "reaction ball"],
-        coaches: 1,
-        players: 8,
-        focus: focus.split(",").map((s) => s.trim()).filter(Boolean),
-      }),
-    });
-    setResult(await res.json());
-    setLoading(false);
-  }
+export default async function NewPracticePage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string>>;
+}) {
+  const sp = await searchParams;
+  const session = await getSession();
+  const teams = session ? getTeamsForUser(session.user.id) : [];
+  const presetTeamId = sp.teamId && teams.some((t) => t.id === sp.teamId) ? sp.teamId : undefined;
+  const canPersist = !!session && (session.user.role === "coach" || session.user.role === "admin");
 
   return (
-    <div>
-      <h1>Compile a practice plan</h1>
-      <form onSubmit={submit} style={{ display: "grid", gap: 12, maxWidth: 360 }}>
-        <label>
-          Age <input type="number" value={age} onChange={(e) => setAge(Number(e.target.value))} min={6} max={18} />
-        </label>
-        <label>
-          Duration (min){" "}
-          <input type="number" value={duration} onChange={(e) => setDuration(Number(e.target.value))} min={15} max={180} />
-        </label>
-        <label>
-          Focus (comma-separated){" "}
-          <input value={focus} onChange={(e) => setFocus(e.target.value)} />
-        </label>
-        <button type="submit" disabled={loading}>{loading ? "Compiling…" : "Compile"}</button>
-      </form>
-      {result ? (
-        <pre style={{ marginTop: 24, padding: 16, background: "white", border: "1px solid #e5e5e5", overflow: "auto" }}>
-          {JSON.stringify(result, null, 2)}
-        </pre>
-      ) : null}
+    <div className="space-y-6">
+      <header className="max-w-2xl">
+        <h1>Build a practice</h1>
+        <p className="mt-2 text-slate-600">
+          The compiler picks age-appropriate drills, blocks unsafe combinations, and stays within
+          Pitch Smart limits. Save it to a team so players and parents see it on their dashboards.
+        </p>
+      </header>
+      <PracticeBuilder
+        teams={teams.map((t) => ({ id: t.id, name: t.name, ageBand: t.ageBand }))}
+        presetTeamId={presetTeamId}
+        canPersist={canPersist}
+      />
     </div>
   );
 }
+

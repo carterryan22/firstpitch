@@ -47,6 +47,31 @@ describe("InMemoryStore + repos", () => {
     repos.audit.log({ userId: "u1", action: "compile_plan", resource: "plan:p1" });
     expect(repos.audit.list({ userId: "u1" })).toHaveLength(1);
   });
+  it("teams + memberships scope plan visibility", () => {
+    const repos = makeRepos(new InMemoryStore());
+    const coach = repos.users.upsert({ email: "c@x.com", role: "coach" });
+    const parent = repos.users.upsert({ email: "p@x.com", role: "parent" });
+    const team = repos.teams.create({
+      name: "Coast Diamondbacks 11U",
+      slug: "coast-diamondbacks-11u",
+      ageBand: "9-12",
+      ownerCoachUserId: coach.id,
+    });
+    repos.teamMemberships.upsert({ teamId: team.id, userId: coach.id, role: "coach" });
+    repos.teamMemberships.upsert({ teamId: team.id, userId: parent.id, role: "parent" });
+    expect(repos.teams.bySlug("coast-diamondbacks-11u")?.id).toBe(team.id);
+    expect(repos.teamMemberships.list({ userId: parent.id })).toHaveLength(1);
+
+    repos.plans.create({
+      name: "Tue practice", ageBand: "9-12", durationMin: 60, blocks: [],
+      createdByUserId: coach.id, teamId: team.id,
+    });
+    const parentTeamIds = repos.teamMemberships.list({ userId: parent.id }).map((m) => m.teamId);
+    expect(repos.plans.list({ teamIds: parentTeamIds })).toHaveLength(1);
+    // upsert is idempotent on (team, user)
+    repos.teamMemberships.upsert({ teamId: team.id, userId: parent.id, role: "parent" });
+    expect(repos.teamMemberships.list({ teamId: team.id })).toHaveLength(2);
+  });
 });
 
 describe("JsonFileStore", () => {
