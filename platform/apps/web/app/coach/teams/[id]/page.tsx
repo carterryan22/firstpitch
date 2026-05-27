@@ -78,6 +78,12 @@ export default async function TeamDetailPage({
             Ask AI
           </Link>
           <Link
+            href={`/coach/teams/${team.id}/digest`}
+            className="btn-ghost no-underline hover:no-underline"
+          >
+            Digest
+          </Link>
+          <Link
             href={`/coach/teams/${team.id}/roster`}
             className="btn-ghost no-underline hover:no-underline"
           >
