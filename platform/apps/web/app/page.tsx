@@ -1,17 +1,12 @@
-import Link from "next/link";
-import { loadSafetyRules, loadDrills, loadAgeMatrix, loadPitchSmart } from "@platform/corpus";
-import { runAll } from "@platform/eval";
+import { loadSafetyRules, loadDrills } from "@platform/corpus";
 import { getSession } from "./lib/session";
-import { StatCard, Card, Badge } from "./components/ui";
+import { Hero, FeatureGrid, RoleTile } from "./components/ui";
 
 export default async function Home() {
   const rules = loadSafetyRules().rules;
   const drills = loadDrills();
-  const matrix = loadAgeMatrix();
-  const pitch = loadPitchSmart();
-  const evalRun = runAll();
-  // Layout already swallows getSession errors; mirror that here so a flaky
-  // session lookup never takes down the home page.
+  const publishedDrills = drills.filter((d) => d.review_status === "published").length;
+  // Layout already swallows getSession errors; mirror that here.
   let session: Awaited<ReturnType<typeof getSession>> = null;
   try {
     session = await getSession();
@@ -20,108 +15,86 @@ export default async function Home() {
   }
 
   return (
-    <div className="space-y-8">
-      <section>
-        <h1>Player Development Platform</h1>
-        <p className="mt-2 max-w-2xl text-slate-600">
-          Safety-first youth athlete training, backed by Pitch Smart, an age-band matrix, and a
-          typed drill library. Every recommendation is rule-checked before delivery.
-        </p>
-      </section>
+    <div className="space-y-12">
+      <Hero
+        eyebrow="Youth player development"
+        title={
+          <>
+            Practices that respect the rulebook —{" "}
+            <span className="text-brand-700">and the athlete.</span>
+          </>
+        }
+        description="Compile age-appropriate practice plans in under a minute. Every drill is gated by USA Baseball Pitch Smart, an age-band matrix, and our typed safety corpus before it reaches a coach or parent."
+        primary={session ? { href: "/coach", label: "Open coach console" } : { href: "/practice/new", label: "Build a practice plan" }}
+        secondary={{ href: "/safety", label: `${rules.length} safety rules →` }}
+      />
 
-      <section className="flex flex-wrap gap-3">
-        <StatCard label="Tier-1 safety rules" value={rules.length} />
-        <StatCard label="Drills published" value={drills.filter((d) => d.review_status === "published").length} />
-        <StatCard label="Age-band matrix" value={matrix.bands.length} />
-        <StatCard label="Pitch Smart tables" value={pitch.age_tables.length} />
-        <StatCard
-          label="Eval suite"
-          value={`${evalRun.passed}/${evalRun.total}`}
-          tone={evalRun.failed === 0 ? "ok" : "danger"}
+      <section>
+        <FeatureGrid
+          items={[
+            {
+              title: "Safety enforced, not suggested",
+              description: `${rules.length} Tier-1 rules from Pitch Smart, NSCA, CDC, and Stop Sports Injuries are compiled into hard blocks, warnings, and informational labels.`,
+            },
+            {
+              title: "Drills picked for the athlete",
+              description: `${publishedDrills} published drills filtered by age band, environment tier (field / cage / backyard / living room), and equipment on hand.`,
+            },
+            {
+              title: "Parent-facing without the noise",
+              description: "Every practice produces one home mission — a single, verified drill for the parent. No diagnoses, no comparisons, no anxiety.",
+            },
+          ]}
         />
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2">
-        <Card>
-          <h3>Coaches</h3>
-          <p className="mt-1 text-sm text-slate-600">Compile plans, review players, talk to the AI coach.</p>
-          <div className="mt-4 flex flex-wrap gap-2">
-            <Link href="/coach" className="btn-primary no-underline hover:no-underline">Coach console</Link>
-            <Link href="/practice/new" className="btn-ghost no-underline hover:no-underline">New practice</Link>
-            <Link href="/coach/chat" className="btn-ghost no-underline hover:no-underline">Coach chat</Link>
-          </div>
-        </Card>
-        <Card>
-          <h3>Players &amp; parents</h3>
-          <p className="mt-1 text-sm text-slate-600">Drills, missions, and what&apos;s safe today.</p>
-          <div className="mt-4 flex flex-wrap gap-2">
-            <Link href="/parent" className="btn-ghost no-underline hover:no-underline">Parent view</Link>
-            <Link href="/drills" className="btn-ghost no-underline hover:no-underline">Drill library</Link>
-            <Link href="/missions?age=11" className="btn-ghost no-underline hover:no-underline">Missions</Link>
-            <Link href="/safety" className="btn-ghost no-underline hover:no-underline">Safety rules</Link>
-          </div>
-        </Card>
-      </section>
-
-      <section>
-        <h2>APIs</h2>
-        <div className="flex flex-wrap gap-2 text-xs">
-          {[
-            "/api/compile",
-            "/api/safety/check",
-            "/api/eval",
-            "/api/diagnose",
-            "/api/retrieve",
-            "/api/drills",
-            "/api/missions",
-            "/api/ingest",
-            "/api/dont-do-today",
-            "/api/escalate",
-            "/api/coach-chat",
-            "/api/auth/session",
-          ].map((p) => (
-            <code key={p}>{p}</code>
-          ))}
+      <section className="space-y-4">
+        <header className="flex items-end justify-between">
+          <h2 className="m-0">Pick where you are today</h2>
+          <span className="text-sm text-slate-500">Role-aware — sign in unlocks personal views</span>
+        </header>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <RoleTile
+            href="/practice/new"
+            title="Build a practice"
+            description="Pick age, length, and focus areas. The compiler returns a safety-checked plan."
+            cta="Open compiler"
+          />
+          <RoleTile
+            href="/drills"
+            title="Drill library"
+            description={`Browse ${publishedDrills} published drills with tier, age band, and equipment filters.`}
+            cta="Browse drills"
+          />
+          <RoleTile
+            href="/missions?age=11"
+            title="Home missions"
+            description="One short drill per practice for the parent and athlete to do at home."
+            cta="See missions"
+          />
+          <RoleTile
+            href="/safety"
+            title="Safety rulebook"
+            description="The corpus that gates every plan. Sourced, dated, and reviewable."
+            cta="Read the rules"
+          />
         </div>
       </section>
 
       {!session && (
-        <Card className="border-brand-500/40 bg-brand-50/60">
-          <div className="flex items-center justify-between gap-4">
-            <div>
-              <h3 className="text-brand-900">Sign in to unlock the coach console</h3>
-              <p className="text-sm text-slate-600">
-                Local-only dev sign-in. Plans, missions, and ingest write to the local data store.
-              </p>
-            </div>
-            <Link href="/login" className="btn-primary no-underline hover:no-underline">
-              Sign in
-            </Link>
+        <section className="rounded-2xl border border-brand-500/30 bg-brand-50/60 p-6 md:flex md:items-center md:justify-between md:gap-6">
+          <div>
+            <h3 className="text-brand-900">Sign in to save plans and missions</h3>
+            <p className="mt-1 text-sm text-slate-700">
+              Coach, parent, player, or clinician — your view changes to match.
+            </p>
           </div>
-        </Card>
-      )}
-
-      {evalRun.failed > 0 ? (
-        <Card className="border-danger/30 bg-danger-soft/40">
-          <h3 className="text-danger">{evalRun.failed} eval failures</h3>
-          <ul className="mt-2 list-disc pl-6 text-sm">
-            {evalRun.failures.slice(0, 5).map((f) => (
-              <li key={f.id}>
-                <code>{f.id}</code> — {f.description} <em className="text-slate-600">({f.detail})</em>
-              </li>
-            ))}
-          </ul>
-        </Card>
-      ) : (
-        <Card>
-          <div className="flex items-center gap-3">
-            <Badge tone="ok">eval pass</Badge>
-            <span className="text-sm text-slate-600">
-              {evalRun.passed} of {evalRun.total} assertions pass across {rules.length} safety rules.
-            </span>
-          </div>
-        </Card>
+          <a href="/login" className="btn-primary mt-4 inline-flex md:mt-0">
+            Sign in
+          </a>
+        </section>
       )}
     </div>
   );
 }
+
