@@ -52,7 +52,15 @@ export default async function GamePage({
               {formatGameWhen(game.startsAt)}{game.venue ? ` · ${game.venue}` : ""} · {game.innings} innings
             </p>
           </div>
-          <span className={status.cls}>{status.label}</span>
+          <div className="flex items-center gap-2">
+            <Link
+              href={`/coach/teams/${id}/games/${gameId}/report`}
+              className="btn-ghost no-underline hover:no-underline"
+            >
+              Report
+            </Link>
+            <span className={status.cls}>{status.label}</span>
+          </div>
         </div>
       </header>
 

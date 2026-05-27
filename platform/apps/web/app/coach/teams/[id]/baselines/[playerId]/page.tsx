@@ -12,6 +12,7 @@ import {
   VERIFICATION_LABEL,
 } from "../../../../../lib/metrics";
 import { Card } from "../../../../../components/ui";
+import { Sparkline } from "../../../../../components/Sparkline";
 import { MetricEntryForm } from "./MetricEntryForm";
 
 export const metadata = { title: "Player baselines" };
@@ -57,6 +58,56 @@ export default async function PlayerBaselinePage({
           <MetricEntryForm playerId={player.id} />
         </div>
       </Card>
+
+      <section>
+        <h2>Progress</h2>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {METRICS.map((m) => {
+            const series = sorted
+              .filter((e) => e.metricKey === m.key)
+              .slice()
+              .reverse() // oldest first for the chart
+              .map((e) => ({ x: new Date(e.recordedAt).getTime(), y: e.value }));
+            if (series.length === 0) return null;
+            const first = series[0]!;
+            const last = series[series.length - 1]!;
+            const delta = last.y - first.y;
+            const deltaPct = first.y ? (delta / first.y) * 100 : 0;
+            const improved = m.lowerIsBetter ? delta < 0 : delta > 0;
+            return (
+              <div key={m.key} className="card">
+                <div className="flex items-baseline justify-between">
+                  <div className="text-xs uppercase tracking-wide text-slate-500">{m.label}</div>
+                  <div className="text-xs text-slate-400">{series.length} entries</div>
+                </div>
+                <div className="mt-1 flex items-baseline gap-2">
+                  <span className="text-xl font-bold text-slate-800">
+                    {last.y} <span className="text-sm font-normal text-slate-500">{m.unit}</span>
+                  </span>
+                  <span
+                    className={
+                      delta === 0
+                        ? "text-xs text-slate-400"
+                        : improved
+                        ? "text-xs font-semibold text-emerald-700"
+                        : "text-xs font-semibold text-amber-700"
+                    }
+                  >
+                    {delta > 0 ? "+" : ""}
+                    {delta.toFixed(2)} {m.unit}
+                    {first.y !== last.y && first.y
+                      ? ` (${deltaPct > 0 ? "+" : ""}${deltaPct.toFixed(1)}%)`
+                      : ""}
+                  </span>
+                </div>
+                <div className="mt-2">
+                  <Sparkline points={series} lowerIsBetter={m.lowerIsBetter} />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
 
       <section>
         <h2>Latest by metric</h2>
