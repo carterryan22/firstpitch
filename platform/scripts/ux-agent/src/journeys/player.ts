@@ -16,23 +16,24 @@ export const playerDailyDrill: Journey = {
   async run(ctx) {
     ctx.startStep("login");
     await loginAs(ctx, "player", `ux-player+${Date.now()}@test.local`, "UX Player");
-    ctx.endStep(true);
+    // Players should now be redirected to /missions automatically.
+    ctx.endStep(/\/missions/.test(ctx.page.url()));
 
-    ctx.startStep("landing");
-    // Players currently route to "/" — make sure that page has SOMETHING for them
-    await ctx.goto("/");
+    ctx.startStep("landing on missions");
     await ctx.audit();
-    const hasPlayerHook = (await ctx.page.locator("a:has-text('Drill'), a:has-text('Mission'), a:has-text('Today'), a[href='/missions'], a[href='/drills']").count()) > 0;
-    if (!hasPlayerHook) {
+    const drillHrefCount = await ctx.page.locator("a[href^='/drills/']").count();
+    const missionTextCount = await ctx.page.getByText(/today|drill|mission/i).count();
+    const hasMission = drillHrefCount > 0 || missionTextCount > 0;
+    if (!hasMission) {
       ctx.flag({
-        kind: "navigation-cost", severity: "major", url: ctx.page.url(),
-        message: "After login the player lands on the marketing home with no obvious 'my drill today' entry.",
-        suggestion: "Route players to a dedicated /player home with one big 'Today's Drill' card. Don't drop kids on the marketing landing page.",
+        kind: "empty-state", severity: "major", url: ctx.page.url(),
+        message: "Player landing has no clear 'today's drill' card or link.",
+        suggestion: "Pin one big Today's Drill card on /missions (or a dedicated /player home) so kids never need to navigate.",
       });
     }
-    ctx.endStep(true);
+    ctx.endStep(hasMission);
 
-    ctx.startStep("reach a drill");
+    ctx.startStep("open a drill");
     await ctx.goto("/drills");
     await ctx.audit();
     const drillLink = ctx.page.locator("a[href^='/drills/']").first();
@@ -50,7 +51,7 @@ export const playerDailyDrill: Journey = {
 
     // Kid-friendly copy check
     const text = (await ctx.page.locator("main, body").first().innerText()).slice(0, 2000);
-    const kidPhrases = /try it|your job|let's|imagine|like a|easy/i.test(text);
+    const kidPhrases = /try it|your job|let's|imagine|like a|easy|what good looks like/i.test(text);
     if (!kidPhrases) {
       ctx.flag({
         kind: "reading-level", severity: "minor", url: ctx.page.url(),

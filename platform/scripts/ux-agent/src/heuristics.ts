@@ -136,6 +136,17 @@ export async function auditPage(input: AuditInput): Promise<Array<Omit<Finding, 
       out.hardWordRatio = hard / words.length;
     }
 
+    function isInlineInProse(el: Element): boolean {
+      // Inline anchors inside paragraphs/spans are typically narrative links
+      // (e.g. "sourced from <a>USA Baseball</a>"). They are tappable but not
+      // primary tap targets; treat them as informational, not blockers.
+      if (el.tagName !== "A") return false;
+      const p = el.parentElement;
+      if (!p) return false;
+      const tag = p.tagName;
+      return tag === "P" || tag === "SPAN" || tag === "LI" || tag === "EM" || tag === "STRONG";
+    }
+
     // Interactive elements: buttons, role=button, links
     const buttons = Array.from(document.querySelectorAll("button, [role=button], a[href]"))
       .filter(visible)
@@ -144,8 +155,8 @@ export async function auditPage(input: AuditInput): Promise<Array<Omit<Finding, 
     for (const b of buttons) {
       const r = (b as HTMLElement).getBoundingClientRect();
       const name = accessibleName(b);
-      // Tap targets (mobile only)
-      if (r.width < minTap || r.height < minTap) {
+      // Tap targets (mobile only) — skip inline narrative links
+      if ((r.width < minTap || r.height < minTap) && !isInlineInProse(b)) {
         out.smallTapTargets.push({ tag: b.tagName.toLowerCase(), name: name.slice(0, 40), w: Math.round(r.width), h: Math.round(r.height) });
       }
       if (!name) {

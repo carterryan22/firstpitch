@@ -67,7 +67,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <UpdateBanner />
         <header className="sticky top-0 z-30 border-b-2 border-ink bg-ink text-cream">
           <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-3">
-            <Link href="/" className="no-underline hover:no-underline">
+            <Link href="/" className="inline-flex min-h-[44px] items-center no-underline hover:no-underline">
               <Wordmark dark />
             </Link>
             <Nav role={role} />
@@ -106,10 +106,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               </a>
               {" · "}NSCA YT&amp;C · CDC Heads Up · Stop Sports Injuries
             </p>
-            <p className="flex items-center gap-3 quote">
-              <Link className="text-ink no-underline hover:underline" href="/fields">Fields</Link>
-              <Link className="text-ink no-underline hover:underline" href="/safety">Safety</Link>
-              <Link className="text-ink no-underline hover:underline" href="/admin/status">Status</Link>
+            <p className="flex flex-wrap items-center gap-x-4 gap-y-1 quote">
+              <Link className="inline-flex min-h-[44px] items-center text-ink no-underline hover:underline" href="/fields">Fields</Link>
+              <Link className="inline-flex min-h-[44px] items-center text-ink no-underline hover:underline" href="/safety">Safety</Link>
+              <Link className="inline-flex min-h-[44px] items-center text-ink no-underline hover:underline" href="/admin/status">Status</Link>
               <span>© {new Date().getFullYear()} First Pitch</span>
             </p>
           </div>

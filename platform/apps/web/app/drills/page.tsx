@@ -14,49 +14,35 @@ export default async function DrillsPage({ searchParams }: { searchParams: Promi
   const tiers = ["T1_field", "T2_cage_gym", "T3_backyard", "T4_living_room"];
 
   return (
-    <main style={{ maxWidth: 1100, margin: "2rem auto", padding: "0 1rem", fontFamily: "system-ui" }}>
-      <h1>Drill library</h1>
-      <p><Link href="/">← Home</Link></p>
-      <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
+    <main className="mx-auto max-w-5xl space-y-6">
+      <header className="space-y-2">
+        <h1>Drill library</h1>
+        <p className="text-sm uppercase tracking-wide text-ink/60">{drills.length} drills</p>
+      </header>
+
+      <div className="space-y-3">
         <FilterGroup label="Topic" current={topic} options={topics} param="topic" />
         <FilterGroup label="Tier" current={tier} options={tiers} param="tier" />
       </div>
-      <p>{drills.length} drills</p>
-      <ul style={{ listStyle: "none", padding: 0 }}>
+
+      <ul className="space-y-3 p-0">
         {drills.map((d) => (
-          <li key={d.drill_id} style={{ border: "1px solid #ddd", padding: 12, marginBottom: 8, borderRadius: 6 }}>
-            <Link href={`/drills/${d.drill_id}`} style={{ fontSize: 16, fontWeight: 700, textDecoration: "none", color: "inherit" }}>
-              {d.name}
-            </Link>{" "}
-            — <code>{d.drill_id}</code>
-            <div style={{ fontSize: 13, color: "#555" }}>
-              {d.topic} · {d.environment_tier} · {d.duration_minutes}min · ages {d.age_band.join(", ")} · status {d.review_status}
-            </div>
-            <div style={{ marginTop: 6 }}>{d.short_description}</div>
+          <li key={d.drill_id} className="card space-y-2">
+            <h2 className="text-lg">
+              <Link href={`/drills/${d.drill_id}`} className="inline-flex min-h-[44px] items-center no-underline">
+                {d.name}
+              </Link>
+            </h2>
+            <p className="text-xs uppercase tracking-wide text-ink/60">
+              {d.topic} · {d.environment_tier} · {d.duration_minutes} min · ages {d.age_band.join(", ")} · {d.review_status}
+            </p>
+            <p>{d.short_description}</p>
             {d.kid_friendly ? (
-              <div
-                style={{
-                  marginTop: 10,
-                  padding: 10,
-                  borderRadius: 6,
-                  background: "#f0f7ff",
-                  border: "1px solid #cfe4ff",
-                  fontSize: 13,
-                  lineHeight: 1.45,
-                }}
-              >
-                <div style={{ fontWeight: 600, color: "#1d4ed8", marginBottom: 6, fontSize: 12, letterSpacing: 0.3, textTransform: "uppercase" }}>
-                  Coach → kids
-                </div>
-                <div style={{ marginBottom: 4 }}>
-                  <strong>How to explain it:</strong> {d.kid_friendly.explain}
-                </div>
-                <div style={{ marginBottom: 4 }}>
-                  <strong>What good looks like:</strong> {d.kid_friendly.goal}
-                </div>
-                <div>
-                  <strong>Why it matters:</strong> {d.kid_friendly.why}
-                </div>
+              <div className="rounded-none border-l-4 border-grass bg-cream/60 p-3 text-sm">
+                <p className="mb-1 text-xs uppercase tracking-wide text-grass-dark">For kids</p>
+                <p><strong>How to explain it:</strong> {d.kid_friendly.explain}</p>
+                <p><strong>What good looks like:</strong> {d.kid_friendly.goal}</p>
+                <p><strong>Why it matters:</strong> {d.kid_friendly.why}</p>
               </div>
             ) : null}
           </li>
@@ -67,15 +53,21 @@ export default async function DrillsPage({ searchParams }: { searchParams: Promi
 }
 
 function FilterGroup({ label, current, options, param }: { label: string; current?: string; options: string[]; param: string }) {
+  const chip = "inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-none border-2 px-3 py-1 text-sm no-underline";
+  const active = "border-ink bg-ink text-cream";
+  const idle = "border-ink/30 bg-cream text-ink hover:border-ink";
   return (
-    <div>
-      <strong>{label}: </strong>
-      <Link href={`/drills`}>all</Link>
+    <div className="flex flex-wrap items-center gap-2">
+      <strong className="mr-1 text-xs uppercase tracking-wide text-ink/60">{label}:</strong>
+      <Link href={`/drills`} className={`${chip} ${!current ? active : idle}`}>All</Link>
       {options.map((o) => (
-        <span key={o}>
-          {" · "}
-          <Link href={`/drills?${param}=${o}`} style={{ fontWeight: current === o ? "bold" : "normal" }}>{o}</Link>
-        </span>
+        <Link
+          key={o}
+          href={`/drills?${param}=${o}`}
+          className={`${chip} ${current === o ? active : idle}`}
+        >
+          {o}
+        </Link>
       ))}
     </div>
   );

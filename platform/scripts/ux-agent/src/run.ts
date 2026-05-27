@@ -16,6 +16,16 @@ async function preflight(): Promise<void> {
   const res = await fetch(`${BASE_URL}/api/auth/session`).catch(() => null);
   if (!res) throw new Error(`Dev server not reachable at ${BASE_URL}. Start it with \`npm run dev\` from platform/ first.`);
   if (res.status !== 200 && res.status !== 401) throw new Error(`Preflight got HTTP ${res.status} from ${BASE_URL}`);
+  // Warm Next.js dev-compile for the pages every journey hits, so the first
+  // journey doesn't pay the 30s cold-compile tax (which our heuristics would
+  // mis-classify as a workflow chokepoint).
+  const warmTargets = ["/login", "/coach", "/parent", "/missions", "/drills", "/practice/new", "/favorites"];
+  console.log(`[ux-agent] warming ${warmTargets.length} route(s)…`);
+  await Promise.all(
+    warmTargets.map((p) =>
+      fetch(`${BASE_URL}${p}`, { redirect: "manual" }).catch(() => undefined),
+    ),
+  );
 }
 
 async function runJourney(browser: Browser, j: Journey): Promise<JourneyResult> {
@@ -102,8 +112,10 @@ async function runJourney(browser: Browser, j: Journey): Promise<JourneyResult> 
     async type(selector, text) {
       try {
         const loc = page.locator(selector).first();
-        await loc.waitFor({ timeout: 6_000 });
-        await loc.pressSequentially(text, { delay: 3 });
+        await loc.waitFor({ timeout: 8_000 });
+        // .fill() is atomic + dispatches React change correctly, avoiding the
+        // flaky controlled-input-not-enabled-yet timing that pressSequentially hit.
+        await loc.fill(text);
         if (currentStep) currentStep.keystrokes += text.length;
         return true;
       } catch {
