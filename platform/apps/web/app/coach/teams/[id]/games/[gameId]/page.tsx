@@ -54,6 +54,12 @@ export default async function GamePage({
           </div>
           <div className="flex items-center gap-2">
             <Link
+              href={`/coach/teams/${id}/games/${gameId}/live`}
+              className="btn-primary no-underline hover:no-underline"
+            >
+              Live
+            </Link>
+            <Link
               href={`/coach/teams/${id}/games/${gameId}/report`}
               className="btn-ghost no-underline hover:no-underline"
             >

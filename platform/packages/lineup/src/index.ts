@@ -17,25 +17,54 @@
  */
 
 export const POSITIONS = ["P", "C", "1B", "2B", "3B", "SS", "LF", "CF", "RF"] as const;
-export type Position = (typeof POSITIONS)[number];
+/** Extra position used in Standard 10 ("Rover" / 4th outfielder). */
+export const EXTRA_POSITIONS = ["RV"] as const;
+export type Position = (typeof POSITIONS)[number] | (typeof EXTRA_POSITIONS)[number];
 export type Slot = Position | "BN";
 export type Rating = "preferred" | "ok" | "avoid";
+
+/** Defensive presets matching the Dugout Edge / common youth IA. */
+export type DefensivePreset = "standard9" | "standard10" | "coachPitch";
+export const PRESET_POSITIONS: Record<DefensivePreset, Position[]> = {
+  // Standard 9 — full diamond.
+  standard9: ["P", "C", "1B", "2B", "3B", "SS", "LF", "CF", "RF"],
+  // Standard 10 — 4 outfielders ("rover"). Same engine, one extra slot.
+  standard10: ["P", "C", "1B", "2B", "3B", "SS", "LF", "CF", "RF", "RV"],
+  // Coach pitch — no pitcher / catcher; pitcher position covered by coach.
+  coachPitch: ["1B", "2B", "3B", "SS", "LF", "CF", "RF"],
+};
 
 export type LineupPlayer = {
   id: string;
   canPitch?: boolean;
   canCatch?: boolean;
   injured?: boolean;
+  /** Batting / skill rating used by competitive weighting (1-5). Optional. */
+  battingSkill?: number;
   positionRatings?: Partial<Record<Position, Rating>>;
 };
 
 export type Inning = Record<string, Slot>; // playerId -> slot
+
+/** Map of inningIdx -> playerId -> slot for pinned cells that must not move. */
+export type LockMap = Array<Record<string, Slot>>;
 
 export type AutoLineupInput = {
   innings: number;
   players: LineupPlayer[];
   /** Player ids marked present. If omitted, all non-injured players are used. */
   present?: string[];
+  /** Defensive preset (default standard9). */
+  preset?: DefensivePreset;
+  /** Override of positions to fill; takes precedence over preset. */
+  positions?: Position[];
+  /** Cells the generator must preserve. */
+  locks?: LockMap;
+  /**
+   * 0 = pure fairness (equal innings + variety), 1 = pure skill (preferred
+   * positions + high battingSkill weighted toward premium spots). Default 0.3.
+   */
+  competitiveWeight?: number;
 };
 
 export type AutoLineupResult = {
@@ -57,8 +86,15 @@ function eligible(p: LineupPlayer, pos: Position): boolean {
   return ratingScore(p, pos) >= 0;
 }
 
+/** Positions considered "premium" for skill-weighted assignment. */
+const PREMIUM_POSITIONS: ReadonlySet<Position> = new Set(["P", "C", "SS", "CF"]);
+
 export function autoLineup(input: AutoLineupInput): AutoLineupResult {
   const warnings: string[] = [];
+  const positions: Position[] =
+    input.positions ?? PRESET_POSITIONS[input.preset ?? "standard9"];
+  const competitiveWeight = Math.max(0, Math.min(1, input.competitiveWeight ?? 0.3));
+  const fairnessWeight = 1 - competitiveWeight;
   const active = input.players.filter((p) => {
     if (p.injured) return false;
     if (input.present && !input.present.includes(p.id)) return false;
@@ -85,21 +121,51 @@ export function autoLineup(input: AutoLineupInput): AutoLineupResult {
     const inning: Inning = {};
     const used = new Set<string>();
 
-    for (const pos of POSITIONS) {
+    // First, honor locks for this inning. Pinned cells stick exactly.
+    const lockedThisInning = input.locks?.[i] ?? {};
+    for (const [pid, slot] of Object.entries(lockedThisInning)) {
+      if (!active.some((p) => p.id === pid)) continue; // skip absent / injured
+      inning[pid] = slot;
+      used.add(pid);
+      if (slot !== "BN") {
+        fieldCount[pid] = (fieldCount[pid] ?? 0) + 1;
+        if (slot !== "RV") {
+          const pc = posCount[pid] ?? {};
+          pc[slot] = (pc[slot] ?? 0) + 1;
+          posCount[pid] = pc;
+        }
+        if (slot === "P") prevPitcher = pid;
+      } else {
+        benchCount[pid] = (benchCount[pid] ?? 0) + 1;
+      }
+    }
+
+    for (const pos of positions) {
+      // Skip if a locked cell already filled this position for this inning.
+      const alreadyFilled = Object.values(inning).some((s) => s === pos);
+      if (alreadyFilled) continue;
+
       const candidates = active
         .filter((p) => !used.has(p.id) && eligible(p, pos))
         .filter((p) => !(pos === "P" && prevPitcher === p.id))
-        .map((p) => ({
-          p,
-          // Higher = better. We want preferred + low past field count + low
-          // count at this specific position (variety).
-          score:
-            ratingScore(p, pos) * 10 -
-            (fieldCount[p.id] ?? 0) * 2 -
-            ((posCount[p.id] ?? {})[pos] ?? 0) * 3 +
-            // tiebreak by deterministic id hash
-            (hash(p.id) % 7) * 0.01,
-        }))
+        .map((p) => {
+          const rating = ratingScore(p, pos); // -1..3
+          const skill = (p.battingSkill ?? 3) - 3; // -2..+2
+          const premium = PREMIUM_POSITIONS.has(pos) ? 1 : 0;
+          // Skill score rewards: preferred positions, higher batting skill at
+          // premium spots.
+          const skillScore = rating * 10 + skill * premium * 4;
+          // Fairness score rewards low past field count + variety at this
+          // position so far.
+          const fair = -((fieldCount[p.id] ?? 0) * 6) - ((posCount[p.id] ?? {})[pos] ?? 0) * 4;
+          return {
+            p,
+            score:
+              skillScore * competitiveWeight +
+              fair * fairnessWeight +
+              (hash(p.id) % 7) * 0.01,
+          };
+        })
         .sort((a, b) => b.score - a.score);
 
       if (candidates.length === 0) {
@@ -110,15 +176,15 @@ export function autoLineup(input: AutoLineupInput): AutoLineupResult {
       inning[pick.id] = pos;
       used.add(pick.id);
       fieldCount[pick.id] = (fieldCount[pick.id] ?? 0) + 1;
-      const pc = posCount[pick.id] ?? {};
-      pc[pos] = (pc[pos] ?? 0) + 1;
-      posCount[pick.id] = pc;
+      if (pos !== "RV") {
+        const pc = posCount[pick.id] ?? {};
+        pc[pos] = (pc[pos] ?? 0) + 1;
+        posCount[pick.id] = pc;
+      }
       if (pos === "P") prevPitcher = pick.id;
     }
 
-    // Bench remaining active players, sorted so those with fewest bench
-    // innings so far get the bench next time too only if everyone else has
-    // had at least as many — i.e. just record it.
+    // Bench remaining active players that aren't already locked into a slot.
     for (const p of active) {
       if (!used.has(p.id)) {
         inning[p.id] = "BN";
@@ -171,4 +237,48 @@ export function summarize(innings: Inning[], playerIds: string[]): FairnessRow[]
     }
     return row;
   });
+}
+
+/**
+ * Convenience: derive a `LockMap` from an existing lineup and a Set of
+ * `"<inningIdx>:<playerId>"` keys representing the locked cells.
+ */
+export function buildLocks(lineup: Inning[], lockedKeys: Set<string>): LockMap {
+  return lineup.map((inn, i) => {
+    const out: Record<string, Slot> = {};
+    for (const [pid, slot] of Object.entries(inn)) {
+      if (lockedKeys.has(`${i}:${pid}`)) out[pid] = slot;
+    }
+    return out;
+  });
+}
+
+/**
+ * Re-run `autoLineup` while preserving locked cells. Locked cells are derived
+ * from the provided `(inningIdx,playerId)` key set on the prior lineup.
+ */
+export function shuffleNonLocked(
+  prior: Inning[],
+  lockedKeys: Set<string>,
+  base: Omit<AutoLineupInput, "locks">,
+): AutoLineupResult {
+  return autoLineup({ ...base, locks: buildLocks(prior, lockedKeys) });
+}
+
+/** CSV export of a lineup (one row per player, one column per inning). */
+export function toCsv(
+  lineup: Inning[],
+  roster: Array<{ id: string; name: string; jerseyNumber?: string }>,
+): string {
+  const header = ["Player", "Jersey", ...lineup.map((_, i) => `Inn ${i + 1}`)];
+  const rows = roster.map((p) => {
+    const cells = lineup.map((inn) => inn[p.id] ?? "");
+    return [escape(p.name), escape(p.jerseyNumber ?? ""), ...cells.map(escape)];
+  });
+  return [header, ...rows].map((r) => r.join(",")).join("\n");
+}
+
+function escape(v: string): string {
+  if (/[",\n]/.test(v)) return `"${v.replace(/"/g, '""')}"`;
+  return v;
 }

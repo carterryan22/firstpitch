@@ -1,5 +1,13 @@
 import { describe, it, expect } from "vitest";
-import { autoLineup, summarize, type LineupPlayer } from "./index";
+import {
+  autoLineup,
+  summarize,
+  shuffleNonLocked,
+  buildLocks,
+  toCsv,
+  PRESET_POSITIONS,
+  type LineupPlayer,
+} from "./index";
 
 function p(id: string, extras: Partial<LineupPlayer> = {}): LineupPlayer {
   return { id, canPitch: false, canCatch: false, ...extras };
@@ -75,5 +83,61 @@ describe("autoLineup", () => {
       if (prev && pitcher) expect(pitcher).not.toBe(prev);
       prev = pitcher;
     }
+  });
+
+  it("preserves locked cells across regeneration", () => {
+    const players: LineupPlayer[] = ["a", "b", "c", "d", "e", "f", "g", "h", "i"].map((id) =>
+      p(id, { canPitch: true, canCatch: true }),
+    );
+    const first = autoLineup({ innings: 4, players });
+    // Lock player "a" at SS in inning 0 explicitly.
+    const locked = new Set(["0:a"]);
+    const priorWithPin = first.innings.map((inn, i) => (i === 0 ? { ...inn, a: "SS" as const } : inn));
+    const locks = buildLocks(priorWithPin, locked);
+    expect(locks[0]?.a).toBe("SS");
+    const second = shuffleNonLocked(priorWithPin, locked, { innings: 4, players });
+    expect(second.innings[0]?.a).toBe("SS");
+  });
+
+  it("respects coachPitch preset (no P / C in slots)", () => {
+    const players: LineupPlayer[] = ["a", "b", "c", "d", "e", "f", "g", "h"].map((id) => p(id));
+    const { innings } = autoLineup({ innings: 3, players, preset: "coachPitch" });
+    for (const inn of innings) {
+      expect(Object.values(inn)).not.toContain("P");
+      expect(Object.values(inn)).not.toContain("C");
+    }
+    expect(PRESET_POSITIONS.coachPitch).not.toContain("P");
+  });
+
+  it("standard10 preset fills the rover slot", () => {
+    const players: LineupPlayer[] = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"].map((id) =>
+      p(id, { canPitch: true, canCatch: true }),
+    );
+    const { innings } = autoLineup({ innings: 2, players, preset: "standard10" });
+    for (const inn of innings) {
+      expect(Object.values(inn)).toContain("RV");
+    }
+  });
+
+  it("competitiveWeight=1 favors high-skill at premium positions", () => {
+    const players: LineupPlayer[] = [
+      p("star", { canPitch: true, canCatch: true, battingSkill: 5, positionRatings: { P: "preferred", SS: "preferred", CF: "preferred", C: "preferred" } }),
+      p("avg", { canPitch: true, canCatch: true, battingSkill: 3 }),
+      ...["c", "d", "e", "f", "g", "h"].map((id) => p(id, { battingSkill: 2 })),
+    ];
+    const { innings } = autoLineup({ innings: 1, players, competitiveWeight: 1 });
+    const starSlot = innings[0]?.star;
+    expect(["P", "C", "SS", "CF"]).toContain(starSlot);
+  });
+
+  it("toCsv emits header + one row per player", () => {
+    const players: LineupPlayer[] = ["a", "b", "c", "d", "e", "f", "g", "h", "i"].map((id) =>
+      p(id, { canPitch: true, canCatch: true }),
+    );
+    const { innings } = autoLineup({ innings: 2, players });
+    const csv = toCsv(innings, players.map((pl) => ({ id: pl.id, name: pl.id })));
+    const lines = csv.split("\n");
+    expect(lines[0]).toBe("Player,Jersey,Inn 1,Inn 2");
+    expect(lines.length).toBe(players.length + 1);
   });
 });

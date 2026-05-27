@@ -5,6 +5,19 @@ import { userCanManageTeam } from "../../../lib/teams";
 
 export const dynamic = "force-dynamic";
 
+export async function GET(_req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
+  const session = await getSession();
+  if (!session) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  const { id } = await ctx.params;
+  const repos = getRepos();
+  const game = await repos.games.byId(id);
+  if (!game) return NextResponse.json({ error: "not_found" }, { status: 404 });
+  if (!(await userCanManageTeam(session.user.id, game.teamId))) {
+    return NextResponse.json({ error: "forbidden" }, { status: 403 });
+  }
+  return NextResponse.json({ game });
+}
+
 interface PatchBody {
   opponent?: string;
   startsAt?: string;
