@@ -4,6 +4,7 @@
 import type {
   AuditLogRecord,
   DbShape,
+  GameRecord,
   MetricEntryRecord,
   MissionCompletionRecord,
   PlanRecord,
@@ -58,6 +59,13 @@ export interface Repos {
     list(filter?: { teamId?: string; userId?: string; role?: TeamMemberRole }): Promise<TeamMembershipRecord[]>;
     upsert(input: Omit<TeamMembershipRecord, "id" | "createdAt">): Promise<TeamMembershipRecord>;
     remove(id: string): Promise<void>;
+  };
+  games: {
+    list(filter?: { teamId?: string; status?: GameRecord["status"] }): Promise<GameRecord[]>;
+    byId(id: string): Promise<GameRecord | undefined>;
+    create(input: Omit<GameRecord, "id" | "createdAt">): Promise<GameRecord>;
+    update(id: string, patch: Partial<Omit<GameRecord, "id" | "createdAt" | "teamId">>): Promise<GameRecord | undefined>;
+    delete(id: string): Promise<void>;
   };
   metricEntries: {
     list(filter?: { playerId?: string; metricKey?: string }): Promise<MetricEntryRecord[]>;
@@ -221,6 +229,34 @@ export function makeRepos(store: Store): Repos {
         mutate((db) => {
           const i = db.teamMemberships.findIndex((m) => m.id === id);
           if (i >= 0) db.teamMemberships.splice(i, 1);
+        }),
+    },
+    games: {
+      async list(filter) {
+        return (await store.read()).games.filter(
+          (g) =>
+            (!filter?.teamId || g.teamId === filter.teamId) &&
+            (!filter?.status || g.status === filter.status)
+        );
+      },
+      byId: async (id) => (await store.read()).games.find((g) => g.id === id),
+      create: (input) =>
+        mutate((db) => {
+          const rec: GameRecord = { ...input, id: cid("gm"), createdAt: new Date().toISOString() };
+          db.games.push(rec);
+          return rec;
+        }),
+      update: (id, patch) =>
+        mutate((db) => {
+          const rec = db.games.find((g) => g.id === id);
+          if (!rec) return undefined;
+          Object.assign(rec, patch);
+          return rec;
+        }),
+      delete: (id) =>
+        mutate((db) => {
+          const i = db.games.findIndex((g) => g.id === id);
+          if (i >= 0) db.games.splice(i, 1);
         }),
     },
     metricEntries: {

@@ -36,6 +36,12 @@ export default async function TeamDetailPage({
         </div>
         <div className="flex gap-2">
           <Link
+            href={`/coach/teams/${team.id}/games`}
+            className="btn-ghost no-underline hover:no-underline"
+          >
+            Games
+          </Link>
+          <Link
             href={`/coach/teams/${team.id}/roster`}
             className="btn-ghost no-underline hover:no-underline"
           >

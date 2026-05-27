@@ -124,12 +124,47 @@ export interface SessionRecord {
   createdAt: string;
 }
 
+export type GameStatus = "scheduled" | "in_progress" | "completed";
+export type HomeAway = "home" | "away";
+export type Attendance = "present" | "absent";
+
+export interface PitchEntry {
+  pitches: number;
+  innings: number;
+  recordedAt: string;
+}
+
+export interface GameRecord {
+  id: string;
+  teamId: string;
+  opponent: string;
+  /** ISO datetime when first pitch is scheduled. */
+  startsAt: string;
+  venue?: string;
+  homeAway: HomeAway;
+  innings: number;
+  status: GameStatus;
+  notes?: string;
+  /** Player attendance for this game. Map of playerId -> present|absent. */
+  attendance?: Record<string, Attendance>;
+  /** Position assignment per inning. lineup[inningIndex][playerId] = positionCode ("P","C",..., "BN"). */
+  lineup?: Array<Record<string, string>>;
+  /** Batting order: ordered array of playerIds. */
+  battingOrder?: string[];
+  /** Pitch counts entered post-game (one entry per pitcher). */
+  pitchCounts?: Record<string, PitchEntry>;
+  finalScore?: { us: number; them: number };
+  createdAt: string;
+  completedAt?: string;
+}
+
 export interface DbShape {
   users: UserRecord[];
   players: PlayerRecord[];
   teams: TeamRecord[];
   teamMemberships: TeamMembershipRecord[];
   plans: PlanRecord[];
+  games: GameRecord[];
   metricEntries: MetricEntryRecord[];
   missionCompletions: MissionCompletionRecord[];
   auditLogs: AuditLogRecord[];
@@ -142,6 +177,7 @@ export const EMPTY_DB: DbShape = {
   teams: [],
   teamMemberships: [],
   plans: [],
+  games: [],
   metricEntries: [],
   missionCompletions: [],
   auditLogs: [],
