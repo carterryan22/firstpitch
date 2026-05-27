@@ -10,7 +10,13 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const session = await getSession();
+  // Layout must never throw, or every route 500s before its own error handler runs.
+  let session: Awaited<ReturnType<typeof getSession>> = null;
+  try {
+    session = await getSession();
+  } catch {
+    session = null;
+  }
   const role = session?.user.role ?? null;
 
   return (

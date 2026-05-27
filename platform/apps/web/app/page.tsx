@@ -7,12 +7,39 @@ import { StatCard, Card, Badge } from "./components/ui";
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const rules = loadSafetyRules().rules;
-  const drills = loadDrills();
-  const matrix = loadAgeMatrix();
-  const pitch = loadPitchSmart();
-  const evalRun = runAll();
-  const session = await getSession();
+  // Catch each call separately so a failure renders a debug page instead of a
+  // sanitized 500 with only a digest. Safe to remove once the deploy is green.
+  const debug: Record<string, string> = {};
+  let rules: ReturnType<typeof loadSafetyRules>["rules"] = [];
+  let drills: ReturnType<typeof loadDrills> = [];
+  let matrix = { bands: [] } as unknown as ReturnType<typeof loadAgeMatrix>;
+  let pitch = { age_tables: [] } as unknown as ReturnType<typeof loadPitchSmart>;
+  let evalRun = { passed: 0, failed: 0, total: 0, failures: [] } as unknown as ReturnType<typeof runAll>;
+  let session: Awaited<ReturnType<typeof getSession>> = null;
+
+  try { rules = loadSafetyRules().rules; } catch (e) { debug.loadSafetyRules = (e as Error).stack ?? String(e); }
+  try { drills = loadDrills(); } catch (e) { debug.loadDrills = (e as Error).stack ?? String(e); }
+  try { matrix = loadAgeMatrix(); } catch (e) { debug.loadAgeMatrix = (e as Error).stack ?? String(e); }
+  try { pitch = loadPitchSmart(); } catch (e) { debug.loadPitchSmart = (e as Error).stack ?? String(e); }
+  try { evalRun = runAll(); } catch (e) { debug.runAll = (e as Error).stack ?? String(e); }
+  try { session = await getSession(); } catch (e) { debug.getSession = (e as Error).stack ?? String(e); }
+
+  if (Object.keys(debug).length > 0) {
+    return (
+      <div style={{ fontFamily: "system-ui", padding: "1rem" }}>
+        <h1 style={{ color: "#b91c1c" }}>Boot failures</h1>
+        {Object.entries(debug).map(([k, v]) => (
+          <details key={k} open style={{ marginBottom: 16 }}>
+            <summary><strong>{k}</strong></summary>
+            <pre style={{ whiteSpace: "pre-wrap", background: "#f1f5f9", padding: "0.75rem", borderRadius: 6, fontSize: 12 }}>{v}</pre>
+          </details>
+        ))}
+        <p style={{ fontSize: 12, color: "#475569" }}>
+          Remove the try/catch in app/page.tsx once these are fixed.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">

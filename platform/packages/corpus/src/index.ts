@@ -2,8 +2,14 @@
 // Source of truth for `tier1-safety-rules.json`, `pitch-smart-tables.json`,
 // `age-band-matrix.json`, `sources.seed.json`, `drills/starter-library.json`.
 
-import { readFileSync } from "node:fs";
-import path from "node:path";
+// Static JSON imports: the bundler (Next/SWC, Vite/Vitest) inlines these into
+// the output, so the corpus travels with the code on Vercel — no fs, no
+// CORPUS_DIR env var, no upward directory walk required at runtime.
+import safetyRulesData from "../../../../corpus/tier1-safety-rules.json";
+import pitchSmartData from "../../../../corpus/pitch-smart-tables.json";
+import ageMatrixData from "../../../../corpus/age-band-matrix.json";
+import sourcesData from "../../../../corpus/sources.seed.json";
+import drillsData from "../../../../corpus/drills/starter-library.json";
 
 // ---------- Types ----------
 
@@ -175,48 +181,6 @@ export interface Drill {
 
 // ---------- Loader ----------
 
-function resolveCorpusDir(): string {
-  const envDir = process.env.CORPUS_DIR;
-  if (envDir) return path.resolve(envDir);
-
-  // Walk up from cwd and from __dirname looking for a `corpus/` folder
-  // that contains the canonical files. This works for next dev (cwd=apps/web),
-  // vitest (cwd=platform), and node CLI alike.
-  const seen = new Set<string>();
-  const starts: string[] = [process.cwd()];
-  try {
-    starts.push(__dirname);
-  } catch {
-    // __dirname may be undefined in ESM contexts; fall through.
-  }
-  for (const start of starts) {
-    let cur = start;
-    for (let i = 0; i < 8; i++) {
-      if (seen.has(cur)) break;
-      seen.add(cur);
-      const candidate = path.join(cur, "corpus", "tier1-safety-rules.json");
-      try {
-        readFileSync(candidate);
-        return path.join(cur, "corpus");
-      } catch {
-        /* keep walking */
-      }
-      const parent = path.dirname(cur);
-      if (parent === cur) break;
-      cur = parent;
-    }
-  }
-  throw new Error(
-    "Could not locate corpus/ directory. Set CORPUS_DIR env var to the absolute path."
-  );
-}
-
-function readJson<T>(file: string): T {
-  const full = path.join(resolveCorpusDir(), file);
-  const raw = readFileSync(full, "utf-8");
-  return JSON.parse(raw) as T;
-}
-
 let _safety: SafetyRules | null = null;
 let _pitch: PitchSmartTables | null = null;
 let _matrix: AgeMatrix | null = null;
@@ -224,27 +188,27 @@ let _sources: SourceRecord[] | null = null;
 let _drills: Drill[] | null = null;
 
 export function loadSafetyRules(): SafetyRules {
-  if (!_safety) _safety = readJson<SafetyRules>("tier1-safety-rules.json");
+  if (!_safety) _safety = safetyRulesData as SafetyRules;
   return _safety;
 }
 
 export function loadPitchSmart(): PitchSmartTables {
-  if (!_pitch) _pitch = readJson<PitchSmartTables>("pitch-smart-tables.json");
+  if (!_pitch) _pitch = pitchSmartData as PitchSmartTables;
   return _pitch;
 }
 
 export function loadAgeMatrix(): AgeMatrix {
-  if (!_matrix) _matrix = readJson<AgeMatrix>("age-band-matrix.json");
+  if (!_matrix) _matrix = ageMatrixData as AgeMatrix;
   return _matrix;
 }
 
 export function loadSources(): SourceRecord[] {
-  if (!_sources) _sources = readJson<SourceRecord[]>("sources.seed.json");
+  if (!_sources) _sources = sourcesData as SourceRecord[];
   return _sources;
 }
 
 export function loadDrills(): Drill[] {
-  if (!_drills) _drills = readJson<Drill[]>("drills/starter-library.json");
+  if (!_drills) _drills = drillsData as Drill[];
   return _drills;
 }
 
