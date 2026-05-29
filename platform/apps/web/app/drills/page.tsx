@@ -88,7 +88,7 @@ export default async function DrillsPage({ searchParams }: { searchParams: Promi
               <div className="pt-1">
                 <Link
                   href={`/practice/new?focus=${encodeURIComponent(d.topic)}&age=${d.age_band[0]?.split("-")[0] ?? 11}&env=${d.environment_tier}`}
-                  className="text-sm underline"
+                  className="btn-ghost inline-flex min-h-[44px] items-center text-sm no-underline hover:no-underline"
                 >
                   Use in a practice →
                 </Link>

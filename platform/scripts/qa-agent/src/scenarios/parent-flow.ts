@@ -10,13 +10,20 @@ export const parentFlowScenario: Scenario = {
   description: "Sign in as a parent with no linked child and ensure the dashboard renders an empty state cleanly.",
   async run(ctx) {
     ctx.step("login");
-    await ctx.goto("/login");
-    await ctx.page.waitForSelector("input#email");
-    await ctx.page.locator(`button:has-text("Parent")`).first().click();
-    await ctx.page.locator("input#email").pressSequentially(`qa-parent+${Date.now()}@test.local`, { delay: 5 });
-    await ctx.page.locator("input#name").pressSequentially("QA Parent", { delay: 5 });
-    await ctx.page.locator("form button[type=submit]:not([disabled])").click({ timeout: 10_000 });
-    await ctx.page.waitForURL(/\/parent/, { timeout: 10_000 }).catch(() => undefined);
+    const loginRes = await ctx.page.request.post("/api/auth/login", {
+      data: { email: `qa-parent+${Date.now()}@test.local`, role: "parent", name: "QA Parent" },
+      headers: { "content-type": "application/json" },
+    });
+    if (!loginRes.ok()) {
+      ctx.bug({
+        kind: "response.error",
+        severity: "blocker",
+        status: loginRes.status(),
+        message: `POST /api/auth/login returned ${loginRes.status()}. Is PLATFORM_ALLOW_DEV_LOGIN=1 set?`,
+        url: "/api/auth/login",
+      });
+      return;
+    }
 
     ctx.step("parent dashboard");
     await ctx.goto("/parent");

@@ -183,6 +183,25 @@ export default async function ParentDashboard() {
         </p>
       </header>
 
+      {home ? (
+        <section
+          aria-label="Today's mission"
+          className="border-2 border-ink bg-dirt-100 p-5 md:flex md:items-center md:justify-between md:gap-6"
+        >
+          <div className="min-w-0">
+            <p className="quote text-xs uppercase tracking-[0.18em] text-dirt-700">Today&apos;s mission</p>
+            <h2 className="m-0 mt-1 text-xl">{home.name}</h2>
+            <p className="mt-1 text-sm text-ink/80">{home.short_description}</p>
+          </div>
+          <Link
+            href={`/missions?age=${ageRef}`}
+            className="btn-primary mt-4 inline-flex min-h-[44px] items-center no-underline hover:no-underline md:mt-0"
+          >
+            Start — {home.duration_minutes ?? 5} min
+          </Link>
+        </section>
+      ) : null}
+
       <section className="space-y-3">
         <h2 className="m-0">Upcoming</h2>
         {upcomingNext.length === 0 ? (

@@ -17,12 +17,17 @@ export const coachFlowScenario: Scenario = {
 
     ctx.step("create team via form");
     const teamName = `QA UI ${Date.now()}`;
+    await ctx.page.waitForLoadState("networkidle", { timeout: 10_000 }).catch(() => undefined);
     await ctx.page.waitForSelector("input#team-name");
+    const nameInput = ctx.page.locator("input#team-name");
+    await nameInput.waitFor({ state: "visible" });
     // pressSequentially fires keystrokes React's controlled input reliably observes
     // (fill() can race the hydration boundary on a fresh dev compile).
-    await ctx.page.locator("input#team-name").pressSequentially(teamName, { delay: 5 });
+    await nameInput.pressSequentially(teamName, { delay: 5 });
     await ctx.page.locator("select#team-age").selectOption("9-12");
-    await ctx.page.locator("form button[type=submit]:not([disabled])").first().click({ timeout: 10_000 });
+    const submit = ctx.page.locator("form button[type=submit]").first();
+    // Auto-waits for enabled; tolerant of slow dev-server hydration.
+    await submit.click({ timeout: 20_000 });
 
     // CreateTeamForm redirects to /coach/teams/[id]
     const navError = await ctx.page
@@ -96,17 +101,21 @@ export const coachFlowScenario: Scenario = {
 
 async function loginAs(ctx: ScenarioContext, role: "coach" | "parent" | "player", email: string): Promise<void> {
   ctx.step(`login as ${role}`);
-  await ctx.goto("/login");
-  await ctx.page.waitForSelector("input#email");
-  // Click the persona button (button text matches title-cased role)
-  const personaBtn = ctx.page.locator(`button:has-text("${role[0]?.toUpperCase()}${role.slice(1)}")`).first();
-  if ((await personaBtn.count()) > 0) await personaBtn.click();
-  // fill() sets value + fires input event in one shot — more reliable than
-  // pressSequentially against hydration-pending controlled inputs.
-  await ctx.page.locator("input#email").fill(email);
-  await ctx.page.locator("input#name").fill(`QA ${role}`);
-  // Nudge React: blur to flush any pending state, then wait for the enabled submit.
-  await ctx.page.locator("input#name").blur();
-  await ctx.page.locator("form button[type=submit]:not([disabled])").click({ timeout: 15_000 });
-  await ctx.page.waitForURL(/\/(coach|parent|missions|$)/, { timeout: 10_000 }).catch(() => undefined);
+  // The form is now magic-link only ("send me an email"); QA bypasses it via
+  // the legacy dev endpoint (PLATFORM_ALLOW_DEV_LOGIN=1 in prod, always-on in dev).
+  // This sets the platform_session cookie on the browser context directly.
+  const res = await ctx.page.request.post("/api/auth/login", {
+    data: { email, role, name: `QA ${role}` },
+    headers: { "content-type": "application/json" },
+  });
+  if (!res.ok()) {
+    ctx.bug({
+      kind: "response.error",
+      severity: "blocker",
+      status: res.status(),
+      message: `POST /api/auth/login returned ${res.status()} for role=${role}. Is PLATFORM_ALLOW_DEV_LOGIN=1 set?`,
+      url: `/api/auth/login`,
+    });
+    return;
+  }
 }
