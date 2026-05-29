@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { compile, antiLineCheck, type CompileInput } from "@platform/compiler";
 import { postFilter } from "@platform/ai";
 import { getRepos } from "@platform/storage";
+import { missionsForAge, type Mission } from "@platform/missions";
 import { getSession } from "../../lib/session";
 import { userCanManageTeam } from "../../lib/teams";
 
@@ -42,6 +43,8 @@ export async function POST(req: Request) {
     pitchHistoryByPlayer: body.pitchHistoryByPlayer,
     date: body.date ? new Date(body.date) : undefined,
     overrides: body.overrides,
+    selectedDrillIds: body.selectedDrillIds,
+    transitionMinPerBlock: body.transitionMinPerBlock,
   };
   const result = compile(input);
 
@@ -102,6 +105,34 @@ export async function POST(req: Request) {
     planId = plan.id;
   }
 
-  return NextResponse.json({ ...result, antiLine, postFilterActions: filterActions, planId });
+  // Auto-suggested missions: any mission whose drill the compiler picked, or whose
+  // band+topic overlaps the plan. Coaches see them as a one-click "assign to player".
+  const drillIdsInPlan = new Set(
+    result.blocks.map((b) => b.drill?.drill_id).filter((x): x is string => Boolean(x)),
+  );
+  const ageMissions = missionsForAge(input.age);
+  const suggestedMissions: Array<Pick<Mission, "id" | "title" | "description" | "kind" | "cadenceDays" | "minVerification" | "drillId">> = [];
+  for (const m of ageMissions) {
+    const directHit = m.drillId && drillIdsInPlan.has(m.drillId);
+    if (directHit) {
+      suggestedMissions.push({
+        id: m.id,
+        title: m.title,
+        description: m.description,
+        kind: m.kind,
+        cadenceDays: m.cadenceDays,
+        minVerification: m.minVerification,
+        drillId: m.drillId,
+      });
+    }
+  }
+
+  return NextResponse.json({
+    ...result,
+    antiLine,
+    postFilterActions: filterActions,
+    planId,
+    suggestedMissions,
+  });
 }
 

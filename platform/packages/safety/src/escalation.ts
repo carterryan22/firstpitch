@@ -12,7 +12,7 @@ export interface InjuryReport {
   bodyArea?: string;
 }
 
-export type EscalationTarget = "parent" | "coach" | "clinician" | "facility_admin" | "platform_admin";
+export type EscalationTarget = "parent" | "coach" | "facility_admin" | "platform_admin";
 
 export interface EscalationDecision {
   escalateTo: EscalationTarget[];
@@ -32,17 +32,17 @@ export function decideEscalation(report: InjuryReport): EscalationDecision {
 
   if (isHead) {
     return {
-      escalateTo: ["parent", "coach", "clinician"],
+      escalateTo: ["parent", "coach"],
       withinMinutes: 1,
-      message: "Possible head injury. Stop play; do not return today. Clinical evaluation required.",
+      message: "Possible head injury. Stop play; do not return today. Medical evaluation required.",
       blocksReturnToPlay: true,
     };
   }
   if (report.severity === "severe") {
     return {
-      escalateTo: ["parent", "coach", "clinician"],
+      escalateTo: ["parent", "coach"],
       withinMinutes: 1,
-      message: "Severe injury reported. Stop activity; arrange clinical evaluation.",
+      message: "Severe injury reported. Stop activity; arrange medical evaluation.",
       blocksReturnToPlay: true,
     };
   }

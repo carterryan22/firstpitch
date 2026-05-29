@@ -99,6 +99,20 @@ export default async function TeamDetailPage({
             Digest
           </Link>
           <Link
+            href={`/coach/teams/${team.id}/missions`}
+            className="btn-ghost no-underline hover:no-underline"
+          >
+            Missions
+          </Link>
+          <Link
+            href={`/teams/${team.slug}`}
+            className="btn-ghost no-underline hover:no-underline"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Public page ↗
+          </Link>
+          <Link
             href={`/coach/teams/${team.id}/roster`}
             className="btn-ghost no-underline hover:no-underline"
           >

@@ -54,7 +54,7 @@ export function planToMarkdown(plan: CompileResult, meta?: { title?: string; dat
   lines.push("## Blocks");
   for (const b of plan.blocks) {
     const name = b.drill?.name ?? b.type;
-    lines.push(`### ${b.blockId} — ${name} (${b.durationMin}min)`);
+    lines.push(`### ${name} (${b.durationMin}min)`);
     if (b.drill) {
       lines.push(`*${b.drill.short_description}*`);
       if (b.drill.coaching_cues?.length) {

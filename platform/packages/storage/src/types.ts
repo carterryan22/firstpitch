@@ -1,6 +1,6 @@
 // Domain types for the storage layer. Intentionally JSON-serializable.
 
-export type Role = "parent" | "coach" | "player" | "clinician" | "admin";
+export type Role = "parent" | "coach" | "player" | "admin";
 
 export interface UserRecord {
   id: string;
@@ -132,6 +132,31 @@ export interface MissionCompletionRecord {
   evidence?: string;
 }
 
+/**
+ * Coach-issued mission assignment. Closes the development loop: the diagnosis
+ * engine + practice compiler can suggest a mission, the coach assigns it to
+ * specific players, and the parent dashboard surfaces it as homework with a
+ * one-tap "Done" that writes both this record (completedAt) and a
+ * MissionCompletionRecord so the streak engine keeps working.
+ */
+export interface MissionAssignmentRecord {
+  id: string;
+  teamId: string;
+  playerId: string;
+  missionId: string;
+  assignedByUserId: string;
+  assignedAt: string;
+  dueAt?: string;
+  /** Player-side progress signal. Defaults to "assigned" when missing. */
+  status?: "assigned" | "in_progress" | "completed";
+  /** Set the first time the player taps "Start" — used by the locker for in-progress badges. */
+  startedAt?: string;
+  completedAt?: string;
+  /** Optional link back to the practice plan that produced the suggestion. */
+  planId?: string;
+  notes?: string;
+}
+
 export interface AuditLogRecord {
   id: string;
   userId?: string;
@@ -145,6 +170,24 @@ export interface SessionRecord {
   id: string;
   userId: string;
   expiresAt: string;
+  createdAt: string;
+}
+
+/**
+ * A one-time magic-link login token. Stores the *hash* of the token (never the
+ * plaintext) so a DB leak doesn't expose live links. Consumes single-use.
+ */
+export interface LoginTokenRecord {
+  id: string;
+  /** SHA-256 hash of the random token string. */
+  tokenHash: string;
+  email: string;
+  role: "coach" | "parent" | "player" | "admin";
+  name?: string;
+  /** Where to send the user after consumption (path on this app). */
+  redirectTo?: string;
+  expiresAt: string;
+  consumedAt?: string;
   createdAt: string;
 }
 
@@ -182,6 +225,8 @@ export interface GameRecord {
   finalScore?: { us: number; them: number };
   /** When true, the game is treated as a scrimmage: excluded from season stats. */
   isScrimmage?: boolean;
+  /** Parent-facing Press Box link is live when true. URL is HMAC-signed so no token is stored. */
+  shareEnabled?: boolean;
   createdAt: string;
   completedAt?: string;
 }
@@ -250,8 +295,12 @@ export interface DbShape {
   metricEntries: MetricEntryRecord[];
   goals: GoalRecord[];
   missionCompletions: MissionCompletionRecord[];
+  /** Coach-issued mission assignments. Optional for back-compat. */
+  missionAssignments?: MissionAssignmentRecord[];
   auditLogs: AuditLogRecord[];
   sessions: SessionRecord[];
+  /** Magic-link login tokens. Optional for back-compat with old persisted DBs. */
+  loginTokens?: LoginTokenRecord[];
   /** Fields directory (Dugout Dirt parity). All optional for back-compat. */
   fields?: FieldRecord[];
   fieldReviews?: FieldReviewRecord[];
@@ -271,8 +320,10 @@ export const EMPTY_DB: DbShape = {
   metricEntries: [],
   goals: [],
   missionCompletions: [],
+  missionAssignments: [],
   auditLogs: [],
   sessions: [],
+  loginTokens: [],
   fields: [],
   fieldReviews: [],
   fieldBookings: [],
@@ -352,6 +403,12 @@ export interface FieldRecord {
   lng?: number;
   /** External source attribution (OSM way id URL, league site, etc.). */
   sourceUrl?: string;
+  /** Human-readable source label, e.g. "OpenStreetMap", "Bellevue Parks", "Coach-submitted". */
+  sourceName?: string;
+  /** ISO date the field info was last verified by a human or trusted source. */
+  lastVerifiedAt?: string;
+  /** Verification confidence — drives the trust badge on /fields. */
+  verification?: "verified" | "community" | "imported" | "unverified";
   /** When a coach/manager has claimed and is maintaining this field. */
   claimedByUserId?: string;
   createdAt: string;
@@ -385,6 +442,14 @@ export interface FieldBookingRecord {
   durationMin: number;
   purpose: "practice" | "game" | "scrimmage" | "clinic" | "other";
   notes?: string;
+  /** Free-text team or league name (e.g. "Bellevue Little League 11U Bombers"). */
+  teamOrLeague?: string;
+  /** Age group of the players using the field. */
+  ageGroup?: "6U" | "8U" | "10U" | "12U" | "14U" | "16U" | "18U" | "adult";
+  /** Whether the requester confirms they have insurance lined up (many cities require it). */
+  insuranceReady?: boolean;
+  /** Optional backup date for the same slot, ISO "YYYY-MM-DD". */
+  backupDate?: string;
   status: FieldBookingStatus;
   createdAt: string;
 }

@@ -8,6 +8,10 @@ import {
   logout,
   requireRole,
   resolveSession,
+  issueLoginToken,
+  consumeLoginToken,
+  hashToken,
+  LOGIN_TOKEN_TTL_MS,
 } from "./index";
 
 function fresh() {
@@ -63,5 +67,71 @@ describe("login/resolve/logout", () => {
       return;
     }
     throw new Error("should have thrown");
+  });
+});
+
+describe("magic-link tokens", () => {
+  it("issues a token (plaintext returned, hash persisted)", async () => {
+    const repos = fresh();
+    const issued = await issueLoginToken(repos, { email: "P@X.com  ", role: "parent" });
+    expect(issued.token.length).toBeGreaterThan(20);
+    expect(Date.parse(issued.expiresAt)).toBeGreaterThan(Date.now() + LOGIN_TOKEN_TTL_MS - 5_000);
+    const rec = await repos.loginTokens.byHash(hashToken(issued.token));
+    expect(rec?.email).toBe("p@x.com");
+    expect(rec?.role).toBe("parent");
+    // Never store plaintext.
+    expect(rec?.tokenHash).not.toContain(issued.token);
+  });
+
+  it("consume mints a session, normalizes email + creates user", async () => {
+    const repos = fresh();
+    const issued = await issueLoginToken(repos, { email: "Coach@X.com", role: "coach", name: "C" });
+    const out = await consumeLoginToken(repos, issued.token);
+    expect(out).not.toBeNull();
+    expect(out!.user.email).toBe("coach@x.com");
+    expect(out!.user.role).toBe("coach");
+    // Cookie resolves to a real session.
+    const resolved = await resolveSession(repos, out!.cookieValue);
+    expect(resolved?.user.id).toBe(out!.user.id);
+  });
+
+  it("rejects unknown, double-consumed, and expired tokens", async () => {
+    const repos = fresh();
+    expect(await consumeLoginToken(repos, "not-a-real-token")).toBeNull();
+
+    const issued = await issueLoginToken(repos, { email: "x@y.com", role: "player" });
+    const first = await consumeLoginToken(repos, issued.token);
+    expect(first).not.toBeNull();
+    const second = await consumeLoginToken(repos, issued.token);
+    expect(second).toBeNull();
+
+    // Synthesize an already-expired record and ensure consume rejects it.
+    const expired = await repos.loginTokens.create({
+      tokenHash: hashToken("expired-test-token"),
+      email: "z@y.com",
+      role: "parent",
+      expiresAt: new Date(Date.now() - 60_000).toISOString(),
+    });
+    expect(expired.id).toBeTruthy();
+    expect(await consumeLoginToken(repos, "expired-test-token")).toBeNull();
+  });
+
+  it("issueLoginToken validates email + role", async () => {
+    const repos = fresh();
+    await expect(issueLoginToken(repos, { email: "bad", role: "coach" })).rejects.toThrowError(AuthError);
+    await expect(
+      issueLoginToken(repos, { email: "a@b.com", role: "boss" as never }),
+    ).rejects.toThrowError(AuthError);
+  });
+
+  it("preserves redirectTo through to the consumed session", async () => {
+    const repos = fresh();
+    const issued = await issueLoginToken(repos, {
+      email: "a@b.com",
+      role: "parent",
+      redirectTo: "/parent?team=t1",
+    });
+    const out = await consumeLoginToken(repos, issued.token);
+    expect(out?.redirectTo).toBe("/parent?team=t1");
   });
 });

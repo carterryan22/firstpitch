@@ -1,50 +1,150 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
-type Role = "coach" | "parent" | "player" | "clinician" | "admin";
+type Role = "coach" | "parent" | "player" | "admin";
 
-const ROLES: Array<{ role: Role; title: string; description: string }> = [
-  { role: "coach", title: "Coach", description: "Compile plans, manage roster, review safety gates." },
-  { role: "parent", title: "Parent", description: "See today's home mission and your child's progress." },
-  { role: "player", title: "Player", description: "Today's drills, missions, and personal bests." },
-  { role: "clinician", title: "Clinician", description: "Review escalations, sign off on return-to-play." },
+interface RoleInfo {
+  role: Role;
+  title: string;
+  description: string;
+  unlocks: string[];
+}
+
+const ROLES: RoleInfo[] = [
+  {
+    role: "coach",
+    title: "Coach",
+    description: "Run the team.",
+    unlocks: [
+      "Save teams, baselines, and pitching history",
+      "Compile safety-gated practice plans + share parent versions",
+      "Auto-lineups with Pitch Smart enforcement",
+    ],
+  },
+  {
+    role: "parent",
+    title: "Parent",
+    description: "Stay in the loop.",
+    unlocks: [
+      "Today's home mission for your kid",
+      "Save your favorite fields + booking history",
+      "See your kid's progress without nagging the coach",
+    ],
+  },
+  {
+    role: "player",
+    title: "Player",
+    description: "Get better between practices.",
+    unlocks: [
+      "Daily missions + XP for streaks",
+      "Triple Play baseball-IQ game",
+      "Personal bests for your throws, swings, and times",
+    ],
+  },
 ];
 
+const ERROR_COPY: Record<string, string> = {
+  missing_token: "That magic link is missing its token. Request a new one.",
+  invalid_or_expired:
+    "That magic link is expired or already used. Request a new one — they're good for 15 minutes.",
+};
+
 export default function LoginPage() {
-  const router = useRouter();
+  return (
+    <Suspense fallback={<div className="card">Loading…</div>}>
+      <LoginForm />
+    </Suspense>
+  );
+}
+
+function LoginForm() {
+  const params = useSearchParams();
+  const incomingError = params.get("error");
+  const nextPath = params.get("next") ?? undefined;
+
   const [role, setRole] = useState<Role>("coach");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [busy, setBusy] = useState(false);
-  const [err, setErr] = useState<string | null>(null);
+  const [err, setErr] = useState<string | null>(
+    incomingError ? (ERROR_COPY[incomingError] ?? "Sign-in failed") : null,
+  );
+  const [sent, setSent] = useState<null | { email: string; devLink?: string; delivery?: string }>(null);
+
+  const selectedRole = ROLES.find((r) => r.role === role);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setBusy(true);
     setErr(null);
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ email, role, name }),
-    });
-    setBusy(false);
-    if (!res.ok) {
-      const j = (await res.json().catch(() => ({}))) as { error?: string };
-      setErr(j.error ?? "Sign-in failed");
-      return;
+    try {
+      const res = await fetch("/api/auth/request-link", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ email, role, name, redirectTo: nextPath }),
+      });
+      const j = (await res.json().catch(() => ({}))) as {
+        error?: string;
+        ok?: boolean;
+        devLink?: string;
+        delivery?: string;
+      };
+      if (!res.ok || !j.ok) {
+        setErr(j.error ?? "Couldn't send the magic link.");
+        return;
+      }
+      setSent({ email, devLink: j.devLink, delivery: j.delivery });
+    } catch {
+      setErr("Network error. Try again.");
+    } finally {
+      setBusy(false);
     }
-    router.push(
-      role === "parent"
-        ? "/parent"
-        : role === "coach"
-          ? "/coach"
-          : role === "player"
-            ? "/missions"
-            : "/",
+  }
+
+  if (sent) {
+    return (
+      <div className="mx-auto max-w-xl space-y-6">
+        <header>
+          <h1>Check your email</h1>
+          <p className="mt-2 text-slate-600">
+            We sent a magic link to <strong>{sent.email}</strong>. It expires in 15 minutes and can
+            only be used once.
+          </p>
+        </header>
+        <div className="card space-y-3">
+          <p className="m-0 text-sm">
+            Open it on the device you want to stay signed in on. We don&apos;t use passwords —
+            opening the link signs you in and sets a 7-day cookie.
+          </p>
+          {sent.devLink ? (
+            <div className="rounded-md border-2 border-warn/40 bg-warn-soft/30 p-3 text-sm">
+              <p className="m-0 font-semibold text-warn">Dev mode (no email provider configured)</p>
+              <p className="mt-1 text-xs text-ink/80">
+                No <code>RESEND_API_KEY</code> set, so we&apos;re showing the link inline. In
+                production this only goes to the inbox.
+              </p>
+              <p className="mt-2">
+                <a className="btn-primary no-underline hover:no-underline" href={sent.devLink}>
+                  Open magic link →
+                </a>
+              </p>
+            </div>
+          ) : null}
+          <button
+            type="button"
+            className="btn-ghost text-sm"
+            onClick={() => {
+              setSent(null);
+              setErr(null);
+            }}
+          >
+            ← Wrong email? Send another
+          </button>
+        </div>
+      </div>
     );
-    router.refresh();
   }
 
   return (
@@ -52,17 +152,15 @@ export default function LoginPage() {
       <header>
         <h1>Sign in</h1>
         <p className="mt-2 text-slate-600">
-          Pick how you use the platform — the navigation and dashboards adjust to match.
+          No passwords. Pick your role, drop your email, we&apos;ll send you a one-time magic link.
         </p>
       </header>
 
       <fieldset className="space-y-3">
-        <legend id="role-legend" className="label">I am a&hellip;</legend>
-        <div
-          role="radiogroup"
-          aria-labelledby="role-legend"
-          className="grid gap-3 sm:grid-cols-2"
-        >
+        <legend id="role-legend" className="label">
+          I am a&hellip;
+        </legend>
+        <div role="radiogroup" aria-labelledby="role-legend" className="grid gap-3 sm:grid-cols-2">
           {ROLES.map((r) => {
             const active = role === r.role;
             return (
@@ -88,6 +186,18 @@ export default function LoginPage() {
             );
           })}
         </div>
+        {selectedRole ? (
+          <div className="card border-brand-500/40 bg-brand-50/40 p-4">
+            <p className="text-xs font-semibold uppercase tracking-wide text-brand-700">
+              Signing in as a {selectedRole.title.toLowerCase()} unlocks
+            </p>
+            <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-800">
+              {selectedRole.unlocks.map((u) => (
+                <li key={u}>{u}</li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
       </fieldset>
 
       <form onSubmit={onSubmit} className="card space-y-4">
@@ -98,6 +208,7 @@ export default function LoginPage() {
           <input
             id="email"
             type="email"
+            autoComplete="email"
             placeholder="you@team.example"
             className="input"
             value={email}
@@ -112,6 +223,7 @@ export default function LoginPage() {
           <input
             id="name"
             className="input"
+            autoComplete="name"
             placeholder="Optional"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -119,14 +231,13 @@ export default function LoginPage() {
         </div>
         {err && <p className="text-sm text-danger">{err}</p>}
         <button type="submit" disabled={busy || !email} className="btn-primary w-full">
-          {busy ? "Signing in…" : `Continue as ${role}`}
+          {busy ? "Sending link…" : "Email me a magic link"}
         </button>
         <p className="text-xs text-slate-500">
-          By signing in you agree to safety-first practice guidance. We do not store medical data
-          and we never publish player data without consent.
+          Links expire in 15 minutes. By signing in you agree to safety-first practice guidance. We
+          don&apos;t store medical data and we never publish player data without consent.
         </p>
       </form>
     </div>
   );
 }
-

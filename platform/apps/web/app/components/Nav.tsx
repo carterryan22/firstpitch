@@ -4,12 +4,14 @@ export interface NavItem { href: string; label: string; roles?: string[] }
 
 export const NAV: NavItem[] = [
   { href: "/", label: "Home" },
+  { href: "/for/coach", label: "Coaches" },
+  { href: "/for/parent", label: "Parents" },
+  { href: "/for/athlete", label: "Athletes" },
   { href: "/coach", label: "Dashboard", roles: ["coach", "admin"] },
   { href: "/parent", label: "Dashboard", roles: ["parent", "player"] },
   { href: "/practice/new", label: "New practice", roles: ["coach", "admin"] },
   { href: "/drills", label: "Drills" },
   { href: "/fields", label: "Fields" },
-  { href: "/missions", label: "Missions" },
   { href: "/learn", label: "Learn" },
   { href: "/safety", label: "Safety" },
   { href: "/favorites", label: "★ Saved" },

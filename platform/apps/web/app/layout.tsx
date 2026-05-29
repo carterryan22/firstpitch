@@ -1,11 +1,12 @@
 import "./globals.css";
 import Link from "next/link";
-import { Bungee, Rye, Special_Elite, Roboto_Slab } from "next/font/google";
+import { Bungee, Rye, Special_Elite, Roboto_Slab, Inter } from "next/font/google";
 import { Nav } from "./components/Nav";
 import { LogoutButton } from "./components/LogoutButton";
 import { MobileRefresh } from "./components/MobileRefresh";
 import { UpdateBanner } from "./components/UpdateBanner";
 import { Wordmark } from "./components/ui";
+import { Analytics } from "./components/Analytics";
 import { getSession } from "./lib/session";
 
 // Adopted from dugout-dirt.com: Bungee (display), Rye (western emphasis),
@@ -14,6 +15,7 @@ const display = Bungee({ subsets: ["latin"], weight: "400", variable: "--font-di
 const western = Rye({ subsets: ["latin"], weight: "400", variable: "--font-western", display: "swap" });
 const typeFace = Special_Elite({ subsets: ["latin"], weight: "400", variable: "--font-type", display: "swap" });
 const slab = Roboto_Slab({ subsets: ["latin"], variable: "--font-slab", display: "swap" });
+const body = Inter({ subsets: ["latin"], variable: "--font-body", display: "swap" });
 
 export const metadata = {
   title: {
@@ -53,7 +55,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     session = null;
   }
   const role = session?.user.role ?? null;
-  const fontVars = `${display.variable} ${western.variable} ${typeFace.variable} ${slab.variable}`;
+  const fontVars = `${display.variable} ${western.variable} ${typeFace.variable} ${slab.variable} ${body.variable}`;
 
   return (
     <html lang="en" className={fontVars}>
@@ -97,6 +99,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         {/* Pushes new web deploys into the iOS/iPad Capacitor shell and
             installed PWAs without requiring a TestFlight rebuild. */}
         <MobileRefresh />
+        <Analytics />
         <footer className="border-t-2 border-ink bg-cream">
           <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-8 text-xs text-dirt-700 md:flex-row md:items-center md:justify-between">
             <p className="quote">
@@ -109,7 +112,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <p className="flex flex-wrap items-center gap-x-4 gap-y-1 quote">
               <Link className="inline-flex min-h-[44px] items-center text-ink no-underline hover:underline" href="/fields">Fields</Link>
               <Link className="inline-flex min-h-[44px] items-center text-ink no-underline hover:underline" href="/safety">Safety</Link>
-              <Link className="inline-flex min-h-[44px] items-center text-ink no-underline hover:underline" href="/admin/status">Status</Link>
+              <Link className="inline-flex min-h-[44px] items-center text-ink no-underline hover:underline" href="/policy/ai-boundaries">Policy</Link>
               <span>© {new Date().getFullYear()} First Pitch</span>
             </p>
           </div>

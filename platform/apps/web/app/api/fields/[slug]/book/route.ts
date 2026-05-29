@@ -6,6 +6,9 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 type Purpose = "practice" | "game" | "scrimmage" | "clinic" | "other";
+type AgeGroup = "6U" | "8U" | "10U" | "12U" | "14U" | "16U" | "18U" | "adult";
+
+const AGE_GROUPS: AgeGroup[] = ["6U", "8U", "10U", "12U", "14U", "16U", "18U", "adult"];
 
 interface BookBody {
   requestedByName?: string;
@@ -14,6 +17,10 @@ interface BookBody {
   durationMin?: number;
   purpose?: Purpose;
   notes?: string;
+  teamOrLeague?: string;
+  ageGroup?: AgeGroup;
+  insuranceReady?: boolean;
+  backupDate?: string;
 }
 
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
@@ -52,6 +59,10 @@ export async function POST(
     durationMin,
     purpose,
     notes: body.notes?.slice(0, 1000),
+    teamOrLeague: body.teamOrLeague?.slice(0, 120),
+    ageGroup: AGE_GROUPS.includes(body.ageGroup as AgeGroup) ? body.ageGroup : undefined,
+    insuranceReady: typeof body.insuranceReady === "boolean" ? body.insuranceReady : undefined,
+    backupDate: body.backupDate && ISO_DATE.test(body.backupDate) ? body.backupDate : undefined,
   });
   await repos.audit
     .log({ userId: session.user.id, action: "field.booking.create", resource: field.id })

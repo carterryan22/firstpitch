@@ -2,7 +2,7 @@
 
 export const REFUSALS = {
   injury_or_pain:
-    "It sounds like something is hurting. I'm not able to diagnose or give medical advice. Please stop the activity, tell a parent or coach, and reach out to a qualified clinician.",
+    "It sounds like something is hurting. I'm not able to diagnose or give medical advice. Please stop the activity, tell a parent or coach, and reach out to a qualified medical professional.",
   out_of_scope:
     "That request is outside what this platform is designed to help with. Please consult a qualified professional.",
   age_inappropriate:

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { getRepos } from "@platform/storage";
+import { MISSIONS } from "@platform/missions";
 import { getSession } from "../../lib/session";
 import { userCanReadTeam } from "../../lib/teams";
 import { PlanView, type PlanBlock } from "../../components/PlanView";
@@ -20,6 +21,16 @@ export default async function PlanPage({ params }: { params: Promise<{ id: strin
   }
   const team = await repos.teams.byId(plan.teamId);
   const blocks = Array.isArray(plan.blocks) ? (plan.blocks as PlanBlock[]) : [];
+  const drillIds = new Set(blocks.map((b) => b.drill?.drill_id).filter((x): x is string => !!x));
+  const suggestedMissions = MISSIONS.filter((m) => m.drillId && drillIds.has(m.drillId)).map((m) => ({
+    id: m.id,
+    title: m.title,
+    description: m.description,
+    kind: m.kind,
+    cadenceDays: m.cadenceDays,
+    minVerification: m.minVerification,
+    drillId: m.drillId,
+  }));
 
   return (
     <div className="space-y-6">
@@ -37,6 +48,8 @@ export default async function PlanPage({ params }: { params: Promise<{ id: strin
         <h1 className="mt-1">{plan.name}</h1>
       </header>
       <PlanView
+        teamId={plan.teamId ?? undefined}
+        planId={plan.id}
         plan={{
           name: plan.name,
           ageBand: plan.ageBand,
@@ -47,6 +60,7 @@ export default async function PlanPage({ params }: { params: Promise<{ id: strin
           totalThrowingLoad: plan.totalThrowingLoad,
           qualityScore: plan.qualityScore,
           focus: plan.focus,
+          suggestedMissions,
         }}
       />
     </div>

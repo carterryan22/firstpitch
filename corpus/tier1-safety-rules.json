@@ -145,7 +145,7 @@
       "sport": "general",
       "age_band": "all",
       "source_name": "Platform policy",
-      "source_url": "internal://policy/ai-boundary",
+      "source_url": "/policy/ai-boundaries",
       "scope": "All AI-generated output.",
       "rule_text": "AI must not generate individualized medical, rehab, injury, return-to-play, mental-health diagnosis, or supplement plans. Concerns must be escalated to parents/guardians and qualified professionals.",
       "enforcement": "hard_block",

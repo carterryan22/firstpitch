@@ -13,11 +13,13 @@ import type {
   GameRecord,
   GoalRecord,
   MetricEntryRecord,
+  MissionAssignmentRecord,
   MissionCompletionRecord,
   PlanRecord,
   PlayerGameStatsRecord,
   PlayerRecord,
   SessionRecord,
+  LoginTokenRecord,
   TeamMembershipRecord,
   TeamMemberRole,
   TeamRecord,
@@ -109,6 +111,15 @@ export interface Repos {
     list(filter?: { playerId?: string; missionId?: string }): Promise<MissionCompletionRecord[]>;
     create(input: Omit<MissionCompletionRecord, "id">): Promise<MissionCompletionRecord>;
   };
+  missionAssignments: {
+    list(filter?: { teamId?: string; playerId?: string; playerIds?: string[]; missionId?: string; open?: boolean }): Promise<MissionAssignmentRecord[]>;
+    byId(id: string): Promise<MissionAssignmentRecord | undefined>;
+    create(input: Omit<MissionAssignmentRecord, "id" | "assignedAt">): Promise<MissionAssignmentRecord>;
+    bulkCreate(rows: Array<Omit<MissionAssignmentRecord, "id" | "assignedAt">>): Promise<MissionAssignmentRecord[]>;
+    complete(id: string, at?: string): Promise<MissionAssignmentRecord | undefined>;
+    start(id: string, at?: string): Promise<MissionAssignmentRecord | undefined>;
+    delete(id: string): Promise<void>;
+  };
   audit: {
     list(filter?: { userId?: string; resource?: string }): Promise<AuditLogRecord[]>;
     log(input: Omit<AuditLogRecord, "id" | "createdAt">): Promise<AuditLogRecord>;
@@ -117,6 +128,13 @@ export interface Repos {
     byId(id: string): Promise<SessionRecord | undefined>;
     create(userId: string, ttlMs: number): Promise<SessionRecord>;
     delete(id: string): Promise<void>;
+    purgeExpired(): Promise<number>;
+  };
+  loginTokens: {
+    byHash(tokenHash: string): Promise<LoginTokenRecord | undefined>;
+    create(input: Omit<LoginTokenRecord, "id" | "createdAt">): Promise<LoginTokenRecord>;
+    /** Marks a token consumed and returns the previous (pre-consumption) record. */
+    consume(tokenHash: string, at?: string): Promise<LoginTokenRecord | undefined>;
     purgeExpired(): Promise<number>;
   };
   fields: {
@@ -487,6 +505,71 @@ export function makeRepos(store: Store): Repos {
           return rec;
         }),
     },
+    missionAssignments: {
+      async list(filter) {
+        const all = (await store.read()).missionAssignments ?? [];
+        return all.filter((a) => {
+          if (filter?.teamId && a.teamId !== filter.teamId) return false;
+          if (filter?.playerId && a.playerId !== filter.playerId) return false;
+          if (filter?.playerIds && !filter.playerIds.includes(a.playerId)) return false;
+          if (filter?.missionId && a.missionId !== filter.missionId) return false;
+          if (filter?.open === true && a.completedAt) return false;
+          if (filter?.open === false && !a.completedAt) return false;
+          return true;
+        });
+      },
+      byId: async (id) => ((await store.read()).missionAssignments ?? []).find((a) => a.id === id),
+      create: (input) =>
+        mutate((db) => {
+          if (!db.missionAssignments) db.missionAssignments = [];
+          const rec: MissionAssignmentRecord = {
+            ...input,
+            id: cid("ma"),
+            assignedAt: new Date().toISOString(),
+          };
+          db.missionAssignments.push(rec);
+          return rec;
+        }),
+      bulkCreate: (rows) =>
+        mutate((db) => {
+          if (!db.missionAssignments) db.missionAssignments = [];
+          const out: MissionAssignmentRecord[] = [];
+          for (const input of rows) {
+            const rec: MissionAssignmentRecord = {
+              ...input,
+              id: cid("ma"),
+              assignedAt: new Date().toISOString(),
+            };
+            db.missionAssignments.push(rec);
+            out.push(rec);
+          }
+          return out;
+        }),
+      complete: (id, at) =>
+        mutate((db) => {
+          if (!db.missionAssignments) db.missionAssignments = [];
+          const rec = db.missionAssignments.find((a) => a.id === id);
+          if (!rec) return undefined;
+          rec.completedAt = at ?? new Date().toISOString();
+          rec.status = "completed";
+          return rec;
+        }),
+      start: (id, at) =>
+        mutate((db) => {
+          if (!db.missionAssignments) db.missionAssignments = [];
+          const rec = db.missionAssignments.find((a) => a.id === id);
+          if (!rec) return undefined;
+          if (!rec.startedAt) rec.startedAt = at ?? new Date().toISOString();
+          if (!rec.completedAt) rec.status = "in_progress";
+          return rec;
+        }),
+      delete: (id) =>
+        mutate((db) => {
+          if (!db.missionAssignments) db.missionAssignments = [];
+          const i = db.missionAssignments.findIndex((a) => a.id === id);
+          if (i >= 0) db.missionAssignments.splice(i, 1);
+        }),
+    },
     audit: {
       async list(filter) {
         return (await store.read()).auditLogs.filter(
@@ -530,6 +613,47 @@ export function makeRepos(store: Store): Repos {
           const before = db.sessions.length;
           db.sessions = db.sessions.filter((s) => Date.parse(s.expiresAt) > now);
           return before - db.sessions.length;
+        });
+      },
+    },
+    loginTokens: {
+      byHash: async (tokenHash) => ((await store.read()).loginTokens ?? []).find((t) => t.tokenHash === tokenHash),
+      create: (input) =>
+        mutate((db) => {
+          if (!db.loginTokens) db.loginTokens = [];
+          const rec: LoginTokenRecord = {
+            id: cid("ltok"),
+            createdAt: new Date().toISOString(),
+            ...input,
+          };
+          db.loginTokens.push(rec);
+          return rec;
+        }),
+      consume: (tokenHash, at) =>
+        mutate((db) => {
+          if (!db.loginTokens) db.loginTokens = [];
+          const i = db.loginTokens.findIndex((t) => t.tokenHash === tokenHash);
+          if (i < 0) return undefined;
+          const rec = db.loginTokens[i]!;
+          if (rec.consumedAt) return undefined;
+          if (Date.parse(rec.expiresAt) <= Date.now()) return undefined;
+          const updated: LoginTokenRecord = { ...rec, consumedAt: at ?? new Date().toISOString() };
+          db.loginTokens[i] = updated;
+          return rec;
+        }),
+      purgeExpired() {
+        return mutate((db) => {
+          if (!db.loginTokens) {
+            db.loginTokens = [];
+            return 0;
+          }
+          const now = Date.now();
+          const before = db.loginTokens.length;
+          // Keep consumed ones for 24h so audit trail stays meaningful; purge clearly-stale only.
+          db.loginTokens = db.loginTokens.filter(
+            (t) => Date.parse(t.expiresAt) > now - 86_400_000,
+          );
+          return before - db.loginTokens.length;
         });
       },
     },

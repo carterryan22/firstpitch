@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { missionsForAge, tailoredHomework } from "@platform/missions";
+import { missionsForAge, tailoredHomework, MISSIONS } from "@platform/missions";
 import { homeMission } from "@platform/compiler";
 import { summarizeForParents, skillsForPositions, type Inning, type LineupPlayer } from "@platform/lineup";
 import { getRepos } from "@platform/storage";
@@ -12,6 +12,7 @@ import { computeGoalProgress, GOAL_STATUS_BADGE } from "../lib/goals";
 import { formatGameWhen } from "../lib/games";
 import { Card } from "../components/ui";
 import { RsvpButtons } from "../components/RsvpButtons";
+import { CompleteAssignmentButton } from "./CompleteAssignmentButton";
 
 export const metadata = { title: "Family dashboard" };
 
@@ -163,6 +164,15 @@ export default async function ParentDashboard() {
     : 11;
   const missions = missionsForAge(ageRef);
   const home = homeMission({ age: ageRef, focus: ["mental_recovery", "speed"] });
+
+  // Coach-issued mission assignments across all kids (open + recently completed).
+  const kidIds = kids.map((k) => k.id);
+  const allAssignments = kidIds.length
+    ? await repos.missionAssignments.list({ playerIds: kidIds })
+    : [];
+  const openAssignments = allAssignments.filter((a) => !a.completedAt);
+  const missionById = new Map(MISSIONS.map((m) => [m.id, m] as const));
+  const kidById = new Map(kids.map((k) => [k.id, k] as const));
 
   return (
     <div className="space-y-10">
@@ -386,6 +396,37 @@ export default async function ParentDashboard() {
               );
             })}
           </div>
+        </section>
+      ) : null}
+
+      {openAssignments.length > 0 ? (
+        <section className="space-y-3">
+          <h2 className="m-0">Assigned by coach</h2>
+          <ul className="grid gap-3 md:grid-cols-2">
+            {openAssignments.map((a) => {
+              const m = missionById.get(a.missionId);
+              const kid = kidById.get(a.playerId);
+              if (!m || !kid) return null;
+              return (
+                <li key={a.id}>
+                  <Card>
+                    <div className="flex items-baseline justify-between gap-2">
+                      <h3 className="m-0 text-base">{m.title}</h3>
+                      <span className="badge-info">{kid.firstName}</span>
+                    </div>
+                    <p className="mt-1 text-sm text-slate-600">{m.description}</p>
+                    {a.notes ? (
+                      <p className="mt-2 text-xs italic text-slate-500">Note from coach: {a.notes}</p>
+                    ) : null}
+                    <div className="mt-3 flex items-center gap-3 text-xs text-slate-500">
+                      <CompleteAssignmentButton assignmentId={a.id} />
+                      {a.dueAt ? <span>Due {new Date(a.dueAt).toLocaleDateString()}</span> : null}
+                    </div>
+                  </Card>
+                </li>
+              );
+            })}
+          </ul>
         </section>
       ) : null}
 

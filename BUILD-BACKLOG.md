@@ -274,7 +274,7 @@ Stories use ID format `E<epic>.<story>` (e.g., `E3.4`).
 | E23.1 | Golden test suite for AI (50 prompts → 200 by P2) | corpus eval §5 | Drift gate in CI | P1 |
 | E23.2 | Pitch Smart numeric assertion suite (auto-generated) | corpus eval §3 | 100% pass on every CI run | P1 |
 | E23.3 | Age-matrix forbidden-item suite | corpus eval §3 | 100% pass on every CI run | P1 |
-| E23.4 | Monthly human-in-loop review (coach + clinician + parent advocate) | corpus eval §7 | Monthly report filed; findings → backlog | recurring |
+| E23.4 | Monthly human-in-loop review (coach + ATC + parent advocate) | corpus eval §7 | Monthly report filed; findings → backlog | recurring |
 | E23.5 | Production AI failure escalation runbook | corpus eval §8 | On-call drill executed | P1 |
 
 ### Epic E24 — Go-to-Market

@@ -11,6 +11,8 @@ import { FieldBoard } from "./FieldBoard";
 import { BattingOrder } from "./BattingOrder";
 import { GameNotes } from "./GameNotes";
 import { GameStatsImporter } from "./GameStatsImporter";
+import { PressBoxShare } from "./PressBoxShare";
+import { pressBoxPath } from "../../../../../lib/pressBox";
 
 function ageBandCenter(band: string): number {
   if (band.startsWith("6-8")) return 8;
@@ -230,6 +232,13 @@ export default async function GamePage({
               createdAt: n.createdAt,
               updatedAt: n.updatedAt,
             }))}
+        />
+      ) : null}
+      {tab === "summary" ? (
+        <PressBoxShare
+          gameId={game.id}
+          initialEnabled={!!game.shareEnabled}
+          initialPath={game.shareEnabled ? pressBoxPath(game.id) : null}
         />
       ) : null}
     </div>

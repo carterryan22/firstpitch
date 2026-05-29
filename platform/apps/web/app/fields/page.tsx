@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getFieldsRepos, starRating, stars } from "../lib/fields";
-import { Hero } from "../components/ui";
+import { Hero, LocationEyebrow } from "../components/ui";
 
 export const metadata = { title: "Find your diamond" };
 
@@ -26,10 +26,14 @@ export default async function FieldsPage({
   const sp = await searchParams;
   const repos = await getFieldsRepos();
   const query = sp.q?.trim() ?? "";
+  const validSurfaces = ["grass", "turf", "dirt", "mixed"];
+  const rawSurface = sp.surface;
+  const surface = rawSurface && validSurfaces.includes(rawSurface) ? rawSurface : undefined;
+  const invalidSurface = rawSurface && !surface ? rawSurface : null;
   const allFields = await repos.fields.list({
     query,
     city: sp.city || undefined,
-    surface: sp.surface || undefined,
+    surface,
     lights: sp.lights === "1" ? true : sp.lights === "0" ? false : undefined,
   });
   const allReviews = await repos.fieldReviews.list();
@@ -96,12 +100,21 @@ export default async function FieldsPage({
       </form>
 
       <section>
+        {invalidSurface ? (
+          <p className="card text-sm">
+            Unknown surface <code>{invalidSurface}</code>. Try {validSurfaces.join(", ")}, or{" "}
+            <Link href="/fields" className="underline">clear filters</Link>. Showing unfiltered list.
+          </p>
+        ) : null}
         <div className="mb-3 flex items-center justify-between">
           <span className="eyebrow">{allFields.length} of {totalFields} fields</span>
           <Link href="/fields?book=1" className="btn-primary no-underline hover:no-underline">⚾ Book a field</Link>
         </div>
         {allFields.length === 0 ? (
-          <p className="quote">No diamonds match those filters. Try clearing one.</p>
+          <p className="quote">
+            No diamonds match those filters. Try{" "}
+            <Link href="/fields" className="underline">clearing filters</Link>.
+          </p>
         ) : (
           <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {allFields.map((f) => {
@@ -113,7 +126,7 @@ export default async function FieldsPage({
                     className="block h-full no-underline hover:no-underline"
                   >
                     <div className="card h-full transition hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-hard">
-                      <div className="eyebrow">{f.city.toUpperCase()}, {f.state}</div>
+                      <LocationEyebrow city={f.city} state={f.state} />
                       <h3 className="mt-1">{f.name}</h3>
                       <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
                         {rs.count > 0 ? (

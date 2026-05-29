@@ -177,3 +177,31 @@ export function EnforcementBadge({ kind }: { kind: EnforcementTone }) {
   return <Badge tone="info">Informational</Badge>;
 }
 
+/**
+ * "BELLEVUE, WA" eyebrow renderer. The `.eyebrow` class applies a heavy
+ * `letter-spacing: 0.22em` which the browser also appends *after* the final
+ * character, producing a stretched gap before punctuation ("BELLEVUE , WA").
+ * We render the city with the wide tracking, then pull the comma + state
+ * back in with a matching negative margin and reset their own tracking.
+ */
+export function LocationEyebrow({
+  city,
+  state,
+  className = "",
+}: {
+  city: string;
+  state: string;
+  className?: string;
+}) {
+  return (
+    <span className={`eyebrow ${className}`.trim()}>
+      <span>{city.toUpperCase()}</span>
+      <span
+        style={{ letterSpacing: "0.04em", marginLeft: "-0.18em" }}
+      >
+        , {state}
+      </span>
+    </span>
+  );
+}
+

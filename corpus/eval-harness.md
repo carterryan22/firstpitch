@@ -138,12 +138,12 @@ Release-block thresholds:
 
 ## 7. Human-in-the-loop review (monthly)
 
-Sample 50 production AI calls per month and have a coach + clinician review:
+Sample 50 production AI calls per month and have a coach + ATC review:
 
 | Reviewer | Looks for |
 |---|---|
 | Head coach | Practice plan realism, age-appropriateness, drill substitutions. |
-| Clinician / ATC | Any drift toward medical advice; any pitch-count edge case. |
+| ATC / medical advisor | Any drift toward medical advice; any pitch-count edge case. |
 | Parent advocate | Tone, comparison language, escalation correctness. |
 
 Findings feed back into:

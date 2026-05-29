@@ -41,7 +41,8 @@ const config: Config = {
         ok: { DEFAULT: "#4A6318", soft: "#DDE7BE" },
       },
       fontFamily: {
-        sans: ["var(--font-slab)", "ui-serif", "Georgia", "serif"],
+        sans: ["var(--font-body)", "ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "Roboto", "sans-serif"],
+        body: ["var(--font-body)", "ui-sans-serif", "system-ui", "sans-serif"],
         slab: ["var(--font-slab)", "ui-serif", "Georgia", "serif"],
         display: ["var(--font-display)", "Impact", "system-ui", "sans-serif"],
         western: ["var(--font-western)", "Rye", "ui-serif", "serif"],

@@ -9,6 +9,8 @@ export type { Role } from "@platform/storage";
 
 export const SESSION_COOKIE = "platform_session";
 export const SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 7; // 7 days
+export const LOGIN_TOKEN_TTL_MS = 1000 * 60 * 15; // 15 min
+export const LOGIN_TOKEN_BYTES = 32; // 256 bits of entropy
 
 function getSecret(): string {
   const s = process.env.PLATFORM_AUTH_SECRET;
@@ -65,6 +67,75 @@ export async function loginOrRegister(
   const session = await repos.sessions.create(user.id, SESSION_TTL_MS);
   await repos.audit.log({ userId: user.id, action: "login", resource: `session:${session.id}` });
   return { user, sessionId: session.id, cookieValue: encodeCookie(session.id) };
+}
+
+/** Hash a magic-link token so we never persist plaintext. */
+export function hashToken(token: string): string {
+  return crypto.createHash("sha256").update(token).digest("base64url");
+}
+
+export interface IssuedLoginToken {
+  /** Random plaintext token to embed in the magic link. NEVER persisted. */
+  token: string;
+  expiresAt: string;
+  /** The record we stored (with hash, not plaintext). */
+  recordId: string;
+}
+
+/**
+ * Create a one-time magic-link login token. Caller is responsible for sending
+ * the email containing `${baseUrl}/api/auth/verify?token=${token}`.
+ */
+export async function issueLoginToken(
+  repos: Repos,
+  input: { email: string; role: Role; name?: string; redirectTo?: string },
+): Promise<IssuedLoginToken> {
+  if (!input.email.includes("@")) {
+    throw new AuthError("Invalid email", 400);
+  }
+  const validRoles: Role[] = ["coach", "parent", "player", "admin"];
+  if (!validRoles.includes(input.role)) {
+    throw new AuthError("Invalid role", 400);
+  }
+  const token = crypto.randomBytes(LOGIN_TOKEN_BYTES).toString("base64url");
+  const expiresAt = new Date(Date.now() + LOGIN_TOKEN_TTL_MS).toISOString();
+  const rec = await repos.loginTokens.create({
+    tokenHash: hashToken(token),
+    email: input.email.toLowerCase().trim(),
+    role: input.role,
+    name: input.name?.trim() || undefined,
+    redirectTo: input.redirectTo,
+    expiresAt,
+  });
+  await repos.audit.log({ action: "login_token_issued", resource: `email:${rec.email}` });
+  return { token, expiresAt, recordId: rec.id };
+}
+
+/**
+ * Validate and atomically consume a magic-link token. On success, upserts the
+ * user and mints a session. Returns null if token is unknown, expired, or
+ * already consumed.
+ */
+export async function consumeLoginToken(
+  repos: Repos,
+  token: string,
+): Promise<(AuthSession & { redirectTo?: string }) | null> {
+  if (!token || typeof token !== "string") return null;
+  const rec = await repos.loginTokens.consume(hashToken(token));
+  if (!rec) return null;
+  const user = await repos.users.upsert({ email: rec.email, role: rec.role, name: rec.name });
+  const session = await repos.sessions.create(user.id, SESSION_TTL_MS);
+  await repos.audit.log({
+    userId: user.id,
+    action: "login_token_consumed",
+    resource: `session:${session.id}`,
+  });
+  return {
+    user,
+    sessionId: session.id,
+    cookieValue: encodeCookie(session.id),
+    redirectTo: rec.redirectTo,
+  };
 }
 
 /** Resolve a session from a raw cookie value. Returns null if invalid or expired. */

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getFieldsRepos, starRating, stars } from "../../lib/fields";
+import { LocationEyebrow } from "../../components/ui";
 import { milesBetween } from "../../lib/fieldsSeed";
 import { getSession } from "../../lib/session";
 import { ReviewForm } from "./ReviewForm";
@@ -71,8 +72,10 @@ export default async function FieldDetailPage({
     <article className="space-y-10">
       <header className="space-y-3">
         <Link href="/fields" className="quote text-sm">← All fields</Link>
-        <div className="eyebrow">
-          <Link href={`/fields?city=${encodeURIComponent(field.city)}`}>{field.city.toUpperCase()}</Link>, {field.state}
+        <div>
+          <Link href={`/fields?city=${encodeURIComponent(field.city)}`} className="no-underline hover:no-underline">
+            <LocationEyebrow city={field.city} state={field.state} />
+          </Link>
         </div>
         <h1>{field.name}</h1>
         <div className="flex flex-wrap items-center gap-3 text-sm">
@@ -87,6 +90,12 @@ export default async function FieldDetailPage({
           <Link href={`/fields/${field.slug}/book`} className="btn-primary no-underline hover:no-underline">
             ⚾ Book this field →
           </Link>
+          <Link
+            href={`/practice/new?env=T1_field&fieldId=${field.id}`}
+            className="btn-ghost no-underline hover:no-underline"
+          >
+            🧭 Build plan for this field
+          </Link>
           <a href={mapsHref} target="_blank" rel="noreferrer" className="btn-ghost no-underline hover:no-underline">
             ↗ Open in Maps
           </a>
@@ -96,6 +105,7 @@ export default async function FieldDetailPage({
             </a>
           ) : null}
         </div>
+        <FieldTrustLine field={field} />
       </header>
 
       <section className="grid gap-6 md:grid-cols-3">
@@ -169,8 +179,8 @@ export default async function FieldDetailPage({
                     <Link href={`/fields/${n.field.slug}`} className="no-underline hover:underline">
                       <div className="font-semibold text-ink">{n.field.name}</div>
                       <div className="quote">
-                        {n.field.city.toUpperCase()}, {n.field.state}
-                        {Number.isFinite(n.distance) ? ` · ${n.distance.toFixed(1)} MI` : ""}
+                        {n.field.city}, {n.field.state}
+                        {Number.isFinite(n.distance) ? ` · ${n.distance.toFixed(1)} mi` : ""}
                       </div>
                     </Link>
                   </li>
@@ -189,6 +199,31 @@ function Fact({ label, value }: { label: string; value: string }) {
     <div>
       <dt className="eyebrow">{label}</dt>
       <dd className="mt-1 text-ink">{value}</dd>
+    </div>
+  );
+}
+
+const VERIFICATION_LABEL: Record<NonNullable<import("@platform/storage").FieldRecord["verification"]>, { tone: string; label: string; blurb: string }> = {
+  verified: { tone: "bg-grass/15 border-grass/40 text-grass-dark", label: "Verified", blurb: "Walked, photographed, and confirmed by our team." },
+  community: { tone: "bg-cream/80 border-ink/30 text-ink", label: "Community-maintained", blurb: "Updated by local coaches and parents — flag anything wrong." },
+  imported: { tone: "bg-cream/60 border-dirt-300 text-ink/80", label: "Imported", blurb: "Pulled from a public source. Details not yet hand-checked." },
+  unverified: { tone: "bg-warn-soft/40 border-warn/50 text-ink", label: "Unverified", blurb: "Listed on user word. Confirm before you show up." },
+};
+
+function FieldTrustLine({ field }: { field: import("@platform/storage").FieldRecord }) {
+  const v = field.verification ?? (field.sourceUrl ? "imported" : "unverified");
+  const meta = VERIFICATION_LABEL[v];
+  return (
+    <div className={`mt-2 inline-flex flex-wrap items-center gap-2 rounded-md border-2 px-3 py-1.5 text-xs ${meta.tone}`}>
+      <strong className="uppercase tracking-wide">{meta.label}</strong>
+      <span>· {meta.blurb}</span>
+      {field.sourceName ? <span>· Source: <strong>{field.sourceName}</strong></span> : null}
+      {field.lastVerifiedAt ? <span>· Last verified {field.lastVerifiedAt}</span> : null}
+      {!field.claimedByUserId ? (
+        <Link href={`/fields/${field.slug}/claim`} className="ml-2 underline">
+          Claim this field
+        </Link>
+      ) : null}
     </div>
   );
 }

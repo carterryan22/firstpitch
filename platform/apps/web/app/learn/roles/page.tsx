@@ -5,6 +5,7 @@ import {
   FIELDING_CHARACTERS,
   type RoleCharacter,
 } from "./characters";
+import { PrintButton } from "../../components/PrintButton";
 
 export const metadata: Metadata = {
   title: "Your Role on the Team",
@@ -25,7 +26,7 @@ export default function RolesPage() {
           nine kids all trying to be the same player. Find your spot, meet your
           character, and learn why your role matters every single inning.
         </p>
-        <div className="flex flex-wrap gap-2 pt-2 text-sm">
+        <div className="flex flex-wrap gap-2 pt-2 text-sm print:hidden">
           <a href="#batting" className="btn-ghost no-underline">
             Batting order →
           </a>
@@ -35,6 +36,7 @@ export default function RolesPage() {
           <Link href="/learn" className="btn-ghost no-underline">
             ← Back to Triple Play
           </Link>
+          <PrintButton />
         </div>
       </header>
 

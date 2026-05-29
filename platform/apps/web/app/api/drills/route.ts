@@ -1,16 +1,35 @@
 import { NextRequest, NextResponse } from "next/server";
 import { loadDrills } from "@platform/corpus";
+import { normalizeTier } from "../../drills/drillLabels";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
   const sp = req.nextUrl.searchParams;
   const age = sp.get("age") ? Number(sp.get("age")) : undefined;
-  const topic = sp.get("topic") ?? undefined;
-  const tier = sp.get("tier") ?? undefined;
+  const rawTopic = sp.get("topic") ?? undefined;
+  const rawTier = sp.get("tier") ?? undefined;
   const sport = sp.get("sport") ?? undefined;
 
-  let drills = loadDrills();
+  const allDrills = loadDrills();
+  const knownTopics = new Set(allDrills.map((d) => d.topic));
+  const topic = rawTopic && knownTopics.has(rawTopic) ? rawTopic : undefined;
+  const tier = normalizeTier(rawTier);
+
+  if (rawTopic && !topic) {
+    return NextResponse.json(
+      { error: `Unknown topic "${rawTopic}"`, knownTopics: Array.from(knownTopics).sort() },
+      { status: 400 },
+    );
+  }
+  if (rawTier && !tier) {
+    return NextResponse.json(
+      { error: `Unknown tier "${rawTier}"`, knownTiers: ["T1_field", "T2_cage_gym", "T3_backyard", "T4_living_room", "T1", "T2", "T3", "T4"] },
+      { status: 400 },
+    );
+  }
+
+  let drills = allDrills;
   if (topic) drills = drills.filter((d) => d.topic === topic);
   if (tier) drills = drills.filter((d) => d.environment_tier === tier);
   if (sport) drills = drills.filter((d) => d.sport === sport || d.sport === "general");

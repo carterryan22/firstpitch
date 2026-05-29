@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getFieldsRepos } from "../../../lib/fields";
+import { LocationEyebrow } from "../../../components/ui";
 import { getSession } from "../../../lib/session";
 import { BookForm } from "./BookForm";
 
@@ -23,9 +24,13 @@ export default async function BookFieldPage({
     <div className="space-y-8">
       <header className="space-y-2">
         <Link href={`/fields/${field.slug}`} className="quote text-sm">← Back to {field.name}</Link>
-        <div className="eyebrow">{field.city.toUpperCase()}, {field.state}</div>
-        <h1>Book <em>{field.name}</em>.</h1>
-        <p className="quote">Pick a diamond, request a slot. We&apos;ll route it to the field manager and email you back.</p>
+        <LocationEyebrow city={field.city} state={field.state} />
+        <h1>Request booking help for <em>{field.name}</em>.</h1>
+        <p className="quote">
+          We&apos;ll collect the details and send you the official booking link or contact for the
+          field manager. We don&apos;t yet auto-confirm slots — but we get you to the right person
+          fast.
+        </p>
       </header>
 
       {session ? (

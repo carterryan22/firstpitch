@@ -118,7 +118,7 @@ export function dontDoToday(input: DontDoTodayInput): DontDoTodayResult {
         ruleId: "INJURY_UNRESOLVED_SEVERE",
         severity: "block",
         reason: "Severe injury within 14 days, not marked resolved.",
-        saferAlternative: "Clinician clearance required before return to play.",
+        saferAlternative: "Medical clearance required before return to play."
       });
     } else if (i.severity === "moderate") {
       warnings.push({

@@ -98,7 +98,7 @@ for ($i = 1; $i -le $Runs; $i++) {
     # /api/escalate
     $body = @{ playerId='p1'; symptom='dizzy'; severity='mild'; reportedBy='coach' } | ConvertTo-Json
     $r = Invoke-RestMethod -Method POST -Uri "$base/api/escalate" -Headers $h -Body $body
-    if (-not ($r.escalateTo -contains 'clinician')) { Fail "head injury not escalated to clinician" }
+    if (-not ($r.escalateTo -contains 'parent') -or -not ($r.escalateTo -contains 'coach')) { Fail "head injury not escalated to parent+coach" }
     Pass "escalate head: [$($r.escalateTo -join ',')] within $($r.withinMinutes)min"
 
     # /api/diagnose

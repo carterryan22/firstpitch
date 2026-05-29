@@ -1,10 +1,14 @@
-import { loadSafetyRules, loadDrills } from "@platform/corpus";
+import { loadDrills } from "@platform/corpus";
 import { getSession } from "./lib/session";
-import { getRepos } from "@platform/storage";
+import { getFieldsRepos } from "./lib/fields";
+import { FIELD_SEEDS } from "./lib/fieldsSeed";
 import { Hero, FeatureGrid, RoleTile } from "./components/ui";
 
+// Stats need a live repo read for review counts; force-dynamic so the SSG
+// build doesn't freeze a "0 fields" snapshot from an empty in-memory store.
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
-  const rules = loadSafetyRules().rules;
   const drills = loadDrills();
   const publishedDrills = drills.filter((d) => d.review_status === "published").length;
   let session: Awaited<ReturnType<typeof getSession>> = null;
@@ -13,11 +17,15 @@ export default async function Home() {
   } catch {
     session = null;
   }
-  let fieldsCount = 0;
+  // Field count is corpus-like: seed catalog is the source of truth, so it
+  // matches /fields exactly even if a fresh serverless invocation hasn't
+  // populated its in-memory store yet.
+  let fieldsCount = FIELD_SEEDS.length;
   let reviewsCount = 0;
   try {
-    const repos = getRepos();
-    fieldsCount = (await repos.fields.list()).length;
+    const repos = await getFieldsRepos();
+    const live = (await repos.fields.list()).length;
+    if (live > fieldsCount) fieldsCount = live;
     reviewsCount = (await repos.fieldReviews.list()).length;
   } catch {
     /* fields module optional at boot */
@@ -32,14 +40,15 @@ export default async function Home() {
             Don&apos;t show up to a field <em>blind</em>.
           </>
         }
-        description="Compile age-appropriate practice plans in under a minute. Scout the field before you book it. Every drill is gated by USA Baseball Pitch Smart, an age-band matrix, and our typed safety corpus — no surprises, no splinters."
-        primary={session ? { href: "/coach", label: "Open coach console" } : { href: "/practice/new", label: "Build a practice plan" }}
+        description="Compile age-appropriate practice plans in under a minute. Scout the field before you book it. Honest reviews, role-aware drills, no splinters."
+        primary={session ? { href: "/coach", label: "Open coach console" } : { href: "/practice/new", label: "Try the compiler — no signup" }}
         secondary={{ href: "/fields", label: `Browse ${fieldsCount || ""} fields →`.replace("  ", " ") }}
         stats={[
           { value: publishedDrills, label: "Drills vetted" },
-          { value: rules.length, label: "Safety rules enforced" },
           { value: fieldsCount, label: "Fields scouted" },
-          { value: reviewsCount, label: "Honest reviews" },
+          ...(reviewsCount > 0
+            ? [{ value: reviewsCount, label: reviewsCount === 1 ? "Honest review" : "Honest reviews" }]
+            : []),
         ]}
         ticker="LOCAL ROLLOUT · Bellevue · Issaquah · more dirt soon"
       />
@@ -47,10 +56,6 @@ export default async function Home() {
       <section>
         <FeatureGrid
           items={[
-            {
-              title: "Safety enforced, not suggested",
-              description: `${rules.length} Tier-1 rules from Pitch Smart, NSCA, CDC, and Stop Sports Injuries are compiled into hard blocks, warnings, and informational labels.`,
-            },
             {
               title: "Drills picked for the athlete",
               description: `${publishedDrills} published drills filtered by age band, environment tier (field / cage / backyard / living room), and equipment on hand.`,
@@ -65,14 +70,41 @@ export default async function Home() {
 
       <section className="space-y-4">
         <header className="flex items-end justify-between">
-          <h2 className="m-0">Pick where you are today</h2>
-          <span className="quote text-sm">Role-aware — sign in unlocks personal views</span>
+          <h2 className="m-0">Who&apos;s it for?</h2>
+          <span className="quote text-sm">Three roles, three landings — sign in unlocks personal views</span>
+        </header>
+        <div className="grid gap-4 md:grid-cols-3">
+          <RoleTile
+            href="/for/coach"
+            title="Coaches"
+            description="Compile a safe practice in under a minute. Roster, lineups, RSVPs, drill library, Pitch Smart enforcement."
+            cta="For coaches"
+          />
+          <RoleTile
+            href="/for/parent"
+            title="Parents"
+            description="Schedules, RSVPs, position plans, 5-minute home missions, honest field reviews. One family dashboard."
+            cta="For parents"
+          />
+          <RoleTile
+            href="/for/athlete"
+            title="Athletes"
+            description="Triple Play baseball-IQ reps, backyard missions tailored to your position, and a clear explanation of your role."
+            cta="For athletes"
+          />
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <header className="flex items-end justify-between">
+          <h2 className="m-0">Jump straight in</h2>
+          <span className="quote text-sm">Skip the landing pages — go to the tool</span>
         </header>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <RoleTile
             href="/practice/new"
             title="Build a practice"
-            description="Pick age, length, and focus areas. The compiler returns a safety-checked plan."
+            description="Pick age, length, and focus areas. Get a printable plan back in under a minute."
             cta="Open compiler"
           />
           <RoleTile
@@ -111,12 +143,6 @@ export default async function Home() {
             description="Your shortlist of diamonds — pull it up before you book."
             cta="Open shortlist"
           />
-          <RoleTile
-            href="/safety"
-            title="Safety rulebook"
-            description="The corpus that gates every plan. Sourced, dated, and reviewable."
-            cta="Read the rules"
-          />
         </div>
       </section>
 
@@ -125,7 +151,7 @@ export default async function Home() {
           <div>
             <h3>Sign in to save plans, fields, and missions</h3>
             <p className="mt-2 text-sm text-ink/80">
-              Coach, parent, player, or clinician — your view changes to match. No password. Magic link, you click it, you&apos;re in.
+              Coach, parent, or player — your view changes to match. No password. Magic link, you click it, you&apos;re in.
             </p>
           </div>
           <a href="/login" className="btn-primary mt-4 inline-flex md:mt-0 no-underline hover:no-underline">

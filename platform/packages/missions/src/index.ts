@@ -4,6 +4,7 @@
 import { getAgeBandKeyForAge, type AgeBandKey } from "@platform/corpus";
 
 export * from "./homework";
+export * from "./points";
 
 export type MissionKind = "fun_streak" | "pr_challenge" | "position_ladder" | "verified_pr_only";
 
@@ -74,6 +75,146 @@ export const MISSIONS: Mission[] = [
     bands: ["13-15", "16+"],
     cadenceDays: 14,
     drillId: "ACC_SPRINT_10_20",
+    minVerification: "coach_verified",
+  },
+
+  // --- Expanded library: aiming for 5-8 missions per age band ---
+
+  // 6-8 (Fun first)
+  {
+    id: "M_LIVINGROOM_DRY_SWINGS",
+    kind: "fun_streak",
+    title: "Living-room dry swings",
+    description: "10 quality dry swings, 4 days this week. No bat needed beyond Wiffle.",
+    bands: ["6-8", "9-12"],
+    cadenceDays: 4,
+    drillId: "LIVING_ROOM_DRY_SWINGS",
+    minVerification: "self_entered",
+  },
+  {
+    id: "M_VISION_TRACK_STREAK",
+    kind: "fun_streak",
+    title: "Eye-tracking streak",
+    description: "Finish the vision-tracking game 3 days this week.",
+    bands: ["6-8"],
+    cadenceDays: 3,
+    drillId: "LIVING_ROOM_VISION_TRACK",
+    minVerification: "self_entered",
+  },
+  {
+    id: "M_REACTION_BALL_FUN",
+    kind: "fun_streak",
+    title: "Reaction-ball game",
+    description: "Catch 10 reaction-ball bounces with a partner, 3 days.",
+    bands: ["6-8", "9-12"],
+    cadenceDays: 3,
+    drillId: "REACTION_BALL_PARTNER",
+    minVerification: "self_entered",
+  },
+
+  // 9-12 (PRs starting)
+  {
+    id: "M_HOME_TO_FIRST_PR",
+    kind: "pr_challenge",
+    title: "Home-to-first PR",
+    description: "Beat your best home-to-first time this week (stopwatch).",
+    bands: ["9-12", "13-15"],
+    cadenceDays: 7,
+    drillId: "HOME_TO_FIRST_TIMED",
+    minVerification: "video_attached",
+  },
+  {
+    id: "M_FRONT_TOSS_HARD_HIT",
+    kind: "pr_challenge",
+    title: "Front-toss hard-hit",
+    description: "Stack 5 hard-hit balls in a front-toss round (video).",
+    bands: ["9-12", "13-15"],
+    cadenceDays: 7,
+    drillId: "FRONT_TOSS_DECISION_5",
+    minVerification: "video_attached",
+  },
+  {
+    id: "M_GRIP_STRENGTH_STREAK",
+    kind: "fun_streak",
+    title: "Grip-strength reps",
+    description: "Bodyweight grip routine 4 days. No bands, no weights.",
+    bands: ["9-12"],
+    cadenceDays: 4,
+    drillId: "LIVING_ROOM_GRIP_STRENGTH",
+    minVerification: "self_entered",
+  },
+
+  // 13-15 (position ladders)
+  {
+    id: "M_OF_DROP_STEP_LADDER",
+    kind: "position_ladder",
+    title: "OF drop-step ladder",
+    description: "Climb the outfield drop-step rungs over the month.",
+    bands: ["13-15"],
+    cadenceDays: 30,
+    drillId: "OF_DROP_STEP_LADDER",
+    minVerification: "coach_verified",
+  },
+  {
+    id: "M_IF_DP_TURN_LADDER",
+    kind: "position_ladder",
+    title: "Double-play turn ladder",
+    description: "4-6-3 turn under 2.4s on 7 of 10 reps.",
+    bands: ["13-15", "16+"],
+    cadenceDays: 21,
+    drillId: "IF_DP_TURN_4_6_3",
+    minVerification: "coach_verified",
+  },
+  {
+    id: "M_BUNT_SACRIFICE_PR",
+    kind: "pr_challenge",
+    title: "Sac-bunt placement",
+    description: "5 sac bunts in your target zone (video).",
+    bands: ["13-15"],
+    cadenceDays: 14,
+    drillId: "BUNT_SACRIFICE_5BALL",
+    minVerification: "video_attached",
+  },
+
+  // 16+ (verified PRs only)
+  {
+    id: "M_PFP_COVER_FIRST_VERIFIED",
+    kind: "verified_pr_only",
+    title: "PFP cover-first reps",
+    description: "Coach-verified clean cover-first reps under live tempo.",
+    bands: ["16+"],
+    cadenceDays: 14,
+    drillId: "PITCHING_PFP_COVER_1ST",
+    minVerification: "coach_verified",
+  },
+  {
+    id: "M_BULLPEN_15_VERIFIED",
+    kind: "verified_pr_only",
+    title: "Bullpen control (15)",
+    description: "15-pitch bullpen with 11+ strikes. Coach-verified only.",
+    bands: ["16+"],
+    cadenceDays: 7,
+    drillId: "PITCHING_BULLPEN_15PITCH",
+    minVerification: "coach_verified",
+  },
+  {
+    id: "M_OF_LINE_DRIVE_READS_PR",
+    kind: "verified_pr_only",
+    title: "OF line-drive reads",
+    description: "9 of 12 correct first-step reads, coach-verified.",
+    bands: ["16+"],
+    cadenceDays: 14,
+    drillId: "OF_LINE_DRIVE_READS",
+    minVerification: "coach_verified",
+  },
+  {
+    id: "M_FIELDING_TRIANGLE_VERIFIED",
+    kind: "verified_pr_only",
+    title: "Fielding triangle reads",
+    description: "Triangle-read drill at coach-verified tempo across positions.",
+    bands: ["13-15", "16+"],
+    cadenceDays: 21,
+    drillId: "FIELDING_TRIANGLE_READ",
     minVerification: "coach_verified",
   },
 ];

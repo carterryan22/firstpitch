@@ -61,7 +61,7 @@ describe("dontDoToday", () => {
 });
 
 describe("escalation", () => {
-  it("escalates head injury to parent + coach + clinician within 1 min", () => {
+  it("escalates head injury to parent + coach within 1 min", () => {
     const d = decideEscalation({
       playerId: "p1",
       reportedAt: new Date(),
@@ -69,7 +69,8 @@ describe("escalation", () => {
       severity: "mild",
       reportedBy: "coach",
     });
-    expect(d.escalateTo).toContain("clinician");
+    expect(d.escalateTo).toContain("parent");
+    expect(d.escalateTo).toContain("coach");
     expect(d.withinMinutes).toBe(1);
     expect(d.blocksReturnToPlay).toBe(true);
   });

@@ -46,22 +46,40 @@ const AGE_BAND_DEFAULT: Record<TeamLite["ageBand"], number> = {
   "16+": 16,
 };
 
+function isEnvTier(v: string | undefined): v is EnvironmentTier {
+  return v === "T1_field" || v === "T2_cage_gym" || v === "T3_backyard" || v === "T4_living_room";
+}
+
 export function PracticeBuilder({
   teams,
   presetTeamId,
   canPersist,
+  presetFocus,
+  presetAge,
+  presetEnv,
+  presetDuration,
 }: {
   teams: TeamLite[];
   presetTeamId?: string;
   canPersist: boolean;
+  presetFocus?: string[];
+  presetAge?: number;
+  presetEnv?: string;
+  presetDuration?: number;
 }) {
   const router = useRouter();
   const [teamId, setTeamId] = useState<string>(presetTeamId ?? "");
   const selectedTeam = teams.find((t) => t.id === teamId);
-  const [age, setAge] = useState<number>(selectedTeam ? AGE_BAND_DEFAULT[selectedTeam.ageBand] : 11);
-  const [duration, setDuration] = useState<number>(60);
-  const [focus, setFocus] = useState<string[]>(["throwing", "speed"]);
-  const [environment, setEnvironment] = useState<EnvironmentTier>("T1_field");
+  const [age, setAge] = useState<number>(
+    presetAge ?? (selectedTeam ? AGE_BAND_DEFAULT[selectedTeam.ageBand] : 11),
+  );
+  const [duration, setDuration] = useState<number>(presetDuration ?? 60);
+  const [focus, setFocus] = useState<string[]>(
+    presetFocus && presetFocus.length > 0 ? presetFocus : ["throwing", "speed"],
+  );
+  const [environment, setEnvironment] = useState<EnvironmentTier>(
+    isEnvTier(presetEnv) ? presetEnv : "T1_field",
+  );
   const [coaches, setCoaches] = useState<number>(1);
   const [players, setPlayers] = useState<number>(8);
   const [fullField, setFullField] = useState<number>(1);
@@ -276,8 +294,9 @@ export function PracticeBuilder({
               <div className="flex items-center gap-2">
                 <button
                   type="button"
-                  className="h-7 w-7 rounded border border-slate-300 text-slate-700 hover:border-brand-500"
+                  className="h-7 w-7 rounded border border-slate-300 text-slate-700 hover:border-brand-500 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-slate-300"
                   onClick={() => set(Math.max(0, value - 1))}
+                  disabled={value <= 0}
                   aria-label={`Decrease ${label}`}
                 >
                   −
@@ -285,8 +304,9 @@ export function PracticeBuilder({
                 <span className="w-6 text-center text-sm font-semibold tabular-nums">{value}</span>
                 <button
                   type="button"
-                  className="h-7 w-7 rounded border border-slate-300 text-slate-700 hover:border-brand-500"
+                  className="h-7 w-7 rounded border border-slate-300 text-slate-700 hover:border-brand-500 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-slate-300"
                   onClick={() => set(Math.min(99, value + 1))}
+                  disabled={value >= 99}
                   aria-label={`Increase ${label}`}
                 >
                   +
@@ -384,7 +404,7 @@ export function PracticeBuilder({
                 </a>
               </div>
             ) : null}
-            <PlanView plan={plan} />
+            <PlanView plan={plan} teamId={teamId || undefined} planId={savedId ?? undefined} />
           </>
         )}
       </section>

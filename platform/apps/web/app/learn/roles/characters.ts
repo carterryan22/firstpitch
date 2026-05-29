@@ -242,7 +242,7 @@ export const FIELDING_CHARACTERS: RoleCharacter[] = [
     code: "SS",
     name: "Quarterback",
     subtitle: "Shortstop",
-    emoji: "🎖️",
+    emoji: "�",
     tagline: "Runs the infield, covers ground, makes the big decisions.",
     job: "Cover the most ground of any infielder. Field grounders, take throws from the catcher on steals, turn double plays, and be the relay on balls to left and center.",
     superpower:
@@ -285,7 +285,7 @@ export const FIELDING_CHARACTERS: RoleCharacter[] = [
     code: "CF",
     name: "Ranger",
     subtitle: "Center fielder",
-    emoji: "🏃‍♂️",
+    emoji: "👟",
     tagline: "Covers the most grass, leads the outfield, backs up everyone.",
     job: "Cover the biggest piece of grass on the field. Call off the other outfielders on anything you can catch, back up second base, and run down balls in the gaps.",
     superpower:

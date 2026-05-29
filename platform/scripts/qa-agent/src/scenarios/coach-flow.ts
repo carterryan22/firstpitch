@@ -101,10 +101,12 @@ async function loginAs(ctx: ScenarioContext, role: "coach" | "parent" | "player"
   // Click the persona button (button text matches title-cased role)
   const personaBtn = ctx.page.locator(`button:has-text("${role[0]?.toUpperCase()}${role.slice(1)}")`).first();
   if ((await personaBtn.count()) > 0) await personaBtn.click();
-  // Use pressSequentially to fire keystroke events React's controlled inputs reliably hear.
-  await ctx.page.locator("input#email").pressSequentially(email, { delay: 5 });
-  await ctx.page.locator("input#name").pressSequentially(`QA ${role}`, { delay: 5 });
-  // Wait until the submit button transitions out of disabled (state propagated).
-  await ctx.page.locator("form button[type=submit]:not([disabled])").click({ timeout: 10_000 });
-  await ctx.page.waitForURL(/\/(coach|parent|$)/, { timeout: 10_000 }).catch(() => undefined);
+  // fill() sets value + fires input event in one shot — more reliable than
+  // pressSequentially against hydration-pending controlled inputs.
+  await ctx.page.locator("input#email").fill(email);
+  await ctx.page.locator("input#name").fill(`QA ${role}`);
+  // Nudge React: blur to flush any pending state, then wait for the enabled submit.
+  await ctx.page.locator("input#name").blur();
+  await ctx.page.locator("form button[type=submit]:not([disabled])").click({ timeout: 15_000 });
+  await ctx.page.waitForURL(/\/(coach|parent|missions|$)/, { timeout: 10_000 }).catch(() => undefined);
 }

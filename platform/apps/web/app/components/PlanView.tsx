@@ -1,9 +1,11 @@
 import { Badge, Card } from "./ui";
+import { PrintButton } from "./PrintButton";
+import { AssignSuggestedButton } from "./AssignSuggestedButton";
 
 // Mirrors @platform/compiler CompiledBlock without importing it (avoids server/client coupling).
 export interface PlanBlock {
   blockId: string;
-  type: "warmup" | "skill" | "rest" | "game" | "cooldown";
+  type: "warmup" | "skill" | "rest" | "game" | "cooldown" | "transition";
   durationMin: number;
   drill: {
     drill_id: string;
@@ -13,6 +15,8 @@ export interface PlanBlock {
     safety_flags?: string[];
     throw_count_contribution?: number;
     intensity?: string;
+    equipment_required?: string[];
+    topic?: string;
     kid_friendly?: {
       explain: string;
       goal: string;
@@ -32,18 +36,30 @@ export interface PlanSummary {
   totalThrowingLoad?: number;
   qualityScore?: number;
   focus?: string[];
+  theme?: string;
+  talkingPoints?: string[];
   antiLine?: {
     ok: boolean;
     flaggedBlocks: Array<{ blockId: string; ratio: number; suggestedStations: number }>;
   };
+  suggestedMissions?: Array<{
+    id: string;
+    title: string;
+    description: string;
+    kind: string;
+    cadenceDays: number;
+    minVerification: string;
+    drillId?: string;
+  }>;
 }
 
 const TYPE_LABEL: Record<PlanBlock["type"], string> = {
   warmup: "Warm-up",
   skill: "Skill block",
-  rest: "Rest",
+  rest: "Water break",
   game: "Game / competition",
   cooldown: "Cool-down",
+  transition: "Move stations",
 };
 
 const TYPE_TONE: Record<PlanBlock["type"], "info" | "ok" | "warn"> = {
@@ -52,6 +68,7 @@ const TYPE_TONE: Record<PlanBlock["type"], "info" | "ok" | "warn"> = {
   rest: "warn",
   game: "ok",
   cooldown: "info",
+  transition: "info",
 };
 
 export function PlanHeader({ plan }: { plan: PlanSummary }) {
@@ -145,12 +162,16 @@ export function PlanWarnings({ plan }: { plan: PlanSummary }) {
             </span>
           </div>
           <ul className="mt-2 list-disc pl-6 text-sm text-slate-800">
-            {antiLine!.flaggedBlocks.map((f) => (
-              <li key={f.blockId}>
-                <code className="text-xs">{f.blockId}</code> — about {f.ratio} players per station.
-                Split into <strong>{f.suggestedStations}</strong> stations to keep everyone active.
-              </li>
-            ))}
+            {antiLine!.flaggedBlocks.map((f) => {
+              const block = plan.blocks.find((b) => b.blockId === f.blockId);
+              const label = block?.drill?.name ?? (block ? TYPE_LABEL[block.type] : "Block");
+              return (
+                <li key={f.blockId}>
+                  <strong>{label}</strong> — about {f.ratio} players per station. Split into{" "}
+                  <strong>{f.suggestedStations}</strong> stations to keep everyone active.
+                </li>
+              );
+            })}
           </ul>
           <p className="mt-2 text-xs text-slate-600">
             Add more coaches or field resources on the left to lift the cap.
@@ -240,12 +261,195 @@ export function PlanTimeline({ blocks }: { blocks: PlanBlock[] }) {
   );
 }
 
-export function PlanView({ plan }: { plan: PlanSummary }) {
+export function PlanView({
+  plan,
+  teamId,
+  planId,
+}: {
+  plan: PlanSummary;
+  teamId?: string;
+  planId?: string;
+}) {
   return (
     <div className="space-y-6">
+      <PlanShareBar plan={plan} />
       <PlanHeader plan={plan} />
+      <PlanThemeCard plan={plan} />
+      <PlanSafetySummary plan={plan} />
       <PlanWarnings plan={plan} />
+      <SuggestedMissions plan={plan} teamId={teamId} planId={planId} />
+      <PlanEquipment blocks={plan.blocks} />
       <PlanTimeline blocks={plan.blocks} />
+      <ParentVersion plan={plan} />
     </div>
+  );
+}
+
+function PlanShareBar({ plan }: { plan: PlanSummary }) {
+  const blocked = plan.blocked?.length ?? 0;
+  const safetyOk = blocked === 0;
+  return (
+    <div className="flex flex-wrap items-center justify-between gap-3 rounded-md border-2 border-ink bg-cream/60 p-3 print:hidden">
+      <div className="flex items-center gap-2 text-sm">
+        {safetyOk ? (
+          <Badge tone="ok">Safety check passed</Badge>
+        ) : (
+          <Badge tone="danger">Safety blocked {blocked} item{blocked === 1 ? "" : "s"}</Badge>
+        )}
+        <span className="text-ink/70">{plan.blocks.length} block{plan.blocks.length === 1 ? "" : "s"} · {plan.durationMin} min</span>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        <PrintButton />
+        <a
+          href="#parent-version"
+          className="btn-ghost text-sm no-underline hover:no-underline"
+        >
+          👪 Parent / player version
+        </a>
+      </div>
+    </div>
+  );
+}
+
+function PlanThemeCard({ plan }: { plan: PlanSummary }) {
+  const points = plan.talkingPoints ?? [];
+  if (!plan.theme && points.length === 0) return null;
+  return (
+    <Card className="border-brand-700/30 bg-brand-50/60">
+      {plan.theme ? (
+        <div className="flex items-center gap-2">
+          <Badge tone="info">Theme</Badge>
+          <span className="font-medium text-brand-700">{plan.theme}</span>
+        </div>
+      ) : null}
+      {points.length > 0 ? (
+        <>
+          <h3 className="mt-3 text-xs font-semibold uppercase tracking-wide text-brand-700">
+            Huddle talking points
+          </h3>
+          <ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-ink/85">
+            {points.map((p, i) => <li key={i}>{p}</li>)}
+          </ul>
+        </>
+      ) : null}
+    </Card>
+  );
+}
+
+function PlanSafetySummary({ plan }: { plan: PlanSummary }) {
+  const throwingNote =
+    typeof plan.totalThrowingLoad === "number"
+      ? plan.totalThrowingLoad > 60
+        ? `Throwing load is ${plan.totalThrowingLoad} — above the 60-throw soft cap. Watch arm fatigue and rest days per Pitch Smart.`
+        : `Throwing load is ${plan.totalThrowingLoad} — within the soft cap. Pitch Smart rest still applies to any pitchers.`
+      : null;
+  return (
+    <Card className="border-ink/30 bg-cream/40">
+      <div className="flex items-center gap-2">
+        <Badge tone={(plan.blocked?.length ?? 0) === 0 ? "ok" : "danger"}>
+          {(plan.blocked?.length ?? 0) === 0 ? "Cleared by safety corpus" : "Safety blocks applied"}
+        </Badge>
+        <span className="text-xs text-ink/60">{plan.ageBand} age band</span>
+      </div>
+      <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-ink/85">
+        <li>Plan compiled through the Tier-1 safety corpus (Pitch Smart, NSCA, CDC).</li>
+        <li>Each block uses drills filtered by age band, equipment, and environment tier.</li>
+        {throwingNote ? <li>{throwingNote}</li> : null}
+        {plan.focus && plan.focus.length > 0 ? (
+          <li>Focus areas: {plan.focus.join(", ")} — used to pick skill blocks.</li>
+        ) : null}
+      </ul>
+    </Card>
+  );
+}
+
+function SuggestedMissions({
+  plan,
+  teamId,
+  planId,
+}: {
+  plan: PlanSummary;
+  teamId?: string;
+  planId?: string;
+}) {
+  const ms = plan.suggestedMissions ?? [];
+  if (ms.length === 0) return null;
+  return (
+    <Card className="border-grass/40 bg-grass/10">
+      <h3 className="m-0 text-base uppercase">Auto-suggested player missions</h3>
+      <p className="mt-1 text-xs text-ink/70">
+        Drills in this plan map to existing missions. Assign them so players keep grinding between practices.
+      </p>
+      <ul className="mt-3 space-y-2 text-sm">
+        {ms.map((m) => (
+          <li key={m.id} className="flex flex-wrap items-baseline justify-between gap-2 border-l-4 border-grass pl-3">
+            <div>
+              <strong>{m.title}</strong>
+              <span className="ml-2 text-xs uppercase tracking-wide text-ink/60">
+                · {m.cadenceDays}d · {m.minVerification.replace(/_/g, " ")}
+              </span>
+              <p className="m-0 mt-0.5 text-xs text-ink/80">{m.description}</p>
+            </div>
+            {teamId ? (
+              <AssignSuggestedButton teamId={teamId} missionId={m.id} planId={planId} />
+            ) : (
+              <a className="text-xs underline" href={`/missions?focus=${m.id}`}>
+                View / assign →
+              </a>
+            )}
+          </li>
+        ))}
+      </ul>
+    </Card>
+  );
+}
+
+function PlanEquipment({ blocks }: { blocks: PlanBlock[] }) {
+  const all = new Set<string>();
+  for (const b of blocks) {
+    for (const e of b.drill?.equipment_required ?? []) all.add(e);
+  }
+  if (all.size === 0) return null;
+  return (
+    <Card>
+      <h3 className="m-0 text-base uppercase">Equipment to grab</h3>
+      <ul className="mt-3 flex flex-wrap gap-2">
+        {Array.from(all).sort().map((e) => (
+          <li key={e} className="badge">{e.replace(/_/g, " ")}</li>
+        ))}
+      </ul>
+    </Card>
+  );
+}
+
+function ParentVersion({ plan }: { plan: PlanSummary }) {
+  let cursor = 0;
+  return (
+    <section id="parent-version" className="mt-8 border-t-2 border-dashed border-ink/30 pt-6">
+      <header className="space-y-1">
+        <p className="eyebrow">For the parent group chat</p>
+        <h2 className="m-0">Tonight&apos;s practice — the short version</h2>
+        <p className="quote text-sm">
+          Plain-English version you can copy/paste to parents. No coach jargon, no safety tables.
+        </p>
+      </header>
+      <Card className="mt-3 bg-cream/60">
+        <p className="m-0 text-sm">
+          <strong>{plan.durationMin} minutes</strong> · age band <strong>{plan.ageBand}</strong>
+          {plan.focus && plan.focus.length > 0 ? <> · focus: {plan.focus.join(", ")}</> : null}
+        </p>
+        <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm">
+          {plan.blocks.map((b, i) => (
+            <li key={b.blockId ?? i}>
+              <strong>{b.durationMin} min — {b.drill?.name ?? TYPE_LABEL[b.type]}.</strong>{" "}
+              {b.drill?.kid_friendly?.explain ?? b.drill?.short_description ?? "Open block."}
+            </li>
+          ))}
+        </ol>
+        <p className="mt-3 text-xs text-ink/60">
+          Built with the First Pitch safety checker. Pitch counts and rest days follow Pitch Smart.
+        </p>
+      </Card>
+    </section>
   );
 }

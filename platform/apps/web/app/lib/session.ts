@@ -13,7 +13,7 @@ export async function getSession(): Promise<AuthSession | null> {
 
 export async function requireSession(allowed?: Role[]): Promise<AuthSession> {
   const s = await getSession();
-  return requireRoleCore(s, allowed ?? ["coach", "parent", "player", "clinician", "admin"]);
+  return requireRoleCore(s, allowed ?? ["coach", "parent", "player", "admin"]);
 }
 
 export { AuthError };

@@ -207,7 +207,7 @@ model InjuryReport {
   reportedAt DateTime @default(now())
   symptom    String
   severity   String // 'mild'|'moderate'|'severe'
-  escalatedTo String[] // ['parent','coach','clinician']
+  escalatedTo String[] // ['parent','coach']
   resolvedAt DateTime?
 }
 
