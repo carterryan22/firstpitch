@@ -3,6 +3,7 @@ import { applicableRulesFor, getDefaultProvider, safeCall, retrieve } from "@pla
 import { getSession } from "../../lib/session";
 import { getRepos } from "@platform/storage";
 import { requireRole, AuthError } from "@platform/auth";
+import { reportError } from "../../lib/monitoring";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -60,6 +61,7 @@ export async function POST(req: NextRequest) {
     if (e instanceof AuthError) {
       return NextResponse.json({ error: e.message }, { status: e.status });
     }
-    return NextResponse.json({ error: (e as Error).message }, { status: 500 });
+    await reportError(e, { source: "api/coach-chat" });
+    return NextResponse.json({ error: "Something went wrong. Please try again." }, { status: 500 });
   }
 }

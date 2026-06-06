@@ -22,19 +22,126 @@ interface AuditCounts {
   low: number;
 }
 
-function parseNpmAudit(json: string): AuditCounts | null {
+interface AcceptedAdvisory {
+  ghsa: string;
+  package: string;
+  severity: string;
+  url: string;
+}
+
+interface AuditResult {
+  counts: AuditCounts;
+  /** Advisories present in the tree that match the accepted-risk allowlist. */
+  accepted: AcceptedAdvisory[];
+}
+
+/**
+ * Accepted-risk allowlist for the dependency gate.
+ *
+ * Each key is a GHSA id that has been MANUALLY reviewed and judged
+ * non-exploitable in this project's actual usage. The gate subtracts these from
+ * the blocking counts but still SURFACES them (gate summary note + a P3
+ * finding), so the accepted risk stays visible and auditable. ANY advisory NOT
+ * listed here still blocks as normal — a brand-new critical fails the gate.
+ *
+ * Keep this list short and justify every entry. Remove an entry the moment a
+ * compatible patched version is adopted.
+ */
+const ACCEPTED_ADVISORIES: Record<string, string> = {
+  // vitest UI-server arbitrary file read/exec (CVE-2026-47429). Per the advisory
+  // it is ONLY exploitable when the Vitest UI server is exposed to the network
+  // (--api.host / api.host), or when running the Vitest UI / Browser Mode on
+  // Windows. This repo runs headless `vitest run` ONLY — no UI, no browser mode,
+  // no --api.host — and vitest is a devDependency that never ships to prod and is
+  // never run as a server in CI. The only patched version (vitest >=4.1.0) is
+  // incompatible with this monorepo (breaks the entire suite at describe()-time).
+  // Accepted dev-only risk; revisit when vitest 4.x becomes usable here.
+  "GHSA-5xrq-8626-4rwp":
+    "vitest UI-server file read/exec — non-exploitable (headless `vitest run`, devDep, no UI/--api.host). Patched only in vitest>=4.1.0, which breaks this suite.",
+};
+
+function acceptedGhsa(url: string | undefined): string | null {
+  if (!url) return null;
+  for (const ghsa of Object.keys(ACCEPTED_ADVISORIES)) {
+    if (url.includes(ghsa)) return ghsa;
+  }
+  return null;
+}
+
+interface AuditViaObject {
+  name?: string;
+  title?: string;
+  url?: string;
+  severity?: string;
+}
+
+interface AuditVuln {
+  severity?: string;
+  via?: Array<string | AuditViaObject>;
+}
+
+/**
+ * Parse `npm audit --json` and recompute the blocking counts PER PACKAGE,
+ * dropping any package whose advisories are ALL on the accepted-risk allowlist.
+ * Falls back to the metadata totals when the per-package map is unavailable.
+ */
+function parseNpmAudit(json: string): AuditResult | null {
+  let data: {
+    metadata?: { vulnerabilities?: Partial<AuditCounts> };
+    vulnerabilities?: Record<string, AuditVuln>;
+  };
   try {
-    const data = JSON.parse(json) as { metadata?: { vulnerabilities?: Partial<AuditCounts> } };
-    const v = data.metadata?.vulnerabilities ?? {};
-    return {
-      critical: v.critical ?? 0,
-      high: v.high ?? 0,
-      moderate: v.moderate ?? 0,
-      low: v.low ?? 0,
-    };
+    data = JSON.parse(json);
   } catch {
     return null;
   }
+
+  const accepted: AcceptedAdvisory[] = [];
+  const vulns = data.vulnerabilities;
+
+  // Per-package recompute (npm v7+ audit shape).
+  if (vulns && typeof vulns === "object") {
+    const counts: AuditCounts = { critical: 0, high: 0, moderate: 0, low: 0 };
+    for (const [pkg, v] of Object.entries(vulns)) {
+      const via = Array.isArray(v.via) ? v.via : [];
+      const objAdvisories = via.filter((x): x is AuditViaObject => typeof x === "object" && x !== null);
+      const transitive = via.some((x) => typeof x === "string");
+      const nonAccepted = objAdvisories.filter((a) => !acceptedGhsa(a.url));
+
+      // Drop the package ONLY when every direct advisory is accepted AND nothing
+      // transitive (a string `via`) is pulling it in from a still-vulnerable dep.
+      if (objAdvisories.length > 0 && nonAccepted.length === 0 && !transitive) {
+        for (const a of objAdvisories) {
+          accepted.push({
+            ghsa: acceptedGhsa(a.url) ?? "unknown",
+            package: pkg,
+            severity: a.severity ?? v.severity ?? "unknown",
+            url: a.url ?? "",
+          });
+        }
+        continue;
+      }
+
+      const sev = (v.severity ?? "").toLowerCase();
+      if (sev === "critical") counts.critical += 1;
+      else if (sev === "high") counts.high += 1;
+      else if (sev === "moderate") counts.moderate += 1;
+      else if (sev === "low") counts.low += 1;
+    }
+    return { counts, accepted };
+  }
+
+  // Fallback: metadata totals only (no per-advisory detail → no allowlisting).
+  const m = data.metadata?.vulnerabilities ?? {};
+  return {
+    counts: {
+      critical: m.critical ?? 0,
+      high: m.high ?? 0,
+      moderate: m.moderate ?? 0,
+      low: m.low ?? 0,
+    },
+    accepted: [],
+  };
 }
 
 export interface GatesResult {
@@ -64,25 +171,39 @@ export function runGates(root: string): GatesResult {
   // ── Dependency audit ──
   const start = Date.now();
   const { output } = runCmd(root, "npm audit --json --audit-level=high");
-  const counts = parseNpmAudit(output);
+  const audit = parseNpmAudit(output);
   const durationMs = Date.now() - start;
-  if (!counts) {
+  if (!audit) {
     gates.push({
       name: "dependency-audit", ok: false, skipped: false, durationMs,
       summary: "audit did not return parseable JSON", output: tail(output), failSeverity: "P2",
     });
   } else {
+    const { counts, accepted } = audit;
     const blocking = counts.critical > 0;
     const high = counts.high > 0;
+    const acceptedNote = accepted.length
+      ? ` · accepted-risk:${accepted.length} (${[...new Set(accepted.map((a) => a.ghsa))].join(", ")})`
+      : "";
     gates.push({
       name: "dependency-audit",
       ok: !blocking && !high,
       skipped: false,
       durationMs,
-      summary: `critical:${counts.critical} high:${counts.high} moderate:${counts.moderate} low:${counts.low}`,
+      summary: `critical:${counts.critical} high:${counts.high} moderate:${counts.moderate} low:${counts.low}${acceptedNote}`,
       output: blocking || high ? tail(output) : "",
       failSeverity: blocking ? "P0" : "P1",
     });
+    // Document each accepted advisory as a visible, non-blocking P3 finding.
+    for (const a of accepted) {
+      dependencyFindings.push({
+        analyzer: "dependency", rule: "accepted-advisory", severity: "P3", category: "dependency",
+        owasp: "A06:Vulnerable-Components", file: "package-lock.json",
+        message: `Accepted-risk advisory ${a.ghsa} on \`${a.package}\` (${a.severity}): ${ACCEPTED_ADVISORIES[a.ghsa] ?? "manually reviewed, non-exploitable in this project's usage."}`,
+        suggestion: "Re-evaluate when a compatible patched version ships; remove from ACCEPTED_ADVISORIES in gates.ts once upgraded.",
+        acceptance: "Advisory no longer present in `npm audit`, or a patched version is adopted.",
+      });
+    }
     if (counts.critical > 0) {
       dependencyFindings.push({
         analyzer: "dependency", rule: "critical-advisory", severity: "P0", category: "dependency",

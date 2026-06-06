@@ -217,8 +217,19 @@ Manual AI review: code + architecture + traces + logs
 
 The repo ships the **static + dependency** layer as a runnable gate
 (`platform/scripts/security-review`, `npm run security-review`). The dynamic
-layers (ZAP, CodeQL/Semgrep in CI, live authz tests, Scorecard) are run in CI /
-against staging and folded into the same decision.
+layers are now wired up and run automatically:
+
+| Layer | Where it runs |
+|---|---|
+| CodeQL (SAST, `security-extended`) | `.github/workflows/codeql.yml` — push/PR to main + weekly |
+| Semgrep (OWASP/JS/React/Next/secrets) + dependency review + the security-review gate | `.github/workflows/security.yml` |
+| OpenSSF Scorecard (supply chain) | `.github/workflows/scorecard.yml` |
+| OWASP ZAP baseline (DAST) | `.github/workflows/zap-staging.yml` — set repo var `STAGING_URL` (or pass `target_url`) |
+| Live role/tenant authz isolation | qa-agent scenario `authz-isolation` (`QA_ONLY=authz`) |
+
+All findings fold into the same launch decision. The `security-review` job in
+`security.yml` exits non-zero on any P0, so a critical advisory or P0 static
+finding blocks the pipeline.
 
 ## The `security-review` command
 
@@ -238,12 +249,14 @@ platform/reports/security-review.json
 In a fuller CI pipeline it should also drive:
 
 ```
-npm run test            # vitest gate (SR_TEST=1 folds this into the runner)
+npm run test                        # vitest gate (SR_TEST=1 folds this into the runner)
 npm audit --audit-level=high
-semgrep ci              # → reports/semgrep-results.sarif
-codeql analyze          # → reports/codeql-results.sarif
-playwright test tests/security
-zap staging scan        # → reports/zap-report.html
+# CI workflows (.github/workflows/):
+#   codeql.yml      → CodeQL SAST              (code scanning alerts)
+#   security.yml    → Semgrep + dep review + security-review gate
+#   scorecard.yml   → OpenSSF Scorecard        (supply chain)
+#   zap-staging.yml → OWASP ZAP baseline DAST  (needs STAGING_URL)
+QA_ONLY=authz npm run qa            # live role/tenant authz isolation probe
 ```
 
 ## Security Launch Gate

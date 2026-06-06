@@ -89,13 +89,22 @@ export const authzIsolationScenario: Scenario = {
     }
 
     // ── Confirm the victim player was never actually mutated ──
-    ctx.step("Coach A re-reads roster — victim unchanged");
-    const roster = await ctx.api<{ players?: Array<{ id?: string; firstName?: string }> }>(`/api/teams/${teamA}/players`);
-    if (roster.ok && Array.isArray(roster.json?.players)) {
-      const still = roster.json!.players!.find((pl) => pl.id === playerA);
+    // There is no public GET-by-id player/roster API (the roster is server
+    // rendered), so re-read through Coach A's authenticated roster page: the
+    // victim's original name must still be present and the "HACKED" rewrite
+    // attempted by the probes must be absent.
+    ctx.step("Coach A re-reads roster page — victim unchanged");
+    const nav = await ctx.page.goto(`${ctx.baseUrl}/coach/teams/${teamA}/roster`, { waitUntil: "domcontentloaded" }).catch(() => null);
+    if (ctx.expect(!!nav && nav.ok(), `Coach A could not load own roster page (HTTP ${nav?.status() ?? "n/a"})`, "major")) {
+      const body = await ctx.page.textContent("body").catch(() => "");
       ctx.expect(
-        !!still && still.firstName === victimFirst,
-        `victim player was altered by an unauthorized caller (firstName is now "${still?.firstName ?? "<gone>"}")`,
+        !!body && body.includes(victimFirst),
+        `victim player "${victimFirst}" missing from Coach A's roster after the probes — it may have been archived/deleted by an unauthorized caller`,
+        "blocker",
+      );
+      ctx.expect(
+        !body || !body.includes("HACKED"),
+        `Coach A's roster shows "HACKED" — an unauthorized PATCH actually mutated the victim player`,
         "blocker",
       );
     }

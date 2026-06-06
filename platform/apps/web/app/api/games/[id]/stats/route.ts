@@ -5,6 +5,9 @@ import { userCanManageTeam } from "../../../../lib/teams";
 import { parseGameChangerCsv, type ParsedPlayerRow } from "../../../../lib/gamechangerParse";
 import { computeGameRating } from "../../../../lib/playerStats";
 
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 type ImportBody =
   | { format: "gamechanger"; csv: string }
   | { format: "manual"; entries: Array<Pick<PlayerGameStatsRecord, "playerId" | "batting" | "pitching" | "fielding">> };

@@ -1,0 +1,45 @@
+# OWASP ZAP baseline DAST — runs a live, passive scan against a STAGING
+# deployment (never production). This catches runtime issues the static layers
+# can't see: missing security headers, cookie flags, info leakage, mixed
+# content, etc.
+#
+# Setup: set a repo variable `STAGING_URL` (Settings → Secrets and variables →
+# Actions → Variables), or pass `target_url` when dispatching manually. The job
+# is skipped when no target is available so scheduled runs don't fail.
+name: zap-staging
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_url:
+        description: "Staging base URL to scan (e.g. https://staging.example.com)"
+        required: false
+        default: ""
+  schedule:
+    - cron: "0 6 * * 1"
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  zap-baseline:
+    name: ZAP baseline scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # Only run when a target is known (dispatch input or STAGING_URL variable).
+    if: ${{ github.event.inputs.target_url != '' || vars.STAGING_URL != '' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.12.0
+        with:
+          target: ${{ github.event.inputs.target_url != '' && github.event.inputs.target_url || vars.STAGING_URL }}
+          # -a: include alpha passive rules. The baseline scan is passive (no
+          # active attacks) so it is safe against a shared staging environment.
+          cmd_options: "-a"
+          # Surface findings as a report + issue, but don't hard-fail the
+          # scheduled run on warnings — triage them in the Security review.
+          fail_action: false
+          allow_issue_writing: true
