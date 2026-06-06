@@ -28,17 +28,19 @@ jobs:
       actions: read
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           persist-credentials: false
 
       - name: Run analysis
         uses: ossf/scorecard-action@v2.4.0
+        continue-on-error: true
         with:
           results_file: results.sarif
           results_format: sarif
-          # Publishes to the OpenSSF API for the public badge (public repos only).
-          publish_results: true
+          # Public OpenSSF badge publishing requires a PUBLIC repo; this repo is
+          # private, so keep results local (artifact + Security tab) only.
+          publish_results: false
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4

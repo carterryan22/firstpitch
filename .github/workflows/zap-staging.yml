@@ -30,7 +30,7 @@ jobs:
     # Only run when a target is known (dispatch input or STAGING_URL variable).
     if: ${{ github.event.inputs.target_url != '' || vars.STAGING_URL != '' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: ZAP Baseline Scan
         uses: zaproxy/action-baseline@v0.12.0
