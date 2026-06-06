@@ -5,9 +5,21 @@ import { canPitchToday } from "@platform/safety";
 import { getSession } from "../../../../lib/session";
 import { userCanManageTeam } from "../../../../lib/teams";
 import { ageFromDob, fullName, sortRoster } from "../../../../lib/players";
+import { nextAvailableDate, projectReadinessForGame } from "../../../../lib/pitchingBoard";
 import { Card } from "../../../../components/ui";
 
 export const metadata = { title: "Pitching board" };
+
+/** Short, local-free label for a YYYY-MM-DD board date (e.g. "Sat Jun 6"). */
+function shortDay(iso: string): string {
+  const d = new Date(iso + "T00:00:00Z");
+  return d.toLocaleDateString("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    timeZone: "UTC",
+  });
+}
 
 function ageBandCenter(band: string): number {
   if (band.startsWith("6-8")) return 8;
@@ -33,6 +45,12 @@ export default async function PitchingBoardPage({ params }: { params: Promise<{ 
   const today = new Date();
   const fallbackAge = ageBandCenter(team.ageBand);
   const pitchers = sortRoster(players).filter((p) => p.canPitch);
+
+  // Next scheduled (future, non-scrimmage) game — drives planning-aware readiness.
+  const nextGame = games
+    .filter((g) => g.startsAt && new Date(g.startsAt).getTime() > today.getTime() && !g.isScrimmage)
+    .sort((a, b) => new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime())[0];
+  const nextGameDate = nextGame ? new Date(nextGame.startsAt) : null;
 
   const rows = pitchers.map((p) => {
     const outingsByDate: Record<string, number> = {};
@@ -69,8 +87,14 @@ export default async function PitchingBoardPage({ params }: { params: Promise<{ 
     for (const [d, n] of Object.entries(outingsByDate)) {
       if (new Date(d + "T00:00:00Z") >= cutoff) week += n;
     }
-    return { player: p, age, lastDate, lastCount, week, check };
+    const nextAvailable = nextAvailableDate(check, today);
+    const nextGameReadiness = nextGameDate
+      ? projectReadinessForGame({ age, gameDate: nextGameDate, outingsByDate })
+      : null;
+    return { player: p, age, lastDate, lastCount, week, check, nextAvailable, nextGameReadiness };
   });
+
+  const readyForNextGame = rows.filter((r) => r.nextGameReadiness?.ready).length;
 
   return (
     <div className="space-y-6">
@@ -87,6 +111,27 @@ export default async function PitchingBoardPage({ params }: { params: Promise<{ 
         </p>
       </header>
 
+      {nextGame && rows.length > 0 ? (
+        <Card className="border-field-700/30 bg-field-700/5">
+          <div className="flex flex-wrap items-baseline justify-between gap-2">
+            <div>
+              <p className="text-xs uppercase tracking-wide text-field-700">Next game</p>
+              <p className="mt-0.5 text-sm font-semibold text-slate-800">
+                {nextGame.homeAway === "home" ? "vs" : "@"} {nextGame.opponent} ·{" "}
+                {shortDay(nextGame.startsAt.slice(0, 10))}
+              </p>
+            </div>
+            <p className="text-sm text-slate-600">
+              <span className="font-bold tabular-nums">{readyForNextGame}</span> of{" "}
+              <span className="tabular-nums">{rows.length}</span> pitchers rested and ready
+            </p>
+          </div>
+          <p className="mt-1 text-xs text-slate-500">
+            Projected from each pitcher&apos;s outing history — plan the rotation before game day, not after.
+          </p>
+        </Card>
+      ) : null}
+
       {rows.length === 0 ? (
         <Card>
           <p className="text-sm text-slate-500">
@@ -96,7 +141,7 @@ export default async function PitchingBoardPage({ params }: { params: Promise<{ 
         </Card>
       ) : (
         <Card className="p-0 overflow-x-auto">
-          <table className="w-full min-w-[700px] text-sm">
+          <table className="w-full min-w-[820px] text-sm">
             <thead className="text-left text-xs uppercase tracking-wide text-slate-500">
               <tr>
                 <th className="px-4 py-3">Player</th>
@@ -105,10 +150,12 @@ export default async function PitchingBoardPage({ params }: { params: Promise<{ 
                 <th className="px-4 py-3">7-day</th>
                 <th className="px-4 py-3">Daily max</th>
                 <th className="px-4 py-3">Status</th>
+                <th className="px-4 py-3">Next available</th>
+                {nextGameDate ? <th className="px-4 py-3">Next game</th> : null}
               </tr>
             </thead>
             <tbody>
-              {rows.map(({ player, age, lastDate, lastCount, week, check }) => {
+              {rows.map(({ player, age, lastDate, lastCount, week, check, nextAvailable, nextGameReadiness }) => {
                 const status = check.allowed
                   ? check.warnings.length > 0
                     ? { label: "Available • warn", cls: "badge-warn" }
@@ -152,6 +199,27 @@ export default async function PitchingBoardPage({ params }: { params: Promise<{ 
                         </ul>
                       ) : null}
                     </td>
+                    <td className="px-4 py-3 text-slate-600">
+                      {nextAvailable.inDays === 0 ? (
+                        <span className="font-medium text-field-700">Today</span>
+                      ) : (
+                        <span className="tabular-nums">
+                          {shortDay(nextAvailable.date)}
+                          <span className="text-slate-400"> · in {nextAvailable.inDays}d</span>
+                        </span>
+                      )}
+                    </td>
+                    {nextGameDate ? (
+                      <td className="px-4 py-3">
+                        {nextGameReadiness?.ready ? (
+                          <span className="badge-ok">Ready · up to {nextGameReadiness.maxPitches}</span>
+                        ) : (
+                          <span className="badge-danger">
+                            Rest {nextGameReadiness?.restDaysRemaining ?? 0}d short
+                          </span>
+                        )}
+                      </td>
+                    ) : null}
                   </tr>
                 );
               })}

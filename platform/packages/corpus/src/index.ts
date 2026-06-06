@@ -83,6 +83,12 @@ export interface AgeMatrixTopic {
   required: string[];
   allowed_with_conditions: AgeMatrixTopicItem[];
   forbidden: string[];
+  /**
+   * Optional canonical Tier-1 rule IDs (from tier1-safety-rules.json) that
+   * govern this topic for the band. When a topic restates numeric guidance,
+   * these are the single source of truth; the prose above is a matcher hint.
+   */
+  rule_refs?: string[];
 }
 
 export interface AgeMatrixBand {
@@ -95,6 +101,20 @@ export interface AgeMatrixBand {
     max_continuous_skill_block_minutes: number;
     rest_or_water_break_every_minutes: number;
     sessions_per_week_max: number;
+  };
+  /**
+   * Coaching-manual-derived practice-design norms for this band: how to split
+   * time across offense/defense/conditioning, how often to rotate stations,
+   * the recommended block order, and the source manuals these norms are drawn
+   * from. Optional so existing consumers keep working.
+   */
+  practice_blueprint?: {
+    recommended_format: string;
+    time_split: { offense_pct: number; defense_pct: number; conditioning_team_pct: number };
+    station_rotation_minutes: number;
+    block_order: string[];
+    coaching_notes: string[];
+    source_manuals: string[];
   };
   topics: Record<string, AgeMatrixTopic>;
   assessment_rules: {

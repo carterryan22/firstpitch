@@ -43,6 +43,13 @@ export interface PlayerRecord {
   positionRatings?: Partial<Record<Position, PositionRating>>;
   notes?: string;
   parentUserId?: string;
+  /**
+   * COPPA parental-consent state for this child profile. Undefined on legacy
+   * records (treated as not-yet-gated). `pending` until a parent verifies.
+   */
+  consentStatus?: ConsentStatus;
+  /** Active consent record id, if any. */
+  consentId?: string;
   archivedAt?: string;
   createdAt: string;
 }
@@ -83,7 +90,34 @@ export interface TeamRecord {
   slug: string;
   ageBand: "6-8" | "9-12" | "13-15" | "16+";
   ownerCoachUserId: string;
+  /**
+   * Team-level lineup rule set (governing-body + house rules) used as the
+   * default when building a game lineup. Mirrors the Who's on Second
+   * Settings → rules surface. Structurally a subset of `@platform/lineup`'s
+   * `LeagueRules` (scalar rules only — per-game tandem locks live on the game).
+   */
+  leagueRules?: TeamLeagueRules;
+  /**
+   * Id of the rule-set preset last applied to this team (e.g. `littleLeague_11_12`).
+   * Drives per-rule provenance badges in Settings: a rule whose value still
+   * matches the applied preset is shown as a "League rule", anything the coach
+   * changed afterward is "Custom". Undefined = fully custom / no preset applied.
+   */
+  appliedRuleSetId?: string;
   createdAt: string;
+}
+
+/** Serializable scalar lineup rules persisted on a team. */
+export interface TeamLeagueRules {
+  minFieldInnings?: number;
+  infieldRequiredByInning?: number;
+  maxConsecutiveBench?: number;
+  maxConsecutiveOutfield?: number;
+  pitcherBenchInningBefore?: boolean;
+  equalBenchTime?: boolean;
+  maxConsecutiveSamePosition?: number;
+  minInfieldInnings?: number;
+  minOutfieldInnings?: number;
 }
 
 export type TeamMemberRole = "coach" | "player" | "parent";
@@ -191,6 +225,37 @@ export interface LoginTokenRecord {
   createdAt: string;
 }
 
+export type ConsentStatus = "pending" | "granted" | "revoked";
+
+/**
+ * Verifiable parental consent record (COPPA). One per child profile. We email
+ * the parent a one-time verification link; the *hash* of that token is stored
+ * (never the plaintext). A child profile is not "active" until status=granted.
+ */
+export interface ConsentRecord {
+  id: string;
+  /** Child this consent governs. */
+  playerId: string;
+  teamId?: string;
+  /** Parent/guardian email the consent request was sent to. */
+  parentEmail: string;
+  /** User id of the parent once known/linked. */
+  parentUserId?: string;
+  /** Coach/admin who initiated the request. */
+  requestedByUserId?: string;
+  status: ConsentStatus;
+  /** SHA-256 hash of the one-time verification token. */
+  tokenHash?: string;
+  /** Version of the privacy disclosure the parent agreed to. */
+  policyVersion: string;
+  expiresAt?: string;
+  grantedAt?: string;
+  revokedAt?: string;
+  /** Best-effort record of the consenting action for the audit trail. */
+  verifiedVia?: "email_link";
+  createdAt: string;
+}
+
 export type GameStatus = "scheduled" | "in_progress" | "completed";
 export type HomeAway = "home" | "away";
 export type Attendance = "present" | "absent";
@@ -227,8 +292,20 @@ export interface GameRecord {
   isScrimmage?: boolean;
   /** Parent-facing Press Box link is live when true. URL is HMAC-signed so no token is stored. */
   shareEnabled?: boolean;
+  /** Snack / volunteer duty for this game (surfaced on the Press Box). */
+  snackDuty?: SnackDuty;
+  /** UID of the source calendar event when this game was imported from a GameChanger (or other) ICS feed. Used to reconcile re-imports. */
+  sourceUid?: string;
   createdAt: string;
   completedAt?: string;
+}
+
+/** Who's bringing snacks / running the table for a game (WoS §3.12). */
+export interface SnackDuty {
+  /** Stable key (parent userId or family slug) when assigned from the pool. */
+  volunteerId?: string;
+  /** Display name shown to parents. */
+  name: string;
 }
 
 /**
@@ -301,6 +378,8 @@ export interface DbShape {
   sessions: SessionRecord[];
   /** Magic-link login tokens. Optional for back-compat with old persisted DBs. */
   loginTokens?: LoginTokenRecord[];
+  /** COPPA parental-consent records. Optional for back-compat. */
+  consents?: ConsentRecord[];
   /** Fields directory (Dugout Dirt parity). All optional for back-compat. */
   fields?: FieldRecord[];
   fieldReviews?: FieldReviewRecord[];
@@ -324,6 +403,7 @@ export const EMPTY_DB: DbShape = {
   auditLogs: [],
   sessions: [],
   loginTokens: [],
+  consents: [],
   fields: [],
   fieldReviews: [],
   fieldBookings: [],

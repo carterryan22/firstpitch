@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { getRepos, type Attendance, type GameStatus, type HomeAway, type PitchEntry } from "@platform/storage";
+import { getRepos, type Attendance, type GameStatus, type HomeAway, type PitchEntry, type SnackDuty } from "@platform/storage";
 import { getSession } from "../../../lib/session";
 import { userCanManageTeam } from "../../../lib/teams";
 
@@ -35,6 +35,7 @@ interface PatchBody {
   resetLineup?: boolean;
   revertToDraft?: boolean;
   isScrimmage?: boolean;
+  snackDuty?: SnackDuty | null;
 }
 
 export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
@@ -79,6 +80,16 @@ export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: strin
   }
   if (typeof body.isScrimmage === "boolean") {
     patch.isScrimmage = body.isScrimmage;
+  }
+  if (body.snackDuty !== undefined) {
+    if (body.snackDuty === null || !body.snackDuty.name?.trim()) {
+      patch.snackDuty = undefined;
+    } else {
+      patch.snackDuty = {
+        name: body.snackDuty.name.trim().slice(0, 80),
+        volunteerId: body.snackDuty.volunteerId?.slice(0, 120) || undefined,
+      };
+    }
   }
 
   const updated = await repos.games.update(id, patch);

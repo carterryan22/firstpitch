@@ -7,3 +7,7 @@ dist/
 *.log
 .DS_Store
 coverage/
+
+# Generated agent reports
+reports/
+scripts/code-agent/code-report/

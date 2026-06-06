@@ -1,0 +1,45 @@
+# CodeQL — GitHub's SAST. Flags injection, auth, and data-flow vulnerabilities
+# in JS/TS and reports them as code-scanning alerts.
+# Note: uploading results needs code scanning enabled (GitHub Advanced Security,
+# or any public repo). On a private repo without GHAS the upload step will fail.
+name: codeql
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Weekly, Mondays 03:37 UTC — catches newly disclosed query updates.
+    - cron: "37 3 * * 1"
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    name: analyze (javascript-typescript)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript-typescript
+          # security-extended adds higher-recall security queries on top of the
+          # default suite.
+          queries: security-extended
+
+      # JS/TS needs no compiled build step for CodeQL — autobuild is a no-op but
+      # keeps the workflow resilient if a build is added later.
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:javascript-typescript"

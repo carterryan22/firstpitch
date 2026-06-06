@@ -18,6 +18,8 @@
     "seed": "tsx packages/db/src/seed.ts",
     "qa": "npm --prefix scripts/qa-agent run qa",
     "qa:headed": "npm --prefix scripts/qa-agent run qa:headed",
+    "launch-review": "npm --prefix scripts/launch-review run review",
+    "security-review": "npm --prefix scripts/security-review run security",
     "verify": "npm run test && npm run eval && npm run build:web"
   },
   "devDependencies": {

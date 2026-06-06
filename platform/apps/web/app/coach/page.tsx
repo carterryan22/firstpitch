@@ -3,7 +3,9 @@ import { redirect } from "next/navigation";
 import { getSession } from "../lib/session";
 import { getTeamsForUser, plansForTeam } from "../lib/teams";
 import { Card } from "../components/ui";
+import { SmartSearch } from "../components/SmartSearch";
 import { CreateTeamForm } from "./CreateTeamForm";
+import { CreateTeamFromCsvForm } from "./CreateTeamFromCsvForm";
 
 export const metadata = { title: "Coach dashboard" };
 
@@ -97,6 +99,16 @@ export default async function CoachDashboard() {
         <h2 className="m-0">Create a team</h2>
         <Card>
           <CreateTeamForm />
+        </Card>
+        <Card>
+          <h3 className="mt-0">Import a roster from GameChanger</h3>
+          <p className="text-sm text-slate-600">
+            Already have a GameChanger team? Drop in a filtered-stats CSV export and we&rsquo;ll
+            create the team and its roster for you in one step.
+          </p>
+          <div className="mt-3">
+            <CreateTeamFromCsvForm />
+          </div>
         </Card>
       </section>
     </div>

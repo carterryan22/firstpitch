@@ -1,6 +1,6 @@
 {
   "$schema_version": "1.0",
-  "description": "Age-band matrix: for each band, what is REQUIRED, ALLOWED with conditions, and FORBIDDEN across every training topic. This is the deepest layer of the safety/guardrail stack — every AI suggestion, compiler block, and drill prescription must pass this matrix before reaching a player.",
+  "description": "Age-band matrix: for each band, what is REQUIRED, ALLOWED with conditions, and FORBIDDEN across every training topic. This is the deepest layer of the safety/guardrail stack — every AI suggestion, compiler block, and drill prescription must pass this matrix before reaching a player. Where a topic restates numeric guidance (pitch caps, rep ranges, warmup/rest minutes), the canonical source is the rule listed in that topic's optional 'rule_refs' (IDs in tier1-safety-rules.json); the required/allowed/forbidden prose is a human-readable matcher hint and must stay consistent with the referenced rule.",
   "bands": [
     {
       "age_band": "6-8",
@@ -13,20 +13,30 @@
         "rest_or_water_break_every_minutes": 12,
         "sessions_per_week_max": 3
       },
+      "practice_blueprint": {
+        "recommended_format": "Small-group stations with a high coach/parent-helper ratio. Keep every child moving — no standing in long lines. Open and close with a fun game.",
+        "time_split": { "offense_pct": 40, "defense_pct": 40, "conditioning_team_pct": 20 },
+        "station_rotation_minutes": 8,
+        "block_order": ["fun dynamic warm-up / movement game", "throwing & catching station", "fielding station", "hitting (tee) station", "baserunning / closing game"],
+        "coaching_notes": ["Demonstrate, then let them mimic — talk less, do more.", "Foam/plastic bats and safety balls at this age; enforce a bat-safety zone.", "Rotate stations every ~8-10 minutes before attention fades.", "One teaching cue per rep; praise effort, not outcome."],
+        "source_manuals": ["Baseball BC 6U Practice Plans", "Baseball BC 8U Practice Plans", "USA Baseball / MLB Pitch Smart & coaching resources"]
+      },
       "topics": {
         "throwing": {
           "required": ["proper warmup", "short distances first", "low-volume catch play"],
           "allowed_with_conditions": [
             { "item": "pitching", "conditions": ["Pitch Smart 7-8 table caps", "fastball + change-up only", "supervised by an adult"] }
           ],
-          "forbidden": ["curveballs", "sliders", "showcase events", "pitching for multiple teams on same day", "long-toss programs"]
+          "forbidden": ["curveballs", "sliders", "showcase events", "pitching for multiple teams on same day", "long-toss programs"],
+          "rule_refs": ["PITCH_SMART_GENERAL", "LITTLE_LEAGUE_PITCH_COUNT", "STOP_ON_PAIN"]
         },
         "strength": {
           "required": ["bodyweight only", "play-based loading"],
           "allowed_with_conditions": [
             { "item": "light medicine ball", "conditions": ["1-2 kg max", "qualified supervision", "technique-first"] }
           ],
-          "forbidden": ["barbell training", "1RM testing", "loaded squats/deadlifts", "competitive strength contests", "performance supplements"]
+          "forbidden": ["barbell training", "1RM testing", "loaded squats/deadlifts", "competitive strength contests", "performance supplements"],
+          "rule_refs": ["YOUTH_STRENGTH_SUPERVISION", "NO_ONE_REP_MAX_MINORS", "STOP_ON_PAIN"]
         },
         "speed": {
           "required": ["games and tag", "varied locomotion", "fun chase drills"],
@@ -74,6 +84,14 @@
         "rest_or_water_break_every_minutes": 15,
         "sessions_per_week_max": 4
       },
+      "practice_blueprint": {
+        "recommended_format": "Team warm-up, then a clear teaching focus broken into position/skill blocks, finishing with situational or game-speed reps. Keep lines short with multiple stations; track pitcher counts every outing.",
+        "time_split": { "offense_pct": 40, "defense_pct": 40, "conditioning_team_pct": 20 },
+        "station_rotation_minutes": 15,
+        "block_order": ["dynamic warm-up & throwing progression", "individual/position defense", "team defense & situations", "hitting blocks (tee / front toss / live decisions)", "baserunning reads", "conditioning game or scrimmage"],
+        "coaching_notes": ["Two to three teaching points per practice — repeat them all session.", "Rotate stations every ~12-15 min before focus fades; keep everyone active.", "Move toward game-speed and decision reps as the skill is grooved.", "Enforce Pitch Smart 9-10 / 11-12 counts and required rest for every pitcher."],
+        "source_manuals": ["MLB / USA Baseball practice planning resources", "Red Sox Foundation Practice Plan", "Elkhorn Athletics 7U-10U Coaches Corner", "Little League coaching guidance"]
+      },
       "topics": {
         "throwing": {
           "required": ["dynamic warmup", "progressive throwing program", "rest-day enforcement"],
@@ -81,14 +99,16 @@
             { "item": "pitching", "conditions": ["Pitch Smart 9-10 or 11-12 table caps", "fastball + change-up only", "no consecutive-day pitching at high counts"] },
             { "item": "long toss", "conditions": ["age-scaled distances", "no max-effort throws"] }
           ],
-          "forbidden": ["curveballs", "sliders", "pitching for multiple teams on same day", "year-round competitive pitching", "showcase pitching for radar gun readings"]
+          "forbidden": ["curveballs", "sliders", "pitching for multiple teams on same day", "year-round competitive pitching", "showcase pitching for radar gun readings"],
+          "rule_refs": ["PITCH_SMART_GENERAL", "PITCH_SMART_9_12", "LITTLE_LEAGUE_PITCH_COUNT", "STOP_ON_PAIN"]
         },
         "strength": {
           "required": ["bodyweight movement competence", "qualified supervision when loaded", "dynamic warmup 5-10 min"],
           "allowed_with_conditions": [
             { "item": "medicine ball + light dumbbells", "conditions": ["technique-first", "3 sets x 10-15 reps", "manageable weight"] }
           ],
-          "forbidden": ["1RM testing", "max-effort barbell lifts", "unsupervised loaded training", "performance supplements"]
+          "forbidden": ["1RM testing", "max-effort barbell lifts", "unsupervised loaded training", "performance supplements"],
+          "rule_refs": ["YOUTH_STRENGTH_SUPERVISION", "NO_ONE_REP_MAX_MINORS", "STOP_ON_PAIN"]
         },
         "speed": {
           "required": ["acceleration mechanics", "max-speed exposure under control", "change-of-direction in game contexts"],
@@ -142,6 +162,14 @@
         "rest_or_water_break_every_minutes": 20,
         "sessions_per_week_max": 5
       },
+      "practice_blueprint": {
+        "recommended_format": "Periodized, position-aware practice: purposeful warm-up, individual skill development, then team/situational work and competitive reps. Pitchers on monitored throwing programs.",
+        "time_split": { "offense_pct": 40, "defense_pct": 35, "conditioning_team_pct": 25 },
+        "station_rotation_minutes": 20,
+        "block_order": ["dynamic warm-up & arm-care throwing", "position-specific defense", "team defense & situations", "hitting (mechanics + live decisions)", "baserunning & game IQ", "speed/conditioning block"],
+        "coaching_notes": ["Let athletes self-regulate and self-report soreness.", "Build volume early, sharpen to game-speed competition later.", "Respect Pitch Smart 13-14 caps and rest; curveball only with qualified instruction.", "Blend skill blocks with competitive, decision-rich reps."],
+        "source_manuals": ["USA Baseball / MLB pitching & development guidelines", "Pitch Smart", "Red Sox Foundation Practice Plan", "Baseball Canada LTAD"]
+      },
       "topics": {
         "throwing": {
           "required": ["periodized throwing program", "rest-day enforcement", "soreness self-report"],
@@ -150,14 +178,16 @@
             { "item": "curveball", "conditions": ["~age 14+", "qualified instruction", "limited volume"] },
             { "item": "long toss", "conditions": ["periodized", "monitored intent"] }
           ],
-          "forbidden": ["pitching on multiple teams same day", "year-round competitive pitching"]
+          "forbidden": ["pitching on multiple teams same day", "year-round competitive pitching"],
+          "rule_refs": ["PITCH_SMART_GENERAL", "LITTLE_LEAGUE_PITCH_COUNT", "STOP_ON_PAIN"]
         },
         "strength": {
           "required": ["dynamic warmup 5-10 min", "2-3 sessions/wk nonconsecutive", "technique before load", "qualified supervision"],
           "allowed_with_conditions": [
             { "item": "barbell movements", "conditions": ["sub-maximal", "3 sets x 10-15 reps", "no 1RM"] }
           ],
-          "forbidden": ["1RM testing", "powerlifting meets without medical/coach clearance", "performance supplements"]
+          "forbidden": ["1RM testing", "powerlifting meets without medical/coach clearance", "performance supplements"],
+          "rule_refs": ["YOUTH_STRENGTH_SUPERVISION", "NO_ONE_REP_MAX_MINORS", "TEEN_STRENGTH_FREQUENCY", "STOP_ON_PAIN"]
         },
         "speed": {
           "required": ["acceleration, max speed, deceleration, COD blocks"],
@@ -213,6 +243,14 @@
         "rest_or_water_break_every_minutes": 20,
         "sessions_per_week_max": 6
       },
+      "practice_blueprint": {
+        "recommended_format": "Individualized, periodized training oriented to competition transfer: targeted warm-up, position/skill specialization, high-quality game-speed and situational reps, and recovery-aware loading.",
+        "time_split": { "offense_pct": 35, "defense_pct": 35, "conditioning_team_pct": 30 },
+        "station_rotation_minutes": 25,
+        "block_order": ["individualized warm-up & arm care", "position specialization", "team execution & situations", "hitting (mechanics, bat speed, live)", "baserunning & situational IQ", "speed/strength/conditioning block"],
+        "coaching_notes": ["Periodize by season phase; respect annual time-off blocks.", "Prioritize quality of reps and transfer to game over raw volume.", "Honor Pitch Smart 15-16 / 17-18 caps and recovery scores.", "Athlete-led routines and self-regulation are the goal."],
+        "source_manuals": ["USA Baseball / MLB development & Pitch Smart", "Baseball Canada / Baseball BC LTAD", "Red Sox Foundation Practice Plan"]
+      },
       "topics": {
         "throwing": {
           "required": ["periodized program", "soreness self-report", "annual time-off block"],
@@ -220,14 +258,16 @@
             { "item": "pitching", "conditions": ["Pitch Smart 15-16 or 17-18 table caps", "league rules apply if stricter"] },
             { "item": "full pitch arsenal", "conditions": ["qualified instruction", "monitored volume per pitch type"] }
           ],
-          "forbidden": ["pitching on multiple teams same day", "year-round competitive pitching with no off-block"]
+          "forbidden": ["pitching on multiple teams same day", "year-round competitive pitching with no off-block"],
+          "rule_refs": ["PITCH_SMART_GENERAL", "STOP_ON_PAIN"]
         },
         "strength": {
           "required": ["qualified supervision OR documented coach certification", "technique screen before load progression"],
           "allowed_with_conditions": [
             { "item": "max-effort lifts", "conditions": ["18+ only", "documented prior training base", "qualified S&C oversight"] }
           ],
-          "forbidden": ["1RM testing in minors (under 18)", "supplement prescriptions by platform"]
+          "forbidden": ["1RM testing in minors (under 18)", "supplement prescriptions by platform"],
+          "rule_refs": ["YOUTH_STRENGTH_SUPERVISION", "NO_ONE_REP_MAX_MINORS", "TEEN_STRENGTH_FREQUENCY", "STOP_ON_PAIN"]
         },
         "speed": {
           "required": ["periodized speed work", "qualified coaching cues"],

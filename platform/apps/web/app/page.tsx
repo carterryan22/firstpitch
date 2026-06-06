@@ -3,6 +3,7 @@ import { getSession } from "./lib/session";
 import { getFieldsRepos } from "./lib/fields";
 import { FIELD_SEEDS } from "./lib/fieldsSeed";
 import { Hero, FeatureGrid, RoleTile } from "./components/ui";
+import { SmartSearch } from "./components/SmartSearch";
 
 // Stats need a live repo read for review counts; force-dynamic so the SSG
 // build doesn't freeze a "0 fields" snapshot from an empty in-memory store.
@@ -34,13 +35,13 @@ export default async function Home() {
   return (
     <div className="space-y-12">
       <Hero
-        eyebrow="Real dirt on every diamond"
+        eyebrow="First Pitch — know before you throw"
         title={
           <>
-            Don&apos;t show up to a field <em>blind</em>.
+            Know before you <em>throw</em>. Plan, train, track.
           </>
         }
-        description="Compile age-appropriate practice plans in under a minute. Scout the field before you book it. Honest reviews, role-aware drills, no splinters."
+        description="Inclusive youth-baseball training, planning, and tracking — for every kid on the roster. Compile a safe practice in under a minute, scout the field before you book it, and watch each player grow."
         primary={session ? { href: "/coach", label: "Open coach console" } : { href: "/practice/new", label: "Try the compiler — no signup" }}
         secondary={{ href: "/fields", label: `Browse ${fieldsCount || ""} fields →`.replace("  ", " ") }}
         stats={[
@@ -52,6 +53,8 @@ export default async function Home() {
         ]}
         ticker="LOCAL ROLLOUT · Bellevue · Issaquah · more dirt soon"
       />
+
+      <SmartSearch />
 
       <section>
         <FeatureGrid

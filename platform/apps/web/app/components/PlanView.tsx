@@ -1,6 +1,7 @@
 import { Badge, Card } from "./ui";
 import { PrintButton } from "./PrintButton";
 import { AssignSuggestedButton } from "./AssignSuggestedButton";
+import { missingGearForEquipment, affiliateUrl } from "@platform/gear";
 
 // Mirrors @platform/compiler CompiledBlock without importing it (avoids server/client coupling).
 export interface PlanBlock {
@@ -410,6 +411,8 @@ function PlanEquipment({ blocks }: { blocks: PlanBlock[] }) {
     for (const e of b.drill?.equipment_required ?? []) all.add(e);
   }
   if (all.size === 0) return null;
+  const amazonTag = process.env.NEXT_PUBLIC_AFFILIATE_AMAZON_TAG;
+  const gear = missingGearForEquipment(Array.from(all));
   return (
     <Card>
       <h3 className="m-0 text-base uppercase">Equipment to grab</h3>
@@ -418,6 +421,33 @@ function PlanEquipment({ blocks }: { blocks: PlanBlock[] }) {
           <li key={e} className="badge">{e.replace(/_/g, " ")}</li>
         ))}
       </ul>
+      {gear.length > 0 ? (
+        <div className="mt-4 border-t border-ink/15 pt-3">
+          <p className="m-0 text-xs uppercase tracking-[0.12em] text-dirt-300" style={{ fontFamily: "var(--font-type)" }}>
+            Don't have it? Tested picks
+          </p>
+          <ul className="mt-2 flex flex-wrap gap-2">
+            {gear.map((p) => {
+              const href = affiliateUrl(p, amazonTag);
+              return href ? (
+                <li key={p.id}>
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="sponsored nofollow noopener noreferrer"
+                    className="btn-ghost no-underline hover:no-underline"
+                  >
+                    {p.name} · ~${p.price_usd} →
+                  </a>
+                </li>
+              ) : null;
+            })}
+          </ul>
+          <p className="mt-2 text-[11px] italic text-ink/55">
+            Affiliate links — small commission, never changes your price. Gear is optional.
+          </p>
+        </div>
+      ) : null}
     </Card>
   );
 }

@@ -625,11 +625,21 @@ export function TileBuilder({
         <button
           type="button"
           onClick={compile}
-          disabled={busy || trayDrills.length === 0}
+          disabled={busy}
           className="btn-primary w-full"
         >
-          {busy ? "Compiling…" : `Compile ${trayDrills.length} drill${trayDrills.length === 1 ? "" : "s"}`}
+          {busy
+            ? "Compiling…"
+            : trayDrills.length === 0
+              ? "Compile a starter plan"
+              : `Compile ${trayDrills.length} drill${trayDrills.length === 1 ? "" : "s"}`}
         </button>
+        {trayDrills.length === 0 && !busy ? (
+          <p className="text-xs text-ink/60">
+            No drills picked yet — we'll build a balanced, safety-checked plan from your age,
+            time slot, and focus. Add tiles above to customize it.
+          </p>
+        ) : null}
       </aside>
 
       {plan ? (

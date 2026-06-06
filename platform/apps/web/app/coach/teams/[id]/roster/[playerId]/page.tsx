@@ -3,7 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import { getRepos } from "@platform/storage";
 import { getSession } from "../../../../../lib/session";
 import { userCanManageTeam } from "../../../../../lib/teams";
-import { fullName } from "../../../../../lib/players";
+import { fullName, playerCapabilityBadges, capabilityBadgeClass } from "../../../../../lib/players";
 import { Card } from "../../../../../components/ui";
 import { PlayerForm } from "../PlayerForm";
 import { aggregateSeason } from "../../../../../lib/playerStats";
@@ -52,13 +52,15 @@ export default async function PlayerDetailPage({
           </span>
           <h1 className="m-0">{fullName(player)}</h1>
         </div>
-        <div className="mt-2 flex flex-wrap gap-2 text-xs text-slate-500">
+        <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-slate-500">
           <span>{player.bats || "?"}/{player.throws || "?"}</span>
           <span>·</span>
           <span>{player.ageBand}</span>
-          {player.canPitch ? <span className="badge-info">Can pitch</span> : null}
-          {player.canCatch ? <span className="badge-info">Can catch</span> : null}
-          {player.injured ? <span className="badge-danger">Injured</span> : null}
+          {playerCapabilityBadges(player, { games: allGames }).map((b) => (
+            <span key={b.label} className={capabilityBadgeClass(b.tone)} title={b.title}>
+              {b.label}
+            </span>
+          ))}
           {player.archivedAt ? <span className="badge-warn">Archived</span> : null}
         </div>
       </header>

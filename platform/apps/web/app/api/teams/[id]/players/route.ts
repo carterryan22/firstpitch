@@ -3,6 +3,7 @@ import { getRepos, POSITIONS, type Position, type Bats, type Throws, type Positi
 import { getSession } from "../../../../lib/session";
 import { userCanManageTeam } from "../../../../lib/teams";
 import { bandFromDob } from "../../../../lib/players";
+import { requestParentalConsent, requiresParentalConsent } from "../../../../lib/consent";
 
 export const dynamic = "force-dynamic";
 
@@ -116,5 +117,27 @@ export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string
     resource: `player:${player.id}`,
     metadata: { teamId },
   });
-  return NextResponse.json({ player });
+
+  // COPPA: a child under 13 needs verifiable parental consent before the
+  // profile is treated as active. If we have a parent email, kick off the
+  // verification flow now; otherwise mark the profile as needing consent.
+  let consent: { devLink?: string; pending: boolean } | undefined;
+  if (requiresParentalConsent(player)) {
+    if (parentUserId && body.parentEmail) {
+      const result = await requestParentalConsent({
+        playerId: player.id,
+        teamId,
+        parentEmail: body.parentEmail.trim(),
+        parentUserId,
+        requestedByUserId: session.user.id,
+      });
+      consent = { devLink: result.devLink, pending: true };
+    } else {
+      await repos.players.update(player.id, { consentStatus: "pending" });
+      consent = { pending: true };
+    }
+  }
+
+  const refreshed = (await repos.players.byId(player.id)) ?? player;
+  return NextResponse.json({ player: refreshed, consent });
 }

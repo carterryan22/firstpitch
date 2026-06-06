@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { getRepos } from "@platform/storage";
@@ -66,19 +67,44 @@ export default async function FairnessPage({
     ...totals[p.id]!,
   }));
 
-  // Fairness metrics
+  // Fairness metrics. Verdicts use deviation from the roster mean of field
+  // innings (WoS §9.2 wording: "Sitting more than most" / "Even" / "Playing
+  // more than most"). A player is flagged when they're more than ~15% off the
+  // mean, so a balanced roster reads "Even" across the board.
   const innings = rows.map((r) => r.fieldInnings);
-  const benches = rows.map((r) => r.benchInnings);
-  const maxField = Math.max(0, ...innings);
-  const minField = innings.length ? Math.min(...innings) : 0;
-  const benchMax = Math.max(0, ...benches);
+  const totalField = innings.reduce((a, b) => a + b, 0);
+  const meanField = innings.length ? totalField / innings.length : 0;
+  const band = Math.max(1, meanField * 0.15);
+  const maxPos = Math.max(
+    1,
+    ...rows.flatMap((r) => POSITIONS.map((pos) => r.positions[pos] ?? 0)),
+  );
 
-  function rowFairness(field: number, bench: number): string {
-    if (maxField === 0) return "—";
-    if (field === minField && bench === benchMax) return "low";
-    if (field === maxField) return "high";
-    return "ok";
+  function verdict(field: number): { label: string; cls: string } {
+    if (meanField === 0) return { label: "—", cls: "badge" };
+    if (field < meanField - band) return { label: "Sitting more than most", cls: "badge-warn" };
+    if (field > meanField + band) return { label: "Playing more than most", cls: "badge-info" };
+    return { label: "Even", cls: "badge-ok" };
   }
+
+  // Heat-map cell shading — deeper green the more innings logged at a position.
+  function heatStyle(n: number): CSSProperties | undefined {
+    if (!n) return undefined;
+    const t = Math.min(1, n / maxPos);
+    // emerald-ish: lighten toward white as t→0
+    const alpha = 0.12 + t * 0.55;
+    return { backgroundColor: `rgba(16, 122, 87, ${alpha.toFixed(2)})`, color: t > 0.6 ? "white" : undefined };
+  }
+
+  // Surface the single biggest imbalance as a coach nudge (the "Improve" the
+  // WoS reference calls out — explain *why* + who to move).
+  const sorted = rows.slice().sort((a, b) => a.fieldInnings - b.fieldInnings);
+  const lowest = sorted[0];
+  const highest = sorted[sorted.length - 1];
+  const nudge =
+    lowest && highest && considered.length > 0 && highest.fieldInnings - lowest.fieldInnings >= 3
+      ? `${fullName(lowest.player)} has ${lowest.fieldInnings} field innings vs ${fullName(highest.player)}'s ${highest.fieldInnings}. Start ${lowest.player.firstName} a couple extra innings next game to even it out.`
+      : null;
 
   return (
     <div className="space-y-6">
@@ -114,11 +140,19 @@ export default async function FairnessPage({
           </div>
         </div>
         <p className="mt-1 text-sm text-slate-500">
-          Innings played at each field position across {considered.length} game(s). The chips flag
-          the player with the fewest field innings (and the most bench) versus the most field
-          innings.
+          Innings played at each field position across {considered.length} game(s). Cells shade
+          darker the more a player has logged at a spot; the verdict pill flags who is sitting or
+          playing more than the rest of the roster.
         </p>
       </header>
+
+      {nudge ? (
+        <Card className="border-amber-200 bg-amber-50">
+          <p className="m-0 text-sm text-amber-900">
+            <span className="font-semibold">Balance tip:</span> {nudge}
+          </p>
+        </Card>
+      ) : null}
 
       <Card className="p-0 overflow-x-auto">
         <table className="w-full min-w-[760px] text-sm">
@@ -131,14 +165,12 @@ export default async function FairnessPage({
                 <th key={pos} className="px-2 py-3 text-center">{pos}</th>
               ))}
               <th className="px-3 py-3 text-center">Pitches</th>
-              <th className="px-3 py-3 text-center">Equity</th>
+              <th className="px-3 py-3 text-center">Playing time</th>
             </tr>
           </thead>
           <tbody>
             {rows.map((r) => {
-              const flag = rowFairness(r.fieldInnings, r.benchInnings);
-              const cls =
-                flag === "low" ? "badge-warn" : flag === "high" ? "badge-info" : "badge-ok";
+              const v = verdict(r.fieldInnings);
               return (
                 <tr key={r.player.id} className="border-t border-slate-100">
                   <td className="px-3 py-2">
@@ -146,19 +178,27 @@ export default async function FairnessPage({
                       {r.player.jerseyNumber ? `#${r.player.jerseyNumber}` : ""}
                     </span>{" "}
                     {fullName(r.player)}
+                    {r.player.injured ? <span className="ml-1 badge-danger text-[10px]">INJ</span> : null}
                   </td>
                   <td className="px-3 py-2 text-center font-semibold text-slate-800">
                     {r.fieldInnings}
                   </td>
                   <td className="px-3 py-2 text-center text-slate-500">{r.benchInnings}</td>
-                  {POSITIONS.map((pos) => (
-                    <td key={pos} className="px-2 py-2 text-center text-slate-700">
-                      {r.positions[pos] ?? ""}
-                    </td>
-                  ))}
+                  {POSITIONS.map((pos) => {
+                    const n = r.positions[pos] ?? 0;
+                    return (
+                      <td
+                        key={pos}
+                        className="px-2 py-2 text-center text-slate-700"
+                        style={heatStyle(n)}
+                      >
+                        {n || <span className="text-slate-300">·</span>}
+                      </td>
+                    );
+                  })}
                   <td className="px-3 py-2 text-center text-slate-700">{r.pitches}</td>
                   <td className="px-3 py-2 text-center">
-                    <span className={cls}>{flag}</span>
+                    <span className={`${v.cls} whitespace-nowrap`}>{v.label}</span>
                   </td>
                 </tr>
               );

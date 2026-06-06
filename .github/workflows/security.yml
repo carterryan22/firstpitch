@@ -1,0 +1,102 @@
+# Security gate — Semgrep SAST, dependency audit + review, and the repo's own
+# Security Review Agent (static + npm-audit). Complements codeql.yml and
+# scorecard.yml. The security-review job fails the build on any P0.
+name: security
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "37 4 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  # ── Semgrep SAST (OWASP Top 10 + framework rulesets) ──
+  semgrep:
+    name: semgrep (SAST)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      security-events: write
+    # The official Semgrep image ships the CLI + rules; no token needed for the
+    # community rulesets below.
+    container:
+      image: semgrep/semgrep
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Semgrep scan
+        run: |
+          semgrep scan \
+            --config p/default \
+            --config p/owasp-top-ten \
+            --config p/javascript \
+            --config p/typescript \
+            --config p/react \
+            --config p/nextjs \
+            --config p/secrets \
+            --sarif --output semgrep-results.sarif
+        # Don't fail the job before we upload the SARIF; the alerts surface in
+        # the Security tab and dependency-review/security-review own the gate.
+        continue-on-error: true
+
+      - name: Upload Semgrep SARIF
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: semgrep-results.sarif
+
+  # ── npm audit + the repo's Security Review Agent (static + dependency) ──
+  security-review:
+    name: security-review agent
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: platform
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "npm"
+          cache-dependency-path: platform/package-lock.json
+
+      - name: Install workspace
+        run: npm ci --no-audit --no-fund
+
+      - name: Install security-review runner deps
+        run: npm install --prefix scripts/security-review --no-audit --no-fund
+
+      # Exits non-zero on any P0 (critical dependency advisory or a P0 static
+      # finding) — this is the launch-blocking gate.
+      - name: Run Security Review Agent
+        run: npm run security-review
+
+      - name: Upload security report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: security-review-report
+          path: platform/reports/security-review.*
+          retention-days: 14
+
+  # ── Dependency review (PR-only): blocks PRs that add high-severity deps ──
+  dependency-review:
+    name: dependency review
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Dependency review
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: high

@@ -5,6 +5,7 @@ import { getSession } from "../../../../lib/session";
 import { userCanManageTeam } from "../../../../lib/teams";
 import { gamesForTeam, splitUpcomingPast, statusLabel, formatGameWhen } from "../../../../lib/games";
 import { Card } from "../../../../components/ui";
+import { ScheduleImport } from "./ScheduleImport";
 
 export const metadata = { title: "Games" };
 
@@ -33,6 +34,8 @@ export default async function GamesPage({ params }: { params: Promise<{ id: stri
           + New game
         </Link>
       </header>
+
+      <ScheduleImport teamId={id} />
 
       <section className="space-y-3">
         <h2 className="m-0 text-sm uppercase tracking-wide text-slate-500">Upcoming ({upcoming.length})</h2>

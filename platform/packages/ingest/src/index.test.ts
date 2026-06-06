@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { parseCsv, toRecords } from "./csv";
 import { matchPlayer } from "./nameMatch";
-import { ingestGameChangerCsv } from "./gameChanger";
+import { ingestGameChangerCsv, rosterFromGameChangerCsv, splitPlayerName } from "./gameChanger";
 
 describe("csv", () => {
   it("parses simple csv", () => {
@@ -62,5 +62,76 @@ describe("ingestGameChangerCsv", () => {
     expect(r.rows[0]?.hits).toBe(2);
     expect(r.unmatchedNames).toContain("Mystery Kid");
     expect(r.unknownColumns).toEqual([]);
+  });
+
+  // E4.3 DoD: a 100-row CSV maps with >=95% accuracy.
+  it("maps a 100-row CSV with >=95% accuracy", () => {
+    const FIRST = ["Cole","Jordan","Mason","Liam","Noah","Ethan","Aiden","Lucas","Owen","Caleb"];
+    const LAST = ["Carter","Lopez","Nguyen","Patel","Garcia","Brooks","Hayes","Reyes","Walker","Foster"];
+    // 100 unique roster players from 10 firsts x 10 lasts (each combo once).
+    const bigRoster = [] as Array<{ playerId: string; displayName: string; jerseyNumber: string }>;
+    for (let i = 0; i < 100; i++) {
+      const first = FIRST[i % FIRST.length]!;
+      const last = LAST[Math.floor(i / FIRST.length) % LAST.length]!;
+      bigRoster.push({
+        playerId: `p${i}`,
+        displayName: `${first} ${last}`,
+        jerseyNumber: String(i),
+      });
+    }
+
+    // Build a CSV that perturbs each name the way a real export would:
+    // case changes, "Last, First" ordering, single-char typos, extra spaces.
+    const lines = ["Player,#,PA,AB,H,BB,K,HR,RBI"];
+    const expected: string[] = [];
+    bigRoster.forEach((p, i) => {
+      const [first, last] = p.displayName.split(" ") as [string, string];
+      let name: string;
+      const mode = i % 4;
+      if (mode === 0) name = p.displayName.toUpperCase();
+      else if (mode === 1) name = `${last}, ${first}`;
+      else if (mode === 2) name = `${first.slice(0, -1)} ${last}`; // dropped a letter (typo)
+      else name = `  ${first}   ${last} `; // sloppy whitespace
+      lines.push(`"${name}",${i},4,4,2,1,1,0,1`);
+      expected.push(p.playerId);
+    });
+    const bigCsv = lines.join("\n");
+
+    const r = ingestGameChangerCsv(bigCsv, bigRoster);
+    expect(r.parsedRowCount).toBe(100);
+    const correct = r.rows.filter((row, idx) => row.playerId === expected[idx]).length;
+    expect(correct / 100).toBeGreaterThanOrEqual(0.95);
+  });
+});
+
+describe("rosterFromGameChangerCsv", () => {
+  it("splits names and keeps jerseys", () => {
+    const csv = [
+      "Player,#,PA,AB,H",
+      "Cole Carter,7,4,4,2",
+      '"Lopez, Jordan",12,3,2,1',
+      "Mason Nguyen,9,2,2,0",
+    ].join("\n");
+    const roster = rosterFromGameChangerCsv(csv);
+    expect(roster).toHaveLength(3);
+    expect(roster[0]).toEqual({ firstName: "Cole", lastName: "Carter", jerseyNumber: "7" });
+    expect(roster[1]).toEqual({ firstName: "Jordan", lastName: "Lopez", jerseyNumber: "12" });
+  });
+
+  it("de-dupes repeated players (batting + pitching rows)", () => {
+    const csv = [
+      "Player,#,PA,H",
+      "Cole Carter,7,4,2",
+      "Cole Carter,7,3,1",
+      "Jordan Lopez,12,2,1",
+    ].join("\n");
+    const roster = rosterFromGameChangerCsv(csv);
+    expect(roster).toHaveLength(2);
+  });
+
+  it("splitPlayerName handles 'Last, First' and single token", () => {
+    expect(splitPlayerName("Lopez, Jordan")).toEqual({ firstName: "Jordan", lastName: "Lopez" });
+    expect(splitPlayerName("Cole Carter")).toEqual({ firstName: "Cole", lastName: "Carter" });
+    expect(splitPlayerName("Cher")).toEqual({ firstName: "Cher", lastName: "" });
   });
 });

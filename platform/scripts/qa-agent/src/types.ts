@@ -10,6 +10,8 @@ export type BugKind =
   | "assertion"
   | "timeout"
   | "redirect"
+  | "a11y"
+  | "authz"
   | "scenario.crash";
 
 export interface Bug {

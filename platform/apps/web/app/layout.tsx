@@ -8,6 +8,7 @@ import { UpdateBanner } from "./components/UpdateBanner";
 import { Wordmark } from "./components/ui";
 import { Analytics } from "./components/Analytics";
 import { getSession } from "./lib/session";
+import { siteUrl } from "./lib/site";
 
 // Adopted from dugout-dirt.com: Bungee (display), Rye (western emphasis),
 // Special Elite (typewriter meta), Roboto Slab (body).
@@ -18,12 +19,13 @@ const slab = Roboto_Slab({ subsets: ["latin"], variable: "--font-slab", display:
 const body = Inter({ subsets: ["latin"], variable: "--font-body", display: "swap" });
 
 export const metadata = {
+  metadataBase: new URL(siteUrl()),
   title: {
-    default: "First Pitch — Real dirt on every diamond, every drill",
+    default: "First Pitch — Know before you throw. Plan, train, track.",
     template: "%s · First Pitch",
   },
   description:
-    "Safer youth baseball practices, honest scouting reports on local fields, and lineups that don't get gamed. Backed by USA Baseball Pitch Smart, NSCA, and CDC.",
+    "Inclusive youth-baseball training, planning, and tracking. Compile safe practices, scout local fields, and follow every player's progress. Backed by USA Baseball Pitch Smart, NSCA, and CDC.",
   manifest: "/manifest.webmanifest",
   applicationName: "First Pitch",
   appleWebApp: {
@@ -111,8 +113,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             </p>
             <p className="flex flex-wrap items-center gap-x-4 gap-y-1 quote">
               <Link className="inline-flex min-h-[44px] items-center text-ink no-underline hover:underline" href="/fields">Fields</Link>
+              <Link className="inline-flex min-h-[44px] items-center text-ink no-underline hover:underline" href="/gear">Gear</Link>
               <Link className="inline-flex min-h-[44px] items-center text-ink no-underline hover:underline" href="/safety">Safety</Link>
               <Link className="inline-flex min-h-[44px] items-center text-ink no-underline hover:underline" href="/policy/ai-boundaries">Policy</Link>
+              <Link className="inline-flex min-h-[44px] items-center text-ink no-underline hover:underline" href="/policy/privacy">Privacy</Link>
+              <Link className="inline-flex min-h-[44px] items-center text-ink no-underline hover:underline" href="/policy/terms">Terms</Link>
               <span>© {new Date().getFullYear()} First Pitch</span>
             </p>
           </div>

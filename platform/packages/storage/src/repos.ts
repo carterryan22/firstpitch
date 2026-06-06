@@ -3,6 +3,8 @@
 
 import type {
   AuditLogRecord,
+  ConsentRecord,
+  ConsentStatus,
   DbShape,
   FavoriteRecord,
   FieldBookingRecord,
@@ -66,6 +68,7 @@ export interface Repos {
     byId(id: string): Promise<TeamRecord | undefined>;
     bySlug(slug: string): Promise<TeamRecord | undefined>;
     create(input: Omit<TeamRecord, "id" | "createdAt">): Promise<TeamRecord>;
+    update(id: string, patch: Partial<Omit<TeamRecord, "id" | "createdAt" | "ownerCoachUserId">>): Promise<TeamRecord | undefined>;
   };
   teamMemberships: {
     list(filter?: { teamId?: string; userId?: string; role?: TeamMemberRole }): Promise<TeamMembershipRecord[]>;
@@ -136,6 +139,14 @@ export interface Repos {
     /** Marks a token consumed and returns the previous (pre-consumption) record. */
     consume(tokenHash: string, at?: string): Promise<LoginTokenRecord | undefined>;
     purgeExpired(): Promise<number>;
+  };
+  consents: {
+    list(filter?: { playerId?: string; parentEmail?: string; status?: ConsentStatus }): Promise<ConsentRecord[]>;
+    byId(id: string): Promise<ConsentRecord | undefined>;
+    byTokenHash(tokenHash: string): Promise<ConsentRecord | undefined>;
+    byPlayer(playerId: string): Promise<ConsentRecord | undefined>;
+    create(input: Omit<ConsentRecord, "id" | "createdAt">): Promise<ConsentRecord>;
+    update(id: string, patch: Partial<ConsentRecord>): Promise<ConsentRecord | undefined>;
   };
   fields: {
     list(filter?: { city?: string; state?: string; surface?: string; lights?: boolean; type?: string; query?: string }): Promise<FieldRecord[]>;
@@ -279,6 +290,13 @@ export function makeRepos(store: Store): Repos {
         mutate((db) => {
           const rec: TeamRecord = { ...input, id: cid("tm"), createdAt: new Date().toISOString() };
           db.teams.push(rec);
+          return rec;
+        }),
+      update: (id, patch) =>
+        mutate((db) => {
+          const rec = db.teams.find((t) => t.id === id);
+          if (!rec) return undefined;
+          Object.assign(rec, patch);
           return rec;
         }),
     },
@@ -656,6 +674,48 @@ export function makeRepos(store: Store): Repos {
           return before - db.loginTokens.length;
         });
       },
+    },
+    consents: {
+      async list(filter) {
+        const all = (await store.read()).consents ?? [];
+        return all.filter(
+          (c) =>
+            (!filter?.playerId || c.playerId === filter.playerId) &&
+            (!filter?.parentEmail || c.parentEmail.toLowerCase() === filter.parentEmail.toLowerCase()) &&
+            (!filter?.status || c.status === filter.status),
+        );
+      },
+      byId: async (id) => ((await store.read()).consents ?? []).find((c) => c.id === id),
+      byTokenHash: async (tokenHash) =>
+        ((await store.read()).consents ?? []).find((c) => c.tokenHash === tokenHash),
+      async byPlayer(playerId) {
+        const all = ((await store.read()).consents ?? []).filter((c) => c.playerId === playerId);
+        // Prefer a granted record, else the most recent.
+        return (
+          all.find((c) => c.status === "granted") ??
+          all.sort((a, b) => b.createdAt.localeCompare(a.createdAt))[0]
+        );
+      },
+      create: (input) =>
+        mutate((db) => {
+          if (!db.consents) db.consents = [];
+          const rec: ConsentRecord = {
+            id: cid("consent"),
+            createdAt: new Date().toISOString(),
+            ...input,
+          };
+          db.consents.push(rec);
+          return rec;
+        }),
+      update: (id, patch) =>
+        mutate((db) => {
+          if (!db.consents) db.consents = [];
+          const i = db.consents.findIndex((c) => c.id === id);
+          if (i < 0) return undefined;
+          const updated: ConsentRecord = { ...db.consents[i]!, ...patch, id };
+          db.consents[i] = updated;
+          return updated;
+        }),
     },
     fields: {
       async list(filter) {

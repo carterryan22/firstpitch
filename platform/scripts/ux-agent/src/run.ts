@@ -26,6 +26,26 @@ async function preflight(): Promise<void> {
       fetch(`${BASE_URL}${p}`, { redirect: "manual" }).catch(() => undefined),
     ),
   );
+  // The coach-plan-practice journey compiles a plan as its first action. In dev,
+  // the /api/compile route + the compiler package cold-compile on first hit,
+  // which can exceed the journey's inline-render wait and get mis-flagged as a
+  // workflow chokepoint. Prime it with a representative POST so the first real
+  // journey measures the warm path a deployed coach would actually see.
+  console.log(`[ux-agent] warming /api/compile…`);
+  await fetch(`${BASE_URL}/api/compile`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      age: 11,
+      durationMin: 60,
+      environmentTier: "T1_field",
+      coaches: 2,
+      players: 12,
+      focus: ["throwing"],
+      selectedDrillIds: [],
+      persist: false,
+    }),
+  }).catch(() => undefined);
 }
 
 async function runJourney(browser: Browser, j: Journey): Promise<JourneyResult> {

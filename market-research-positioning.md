@@ -170,6 +170,33 @@ Market signals of willingness to pay: GameChanger at scale, Trosky [VERIFY] ~$19
 
 **Strongest paid channel — facility-led "Baseline Night in a Box":** check-in, standardized protocols, player profiles, EV/throwing/speed/9-box tests, auto player cards, recommended home plan, 6–8 week retest. Facility value: more premium than cage rental, repeat visits, parent report, verified data, off-season programming.
 
+### Influencer / creator outreach targets
+
+Youth-baseball coaching creators for seeding, affiliate, and content partnerships. Audience-size figures are from secondary sources (IG/YouTube counts, Feedspot) and are **[VERIFY]** before any outreach deck or contract. Reach matters less than parent/coach relevance and "one cue you can use tonight" content style.
+
+| # | Influencer / brand | Best for | Audience [VERIFY] | Why follow |
+|---|---|---|---|---|
+| 1 | Coach RAC | Viral youth-energy, make-baseball-fun; drills, practice energy, culture, kid buy-in | 1.5M+ across YT/TikTok/IG; ~953K IG | Best fun-first youth account. |
+| 2 | Coach Lisle — Matt Lisle | Hitting + coaching messaging (now mixed with business/family content) | 1M+ (USF bio); 3M (own site) | Huge coach/instructor audience. |
+| 3 | Coach Ballgame — James Lowe | 4–12U fun-first coaching, character, engagement, anti-toxic culture | ~308K IG | Teaches ages 4–12; tied to MLB Play Ball. |
+| 4 | Ultimate Baseball Training — Coach Justin | Hitting, throwing, fielding, confidence/fundamentals (player-training focus) | ~407K YT | Big YouTube training channel. |
+| 5 | CHIPS Performance — Alex Hale | Hitting, catching, pitching, strength/speed; modern training | ~331K IG | Works with youth, HS, and college players. |
+| 6 | Antonelli Baseball — Matt Antonelli | Hitting, fielding, team situations, youth/travel commentary | ~285K YT (3.7K videos); ~101K IG | One of the best overall instruction libraries. |
+| 7 | YouGoProBaseball — John Madden | Pitching, throwing, infield, hitting; coach self-education | ~66K IG; 300K+ YT | Former SD Padres / NY Mets / Auburn. |
+| 8 | D.R. Hitting — Drew Richard | Swing concepts, "box" approach; hitter-development focus | ~267K IG | Popular hitting-specific account. |
+| 9 | Coach Murph / iCoachBaseball | Youth coaching + hitting; practical simple cues for parents/coaches | ~203K IG | Self-styled "home for youth baseball coaching." |
+| 10 | Dominate the Diamond — Duke Baxter / Steve Nikorak | Youth drills, practice plans, coach-pitch, 8U–12U, team fundamentals | ~195K IG (Duke) | Best "coach the coach" platform on this list. |
+| 11 | Coach Ferber — Jason Ferber | Youth hitting, energy, simple cues | ~226K IG | Big youth-baseball account. |
+| 12 | Hitting Done Right / Baseball Doctor — Josh Cathcart | Hitting drills, swing fixes | ~193K IG | Feedspot ranks him high among baseball coach influencers. |
+| 13 | Coach Lou Colon | Infield work, footwork, hands, transfers | ~152K IG | Strong infield-specific content. |
+| 14 | The Hitter's Lab — Lucas Kephart | Youth hitting, dad/parent-friendly instruction | ~139K IG | Bio/content aimed directly at helping dads develop hitters. |
+| 15 | Northern Baseball Training — Doug Clark | Youth drills, confidence, simple practice ideas | ~114K IG | Explicitly targets parents/coaches helping kids improve. |
+| 16 | Coach Dan Blewett | Pitching mechanics, throwing, workouts | ~113K YT | Large library of pitching drills and training content. |
+| 17 | Out Front Hitting — Casey Smith | Hitting progressions, swing work | ~100K IG | Site says he has coached players of all ages for 20+ years. |
+| 18 | Tread Athletics — Ben Brewster / team | Pitching development, arm care, velocity education | 750K+ reach | More HS+ than U10, but huge reach across players/coaches/parents. |
+| 19 | Coach Roger / Baseball Whisperer | Quick baseball drill clips and instruction | ~45K IG | Smaller but useful quick-clip format. |
+| 20 | Xan Barksdale / Catching-101 / Own Home or Go Home | Catcher-specific training | Niche | Team USA coach, former pro catcher, founder of CatcherCON/Catching-101. |
+
 ---
 
 ## 13. Competitive threat & defense

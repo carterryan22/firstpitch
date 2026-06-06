@@ -66,6 +66,21 @@ export default async function PressBoxPage({
         </p>
       </header>
 
+      {game.snackDuty?.name ? (
+        <section className="card flex items-center gap-3">
+          <span aria-hidden className="text-2xl">
+            🍪
+          </span>
+          <div>
+            <h2 className="m-0 text-lg">Snack duty</h2>
+            <p className="m-0 text-sm text-ink/80">
+              <span className="quote text-dirt-700">{game.snackDuty.name}</span> is on snacks for
+              this game.
+            </p>
+          </div>
+        </section>
+      ) : null}
+
       <section className="card space-y-3">
         <h2 className="m-0 text-lg">Roster</h2>
         <p className="text-xs text-dirt-700">First names only — parent-safe view.</p>

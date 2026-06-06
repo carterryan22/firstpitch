@@ -1,0 +1,14 @@
+{
+  "name": "@platform/security-review",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Security Review Agent. A separate, stricter gate than the QA/UX/launch reviewers — it asks 'can the wrong person access, alter, leak, or destroy data?'. Statically audits authentication, authorization, multi-tenant isolation, secrets, injection, privacy/logging leakage, billing enforcement, security headers, and cookies (OWASP ASVS / WSTG / Top 10 / API Top 10), runs the dependency audit, and emits a launch-blocking go/no-go report. Any P0 fails the gate.",
+  "scripts": {
+    "security": "tsx src/run.ts"
+  },
+  "devDependencies": {
+    "tsx": "^4.7.0",
+    "typescript": "^5.4.0"
+  }
+}

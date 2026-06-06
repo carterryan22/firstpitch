@@ -21,12 +21,30 @@ export const coachFlowScenario: Scenario = {
     await ctx.page.waitForSelector("input#team-name");
     const nameInput = ctx.page.locator("input#team-name");
     await nameInput.waitFor({ state: "visible" });
-    // pressSequentially fires keystrokes React's controlled input reliably observes
-    // (fill() can race the hydration boundary on a fresh dev compile).
-    await nameInput.pressSequentially(teamName, { delay: 5 });
     await ctx.page.locator("select#team-age").selectOption("9-12");
+
+    // The submit button is `disabled={busy || !name.trim()}`, so it only enables
+    // once React's controlled `name` state actually holds our text. On a fresh dev
+    // compile the input is SSR'd into the DOM before hydration wires up onChange,
+    // so a single fill()/pressSequentially can be silently dropped and the button
+    // stays disabled forever. Re-apply the value until it both sticks in the input
+    // AND the button reports enabled, instead of blindly waiting on a click timeout.
     const submit = ctx.page.locator("form button[type=submit]").first();
-    // Auto-waits for enabled; tolerant of slow dev-server hydration.
+    let enabled = false;
+    for (let attempt = 0; attempt < 20; attempt++) {
+      if ((await nameInput.inputValue().catch(() => "")) !== teamName) {
+        await nameInput.fill(teamName).catch(() => undefined);
+      }
+      if (await submit.isEnabled().catch(() => false)) {
+        enabled = true;
+        break;
+      }
+      await ctx.page.waitForTimeout(250);
+    }
+    if (!ctx.expect(enabled, "Create-team submit button never became enabled after entering a team name", "blocker")) {
+      await ctx.snap("create-team-button-disabled");
+      return;
+    }
     await submit.click({ timeout: 20_000 });
 
     // CreateTeamForm redirects to /coach/teams/[id]

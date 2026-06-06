@@ -20,6 +20,12 @@ html, body {
   touch-action: manipulation;
 }
 
+/* Offset programmatic scrolls / anchor jumps (e.g. "Skip to content") so the
+   sticky header (z-30, ~64px) never lands on top of the scrolled-to element. */
+html {
+  scroll-padding-top: 5rem;
+}
+
 /* Make form controls feel native on iOS — avoid the 16px auto-zoom on focus. */
 input, select, textarea {
   font-size: 16px;

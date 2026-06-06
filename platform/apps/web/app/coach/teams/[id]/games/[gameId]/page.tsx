@@ -12,6 +12,7 @@ import { BattingOrder } from "./BattingOrder";
 import { GameNotes } from "./GameNotes";
 import { GameStatsImporter } from "./GameStatsImporter";
 import { PressBoxShare } from "./PressBoxShare";
+import { GameTools } from "./GameTools";
 import { pressBoxPath } from "../../../../../lib/pressBox";
 
 function ageBandCenter(band: string): number {
@@ -113,6 +114,20 @@ export default async function GamePage({
             </Link>
             <span className={status.cls}>{status.label}</span>
             {game.isScrimmage ? <span className="badge-warn">Scrimmage</span> : null}
+            <GameTools
+              game={{
+                id: game.id,
+                teamId: id,
+                opponent: game.opponent,
+                startsAt: game.startsAt,
+                venue: game.venue,
+                homeAway: game.homeAway,
+                innings: game.innings,
+                status: game.status,
+                isScrimmage: game.isScrimmage,
+                shareEnabled: game.shareEnabled,
+              }}
+            />
           </div>
         </div>
       </header>
@@ -188,6 +203,7 @@ export default async function GamePage({
             )}
           initial={(game.lineup ?? []) as unknown as import("@platform/lineup").Inning[]}
           pitcherUnavailable={pitcherUnavailable}
+          teamRules={team.leagueRules}
         />
       ) : null}
 

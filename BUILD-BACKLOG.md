@@ -150,14 +150,14 @@ Stories use ID format `E<epic>.<story>` (e.g., `E3.4`).
 | E11.2 | Adjust branch / re-diagnose after re-test | core §13.2 | Plan auto-adjusts when re-test crosses threshold | E2.6, E10.2 |
 | E11.3 | Neutral recommendation engine (vendor-agnostic) | core §14 | Recommendations include free + paid + competitor tools when appropriate | E10.3 |
 | E11.4 | Plan-completion tracking + parent/coach notes | core §19.1; addendum §D | Coach sees completion % per assignment | E6.9 |
-| E11.5 | Transfer Score + confidence thresholds + role-scaled views | core §15.5–§15.8 | Pre/post block math produces calibrated confidence | E4.4 |
+| E11.5 | Transfer Score + confidence thresholds + role-scaled views | core §15.5–§15.8 | Pre/post block math produces calibrated confidence | E4.4 | ✅ DONE — `analyzeTransfer()` in lib/transfer splits games pre/post block, aggregates role metrics (hitting QAB/K/BB/OBP/SLG · pitching strike%/BB/K/WHIP · fielding fpct/CS), calibrated confidence (PA/BF/chances tiers), one role-scaled insight (coach/parent/kid). Coach page at baselines/[playerId]/transfer |
 
 ### Epic E12 — Practice Compiler v2
 | ID | Story | Source | DoD | Deps |
 |---|---|---|---|---|
 | E12.1 | Practice Quality Score | compiler §3 | Score visible; recompiles on edit | E6.3 |
 | E12.2 | Anti-Line Engine | compiler §4 | Plans with long lines flagged + auto-fix offered | E6.3 |
-| E12.3 | Player Grouping Engine | compiler §5 | Auto-groups by skill + need + chemistry | E6.3 |
+| E12.3 | Player Grouping Engine | compiler §5 | Auto-groups by skill + need + chemistry | E6.3 | ✅ DONE — `groupPlayers()` in @platform/compiler: 6 modes (balanced serpentine / skill tiers / position buckets / buddy / arm-care safety / competition). Workload-aware: recently-used arms (Pitch Smart) steered to low-volume station. Coach page at roster/groups |
 | E12.4 | Coach Modes (Builder / Quick / Guided) | compiler §6 | 3 modes deliver the same data model | E6.3 |
 | E12.5 | Live Practice Companion (run-the-practice UI) | compiler §7.1 | Timer + station rotation + completion taps | E6.3 |
 | E12.6 | Assistant cards (printable per-station summaries) | compiler §7.3 | PDF stations print 1 per page | E12.5 |
@@ -192,14 +192,14 @@ Stories use ID format `E<epic>.<story>` (e.g., `E3.4`).
 ### Epic E16 — UI System (WoS-borrowed patterns)
 | ID | Story | Source | DoD | Deps |
 |---|---|---|---|---|
-| E16.1 | 5-tab bottom nav (Home / Games / Roster / Practice / More) | WoS §9.1 | iOS + web parity | E7.1 |
-| E16.2 | Accordion settings with rule-source badges | WoS §9.1 | Every rule shows provenance (League / Custom / League rule) | E13.5 |
-| E16.3 | Inline rule warnings during plan build | WoS §9.1 | Violations explained inline with safer alt | E5.5 |
-| E16.4 | Capability badges (`Can pitch`, `Can catch`, `Injured`) on player cards | WoS §9.1 | Auto-updated from gates + manual override | E5.3 |
-| E16.5 | GameChanger ICS sync with diff (`N created/updated/unchanged/detached`) | WoS §9.1 | Diff visible before commit | E4.3 |
+| ✅ E16.1 | 5-tab bottom nav (Home / Games / Roster / Practice / More) | WoS §9.1 | iOS + web parity | E7.1 | ✅ DONE — `TeamTabs` 5-tab nav (Home/Games/Roster/Pitching/More); inline strip on desktop + fixed bottom bar on mobile with iOS safe-area inset; iOS shell is a WKWebView over the same responsive app |
+| ✅ E16.2 | Accordion settings with rule-source badges | WoS §9.1 | Every rule shows provenance (League / Custom / League rule) | E13.5 | ✅ DONE — team stores `appliedRuleSetId`; `ruleProvenance()` derives per-rule source at render; `ProvenanceBadge` shows "<governing body> rule" (preset match) / "Custom" (override or no preset) / nothing (off); +6 tests |
+| ✅ E16.3 | Inline rule warnings during plan build | WoS §9.1 | Violations explained inline with safer alt | E5.5 | ✅ DONE — FieldBoard groups violations by rule with title + explanation + affected players/innings; live count in the rules bar |
+| E16.4 | Capability badges (`Can pitch`, `Can catch`, `Injured`) on player cards | WoS §9.1 | Auto-updated from gates + manual override | E5.3 | ✅ DONE — `playerCapabilityBadges()` in lib/players (gate-aware: pitchers downgrade to `Resting Nd` via canPitchToday); rendered on roster cards + player detail header |
+| E16.5 | GameChanger ICS sync with diff (`N created/updated/unchanged/detached`) | WoS §9.1 | Diff visible before commit | E4.3 | ✅ DONE — `@platform/ingest` icsSchedule (parser + diffSchedule), `POST /api/teams/[id]/schedule/import` (preview/commit), ScheduleImport UI on games page; `GameRecord.sourceUid` reconciles re-imports |
 | E16.6 | Sandbox demo (2-hour, no signup) | WoS §9.1 | New visitor reaches the compiler in <30s | E6.3 |
-| E16.7 | Press-Box-style public share link | WoS §9.1 | No-auth share works; parent flow downstream | E7.3 |
-| E16.8 | Branded 404 + status pill grammar (`Scheduled / In Progress / Completed`) | WoS §9.1 | Visual QA passes | — |
+| ✅ E16.7 | Press-Box-style public share link | WoS §9.1 | No-auth share works; parent flow downstream | E7.3 | ✅ DONE — HMAC-signed Press Box at `/p/g/{id}/{sig}` + public team page `/teams/{slug}`; no PII beyond first names; snack-duty surfaced (E25.14/E25.17) |
+| ✅ E16.8 | Branded 404 + status pill grammar (`Scheduled / In Progress / Completed`) | WoS §9.1 | Visual QA passes | — | ✅ DONE — branded `not-found.tsx` (Dugout Dirt theme) + `statusLabel()` grammar (Scheduled / In Progress / Completed) on games + Press Box |
 
 ---
 
@@ -292,24 +292,24 @@ Stories use ID format `E<epic>.<story>` (e.g., `E3.4`).
 
 | ID | Story | Source | DoD | Phase | Deps |
 |---|---|---|---|---|---|
-| E25.1 | URL grammar `/teams/{slug}` + team switcher in header | WoS §2.1, §2.2 | Slug-based routing live; multi-team account switches in <300ms | P1 | E1.3 |
-| E25.2 | Team home `/teams/{slug}` — Next Game card + quick-action row + activity feed | WoS §3.2 | Next Game shows opponent/date/venue + days-until + CTA | P1 | E25.1, E4.2 |
-| E25.3 | Roster `/teams/{slug}/roster` with Positions / Stats tabs | WoS §3.3 | Player cards show number, B/T, position chips, capability badges | P1 | E25.1, E2.1 |
-| E25.4 | Player detail `/teams/{slug}/roster/{playerId}` with position-rating sliders, availability, pitch history, parent links | WoS §3.4 | Editing rating affects auto-lineup; pitch history reflects safety rules | P2 | E25.3, E5.2 |
-| E25.5 | Add Player form `/teams/{slug}/roster/new` (jersey, DOB, B/T, capabilities, position ratings, parent email invite) | WoS §3.5 | Player created in one form pass; parent invite sent | P1 | E25.3 |
-| E25.6 | Games list `/teams/{slug}/games` (Upcoming / Past grouping, status badges) | WoS §3.6 | Games sorted + filterable; status grammar matches `Scheduled / In Progress / Completed` | P1 | E25.1, E4.2 |
-| E25.7 | New Game form `/teams/{slug}/games/new` (opponent, datetime, venue, innings) | WoS §3.7 | Save lands on game page | P1 | E25.6 |
-| E25.8 | Game page `/teams/{slug}/games/{gameId}` with **Field / Roster / Summary** tabs | WoS §3.8 | All three tabs render; tab state in URL | P1 | E25.7 |
-| E25.9 | Lineup builder (Field tab): per-inning × player grid, auto-generate, inline rule warnings | WoS §3.8 | Auto-lineup respects pitch-rest + age matrix; warnings cite rule_id | P2 | E25.8, E5.4 |
-| E25.10 | Tools dropdown pattern (Edit details / Duplicate / Reset Lineup / Mark Complete / Delete) — no `/edit` route | WoS §3.8 | All five actions reachable from game page; no orphan route | P2 | E25.8 |
-| E25.11 | Game Stats `/teams/{slug}/games/{gameId}/stats` (post-game review, read-only once Completed, pitch-count entry per pitcher) | WoS §3.9 | Counts persist; locked when game = Completed | P2 | E25.8, E4.2 |
-| E25.12 | Pitching availability board `/teams/{slug}/pitching` (last-pitched, rest pill, forward calendar) | WoS §3.10 | Rest pills computed from `canPitchToday()`; forward projection per next game | P2 | E25.6, E5.2 |
-| E25.13 | Fairness table `/teams/{slug}/fairness` (games/innings/bench/infield/outfield/positions/at-bats per player, heat-map cells) | WoS §3.11 | Numbers reconcile to game-stat entries; heat-map highlights imbalance | P2 | E25.11 |
-| E25.14 | Press Box `/teams/{slug}/press-box` (parent-facing public share — schedule, lineups after start, pitch counts, snack-duty) | WoS §3.12 | Shareable link works without auth; no PII beyond first names | P2 | E16.7, E25.11 |
-| E25.15 | More menu `/teams/{slug}/more` (Settings, Fairness, Press Box, Help, Subscription) + bottom-tab parity | WoS §2.3, §3.13 | 5-tab nav (Home / Games / Roster / Pitching / More) on web + iOS | P2 | E16.1, E25.1 |
-| E25.16 | Apply-rule-set wizard `/teams/{slug}/apply-rule-set?returnTo=…` (full-page, not modal) | WoS §2.1 | Tournament rulebook selectable; layers correctly with safety rules | P2 | E13.5, E25.1 |
-| E25.17 | Snack-duty / volunteer rotation (Press-Box opt-in) | WoS §3.12 | Rotation auto-balances; parents notified | P3 | E25.14 |
-| E25.18 | Team settings accordion (rules, communication, members, billing) | WoS §3.13 | Each section reachable; rule-source badges visible | P2 | E16.2, E25.15 |
+| ✅ E25.1 | URL grammar `/teams/{slug}` + team switcher in header | WoS §2.1, §2.2 | Slug-based routing live; multi-team account switches in <300ms | P1 | E1.3 |
+| ✅ E25.2 | Team home `/teams/{slug}` — Next Game card + quick-action row + activity feed | WoS §3.2 | Next Game shows opponent/date/venue + days-until + CTA | P1 | E25.1, E4.2 |
+| ✅ E25.3 | Roster `/teams/{slug}/roster` with Positions / Stats tabs | WoS §3.3 | Player cards show number, B/T, position chips, capability badges | P1 | E25.1, E2.1 |
+| ✅ E25.4 | Player detail `/teams/{slug}/roster/{playerId}` with position-rating sliders, availability, pitch history, parent links | WoS §3.4 | Editing rating affects auto-lineup; pitch history reflects safety rules | P2 | E25.3, E5.2 |
+| ✅ E25.5 | Add Player form `/teams/{slug}/roster/new` (jersey, DOB, B/T, capabilities, position ratings, parent email invite) | WoS §3.5 | Player created in one form pass; parent invite sent | P1 | E25.3 |
+| ✅ E25.6 | Games list `/teams/{slug}/games` (Upcoming / Past grouping, status badges) | WoS §3.6 | Games sorted + filterable; status grammar matches `Scheduled / In Progress / Completed` | P1 | E25.1, E4.2 |
+| ✅ E25.7 | New Game form `/teams/{slug}/games/new` (opponent, datetime, venue, innings) | WoS §3.7 | Save lands on game page | P1 | E25.6 |
+| ✅ E25.8 | Game page `/teams/{slug}/games/{gameId}` with **Field / Roster / Summary** tabs | WoS §3.8 | All three tabs render; tab state in URL | P1 | E25.7 |
+| ✅ E25.9 | Lineup builder (Field tab): per-inning × player grid, auto-generate, inline rule warnings | WoS §3.8 | Auto-lineup respects pitch-rest + age matrix; warnings cite rule_id | P2 | E25.8, E5.4 |
+| ✅ E25.10 | Tools dropdown pattern (Edit details / Duplicate / Reset Lineup / Mark Complete / Delete) — no `/edit` route | WoS §3.8 | All five actions reachable from game page; no orphan route | P2 | E25.8 |
+| ✅ E25.11 | Game Stats `/teams/{slug}/games/{gameId}/stats` (post-game review, read-only once Completed, pitch-count entry per pitcher) | WoS §3.9 | Counts persist; locked when game = Completed | P2 | E25.8, E4.2 |
+| ✅ E25.12 | Pitching availability board `/teams/{slug}/pitching` (last-pitched, rest pill, forward calendar) | WoS §3.10 | Rest pills computed from `canPitchToday()`; forward projection per next game | P2 | E25.6, E5.2 |
+| ✅ E25.13 | Fairness table `/teams/{slug}/fairness` (games/innings/bench/infield/outfield/positions/at-bats per player, heat-map cells) | WoS §3.11 | Numbers reconcile to game-stat entries; heat-map highlights imbalance | P2 | E25.11 |
+| ✅ E25.14 | Press Box `/teams/{slug}/press-box` (parent-facing public share — schedule, lineups after start, pitch counts, snack-duty) | WoS §3.12 | Shareable link works without auth; no PII beyond first names | P2 | E16.7, E25.11 |
+| ✅ E25.15 | More menu `/teams/{slug}/more` (Settings, Fairness, Press Box, Help, Subscription) + bottom-tab parity | WoS §2.3, §3.13 | 5-tab nav (Home / Games / Roster / Pitching / More) on web + iOS | P2 | E16.1, E25.1 |
+| ✅ E25.16 | Apply-rule-set wizard `/teams/{slug}/apply-rule-set?returnTo=…` (full-page, not modal) | WoS §2.1 | Tournament rulebook selectable; layers correctly with safety rules | P2 | E13.5, E25.1 |
+| ✅ E25.17 | Snack-duty / volunteer rotation (Press-Box opt-in) | WoS §3.12 | Rotation auto-balances; parents notified | P3 | E25.14 |
+| ✅ E25.18 | Team settings accordion (rules, communication, members, billing) | WoS §3.13 | Each section reachable; rule-source badges visible | P2 | E16.2, E25.15 |
 
 ---
 

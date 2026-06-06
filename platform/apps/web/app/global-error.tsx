@@ -16,6 +16,19 @@ export default function GlobalError({
   useEffect(() => {
     // eslint-disable-next-line no-console
     console.error("[global-error]", error);
+    // Best-effort report to our monitoring endpoint. Never blocks render.
+    void fetch("/api/monitoring/report", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+        digest: error.digest,
+        source: "global-error",
+      }),
+      keepalive: true,
+    }).catch(() => {});
   }, [error]);
 
   return (

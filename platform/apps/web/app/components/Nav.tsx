@@ -11,6 +11,7 @@ export const NAV: NavItem[] = [
   { href: "/parent", label: "Dashboard", roles: ["parent", "player"] },
   { href: "/practice/new", label: "New practice", roles: ["coach", "admin"] },
   { href: "/drills", label: "Drills" },
+  { href: "/gear", label: "Gear" },
   { href: "/fields", label: "Fields" },
   { href: "/learn", label: "Learn" },
   { href: "/safety", label: "Safety" },

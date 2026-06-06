@@ -40,6 +40,7 @@ export function FieldBoard({
   present,
   initial,
   pitcherUnavailable,
+  teamRules,
 }: {
   gameId: string;
   innings: number;
@@ -47,6 +48,8 @@ export function FieldBoard({
   present: string[];
   initial: Inning[];
   pitcherUnavailable?: string[];
+  /** Team-configured default rules (from Team settings). */
+  teamRules?: Partial<LeagueRules>;
 }) {
   const router = useRouter();
   const seedLineup: Inning[] =
@@ -63,7 +66,13 @@ export function FieldBoard({
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [rulesEnabled, setRulesEnabled] = useState(true);
-  const [leagueRules, setLeagueRules] = useState<LeagueRules>(() => defaultLeagueRules());
+  // A team-configured rule set is authoritative (omitted rule = off). Only fall
+  // back to the built-in defaults when the team hasn't set anything.
+  const [leagueRules, setLeagueRules] = useState<LeagueRules>(() =>
+    teamRules && Object.keys(teamRules).length > 0
+      ? { ...teamRules }
+      : defaultLeagueRules(),
+  );
   const [rulesOpen, setRulesOpen] = useState(false);
   const [familyView, setFamilyView] = useState(false);
 
@@ -139,6 +148,10 @@ export function FieldBoard({
     maxConsecutiveOutfield: { title: "NO CONSECUTIVE OUTFIELD", explain: "Cannot play the outfield too many innings in a row." },
     pitcherBenchInningBefore: { title: "PITCHER WARM-UP", explain: "Pitchers need the prior inning on the bench to warm up." },
     pairedPositions: { title: "POSITION PAIRS", explain: "Tandem position locks were not satisfied." },
+    equalBenchTime: { title: "EQUAL BENCH TIME", explain: "No player sits a second inning until everyone has sat once." },
+    maxConsecutiveSamePosition: { title: "NO CONSECUTIVE POSITION", explain: "Cannot play the same defensive position two innings in a row." },
+    minInfieldInnings: { title: "MIN INFIELD INNINGS", explain: "Each player needs a minimum number of infield innings." },
+    minOutfieldInnings: { title: "MIN OUTFIELD INNINGS", explain: "Each player needs a minimum number of outfield innings." },
   };
 
   const grouped = useMemo(() => {
@@ -354,7 +367,7 @@ export function FieldBoard({
             <span className="font-medium text-slate-700">League rules</span>
           </label>
           <span className="text-xs text-slate-500">
-            Min playing time · infield rotation · no consecutive bench / outfield · pitcher warm-up.
+            Min playing time · infield / outfield minimums · no consecutive bench / outfield / position · equal bench · pitcher warm-up.
           </span>
           <div className="grow" />
           {rulesEnabled ? (
@@ -438,6 +451,65 @@ export function FieldBoard({
                 }
               />
               <span className="text-xs text-slate-600">Pitcher benched inning before</span>
+            </label>
+            <label className="flex flex-col gap-1">
+              <span className="text-xs text-slate-600">Min infield innings / player</span>
+              <input
+                type="number"
+                min={0}
+                max={innings}
+                value={leagueRules.minInfieldInnings ?? 0}
+                onChange={(e) =>
+                  setLeagueRules((r) => ({
+                    ...r,
+                    minInfieldInnings: Number(e.target.value) || undefined,
+                  }))
+                }
+                className="rounded border border-slate-300 bg-white px-2 py-1"
+              />
+            </label>
+            <label className="flex flex-col gap-1">
+              <span className="text-xs text-slate-600">Min outfield innings / player</span>
+              <input
+                type="number"
+                min={0}
+                max={innings}
+                value={leagueRules.minOutfieldInnings ?? 0}
+                onChange={(e) =>
+                  setLeagueRules((r) => ({
+                    ...r,
+                    minOutfieldInnings: Number(e.target.value) || undefined,
+                  }))
+                }
+                className="rounded border border-slate-300 bg-white px-2 py-1"
+              />
+            </label>
+            <label className="flex flex-col gap-1">
+              <span className="text-xs text-slate-600">Max same position in a row</span>
+              <input
+                type="number"
+                min={0}
+                max={innings}
+                value={leagueRules.maxConsecutiveSamePosition ?? 0}
+                onChange={(e) =>
+                  setLeagueRules((r) => ({
+                    ...r,
+                    maxConsecutiveSamePosition: Number(e.target.value) || undefined,
+                  }))
+                }
+                className="rounded border border-slate-300 bg-white px-2 py-1"
+              />
+            </label>
+            <label className="flex items-center gap-2 pt-5">
+              <input
+                type="checkbox"
+                className="accent-emerald-600"
+                checked={!!leagueRules.equalBenchTime}
+                onChange={(e) =>
+                  setLeagueRules((r) => ({ ...r, equalBenchTime: e.target.checked }))
+                }
+              />
+              <span className="text-xs text-slate-600">Equal bench time</span>
             </label>
           </div>
         ) : null}

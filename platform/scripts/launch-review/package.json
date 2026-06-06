@@ -1,0 +1,14 @@
+{
+  "name": "@platform/launch-review",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Launch Review Agent. Orchestrates the deterministic gates (vitest, typecheck, build) plus the QA, UX, code, and accessibility agents, then aggregates every artifact into a single launch-readiness report (score + go/no-go decision) before public launch.",
+  "scripts": {
+    "review": "tsx src/run.ts"
+  },
+  "devDependencies": {
+    "tsx": "^4.7.0",
+    "typescript": "^5.4.0"
+  }
+}

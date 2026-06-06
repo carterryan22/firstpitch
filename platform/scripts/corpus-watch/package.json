@@ -1,0 +1,19 @@
+{
+  "name": "@platform/corpus-watch",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Polls the creator/social sources in corpus/sources.seed.json for new content and writes candidates to a review queue (never auto-adds to the corpus).",
+  "scripts": {
+    "watch": "tsx src/watch.ts",
+    "watch:dry": "tsx src/watch.ts --dry",
+    "promote": "tsx src/promote.ts",
+    "promote:dry": "tsx src/promote.ts --dry",
+    "approve": "tsx src/approve.ts",
+    "cycle": "tsx src/watch.ts && tsx src/promote.ts"
+  },
+  "devDependencies": {
+    "tsx": "^4.7.0",
+    "typescript": "^5.4.0"
+  }
+}

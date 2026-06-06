@@ -5,6 +5,7 @@
 export * from "./csv";
 export * from "./gameChanger";
 export * from "./nameMatch";
+export * from "./icsSchedule";
 export * from "./device";
 export * from "./rapsodo";
 export * from "./blast";

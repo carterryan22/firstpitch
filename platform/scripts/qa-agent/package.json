@@ -12,6 +12,9 @@
   "dependencies": {
     "playwright": "^1.45.0"
   },
+  "optionalDependencies": {
+    "@axe-core/playwright": "^4.9.0"
+  },
   "devDependencies": {
     "tsx": "^4.7.0",
     "typescript": "^5.4.0"

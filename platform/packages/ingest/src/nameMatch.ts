@@ -36,12 +36,20 @@ function normalize(s: string): string {
   return s.toLowerCase().replace(/[^a-z0-9 ]/g, "").replace(/\s+/g, " ").trim();
 }
 
+/** Sort whitespace tokens so "Last First" and "First Last" compare equal. */
+function sortTokens(s: string): string {
+  return s.split(" ").filter(Boolean).sort().join(" ");
+}
+
 function similarity(a: string, b: string): number {
   const A = normalize(a);
   const B = normalize(b);
   if (!A || !B) return 0;
-  const d = levenshtein(A, B);
-  return 1 - d / Math.max(A.length, B.length);
+  // Compare both in-order and token-sorted, so reordered names
+  // (e.g. GameChanger's "Last, First") still match their roster entry.
+  const inOrder = 1 - levenshtein(A, B) / Math.max(A.length, B.length);
+  const sorted = 1 - levenshtein(sortTokens(A), sortTokens(B)) / Math.max(A.length, B.length);
+  return Math.max(inOrder, sorted);
 }
 
 export function matchPlayer(input: string, roster: RosterPlayer[], jersey?: string): MatchResult {

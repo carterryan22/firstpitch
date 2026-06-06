@@ -136,3 +136,43 @@ export function ingestGameChangerCsv(csv: string, roster: RosterPlayer[]): Inges
     parsedRowCount: records.length,
   };
 }
+
+export interface ParsedRosterPlayer {
+  firstName: string;
+  lastName: string;
+  jerseyNumber?: string;
+}
+
+/** Split a GameChanger name cell into first/last, handling "Last, First". */
+export function splitPlayerName(raw: string): { firstName: string; lastName: string } {
+  const s = raw.trim();
+  if (!s) return { firstName: "", lastName: "" };
+  if (s.includes(",")) {
+    const [last, first] = s.split(",").map((x) => x.trim());
+    return { firstName: first ?? "", lastName: last ?? "" };
+  }
+  const parts = s.split(/\s+/);
+  if (parts.length === 1) return { firstName: parts[0]!, lastName: "" };
+  return { firstName: parts[0]!, lastName: parts.slice(1).join(" ") };
+}
+
+/**
+ * Extract a de-duplicated roster (name + jersey) from a GameChanger filtered
+ * CSV, so a coach can bootstrap a brand-new team straight from an export.
+ */
+export function rosterFromGameChangerCsv(csv: string): ParsedRosterPlayer[] {
+  const { rows } = ingestGameChangerCsv(csv, []);
+  const seen = new Set<string>();
+  const out: ParsedRosterPlayer[] = [];
+  for (const row of rows) {
+    const name = row.rawName.trim();
+    if (!name) continue;
+    const { firstName, lastName } = splitPlayerName(name);
+    if (!firstName && !lastName) continue;
+    const key = `${firstName}|${lastName}|${row.jersey ?? ""}`.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push({ firstName, lastName, jerseyNumber: row.jersey });
+  }
+  return out;
+}

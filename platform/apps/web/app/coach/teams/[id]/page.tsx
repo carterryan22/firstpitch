@@ -4,6 +4,8 @@ import { getRepos } from "@platform/storage";
 import { getSession } from "../../../lib/session";
 import { getTeamRoster, plansForTeam, userCanManageTeam } from "../../../lib/teams";
 import { Card } from "../../../components/ui";
+import { Walkthrough } from "../../../components/Walkthrough";
+import { TEAM_HOME_TOUR } from "../../../lib/tours";
 import { AddMemberForm } from "./AddMemberForm";
 
 export async function generateMetadata({
@@ -42,76 +44,11 @@ export default async function TeamDetailPage({
           <p className="mt-1 text-slate-600">
             Age band {team.ageBand} · slug <code className="bg-slate-100 px-1">{team.slug}</code>
           </p>
+          <div className="mt-2">
+            <Walkthrough tour={TEAM_HOME_TOUR} />
+          </div>
         </div>
         <div className="flex gap-2">
-          <Link
-            href={`/coach/teams/${team.id}/calendar`}
-            className="btn-ghost no-underline hover:no-underline"
-          >
-            Calendar
-          </Link>
-          <Link
-            href={`/coach/teams/${team.id}/games`}
-            className="btn-ghost no-underline hover:no-underline"
-          >
-            Games
-          </Link>
-          <Link
-            href={`/coach/teams/${team.id}/pitching`}
-            className="btn-ghost no-underline hover:no-underline"
-          >
-            Pitching
-          </Link>
-          <Link
-            href={`/coach/teams/${team.id}/baselines`}
-            className="btn-ghost no-underline hover:no-underline"
-          >
-            Baselines
-          </Link>
-          <Link
-            href={`/coach/teams/${team.id}/goals`}
-            className="btn-ghost no-underline hover:no-underline"
-          >
-            Goals
-          </Link>
-          <Link
-            href={`/coach/teams/${team.id}/fairness`}
-            className="btn-ghost no-underline hover:no-underline"
-          >
-            Fairness
-          </Link>
-          <Link
-            href={`/coach/teams/${team.id}/import`}
-            className="btn-ghost no-underline hover:no-underline"
-          >
-            Import CSV
-          </Link>
-          <Link
-            href={`/coach/teams/${team.id}/ask`}
-            className="btn-ghost no-underline hover:no-underline"
-          >
-            Ask AI
-          </Link>
-          <Link
-            href={`/coach/teams/${team.id}/digest`}
-            className="btn-ghost no-underline hover:no-underline"
-          >
-            Digest
-          </Link>
-          <Link
-            href={`/coach/teams/${team.id}/missions`}
-            className="btn-ghost no-underline hover:no-underline"
-          >
-            Missions
-          </Link>
-          <Link
-            href={`/teams/${team.slug}`}
-            className="btn-ghost no-underline hover:no-underline"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Public page ↗
-          </Link>
           <Link
             href={`/coach/teams/${team.id}/roster`}
             className="btn-ghost no-underline hover:no-underline"
@@ -119,7 +56,14 @@ export default async function TeamDetailPage({
             Manage roster
           </Link>
           <Link
+            href={`/coach/teams/${team.id}/more`}
+            className="btn-ghost no-underline hover:no-underline"
+          >
+            More
+          </Link>
+          <Link
             href={`/practice/new?teamId=${team.id}`}
+            data-tour="team-build-practice"
             className="btn-primary no-underline hover:no-underline"
           >
             Build practice
@@ -128,7 +72,7 @@ export default async function TeamDetailPage({
       </header>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <section className="space-y-4">
+        <section className="space-y-4" data-tour="team-roster">
           <h2 className="m-0">Roster</h2>
           <Card>
             <RosterGroup title="Coaches" rows={coaches} />
@@ -146,7 +90,7 @@ export default async function TeamDetailPage({
           </Card>
         </section>
 
-        <section className="space-y-4">
+        <section className="space-y-4" data-tour="team-practices">
           <h2 className="m-0">Practices</h2>
           <PlansSection plans={plans} />
         </section>

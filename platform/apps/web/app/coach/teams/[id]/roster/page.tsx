@@ -3,7 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import { getRepos } from "@platform/storage";
 import { getSession } from "../../../../lib/session";
 import { userCanManageTeam } from "../../../../lib/teams";
-import { sortRoster, fullName } from "../../../../lib/players";
+import { sortRoster, fullName, playerCapabilityBadges, capabilityBadgeClass } from "../../../../lib/players";
 import { Card } from "../../../../components/ui";
 
 export const metadata = { title: "Roster" };
@@ -18,6 +18,7 @@ export default async function RosterPage({ params }: { params: Promise<{ id: str
   const team = await repos.teams.byId(id);
   if (!team) notFound();
   const players = sortRoster(await repos.players.byTeam(id));
+  const games = await repos.games.list({ teamId: id });
 
   return (
     <div className="space-y-6">
@@ -30,9 +31,14 @@ export default async function RosterPage({ params }: { params: Promise<{ id: str
           </p>
           <h1 className="mt-1">Roster ({players.length})</h1>
         </div>
-        <Link href={`/coach/teams/${id}/roster/new`} className="btn-primary no-underline hover:no-underline">
-          + Add player
-        </Link>
+        <div className="flex flex-wrap gap-2">
+          <Link href={`/coach/teams/${id}/roster/groups`} className="btn-ghost no-underline hover:no-underline">
+            Practice groups
+          </Link>
+          <Link href={`/coach/teams/${id}/roster/new`} className="btn-primary no-underline hover:no-underline">
+            + Add player
+          </Link>
+        </div>
       </header>
 
       {players.length === 0 ? (
@@ -61,9 +67,11 @@ export default async function RosterPage({ params }: { params: Promise<{ id: str
                 {p.bats || "?"}/{p.throws || "?"} · {p.ageBand}
               </div>
               <div className="flex flex-wrap gap-1">
-                {p.canPitch ? <span className="badge-info">Can pitch</span> : null}
-                {p.canCatch ? <span className="badge-info">Can catch</span> : null}
-                {p.injured ? <span className="badge-danger">Injured</span> : null}
+                {playerCapabilityBadges(p, { games }).map((b) => (
+                  <span key={b.label} className={capabilityBadgeClass(b.tone)} title={b.title}>
+                    {b.label}
+                  </span>
+                ))}
                 {Object.entries(p.positionRatings ?? {})
                   .filter(([, r]) => r === "preferred")
                   .slice(0, 4)

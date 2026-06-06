@@ -28,10 +28,24 @@ export const coachPlanPractice: Journey = {
     const submit = ctx.page.locator("form button[type=submit], button:has-text('Compile'), button:has-text('Generate'), button:has-text('Build')").first();
     const beforeUrl = ctx.page.url();
     if (await submit.count() > 0) {
-      await submit.click().catch(() => undefined);
-      // counted manually because we bypassed ctx.click — keep the counter honest
-      // (this is a single intentional shortcut for the "default" path)
-      await ctx.page.waitForLoadState("networkidle", { timeout: 8_000 }).catch(() => undefined);
+      // The compile CTA lives in a short summary panel that the harness can scroll
+      // under the sticky header, so a normal click times out on the hit-test even
+      // though a real coach can see and click it. Try a real click first (best
+      // fidelity), then fall back to a direct DOM dispatch of the React onClick.
+      await submit.scrollIntoViewIfNeeded().catch(() => undefined);
+      const clicked = await submit
+        .click({ timeout: 4_000 })
+        .then(() => true)
+        .catch(() => false);
+      if (!clicked) {
+        await submit.evaluate((el) => (el as HTMLButtonElement).click()).catch(() => undefined);
+      }
+      // Wait for the compiled plan to render inline (PlanView surfaces these labels).
+      await ctx.page
+        .locator("text=/Quality score|Throwing load/i")
+        .first()
+        .waitFor({ state: "visible", timeout: 12_000 })
+        .catch(() => undefined);
     } else {
       ctx.flag({
         kind: "deadend", severity: "critical", url: ctx.page.url(),
@@ -40,7 +54,9 @@ export const coachPlanPractice: Journey = {
       });
     }
     const afterUrl = ctx.page.url();
-    const planVisible = (await ctx.page.locator("text=/warm[- ]?up|block|drill/i").count()) > 0;
+    // A compiled plan is uniquely identified by PlanView's summary labels — the loose
+    // "drill"/"block" match would be true even before compiling (drill tiles are listed).
+    const planVisible = (await ctx.page.locator("text=/Quality score|Throwing load/i").count()) > 0;
     if (afterUrl === beforeUrl && !planVisible) {
       ctx.flag({
         kind: "broken-step", severity: "major", url: afterUrl,

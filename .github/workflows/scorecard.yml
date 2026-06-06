@@ -1,0 +1,53 @@
+# OpenSSF Scorecard — automated supply-chain / repo-hygiene checks
+# (branch protection, token permissions, pinned deps, dangerous workflows, etc.).
+# Note: `publish_results: true` and the public scorecard badge require a PUBLIC
+# repo. On a private repo, set publish_results to false and keep the SARIF +
+# artifact upload for the Security tab.
+name: scorecard
+
+on:
+  branch_protection_rule:
+  schedule:
+    - cron: "26 2 * * 1"
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Read-all is the Scorecard-recommended default; the job below narrows it.
+permissions: read-all
+
+jobs:
+  analysis:
+    name: scorecard analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      security-events: write
+      id-token: write
+      contents: read
+      actions: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Run analysis
+        uses: ossf/scorecard-action@v2.4.0
+        with:
+          results_file: results.sarif
+          results_format: sarif
+          # Publishes to the OpenSSF API for the public badge (public repos only).
+          publish_results: true
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: scorecard-results
+          path: results.sarif
+          retention-days: 5
+
+      - name: Upload SARIF to code scanning
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: results.sarif

@@ -1,0 +1,14 @@
+{
+  "name": "@platform/code-agent",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Static-analysis agent. Scans the source tree for code-quality, security (OWASP) and repo-convention issues, runs the typecheck + test gate, and emits a prioritized code-health report before promotion to prod.",
+  "scripts": {
+    "code": "tsx src/run.ts"
+  },
+  "devDependencies": {
+    "tsx": "^4.7.0",
+    "typescript": "^5.4.0"
+  }
+}

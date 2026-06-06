@@ -16,6 +16,19 @@ export class MockProvider implements LLMProvider {
   readonly name = "mock";
   async complete(input: { system: string; user: string }): Promise<string> {
     const u = input.user;
+    if (u.includes("TASK: Classify the user's search intent")) {
+      // Deterministic, non-committal extraction — the heuristic parser owns the
+      // real work offline; this keeps the LLM merge a no-op without a live key.
+      return JSON.stringify({
+        kind: "unknown",
+        age: null,
+        durationMin: null,
+        focus: [],
+        environmentTier: null,
+        players: null,
+        level: null,
+      });
+    }
     if (u.includes("TASK: Draft a single practice plan")) {
       return JSON.stringify({
         blocks: [

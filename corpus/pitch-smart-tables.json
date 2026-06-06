@@ -4,8 +4,8 @@
   "source": {
     "name": "MLB / USA Baseball Pitch Smart",
     "url": "https://www.mlb.com/pitch-smart/pitching-guidelines",
-    "last_verified": "2026-05-24",
-    "version_note": "Numbers reflect the long-standing Pitch Smart age-banded daily max + required-rest framework. Re-verify before each release; if league rules are stricter, league rules win."
+    "last_verified": "2026-06-03",
+    "version_note": "Numbers reflect the long-standing Pitch Smart age-banded daily max + required-rest framework. Cross-checked 2026-06-03 against the USA Baseball Pitch Count Recommendations PDF (7-8=50, 9-10=75, 11-12=85, 13-14=95, 15-16=95, 17-18=105 daily max). Re-verify before each release; if league rules are stricter, league rules win."
   },
   "global_rules": [
     {
@@ -31,6 +31,18 @@
     {
       "rule_id": "PS_SORE_ARM_RULE",
       "text": "Any pitcher reporting arm pain should stop immediately and be evaluated before returning to throwing."
+    },
+    {
+      "rule_id": "PS_ANNUAL_INNINGS_CAP",
+      "text": "Combined innings pitched in any 12-month period should not exceed Pitch Smart caps: 60 IP for ages 8 and under, 80 IP for ages 9-12, 100 IP for ages 13-14. The compiler should track rolling 12-month innings and warn as a player approaches the cap."
+    },
+    {
+      "rule_id": "PS_NO_THREE_CONSECUTIVE_DAYS",
+      "text": "No pitcher should appear in a game as a pitcher for three consecutive days, regardless of pitch counts. This is a hard block independent of the daily-max and required-rest tables."
+    },
+    {
+      "rule_id": "PS_PITCHER_REENTRY",
+      "text": "For ages 12 and under, a pitcher once removed from the mound may not return as a pitcher in the same game. For ages 13-14, a pitcher who moves to another position may return to pitch once per game. Older levels typically follow league/sanctioning-body re-entry rules."
     }
   ],
   "age_tables": [
@@ -124,7 +136,9 @@
       "history.daysSinceLastOuting < required_rest_for(history.lastOutingPitches)",
       "player.reported_soreness_today == true",
       "player.is_catching_today and history.todayCatchingInnings >= 3",
-      "season.continuous_throwing_days > policy.max_continuous_throwing_days"
+      "season.continuous_throwing_days > policy.max_continuous_throwing_days",
+      "history.pitchedPriorTwoConsecutiveDays == true",
+      "season.rolling12MonthInnings >= annual_innings_cap_for(player.age)"
     ],
     "must_warn_when": [
       "plannedPitches + history.todayCount > 0.8 * age_table.daily_max_pitches",
