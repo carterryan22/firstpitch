@@ -1,7 +1,10 @@
 # App icons
 
 These are referenced from `/manifest.webmanifest` and the iOS `apple-touch-icon`
-meta tag. Replace the placeholder PNGs with real exports from the brand asset.
+meta tag. The PNGs here are generated from the First Pitch brand mark by
+`platform/scripts/generate-app-icons.cjs` (run `node platform/scripts/generate-app-icons.cjs`
+with `sharp` installed). To rebrand, edit that script or drop replacement PNGs
+of the same sizes.
 
 Required sizes:
 

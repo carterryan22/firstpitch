@@ -3,13 +3,21 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export function AddMemberForm({ teamId }: { teamId: string }) {
+interface RosterPlayer {
+  id: string;
+  name: string;
+}
+
+export function AddMemberForm({ teamId, players = [] }: { teamId: string; players?: RosterPlayer[] }) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [role, setRole] = useState<"player" | "parent" | "coach">("player");
+  const [playerId, setPlayerId] = useState("");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+
+  const linksToPlayer = role === "player" || role === "parent";
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -18,7 +26,12 @@ export function AddMemberForm({ teamId }: { teamId: string }) {
     const res = await fetch(`/api/teams/${teamId}/members`, {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ email: email.trim(), name: name.trim() || undefined, role }),
+      body: JSON.stringify({
+        email: email.trim(),
+        name: name.trim() || undefined,
+        role,
+        playerId: linksToPlayer && playerId ? playerId : undefined,
+      }),
     });
     setBusy(false);
     if (!res.ok) {
@@ -28,6 +41,7 @@ export function AddMemberForm({ teamId }: { teamId: string }) {
     }
     setEmail("");
     setName("");
+    setPlayerId("");
     router.refresh();
   }
 
@@ -73,6 +87,31 @@ export function AddMemberForm({ teamId }: { teamId: string }) {
           {busy ? "Adding…" : "Add"}
         </button>
       </div>
+      {linksToPlayer && players.length > 0 ? (
+        <div className="col-span-full">
+          <label className="label" htmlFor="m-player">
+            {role === "parent" ? "Link to child (optional)" : "Link to roster player (optional)"}
+          </label>
+          <select
+            id="m-player"
+            className="input"
+            value={playerId}
+            onChange={(e) => setPlayerId(e.target.value)}
+          >
+            <option value="">No link</option>
+            {players.map((p) => (
+              <option key={p.id} value={p.id}>
+                {p.name}
+              </option>
+            ))}
+          </select>
+          <p className="mt-1 text-xs text-slate-500">
+            {role === "parent"
+              ? "Links this parent to their child so the child shows up on their family dashboard."
+              : "Links this account to a roster player so they can complete coach-assigned missions."}
+          </p>
+        </div>
+      ) : null}
       {err ? <p className="col-span-full text-sm text-danger">{err}</p> : null}
     </form>
   );

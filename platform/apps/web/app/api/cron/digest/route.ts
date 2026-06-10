@@ -72,7 +72,12 @@ async function buildAll(teamIdFilter: string | undefined, now: Date, useCache: b
 
 function authorizeCron(req: NextRequest): boolean {
   const expected = process.env.CRON_SECRET;
-  if (!expected) return true; // No secret configured = open for local dev.
+  if (!expected) {
+    // Fail OPEN only in local dev. In production an unset secret must fail
+    // CLOSED — otherwise forgetting to set CRON_SECRET leaves this endpoint
+    // (digest generation + audit writes) world-accessible.
+    return process.env.NODE_ENV !== "production";
+  }
   const header = req.headers.get("x-cron-secret") ?? req.headers.get("authorization")?.replace(/^Bearer\s+/i, "");
   return header === expected;
 }

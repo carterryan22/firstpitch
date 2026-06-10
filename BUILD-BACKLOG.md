@@ -74,7 +74,7 @@ Stories use ID format `E<epic>.<story>` (e.g., `E3.4`).
 ### Epic E4 — Game Transfer On-Ramp
 | ID | Story | Source | DoD | Deps |
 |---|---|---|---|---|
-| E4.1 | Manual game-improvement tag (lightweight, no CSV) | core §15.1; §19.2 P1 step 9 | Coach can tag a game with skill + note in <30s | E2.1 |
+| E4.1 | Manual game-improvement tag (lightweight, no CSV) | core §15.1; §19.2 P1 step 9 | Coach can tag a game with skill + note in <30s | E2.1 | ✅ DONE — structured one-tap **quick-tags** (`lib/quickTags.ts` 20-tag taxonomy + `quickTags` storage + `POST /api/teams/[id]/tags`) plus freeform game notes; see **E26.1** |
 | E4.2 | Manual game-stat entry (batting/pitching/fielding/baserunning) | core §19.1 `GameStat` | Per-player per-game record persisted | E3.1 |
 | E4.3 | GameChanger filtered CSV import + player-name mapping | core §15.2 | 100-row CSV maps with ≥95% accuracy; user resolves ambiguous names | E4.2 |
 | E4.4 | Pre/post training-block comparison + one insight | core §15.5 | One natural-language insight per analysis | E4.3 |
@@ -310,6 +310,20 @@ Stories use ID format `E<epic>.<story>` (e.g., `E3.4`).
 | ✅ E25.16 | Apply-rule-set wizard `/teams/{slug}/apply-rule-set?returnTo=…` (full-page, not modal) | WoS §2.1 | Tournament rulebook selectable; layers correctly with safety rules | P2 | E13.5, E25.1 |
 | ✅ E25.17 | Snack-duty / volunteer rotation (Press-Box opt-in) | WoS §3.12 | Rotation auto-balances; parents notified | P3 | E25.14 |
 | ✅ E25.18 | Team settings accordion (rules, communication, members, billing) | WoS §3.13 | Each section reachable; rule-source badges visible | P2 | E16.2, E25.15 |
+
+---
+
+### Epic E26 — Coach Memory & Game→Practice Loop (V1.5)
+
+> The genuine differentiator per [DECISION-LOG.md](DECISION-LOG.md) D6: nobody else connects last game's observations to next practice's plan. Sequenced immediately after the V1 painkiller. **Coach-only** surfaces that honor the toxic-trap rules — no single "player score", no parent-visible negative notes; watch-tone signals describe a *skill to work on*, never a judgment of the kid.
+
+| ID | Story | Source | DoD | Deps |
+|---|---|---|---|---|
+| ✅ E26.1 | Structured quick-tags (one-tap observation taxonomy → data) | compiler §6; addendum §D.7; DECISION-LOG D10/D11 | A coach taps a chip instead of typing; tag persists + validates player/game on team | E4.1 | ✅ DONE — `lib/quickTags.ts` (20 tags: category/tone/scope + focus mappings), `QuickTagRecord` + `quickTags` repo, `QuickTagAdder.tsx`, `POST /api/teams/[id]/tags` (+bulk) / `DELETE /api/tags/[id]` |
+| ✅ E26.2 | Coach Memory — "what each player needs", synthesized | strategy reframe §2; addendum §D.7 | One per-player view from existing data (sat last game / OF-only / arm-care / playing-time / tags / attendance) + recurring team mistakes | E26.1, E25.13 | ✅ DONE — pure `lib/coachMemory.ts` `buildCoachMemory()` (topNeed ranking + strengths + team roll-up), page `coach/teams/[id]/memory`; 6 tests |
+| ✅ E26.3 | Fix-Last-Game — symptoms → top priorities → practice | compiler §6; strategy reframe §8 | Tap symptoms → ranked top-3 + a deep link that pre-loads the compiler with the right focus | E26.1, E6.3 | ✅ DONE — `lib/fixLastGame.ts` `symptomsToPlan()`, page `games/[gameId]/fix` + `FixLastGameSymptoms.tsx` (game-scoped tags also feed E26.2); 4 tests |
+| ✅ E26.4 | Lineup game modes (Rec / Development / Competitive / Tournament / Tryout-Eval) | strategy reframe §5; DECISION-LOG §5 | One engine, named modes tuning fairness×variety; safety never weakened | E25.9 | ✅ DONE — `@platform/lineup` `LINEUP_MODES` + `lineupModeParams` + new `varietyWeight` lever (default = unchanged), mode selector in FieldBoard; 3 tests |
+| 🚧 E26.5 | Monthly parent report (narrative focus / progress / next focus / home mission / coach note) | addendum §F.1; strategy reframe §6 | Parent-safe monthly narrative; no comparison, no negative notes | E7.3 | 🚧 IN PROGRESS — parallel workstream (`lib/monthlyReport.ts` + `parentReports` storage + `/parent-reports` surfaces) |
 
 ---
 

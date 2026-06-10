@@ -1,5 +1,9 @@
-# Ignore generated native projects — regenerate with `cap add ios|android`.
-ios/
+# Generated native projects.
+#   • iOS IS committed so Info.plist (WKAppBoundDomains, privacy strings) and
+#     signing config persist for App Store builds + CI. Generate it once on a
+#     Mac with `npm run init:ios`, then `git add platform/mobile/ios`.
+#     (Capacitor writes its own ios/.gitignore for Pods/, build/, DerivedData.)
+#   • Android is still regenerated on demand — commit it too when you ship Play.
 android/
 node_modules/
 package-lock.json

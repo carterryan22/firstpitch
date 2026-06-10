@@ -63,6 +63,12 @@ export default async function PlayerBaselinePage({
         </p>
         <div className="mt-2 flex flex-wrap gap-2">
           <Link
+            href={`/coach/teams/${id}/baselines/${playerId}/profile`}
+            className="btn-ghost no-underline"
+          >
+            Development profile →
+          </Link>
+          <Link
             href={`/coach/teams/${id}/baselines/${playerId}/diagnose`}
             className="btn-ghost no-underline"
           >

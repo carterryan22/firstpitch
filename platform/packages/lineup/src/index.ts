@@ -83,12 +83,100 @@ export type AutoLineupInput = {
    * derived from player ids only).
    */
   seed?: number;
+  /**
+   * Multiplier on the position-variety reward — how strongly the allocator
+   * avoids repeating a player at the same position. Default 1. Game modes tune
+   * this: Development/Tryout raise it (spread reps around the diamond),
+   * Competitive lowers it (keep strong players at their best spots). See
+   * `LineupMode` / `lineupModeParams`.
+   */
+  varietyWeight?: number;
 };
 
 export type AutoLineupResult = {
   innings: Inning[];
   warnings: string[];
 };
+
+/**
+ * Named lineup game modes (the §5 "what kind of game is this?" selector). Each
+ * mode is a tuning of the same allocator — a `competitiveWeight` (fairness↔skill)
+ * plus a `varietyWeight` (how aggressively to rotate positions). Modes never
+ * weaken safety: arm-care still flows through `pitcherUnavailable` + league
+ * rules regardless of mode.
+ */
+export type LineupMode = "recFair" | "development" | "competitive" | "tournament" | "tryout";
+
+export interface LineupModeSpec {
+  id: LineupMode;
+  label: string;
+  blurb: string;
+  /** 0 = pure fairness … 1 = pure skill. */
+  competitiveWeight: number;
+  /** Position-variety multiplier (1 = default). */
+  varietyWeight: number;
+  /** One-line coaching note for the UI. */
+  note: string;
+}
+
+export const LINEUP_MODES: Record<LineupMode, LineupModeSpec> = {
+  recFair: {
+    id: "recFair",
+    label: "Rec / Fair Play",
+    blurb: "Equal reps, no parent drama.",
+    competitiveWeight: 0,
+    varietyWeight: 1,
+    note: "Everyone plays close to equal innings and rotates positions.",
+  },
+  development: {
+    id: "development",
+    label: "Development",
+    blurb: "Get kids reps at new positions.",
+    competitiveWeight: 0.15,
+    varietyWeight: 2.5,
+    note: "Spreads players around the diamond so everyone gets infield + outfield reps.",
+  },
+  competitive: {
+    id: "competitive",
+    label: "Competitive",
+    blurb: "Stronger lineup, still fair.",
+    competitiveWeight: 0.7,
+    varietyWeight: 0.6,
+    note: "Leans on preferred positions + skill while honoring minimum-play rules.",
+  },
+  tournament: {
+    id: "tournament",
+    label: "Tournament",
+    blurb: "Manage arms + catcher fatigue.",
+    competitiveWeight: 0.6,
+    varietyWeight: 0.6,
+    note: "Skill-leaning — pair with pitch-rest so tired arms sit (Pitch Smart).",
+  },
+  tryout: {
+    id: "tryout",
+    label: "Tryout / Eval",
+    blurb: "Maximize evaluation touches.",
+    competitiveWeight: 0,
+    varietyWeight: 3,
+    note: "Rotates every player through as many positions as possible to evaluate them.",
+  },
+};
+
+export const LINEUP_MODE_ORDER: LineupMode[] = [
+  "recFair",
+  "development",
+  "competitive",
+  "tournament",
+  "tryout",
+];
+
+/** The autoLineup tuning for a mode (spread into an `AutoLineupInput`). */
+export function lineupModeParams(
+  mode: LineupMode,
+): Pick<AutoLineupInput, "competitiveWeight" | "varietyWeight"> {
+  const m = LINEUP_MODES[mode];
+  return { competitiveWeight: m.competitiveWeight, varietyWeight: m.varietyWeight };
+}
 
 function ratingScore(p: LineupPlayer, pos: Position): number {
   const r = p.positionRatings?.[pos];
@@ -114,6 +202,7 @@ export function autoLineup(input: AutoLineupInput): AutoLineupResult {
     input.positions ?? PRESET_POSITIONS[input.preset ?? "standard9"];
   const competitiveWeight = Math.max(0, Math.min(1, input.competitiveWeight ?? 0.3));
   const fairnessWeight = 1 - competitiveWeight;
+  const varietyWeight = Math.max(0, input.varietyWeight ?? 1);
   const pitcherBlocked = new Set(input.pitcherUnavailable ?? []);
   // Deterministic tie-breaker. Defaults to 0 when no seed provided, which
   // (combined with the player-id hash) is stable across runs.
@@ -199,8 +288,11 @@ export function autoLineup(input: AutoLineupInput): AutoLineupResult {
           // premium spots.
           const skillScore = rating * 10 + skill * premium * 4;
           // Fairness score rewards low past field count + variety at this
-          // position so far.
-          const fair = -((fieldCount[p.id] ?? 0) * 6) - ((posCount[p.id] ?? {})[pos] ?? 0) * 4;
+          // position so far. `varietyWeight` (game modes) scales the variety
+          // term: higher spreads players across positions more aggressively.
+          const fairField = -((fieldCount[p.id] ?? 0) * 6);
+          const fairVariety = -(((posCount[p.id] ?? {})[pos] ?? 0) * 4 * varietyWeight);
+          const fair = fairField + fairVariety;
           // League-rule soft penalty: Ryan — don't exceed maxConsecutiveOutfield.
           let rulePenalty = 0;
           if (rules?.maxConsecutiveOutfield !== undefined && OUTFIELD.has(pos)) {

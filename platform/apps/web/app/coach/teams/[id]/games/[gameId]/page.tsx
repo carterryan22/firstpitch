@@ -112,6 +112,12 @@ export default async function GamePage({
             >
               Report
             </Link>
+            <Link
+              href={`/coach/teams/${id}/games/${gameId}/fix`}
+              className="btn-ghost no-underline hover:no-underline"
+            >
+              Fix last game
+            </Link>
             <span className={status.cls}>{status.label}</span>
             {game.isScrimmage ? <span className="badge-warn">Scrimmage</span> : null}
             <GameTools

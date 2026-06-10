@@ -57,6 +57,9 @@ describe("ingestHitTraxCsv", () => {
     const ev = r.entries.filter((e) => e.metricKey === "EV_LIVE");
     expect(ev).toHaveLength(3);
     expect(r.entries.filter((e) => e.metricKey === "ATTACK_ANGLE")).toHaveLength(3);
+    const dist = r.entries.filter((e) => e.metricKey === "DISTANCE");
+    expect(dist).toHaveLength(3);
+    expect(dist.map((e) => e.value)).toEqual([310, 140, 200]);
   });
   it("derives hard-hit % using 95 mph threshold", () => {
     const entries = [

@@ -167,6 +167,32 @@ export interface MissionCompletionRecord {
 }
 
 /**
+ * One throwing exposure for a player on a single day that is NOT already
+ * captured as a game pitch count — bullpens, long toss, private lessons,
+ * practice throwing, or innings caught. Feeds the Pitch Load Passport so the
+ * board reflects TOTAL arm load, not just game pitches. `external` marks load
+ * from another team or outside lesson (multi-team awareness).
+ */
+export interface ThrowingLogRecord {
+  id: string;
+  teamId: string;
+  playerId: string;
+  /** ISO `YYYY-MM-DD`. */
+  date: string;
+  activity: "game" | "bullpen" | "long_toss" | "lesson" | "practice";
+  pitches?: number;
+  throws?: number;
+  catcherInnings?: number;
+  /** Intent of the throwing, 1–10. */
+  intensity?: number;
+  external?: boolean;
+  soreness1to10?: number;
+  notes?: string;
+  createdByUserId: string;
+  createdAt: string;
+}
+
+/**
  * Coach-issued mission assignment. Closes the development loop: the diagnosis
  * engine + practice compiler can suggest a mission, the coach assigns it to
  * specific players, and the parent dashboard surfaces it as homework with a
@@ -369,6 +395,8 @@ export interface DbShape {
   games: GameRecord[];
   gameNotes: GameNoteRecord[];
   playerGameStats: PlayerGameStatsRecord[];
+  /** Non-game throwing exposures (bullpens, long toss, lessons, catching). Optional for back-compat. */
+  throwingLogs?: ThrowingLogRecord[];
   metricEntries: MetricEntryRecord[];
   goals: GoalRecord[];
   missionCompletions: MissionCompletionRecord[];
@@ -380,6 +408,10 @@ export interface DbShape {
   loginTokens?: LoginTokenRecord[];
   /** COPPA parental-consent records. Optional for back-compat. */
   consents?: ConsentRecord[];
+  /** Coach Memory quick-tags (one-tap structured observations). Optional for back-compat. */
+  quickTags?: QuickTagRecord[];
+  /** Monthly parent reports (draft → approved → shared lifecycle). Optional for back-compat. */
+  parentReports?: ParentReportRecord[];
   /** Fields directory (Dugout Dirt parity). All optional for back-compat. */
   fields?: FieldRecord[];
   fieldReviews?: FieldReviewRecord[];
@@ -396,6 +428,7 @@ export const EMPTY_DB: DbShape = {
   games: [],
   gameNotes: [],
   playerGameStats: [],
+  throwingLogs: [],
   metricEntries: [],
   goals: [],
   missionCompletions: [],
@@ -404,6 +437,8 @@ export const EMPTY_DB: DbShape = {
   sessions: [],
   loginTokens: [],
   consents: [],
+  quickTags: [],
+  parentReports: [],
   fields: [],
   fieldReviews: [],
   fieldBookings: [],
@@ -429,6 +464,100 @@ export interface GameNoteRecord {
   body: string;
   shareWithParents: boolean;
   shareWithPlayer: boolean;
+  createdAt: string;
+  updatedAt?: string;
+}
+
+/**
+ * One-tap structured coach observation — the data atom behind Coach Memory and
+ * the Fix-Last-Game workflow. `code` is a canonical taxonomy key (see
+ * `app/lib/quickTags.ts`); the storage layer stays dumb and just persists it.
+ * A tag may be about one player (`playerId`) and/or captured from a game
+ * (`gameId`); a team-wide game symptom omits `playerId`.
+ */
+export interface QuickTagRecord {
+  id: string;
+  teamId: string;
+  playerId?: string;
+  gameId?: string;
+  /** Canonical tag code, e.g. "missed_cutoff", "great_effort", "needs_infield_reps". */
+  code: string;
+  /** Optional coach context. Coach-only; never shown to parents. */
+  note?: string;
+  createdByUserId: string;
+  createdAt: string;
+}
+
+/**
+ * Lifecycle of a monthly parent report. A report is DRAFTed by the system, the
+ * coach REVIEWS + EDITS it, then explicitly APPROVES, then SHAREs. Nothing
+ * reaches a parent until status is `shared`. Editing an approved report reverts
+ * it to `draft` (must be re-approved); a shared report must be recalled (back to
+ * `draft`) before it can be edited again.
+ */
+export type ParentReportStatus = "draft" | "approved" | "shared";
+
+/**
+ * The parent-facing body of a monthly report. The system fills this on generate
+ * (snapshotted into `ParentReportRecord.generated`), and the coach may edit
+ * every field before approving/sharing. Optional fields are omitted when there
+ * is no data behind them — never faked.
+ */
+export interface ParentReportContent {
+  /** One-line positive summary headline. */
+  summary: string;
+  /** Attendance over the period, e.g. "Made 7 of 8 team events". */
+  attendance: string;
+  /** Positive effort note. */
+  effort: string;
+  /** One improvement, ideally with a real measurable delta. Omitted when no data. */
+  improvement?: string;
+  /** One current focus for the next month. */
+  focus: string;
+  /** One concrete home mission. */
+  homeMission: string;
+  /** Playing-time summary, kept positive and factual. */
+  playingTime: string;
+  /** Positive coach note. Required (non-empty) before a report can be shared. */
+  coachNote: string;
+  /** Rest / arm-care status when relevant. Omitted when nothing to flag. */
+  safetyNote?: string;
+}
+
+/**
+ * A monthly, parent-safe, per-player narrative report with a mandatory
+ * review → edit → approve → share lifecycle. The coach is the accountable
+ * author: the system only drafts. `generated` is the immutable original snapshot
+ * (for diffing "what the coach changed"); `content` is the coach-editable body
+ * that parents eventually see. Only records with `status === "shared"` are ever
+ * exposed to a parent/player account.
+ */
+export interface ParentReportRecord {
+  id: string;
+  teamId: string;
+  playerId: string;
+  /** ISO yyyy-mm-dd start of the reporting window (first of the month). */
+  periodStart: string;
+  /** ISO yyyy-mm-dd end of the reporting window (last day of the month). */
+  periodEnd: string;
+  /** Human label, e.g. "May 2026". */
+  periodLabel: string;
+  status: ParentReportStatus;
+  /** Immutable system-built snapshot, retained for diff against `content`. */
+  generated: ParentReportContent;
+  /** Coach-editable parent-facing body. */
+  content: ParentReportContent;
+  generatedByUserId: string;
+  approvedByUserId?: string;
+  approvedAt?: string;
+  sharedAt?: string;
+  /** Channels the report was published to. */
+  sharedVia?: Array<"dashboard" | "email">;
+  /** Set when a shared report is pulled back to draft. */
+  recalledAt?: string;
+  /** Last coach edit to `content`. If later than `approvedAt`, needs re-approval. */
+  editedAt?: string;
+  editedByUserId?: string;
   createdAt: string;
   updatedAt?: string;
 }

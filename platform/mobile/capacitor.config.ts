@@ -60,6 +60,16 @@ const config: CapacitorConfig = {
       resize: "native",
       style: "DARK",
     },
+    // Local notifications power pitch-rest end reminders ("Marcus is cleared
+    // to pitch again"), game-day, and hydration alerts. Permission is asked at
+    // runtime via LocalNotifications.requestPermissions() — no Info.plist usage
+    // string is required for *local* (non-push) notifications on iOS. smallIcon
+    // + iconColor only affect Android; `npx @capacitor/assets generate`
+    // produces the referenced `ic_stat_icon` drawable.
+    LocalNotifications: {
+      smallIcon: "ic_stat_icon",
+      iconColor: "#8a1c1c",
+    },
   },
 };
 

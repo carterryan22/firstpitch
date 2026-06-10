@@ -6,13 +6,16 @@ import { summarizeForParents, skillsForPositions, type Inning, type LineupPlayer
 import { getRepos } from "@platform/storage";
 import { getSession } from "../lib/session";
 import { getTeamsForUser } from "../lib/teams";
-import { fullName } from "../lib/players";
+import { fullName, ageFromDob } from "../lib/players";
 import { metricByKey } from "../lib/metrics";
 import { computeGoalProgress, GOAL_STATUS_BADGE } from "../lib/goals";
 import { formatGameWhen } from "../lib/games";
 import { Card } from "../components/ui";
 import { RsvpButtons } from "../components/RsvpButtons";
 import { CompleteAssignmentButton } from "./CompleteAssignmentButton";
+import { buildLoadPassport } from "@platform/safety";
+import { playerThrowingEvents } from "../lib/throwingEvents";
+import { LoadStatusCard } from "../components/LoadStatusCard";
 
 export const metadata = { title: "Family dashboard" };
 
@@ -98,10 +101,11 @@ export default async function ParentDashboard() {
 
   const childData = await Promise.all(
     kids.map(async (k) => {
-      const [entries, goals, teamGames] = await Promise.all([
+      const [entries, goals, teamGames, throwingLogs] = await Promise.all([
         repos.metricEntries.list({ playerId: k.id }),
         repos.goals.list({ playerId: k.id, status: "active" }),
         k.teamId ? repos.games.list({ teamId: k.teamId }) : Promise.resolve([]),
+        repos.throwingLogs.list({ playerId: k.id }),
       ]);
       const sorted = entries.slice().sort((a, b) => (a.recordedAt < b.recordedAt ? 1 : -1));
       const latestByMetric = new Map<string, (typeof sorted)[number]>();
@@ -153,7 +157,25 @@ export default async function ParentDashboard() {
         .slice()
         .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
         .slice(0, 5);
-      return { player: k, latestByMetric, goalProgress, focusGame, positionPlan, homework, recentNotes };
+
+      // Pitch Load Passport — surface arm status for throwers (and anyone with
+      // any logged throwing) so families can see when the arm needs rest.
+      const showArm = Boolean(k.canPitch || k.canCatch || throwingLogs.length);
+      const armAge = k.dob ? ageFromDob(k.dob) : AGE_FROM_BAND[k.ageBand] ?? 11;
+      const armPassport = showArm
+        ? buildLoadPassport({
+            age: armAge,
+            events: playerThrowingEvents(k.id, teamGames, throwingLogs),
+            playerName: k.firstName,
+          })
+        : null;
+
+      // Monthly parent reports — ONLY shared records are ever exposed to a family.
+      const sharedReports = (await repos.parentReports.list({ playerId: k.id, status: "shared" }))
+        .slice()
+        .sort((a, b) => (a.periodStart < b.periodStart ? 1 : -1))
+        .slice(0, 6);
+      return { player: k, latestByMetric, goalProgress, focusGame, positionPlan, homework, recentNotes, armPassport, sharedReports };
     })
   );
 
@@ -261,7 +283,7 @@ export default async function ParentDashboard() {
         <section className="space-y-4">
           <h2 className="m-0">Your players</h2>
           <div className="grid gap-4 md:grid-cols-2">
-            {childData.map(({ player, latestByMetric, goalProgress, focusGame, positionPlan, homework, recentNotes }) => {
+            {childData.map(({ player, latestByMetric, goalProgress, focusGame, positionPlan, homework, recentNotes, armPassport, sharedReports }) => {
               const team = player.teamId ? teamById.get(player.teamId) : undefined;
               return (
                 <Card key={player.id}>
@@ -269,6 +291,44 @@ export default async function ParentDashboard() {
                     <h3 className="m-0 text-base">{fullName(player)}</h3>
                     {team ? <span className="badge-info">{team.name}</span> : null}
                   </header>
+
+                  {sharedReports.length > 0 ? (
+                    <div className="mt-3">
+                      <h4 className="m-0 text-xs uppercase tracking-wide text-slate-500">
+                        Monthly progress reports
+                      </h4>
+                      <ul className="mt-2 space-y-2 text-sm">
+                        {sharedReports.map((r) => (
+                          <li key={r.id} className="rounded border-2 border-dirt-300 bg-cream/60 px-3 py-2">
+                            <div className="flex items-baseline justify-between gap-2">
+                              <strong className="text-ink">{r.periodLabel}</strong>
+                              <span className="badge badge-ok">Shared</span>
+                            </div>
+                            <p className="mt-1 font-medium text-ink/90">{r.content.summary}</p>
+                            <ul className="mt-1 space-y-0.5 text-ink/80">
+                              <li><strong>Attendance:</strong> {r.content.attendance}</li>
+                              <li><strong>Effort:</strong> {r.content.effort}</li>
+                              {r.content.improvement ? <li><strong>Improvement:</strong> {r.content.improvement}</li> : null}
+                              <li><strong>Playing time:</strong> {r.content.playingTime}</li>
+                              <li><strong>Focus:</strong> {r.content.focus}</li>
+                              <li><strong>Home mission:</strong> {r.content.homeMission}</li>
+                              {r.content.safetyNote ? <li><strong>Arm care:</strong> {r.content.safetyNote}</li> : null}
+                            </ul>
+                            <p className="mt-1 italic text-ink/80">&ldquo;{r.content.coachNote}&rdquo;</p>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
+
+                  {armPassport ? (
+                    <div className="mt-3">
+                      <h4 className="m-0 text-xs uppercase tracking-wide text-slate-500">Arm care</h4>
+                      <div className="mt-2">
+                        <LoadStatusCard passport={armPassport} audience="family" />
+                      </div>
+                    </div>
+                  ) : null}
 
                   {positionPlan && focusGame ? (
                     <div className="mt-3 rounded bg-emerald-50 px-3 py-2 text-sm">

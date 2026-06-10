@@ -34,3 +34,4 @@ Return a launch checklist — no file changes:
 - **✅ Ready / ⚠️ Needs config / 🛑 Missing** per checklist area, each with the file(s) verified and what (if anything) is left to do.
 - **Env vars to set before deploy** — required vs optional, with the consequence of omitting each.
 - **Go / No-go** summary with the blocking items called out first.
+- **Assumptions & confidence**: flag every assumption about deploy/runtime/env state you could not confirm from source (an audit on a stale deploy misleads), and rate confidence 1–10 per checklist area.

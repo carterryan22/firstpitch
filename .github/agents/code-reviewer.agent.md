@@ -35,3 +35,4 @@ Return a prioritized report — no file changes:
 - **Voice**: any off-brand drills/cues/missions/copy, with the on-brand suggestion (preserving numbers + verification cues).
 - **QA/UX feedback**: actionable items pulled from the reports (or "reports green").
 - **Verification commands** the user can run to confirm a clean baseline (vitest + web/package tsc), as suggestions only.
+- **Assumptions & confidence**: flag every assumption you made about intent, runtime state, or call sites you did not trace, and rate confidence 1–10 per finding. Call out explicitly where a finding needs the user to double-check before acting.

@@ -28,19 +28,39 @@ export async function POST(
     return NextResponse.json({ error: "email and role are required" }, { status: 400 });
   }
   const repos = getRepos();
+
+  // When linking a player/parent account to a specific roster player, the
+  // player must belong to this team. This link is what lets a player account
+  // complete coach-assigned missions and a parent see their child's progress.
+  let playerId: string | undefined;
+  if (body.playerId && (role === "player" || role === "parent")) {
+    const player = await repos.players.byId(body.playerId);
+    if (!player || player.teamId !== teamId) {
+      return NextResponse.json({ error: "player not on this team" }, { status: 400 });
+    }
+    playerId = player.id;
+  }
+
   // Auto-provision the user so an invite works before they ever sign in.
   const user = await repos.users.upsert({ email, name: body.name, role });
   const membership = await repos.teamMemberships.upsert({
     teamId,
     userId: user.id,
     role,
-    playerId: body.playerId,
+    playerId,
   });
+
+  // A parent linked to a child owns that child's profile: set parentUserId so
+  // the child surfaces on the parent's /parent dashboard (players.byParent).
+  if (role === "parent" && playerId) {
+    await repos.players.update(playerId, { parentUserId: user.id });
+  }
+
   await repos.audit.log({
     userId: session.user.id,
     action: "team_member_added",
     resource: `team:${teamId}`,
-    metadata: { memberUserId: user.id, role },
+    metadata: { memberUserId: user.id, role, playerId },
   });
   return NextResponse.json({ membership, user });
 }

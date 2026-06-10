@@ -46,10 +46,12 @@ export default async function TeamMorePage({
     {
       title: "Insights",
       links: [
+        { label: "Coach Memory", href: `${base}/memory`, desc: "What each player needs, at a glance.", icon: "🧠" },
         { label: "Fairness", href: `${base}/fairness`, desc: "Playing-time equity heat-map.", icon: "⚖️" },
         { label: "Baselines", href: `${base}/baselines`, desc: "Per-player metrics + diagnosis.", icon: "📊" },
         { label: "Goals", href: `${base}/goals`, desc: "Development goals + progress.", icon: "🎯" },
         { label: "Weekly digest", href: `${base}/digest`, desc: "Send-ready parent summary.", icon: "📰" },
+        { label: "Parent reports", href: `${base}/parent-reports`, desc: "Monthly progress reports — review & approve before sharing.", icon: "📝" },
         { label: "Missions", href: `${base}/missions`, desc: "Assign home training to players.", icon: "🏠" },
       ],
     },

@@ -95,4 +95,5 @@ Return the structured report (mirroring `security-review.json`):
 - **🔴 P1 high risks**, then bucketed sections: role/permission, API security,
   auth/session, data privacy, billing, dependencies, infrastructure/headers.
 - **Required tests to add** to lock in the fixes.
+- **Assumptions & confidence**: flag every assumption about runtime/deploy state the static pass could not confirm, and rate confidence 1–10 per finding. Conservatism wins — low confidence on an auth, data-isolation, privacy, or billing item means escalate or hold the severity, never downgrade it.
 - A final **Go / No-Go** line. If blocked, name the blockers first.

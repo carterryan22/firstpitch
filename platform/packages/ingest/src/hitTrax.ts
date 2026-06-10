@@ -24,12 +24,18 @@ export function ingestHitTraxCsv(csv: string): DeviceIngestReport {
     const out: ReturnType<typeof buildReport>["entries"] = [];
     const ev = toNumberOrNull(rec["velo"] ?? rec["exitvelocity"] ?? rec["exitvelo"]);
     const la = toNumberOrNull(rec["la"] ?? rec["launchangle"]);
+    const dist = toNumberOrNull(rec["dist"] ?? rec["distance"]);
     const result = (rec["result"] ?? "").toLowerCase();
     if (ev !== null) {
       // HitTrax is cage-tracked live — treat as EV_LIVE.
       out.push({ metricKey: "EV_LIVE", value: ev, recordedAt, source: "hittrax", notes: result || undefined });
     }
     if (la !== null) out.push({ metricKey: "ATTACK_ANGLE", value: la, recordedAt, source: "hittrax" });
+    // Batted-ball carry distance (ft). Headline HitTrax/Boost leaderboard stat;
+    // negatives are foul/backspin artifacts, so only keep non-negative carry.
+    if (dist !== null && dist >= 0) {
+      out.push({ metricKey: "DISTANCE", value: dist, recordedAt, source: "hittrax" });
+    }
     // Hard-hit % is derived: per Statcast convention, EV >= 95 mph.
     // Adapter doesn't aggregate; consumer can compute over the entry list.
     return out;

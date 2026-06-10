@@ -49,13 +49,15 @@ jobs:
       - name: Install shell deps
         run: npm install --no-audit --no-fund
 
-      - name: Add iOS platform
-        run: npx cap add ios
+      - name: Add iOS platform (skip if committed)
+        run: |
+          if [ ! -d ios ]; then npx cap add ios; else echo "ios/ already committed — skipping cap add."; fi
         env:
           FIRST_PITCH_APP_URL: ${{ vars.FIRST_PITCH_APP_URL || 'https://firstpitch.app' }}
 
-      - name: Add Android platform
-        run: npx cap add android
+      - name: Add Android platform (skip if committed)
+        run: |
+          if [ ! -d android ]; then npx cap add android; else echo "android/ already committed — skipping cap add."; fi
 
       - name: Capacitor sync
         run: npx cap sync

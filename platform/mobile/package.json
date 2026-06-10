@@ -21,9 +21,11 @@
     "@capacitor/splash-screen": "^6.0.0",
     "@capacitor/haptics": "^6.0.0",
     "@capacitor/keyboard": "^6.0.0",
+    "@capacitor/local-notifications": "^6.1.0",
     "@capacitor/share": "^6.0.0"
   },
   "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
     "@capacitor/cli": "^6.1.0"
   }
 }

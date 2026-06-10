@@ -20,6 +20,7 @@ export default defineConfig({
       "@platform/storage": path.resolve(__dirname, "packages/storage/src/index.ts"),
       "@platform/auth": path.resolve(__dirname, "packages/auth/src/index.ts"),
       "@platform/gear": path.resolve(__dirname, "packages/gear/src/index.ts"),
+      "@platform/research": path.resolve(__dirname, "packages/research/src/index.ts"),
     },
   },
 });

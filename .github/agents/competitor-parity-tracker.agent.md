@@ -28,3 +28,4 @@ Return a parity report — no file changes:
 - **We have / they don't**: our differentiators (with the file or feature that proves it).
 - **They have / we lack**: each gap, the competitor, and the mapped backlog epic (or "unmapped — net new").
 - **Recommended next parity moves**: prioritized, with effort sense (small/medium/large) and which epic they advance.
+- **Assumptions & confidence**: flag every assumption about competitor capability and rate confidence 1–10 per claim. Anything not confirmed from a freshly fetched page or current source — i.e. resting on stale repo memory — must be marked low-confidence.

@@ -1,5 +1,14 @@
 import Link from "next/link";
 import { missionsForAge, type Mission } from "@platform/missions";
+import { buildLoadPassport } from "@platform/safety";
+import { getRepos } from "@platform/storage";
+import { getSession } from "../lib/session";
+import { playerThrowingEvents } from "../lib/throwingEvents";
+import { ageFromDob } from "../lib/players";
+import { LoadStatusCard } from "../components/LoadStatusCard";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 const AGE_OPTIONS = [8, 11, 13, 16];
 
@@ -28,6 +37,10 @@ export default async function MissionsPage({
   const age = Number(sp.age ?? 11);
   const missions = missionsForAge(age);
 
+  // Player-personalized arm-care card. Additive: anonymous visitors and players
+  // not linked to a roster record see the unchanged public catalog.
+  const armBlock = await playerArmBlock();
+
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       <header className="space-y-2">
@@ -53,6 +66,8 @@ export default async function MissionsPage({
         </div>
       </header>
 
+      {armBlock}
+
       {missions.length === 0 ? (
         <p className="card">No missions yet. Try another age.</p>
       ) : (
@@ -73,4 +88,35 @@ export default async function MissionsPage({
       )}
     </div>
   );
+}
+
+async function playerArmBlock() {
+  const session = await getSession();
+  if (session?.user.role !== "player") return null;
+  const repos = getRepos();
+  const memberships = await repos.teamMemberships.list({ userId: session.user.id });
+  const link = memberships.find((m) => m.role === "player" && m.playerId);
+  if (!link?.playerId) return null;
+  const player = await repos.players.byId(link.playerId);
+  if (!player || !(player.canPitch || player.canCatch)) return null;
+  const [games, throwingLogs] = await Promise.all([
+    player.teamId ? repos.games.list({ teamId: player.teamId }) : Promise.resolve([]),
+    repos.throwingLogs.list({ playerId: player.id }),
+  ]);
+  const age = player.dob ? ageFromDob(player.dob) : ageBandCenter(player.ageBand);
+  const events = playerThrowingEvents(player.id, games, throwingLogs);
+  const passport = buildLoadPassport({ age, events, playerName: player.firstName });
+  return (
+    <section className="card space-y-2" aria-label="Your arm">
+      <h2 className="text-lg">Your arm today</h2>
+      <LoadStatusCard passport={passport} audience="family" />
+    </section>
+  );
+}
+
+function ageBandCenter(band: string): number {
+  if (band === "6-8") return 8;
+  if (band === "9-12") return 11;
+  if (band === "13-15") return 14;
+  return 16;
 }

@@ -17,9 +17,12 @@ import {
   explainCell,
   summarizeForParents,
   validateLineup,
+  LINEUP_MODES,
+  LINEUP_MODE_ORDER,
   type DefensivePreset,
   type LeagueRules,
   type LineupPlayer,
+  type LineupMode,
   type Inning,
   type Slot,
 } from "@platform/lineup";
@@ -62,6 +65,7 @@ export function FieldBoard({
   const [locked, setLocked] = useState<Set<string>>(new Set());
   const [preset, setPreset] = useState<DefensivePreset>("standard9");
   const [competitive, setCompetitive] = useState<number>(30); // 0..100
+  const [mode, setMode] = useState<LineupMode>("recFair");
   const [warnings, setWarnings] = useState<string[]>([]);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -208,6 +212,7 @@ export function FieldBoard({
       present,
       preset,
       competitiveWeight: competitive / 100,
+      varietyWeight: LINEUP_MODES[mode].varietyWeight,
       locks: locked.size ? buildLocks(lineup, locked) : undefined,
       pitcherUnavailable,
       leagueRules: rulesEnabled ? leagueRules : undefined,
@@ -228,6 +233,7 @@ export function FieldBoard({
       present,
       preset,
       competitiveWeight: competitive / 100,
+      varietyWeight: LINEUP_MODES[mode].varietyWeight,
       pitcherUnavailable,
       leagueRules: rulesEnabled ? leagueRules : undefined,
     });
@@ -320,6 +326,38 @@ export function FieldBoard({
         <button type="button" className="btn-primary" disabled={busy} onClick={save}>
           {busy ? "Saving…" : "Save lineup"}
         </button>
+      </div>
+
+      <div className="no-print rounded border border-slate-200 bg-white px-3 py-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-sm font-semibold text-slate-700">Game mode</span>
+          {LINEUP_MODE_ORDER.map((m) => {
+            const spec = LINEUP_MODES[m];
+            const active = mode === m;
+            return (
+              <button
+                key={m}
+                type="button"
+                onClick={() => {
+                  setMode(m);
+                  setCompetitive(Math.round(spec.competitiveWeight * 100));
+                }}
+                aria-pressed={active}
+                title={spec.blurb}
+                className={
+                  active
+                    ? "rounded bg-field-700 px-3 py-1.5 text-sm font-medium text-white"
+                    : "rounded border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-700 hover:border-field-700"
+                }
+              >
+                {spec.label}
+              </button>
+            );
+          })}
+        </div>
+        <p className="m-0 mt-1.5 text-xs text-slate-500">
+          {LINEUP_MODES[mode].note} Pick a mode, then <strong>Auto-generate</strong>.
+        </p>
       </div>
 
       <div className="no-print flex flex-wrap items-center gap-4 rounded border border-slate-200 bg-slate-50 px-3 py-2 text-sm">

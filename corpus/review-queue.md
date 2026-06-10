@@ -6,6 +6,6 @@
 > they appear below as manual checks. To pause auto-promotion and gate it behind
 > human approval, set `CORPUS_PROMOTE_REQUIRE_APPROVAL=1` and approve with `npm run approve`.
 
-Last scan: 2026-06-06T15:00:06.791Z · 0 pending · 0 approved (awaiting promote)
+Last scan: 2026-06-10T03:13:30.365Z · 0 pending · 0 approved (awaiting promote)
 
 _Nothing pending. Queue is clear._

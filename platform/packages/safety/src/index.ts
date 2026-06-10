@@ -9,3 +9,4 @@ export * from "./policy";
 export * from "./dontDoToday";
 export * from "./escalation";
 export * from "./workload";
+export * from "./loadPassport";

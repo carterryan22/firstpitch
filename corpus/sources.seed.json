@@ -8,11 +8,20 @@
     "age_band": "all",
     "sport": "general",
     "summary": "NSCA's ratified position statement on long-term athletic development (LTAD), built around 10 pillars promoting individualized, holistic, child-centered training to enhance performance, promote health, and minimize injury risk.",
-    "key_principles": ["all youth are athletes", "individualized and holistic approach", "physical literacy first", "qualified supervision", "preparatory conditioning prevents overuse"],
+    "key_principles": [
+      "all youth are athletes",
+      "individualized and holistic approach",
+      "physical literacy first",
+      "qualified supervision",
+      "preparatory conditioning prevents overuse"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": true,
     "guardrail_reason": "Used as framework, not as individualized medical/rehab plan.",
-    "do_not_use_for": ["injury rehab", "return-to-play decisions"],
+    "do_not_use_for": [
+      "injury rehab",
+      "return-to-play decisions"
+    ],
     "coach_use_case": "Reference framework for age/stage program design.",
     "player_use_case": "Not directly consumed by player.",
     "parent_use_case": "Education on why long-term over short-term performance chasing.",
@@ -21,7 +30,12 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "consensus statement",
-    "tags": ["LTAD", "position-statement", "youth", "framework"]
+    "tags": [
+      "LTAD",
+      "position-statement",
+      "youth",
+      "framework"
+    ]
   },
   {
     "title": "NSCA Youth Training and Long-Term Athletic Development (overview)",
@@ -32,7 +46,11 @@
     "age_band": "all",
     "sport": "general",
     "summary": "NSCA hub page for youth training and LTAD resources, including parent intro, what-it-all-means explainer, and 10 pillars PDF.",
-    "key_principles": ["physical literacy", "appropriate progression", "qualified supervision"],
+    "key_principles": [
+      "physical literacy",
+      "appropriate progression",
+      "qualified supervision"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -45,7 +63,11 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "consensus statement",
-    "tags": ["LTAD", "youth", "hub"]
+    "tags": [
+      "LTAD",
+      "youth",
+      "hub"
+    ]
   },
   {
     "title": "NSCA LTAD — PubMed (Lloyd et al. 2016)",
@@ -56,7 +78,10 @@
     "age_band": "all",
     "sport": "general",
     "summary": "Peer-reviewed NSCA position statement on LTAD in the JSCR.",
-    "key_principles": ["evidence-based framework", "10 pillars"],
+    "key_principles": [
+      "evidence-based framework",
+      "10 pillars"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -69,7 +94,11 @@
     "duration_minutes": null,
     "progression_level": "advanced",
     "evidence_level": "consensus statement",
-    "tags": ["LTAD", "peer-reviewed", "citation"]
+    "tags": [
+      "LTAD",
+      "peer-reviewed",
+      "citation"
+    ]
   },
   {
     "title": "NSCA Position Statement: Youth Resistance Training (2009, PDF)",
@@ -80,11 +109,20 @@
     "age_band": "9-12",
     "sport": "general",
     "summary": "NSCA updated position statement on youth resistance training: safe when supervised, technique-first, age-appropriate, and progressed slowly. Underpins the platform's strength guardrails.",
-    "key_principles": ["qualified supervision required", "technique before load", "submaximal loads", "age-appropriate progression", "no 1RM testing"],
+    "key_principles": [
+      "qualified supervision required",
+      "technique before load",
+      "submaximal loads",
+      "age-appropriate progression",
+      "no 1RM testing"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": true,
     "guardrail_reason": "Strength prescriptions must comply with supervision + technique-first rule.",
-    "do_not_use_for": ["1RM testing in minors", "unsupervised loaded lifting"],
+    "do_not_use_for": [
+      "1RM testing in minors",
+      "unsupervised loaded lifting"
+    ],
     "coach_use_case": "Source of truth for strength prescription safety.",
     "player_use_case": "",
     "parent_use_case": "Reassurance that supervised strength training is safe.",
@@ -93,7 +131,11 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "consensus statement",
-    "tags": ["youth-strength", "safety", "guardrail"]
+    "tags": [
+      "youth-strength",
+      "safety",
+      "guardrail"
+    ]
   },
   {
     "title": "USOPC American Development Model (ADM)",
@@ -104,7 +146,11 @@
     "age_band": "all",
     "sport": "multi-sport",
     "summary": "USOPC's framework for long-term athlete development across sports, emphasizing multi-sport sampling, age-appropriate progression, and qualified coaching.",
-    "key_principles": ["multi-sport sampling", "age-stage progression", "delayed specialization"],
+    "key_principles": [
+      "multi-sport sampling",
+      "age-stage progression",
+      "delayed specialization"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -117,7 +163,11 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "consensus statement",
-    "tags": ["ADM", "LTAD", "multi-sport"]
+    "tags": [
+      "ADM",
+      "LTAD",
+      "multi-sport"
+    ]
   },
   {
     "title": "USOPC ADM Resources",
@@ -128,7 +178,10 @@
     "age_band": "all",
     "sport": "multi-sport",
     "summary": "Coach-education resources and tools that operationalize the ADM.",
-    "key_principles": ["coach education", "stage-appropriate programming"],
+    "key_principles": [
+      "coach education",
+      "stage-appropriate programming"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -141,7 +194,10 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["ADM", "coach-education"]
+    "tags": [
+      "ADM",
+      "coach-education"
+    ]
   },
   {
     "title": "Sport for Life — Long-Term Development",
@@ -152,7 +208,11 @@
     "age_band": "all",
     "sport": "multi-sport",
     "summary": "Canadian long-term development framework emphasizing physical literacy before specialization.",
-    "key_principles": ["physical literacy", "stage-based development", "lifelong activity"],
+    "key_principles": [
+      "physical literacy",
+      "stage-based development",
+      "lifelong activity"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -165,7 +225,10 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "consensus statement",
-    "tags": ["LTD", "physical-literacy"]
+    "tags": [
+      "LTD",
+      "physical-literacy"
+    ]
   },
   {
     "title": "Long-Term Development in Sport and Physical Activity 3.0",
@@ -176,7 +239,11 @@
     "age_band": "all",
     "sport": "multi-sport",
     "summary": "LTD 3.0 framework document with full stage model from Active Start through Active for Life.",
-    "key_principles": ["7 stages", "physical literacy", "windows of trainability"],
+    "key_principles": [
+      "7 stages",
+      "physical literacy",
+      "windows of trainability"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -189,7 +256,10 @@
     "duration_minutes": null,
     "progression_level": "advanced",
     "evidence_level": "consensus statement",
-    "tags": ["LTD", "stage-model"]
+    "tags": [
+      "LTD",
+      "stage-model"
+    ]
   },
   {
     "title": "CDC Physical Activity Guidelines — Index",
@@ -200,7 +270,9 @@
     "age_band": "all",
     "sport": "general",
     "summary": "CDC index page for physical activity guidelines by age group.",
-    "key_principles": ["age-specific PA minimums"],
+    "key_principles": [
+      "age-specific PA minimums"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -213,7 +285,10 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "official rule",
-    "tags": ["CDC", "guidelines"]
+    "tags": [
+      "CDC",
+      "guidelines"
+    ]
   },
   {
     "title": "CDC Child Activity — 6 to 17 Guidelines",
@@ -224,7 +299,12 @@
     "age_band": "6-8 | 9-12 | 13-15 | 16+",
     "sport": "general",
     "summary": "Children 6-17 need 60+ minutes/day of moderate-to-vigorous PA, including aerobic, muscle-strengthening (3+ days/wk), and bone-strengthening (3+ days/wk).",
-    "key_principles": ["60 min/day MVPA", "aerobic + muscle + bone", "3 days/wk strengthening", "3 days/wk vigorous"],
+    "key_principles": [
+      "60 min/day MVPA",
+      "aerobic + muscle + bone",
+      "3 days/wk strengthening",
+      "3 days/wk vigorous"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -237,7 +317,12 @@
     "duration_minutes": 60,
     "progression_level": "intro",
     "evidence_level": "official rule",
-    "tags": ["CDC", "60-minutes", "youth", "guideline"]
+    "tags": [
+      "CDC",
+      "60-minutes",
+      "youth",
+      "guideline"
+    ]
   },
   {
     "title": "CDC — What Counts as Activity for Children & Adolescents",
@@ -248,7 +333,10 @@
     "age_band": "6-8 | 9-12 | 13-15 | 16+",
     "sport": "general",
     "summary": "Examples of aerobic, muscle-strengthening, and bone-strengthening activities that count toward the 60-minute target.",
-    "key_principles": ["activity examples", "intensity definition"],
+    "key_principles": [
+      "activity examples",
+      "intensity definition"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -261,7 +349,10 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "official rule",
-    "tags": ["CDC", "activity-examples"]
+    "tags": [
+      "CDC",
+      "activity-examples"
+    ]
   },
   {
     "title": "HSS — Strength Training for Teens: What to Know",
@@ -272,11 +363,24 @@
     "age_band": "13-15 | 16+",
     "sport": "general",
     "summary": "Strength training is safe for teens (and pre-adolescents) when supervised by a trained professional. Use age-appropriate exercises, proper movement patterns, major muscle groups + core, and slow progression. 2–3 sessions/week on nonconsecutive days, 3 sets of 10–15 reps at manageable weight. Never attempt a 1-rep max. Dynamic warmup 5–10 min. Avoid performance supplements.",
-    "key_principles": ["supervision required", "movement patterns before load", "3x10-15 reps", "2-3 sessions/wk nonconsecutive", "no 1RM", "dynamic warmup", "stop on pain", "no performance supplements"],
+    "key_principles": [
+      "supervision required",
+      "movement patterns before load",
+      "3x10-15 reps",
+      "2-3 sessions/wk nonconsecutive",
+      "no 1RM",
+      "dynamic warmup",
+      "stop on pain",
+      "no performance supplements"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": true,
     "guardrail_reason": "Strength prescriptions must include supervision requirement and forbid 1RM in minors.",
-    "do_not_use_for": ["1RM testing", "unsupervised loaded lifting", "supplement guidance"],
+    "do_not_use_for": [
+      "1RM testing",
+      "unsupervised loaded lifting",
+      "supplement guidance"
+    ],
     "coach_use_case": "Source of truth for teen strength rules.",
     "player_use_case": "Education on technique-first.",
     "parent_use_case": "Confirms safety of supervised programs.",
@@ -285,7 +389,12 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "medical/health source",
-    "tags": ["strength", "teens", "HSS", "guardrail"]
+    "tags": [
+      "strength",
+      "teens",
+      "HSS",
+      "guardrail"
+    ]
   },
   {
     "title": "HSS — Kids and Sports (hub)",
@@ -296,11 +405,18 @@
     "age_band": "all",
     "sport": "general",
     "summary": "HSS hub on youth sports topics: injury prevention, concussions, specialization risks, sports physicals, ACL prevention, growth-plate issues.",
-    "key_principles": ["injury awareness", "specialization caution", "sports physicals"],
+    "key_principles": [
+      "injury awareness",
+      "specialization caution",
+      "sports physicals"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
-    "do_not_use_for": ["diagnosis", "rehab planning"],
+    "do_not_use_for": [
+      "diagnosis",
+      "rehab planning"
+    ],
     "coach_use_case": "Reference for injury-awareness content.",
     "player_use_case": "",
     "parent_use_case": "Decision support around participation.",
@@ -309,7 +425,11 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "medical/health source",
-    "tags": ["HSS", "injury-prevention", "hub"]
+    "tags": [
+      "HSS",
+      "injury-prevention",
+      "hub"
+    ]
   },
   {
     "title": "HSS — ACL Injury Prevention: Stay Off Sidelines",
@@ -320,11 +440,18 @@
     "age_band": "9-12 | 13-15 | 16+",
     "sport": "general",
     "summary": "Neuromuscular training program guidance to reduce ACL injury risk in youth athletes.",
-    "key_principles": ["neuromuscular training", "landing mechanics", "core/hip strength"],
+    "key_principles": [
+      "neuromuscular training",
+      "landing mechanics",
+      "core/hip strength"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": true,
     "guardrail_reason": "Prevention content only — not for injured players or rehab.",
-    "do_not_use_for": ["active injury", "rehab"],
+    "do_not_use_for": [
+      "active injury",
+      "rehab"
+    ],
     "coach_use_case": "Warmup/prep block design.",
     "player_use_case": "",
     "parent_use_case": "Why prehab matters.",
@@ -333,7 +460,11 @@
     "duration_minutes": 10,
     "progression_level": "intro",
     "evidence_level": "medical/health source",
-    "tags": ["ACL", "prevention", "neuromuscular"]
+    "tags": [
+      "ACL",
+      "prevention",
+      "neuromuscular"
+    ]
   },
   {
     "title": "HSS — Kids Running (injury-free preparation)",
@@ -344,11 +475,17 @@
     "age_band": "6-8 | 9-12 | 13-15 | 16+",
     "sport": "general",
     "summary": "Pediatric rehab guidance to prepare kids for running and reduce injury risk.",
-    "key_principles": ["progression", "footwear", "mileage caution"],
+    "key_principles": [
+      "progression",
+      "footwear",
+      "mileage caution"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
-    "do_not_use_for": ["return-to-run after injury"],
+    "do_not_use_for": [
+      "return-to-run after injury"
+    ],
     "coach_use_case": "Conditioning ramp-up policy.",
     "player_use_case": "",
     "parent_use_case": "Footwear and mileage guidance.",
@@ -357,7 +494,10 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "medical/health source",
-    "tags": ["running", "youth"]
+    "tags": [
+      "running",
+      "youth"
+    ]
   },
   {
     "title": "ALTIS — Free Resources",
@@ -368,11 +508,17 @@
     "age_band": "13-15 | 16+",
     "sport": "general",
     "summary": "Free coach-education resources on sprint training, acceleration, and S&C.",
-    "key_principles": ["sprint mechanics", "acceleration", "max-velocity exposure"],
+    "key_principles": [
+      "sprint mechanics",
+      "acceleration",
+      "max-velocity exposure"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": true,
     "guardrail_reason": "Adult/elite content — must be age-scaled before youth use.",
-    "do_not_use_for": ["U8-U12 direct prescription"],
+    "do_not_use_for": [
+      "U8-U12 direct prescription"
+    ],
     "coach_use_case": "Sprint mechanics inspiration.",
     "player_use_case": "",
     "parent_use_case": "",
@@ -381,7 +527,10 @@
     "duration_minutes": null,
     "progression_level": "advanced",
     "evidence_level": "coaching article",
-    "tags": ["sprint", "ALTIS"]
+    "tags": [
+      "sprint",
+      "ALTIS"
+    ]
   },
   {
     "title": "SimpliFaster — Speed Training Myth and the Young Athlete",
@@ -392,7 +541,11 @@
     "age_band": "6-8 | 9-12",
     "sport": "general",
     "summary": "Cautions against treating young kids like mature speed-program athletes; emphasizes movement variety and fun.",
-    "key_principles": ["age-appropriate dosing", "fun first", "movement variety"],
+    "key_principles": [
+      "age-appropriate dosing",
+      "fun first",
+      "movement variety"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -405,7 +558,10 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["speed", "youth"]
+    "tags": [
+      "speed",
+      "youth"
+    ]
   },
   {
     "title": "SimpliFaster — Developing Youth Sport Speed",
@@ -416,7 +572,12 @@
     "age_band": "9-12 | 13-15",
     "sport": "general",
     "summary": "Practical model for developing youth sport speed — acceleration, max speed, decel, COD in sport context.",
-    "key_principles": ["acceleration", "max speed", "deceleration", "change of direction"],
+    "key_principles": [
+      "acceleration",
+      "max speed",
+      "deceleration",
+      "change of direction"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -425,11 +586,17 @@
     "player_use_case": "",
     "parent_use_case": "",
     "practice_format": "drill",
-    "equipment_needed": ["cones"],
+    "equipment_needed": [
+      "cones"
+    ],
     "duration_minutes": null,
     "progression_level": "intermediate",
     "evidence_level": "coaching article",
-    "tags": ["speed", "youth", "framework"]
+    "tags": [
+      "speed",
+      "youth",
+      "framework"
+    ]
   },
   {
     "title": "Sportsmith — Game-Speed Framework for Youth Athletes",
@@ -440,7 +607,11 @@
     "age_band": "9-12 | 13-15",
     "sport": "general",
     "summary": "Framework: acceleration, max-speed running, deceleration, change of direction as main buckets for youth game speed.",
-    "key_principles": ["game-context speed", "4 buckets", "sport transfer"],
+    "key_principles": [
+      "game-context speed",
+      "4 buckets",
+      "sport transfer"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -449,11 +620,16 @@
     "player_use_case": "",
     "parent_use_case": "",
     "practice_format": "drill",
-    "equipment_needed": ["cones"],
+    "equipment_needed": [
+      "cones"
+    ],
     "duration_minutes": null,
     "progression_level": "intermediate",
     "evidence_level": "coaching article",
-    "tags": ["game-speed", "framework"]
+    "tags": [
+      "game-speed",
+      "framework"
+    ]
   },
   {
     "title": "USA Baseball Develops (hub)",
@@ -464,7 +640,10 @@
     "age_band": "all",
     "sport": "baseball",
     "summary": "USA Baseball's coach-development hub with practice plans, drills, Pitch Smart, and courses.",
-    "key_principles": ["age-appropriate baseball", "fun-first"],
+    "key_principles": [
+      "age-appropriate baseball",
+      "fun-first"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -477,7 +656,10 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["USA-baseball", "hub"]
+    "tags": [
+      "USA-baseball",
+      "hub"
+    ]
   },
   {
     "title": "USA Baseball — Practice Plans",
@@ -488,7 +670,10 @@
     "age_band": "all",
     "sport": "baseball",
     "summary": "Library of age-appropriate practice plans by USA Baseball.",
-    "key_principles": ["structured practice", "age progression"],
+    "key_principles": [
+      "structured practice",
+      "age progression"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -497,11 +682,18 @@
     "player_use_case": "",
     "parent_use_case": "",
     "practice_format": "lesson",
-    "equipment_needed": ["balls", "tee", "cones"],
+    "equipment_needed": [
+      "balls",
+      "tee",
+      "cones"
+    ],
     "duration_minutes": 60,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["practice-plans", "USA-baseball"]
+    "tags": [
+      "practice-plans",
+      "USA-baseball"
+    ]
   },
   {
     "title": "USA Baseball Youth Manual (announcement)",
@@ -525,7 +717,10 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["USA-baseball", "manual"]
+    "tags": [
+      "USA-baseball",
+      "manual"
+    ]
   },
   {
     "title": "USA Baseball Youth Manual (PDF)",
@@ -536,7 +731,11 @@
     "age_band": "6-8 | 9-12",
     "sport": "baseball",
     "summary": "Comprehensive USA Baseball youth manual — fundamentals, drills, practice structure.",
-    "key_principles": ["fundamentals", "stations", "fun"],
+    "key_principles": [
+      "fundamentals",
+      "stations",
+      "fun"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -545,11 +744,19 @@
     "player_use_case": "",
     "parent_use_case": "Home-practice drill reference.",
     "practice_format": "drill",
-    "equipment_needed": ["balls", "tee", "cones"],
+    "equipment_needed": [
+      "balls",
+      "tee",
+      "cones"
+    ],
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["USA-baseball", "manual", "drills"]
+    "tags": [
+      "USA-baseball",
+      "manual",
+      "drills"
+    ]
   },
   {
     "title": "Little League University (hub)",
@@ -560,7 +767,10 @@
     "age_band": "6-8 | 9-12 | 13-15",
     "sport": "baseball",
     "summary": "Little League University hub of coach resources, drills, rules, safety courses.",
-    "key_principles": ["league-aligned", "safety-first"],
+    "key_principles": [
+      "league-aligned",
+      "safety-first"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -573,7 +783,10 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["little-league", "hub"]
+    "tags": [
+      "little-league",
+      "hub"
+    ]
   },
   {
     "title": "Little League University — Coaches",
@@ -584,7 +797,12 @@
     "age_band": "6-8 | 9-12 | 13-15",
     "sport": "baseball",
     "summary": "Coach landing page including REQUIRED Abuse Awareness and Diamond Leader training, plus Safety Awareness, First Aid, equipment inspection, traumatic-event guidance.",
-    "key_principles": ["required abuse-awareness training", "Diamond Leader training", "equipment inspection", "tournament safety"],
+    "key_principles": [
+      "required abuse-awareness training",
+      "Diamond Leader training",
+      "equipment inspection",
+      "tournament safety"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": true,
     "guardrail_reason": "Treat required courses as platform compliance gates for league coaches.",
@@ -597,7 +815,11 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "official rule",
-    "tags": ["little-league", "compliance", "safety"]
+    "tags": [
+      "little-league",
+      "compliance",
+      "safety"
+    ]
   },
   {
     "title": "Little League University — Coach Resources (filtered)",
@@ -621,7 +843,10 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["little-league", "resources"]
+    "tags": [
+      "little-league",
+      "resources"
+    ]
   },
   {
     "title": "Little League University — Drills (filter)",
@@ -645,7 +870,10 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["little-league", "drills"]
+    "tags": [
+      "little-league",
+      "drills"
+    ]
   },
   {
     "title": "Little League Coach Pitch Program",
@@ -656,7 +884,10 @@
     "age_band": "6-8",
     "sport": "baseball",
     "summary": "Overview of Little League's Coach Pitch program structure.",
-    "key_principles": ["coach pitch", "developmental"],
+    "key_principles": [
+      "coach pitch",
+      "developmental"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -665,11 +896,17 @@
     "player_use_case": "",
     "parent_use_case": "",
     "practice_format": "lesson",
-    "equipment_needed": ["balls", "tee"],
+    "equipment_needed": [
+      "balls",
+      "tee"
+    ],
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "official rule",
-    "tags": ["coach-pitch", "U8"]
+    "tags": [
+      "coach-pitch",
+      "U8"
+    ]
   },
   {
     "title": "8 Helpful Tips for New Little League Coaches",
@@ -680,7 +917,14 @@
     "age_band": "6-8 | 9-12",
     "sport": "baseball",
     "summary": "Practice plan should focus on fundamentals, low downtime, fun, and frequent water breaks. Hold a parents' meeting, follow rulebook (incl. pitch count), use PCA-aligned culture.",
-    "key_principles": ["fundamentals first", "low downtime", "water breaks", "parents meeting", "PCA culture", "pitch-count rules"],
+    "key_principles": [
+      "fundamentals first",
+      "low downtime",
+      "water breaks",
+      "parents meeting",
+      "PCA culture",
+      "pitch-count rules"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -693,7 +937,11 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "official rule",
-    "tags": ["little-league", "new-coach", "culture"]
+    "tags": [
+      "little-league",
+      "new-coach",
+      "culture"
+    ]
   },
   {
     "title": "Little League — Breakdown Baserunning Drill",
@@ -704,7 +952,10 @@
     "age_band": "9-12",
     "sport": "baseball",
     "summary": "Baserunning teaching drill from Little League University.",
-    "key_principles": ["baserunning fundamentals", "reads"],
+    "key_principles": [
+      "baserunning fundamentals",
+      "reads"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -713,11 +964,16 @@
     "player_use_case": "",
     "parent_use_case": "",
     "practice_format": "drill",
-    "equipment_needed": ["bases"],
+    "equipment_needed": [
+      "bases"
+    ],
     "duration_minutes": 15,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["baserunning", "drill"]
+    "tags": [
+      "baserunning",
+      "drill"
+    ]
   },
   {
     "title": "Driveline Baseball (site)",
@@ -728,11 +984,17 @@
     "age_band": "13-15 | 16+",
     "sport": "baseball",
     "summary": "Driveline programs, tech, and content for pitching/hitting development.",
-    "key_principles": ["data-driven", "velocity development"],
+    "key_principles": [
+      "data-driven",
+      "velocity development"
+    ],
     "safe_to_prescribe": false,
     "requires_guardrail": true,
     "guardrail_reason": "Throwing volumes and protocols must defer to Pitch Smart and league rules for youth.",
-    "do_not_use_for": ["<13 prescription", "overriding Pitch Smart"],
+    "do_not_use_for": [
+      "<13 prescription",
+      "overriding Pitch Smart"
+    ],
     "coach_use_case": "Inspiration for HS-age throwing dev.",
     "player_use_case": "",
     "parent_use_case": "",
@@ -741,7 +1003,10 @@
     "duration_minutes": null,
     "progression_level": "advanced",
     "evidence_level": "coaching article",
-    "tags": ["driveline", "velocity"]
+    "tags": [
+      "driveline",
+      "velocity"
+    ]
   },
   {
     "title": "Driveline EDU",
@@ -752,11 +1017,15 @@
     "age_band": "13-15 | 16+",
     "sport": "baseball",
     "summary": "Driveline's educational platform.",
-    "key_principles": ["coach education"],
+    "key_principles": [
+      "coach education"
+    ],
     "safe_to_prescribe": false,
     "requires_guardrail": true,
     "guardrail_reason": "Defer to Pitch Smart for youth volumes.",
-    "do_not_use_for": ["<13 prescription"],
+    "do_not_use_for": [
+      "<13 prescription"
+    ],
     "coach_use_case": "Continuing education.",
     "player_use_case": "",
     "parent_use_case": "",
@@ -765,7 +1034,10 @@
     "duration_minutes": null,
     "progression_level": "advanced",
     "evidence_level": "coaching article",
-    "tags": ["driveline", "education"]
+    "tags": [
+      "driveline",
+      "education"
+    ]
   },
   {
     "title": "Driveline Baseball — YouTube",
@@ -780,7 +1052,9 @@
     "safe_to_prescribe": false,
     "requires_guardrail": true,
     "guardrail_reason": "Defer to Pitch Smart for youth volumes.",
-    "do_not_use_for": ["<13 prescription"],
+    "do_not_use_for": [
+      "<13 prescription"
+    ],
     "coach_use_case": "Drill inspiration.",
     "player_use_case": "",
     "parent_use_case": "",
@@ -789,7 +1063,10 @@
     "duration_minutes": null,
     "progression_level": "advanced",
     "evidence_level": "coaching article",
-    "tags": ["driveline", "video"]
+    "tags": [
+      "driveline",
+      "video"
+    ]
   },
   {
     "title": "Antonelli Baseball — Instructional Videos",
@@ -800,7 +1077,9 @@
     "age_band": "9-12 | 13-15",
     "sport": "baseball",
     "summary": "Instructional video catalog for fielding, hitting, throwing.",
-    "key_principles": ["fundamentals"],
+    "key_principles": [
+      "fundamentals"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -813,7 +1092,10 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["antonelli", "video"]
+    "tags": [
+      "antonelli",
+      "video"
+    ]
   },
   {
     "title": "Antonelli Baseball — YouTube",
@@ -837,7 +1119,10 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["antonelli", "video"]
+    "tags": [
+      "antonelli",
+      "video"
+    ]
   },
   {
     "title": "MLB Pitch Smart — Ages 9-12 Guidelines",
@@ -848,11 +1133,20 @@
     "age_band": "9-12",
     "sport": "baseball",
     "summary": "Age-appropriate pitching guidelines for 9-12: pitch-count limits per outing, required rest by pitch count, no breaking pitches beyond fastball/change-up, no year-round throwing, time off each year, no pitching on consecutive days at lower ages.",
-    "key_principles": ["pitch-count limits", "required rest days", "fastball/change-up only", "no year-round throwing", "time off annually"],
+    "key_principles": [
+      "pitch-count limits",
+      "required rest days",
+      "fastball/change-up only",
+      "no year-round throwing",
+      "time off annually"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": true,
     "guardrail_reason": "Pitch Smart is the single source of truth for youth throwing volume; overrides any drill-blog or product-site recommendation.",
-    "do_not_use_for": ["AI to invent new pitch-count tables", "overrides"],
+    "do_not_use_for": [
+      "AI to invent new pitch-count tables",
+      "overrides"
+    ],
     "coach_use_case": "Locked safety table that gates all throwing prescriptions.",
     "player_use_case": "",
     "parent_use_case": "Verify coach is following limits.",
@@ -861,7 +1155,12 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "official rule",
-    "tags": ["pitch-smart", "throwing", "guardrail", "9-12"]
+    "tags": [
+      "pitch-smart",
+      "throwing",
+      "guardrail",
+      "9-12"
+    ]
   },
   {
     "title": "USA Baseball — Pitch Smart",
@@ -872,11 +1171,17 @@
     "age_band": "all",
     "sport": "baseball",
     "summary": "USA Baseball/MLB partnership providing the comprehensive Pitch Smart guidelines and a Pitch Smart Compliance Program for orgs.",
-    "key_principles": ["compliance program", "free course", "age-appropriate limits"],
+    "key_principles": [
+      "compliance program",
+      "free course",
+      "age-appropriate limits"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": true,
     "guardrail_reason": "Single source of truth for youth throwing volume.",
-    "do_not_use_for": ["AI overrides"],
+    "do_not_use_for": [
+      "AI overrides"
+    ],
     "coach_use_case": "Org-level compliance.",
     "player_use_case": "",
     "parent_use_case": "Course enrollment.",
@@ -885,7 +1190,10 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "official rule",
-    "tags": ["pitch-smart", "compliance"]
+    "tags": [
+      "pitch-smart",
+      "compliance"
+    ]
   },
   {
     "title": "Pro Baseball Insider — Best Hand-Eye Coordination Drills",
@@ -896,7 +1204,12 @@
     "age_band": "9-12 | 13-15",
     "sport": "baseball",
     "summary": "Practical hand-eye drills using reaction balls, ball drops, color/number calls, and one-hand coordination.",
-    "key_principles": ["reaction balls", "ball drops", "one-hand coordination", "visual cues"],
+    "key_principles": [
+      "reaction balls",
+      "ball drops",
+      "one-hand coordination",
+      "visual cues"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -905,11 +1218,17 @@
     "player_use_case": "Home practice.",
     "parent_use_case": "Backyard drill source.",
     "practice_format": "drill",
-    "equipment_needed": ["reaction ball", "tennis balls"],
+    "equipment_needed": [
+      "reaction ball",
+      "tennis balls"
+    ],
     "duration_minutes": 10,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["reaction", "hand-eye"]
+    "tags": [
+      "reaction",
+      "hand-eye"
+    ]
   },
   {
     "title": "MDPI Sensors 2022 — Visual-stimulus / reaction training study",
@@ -920,20 +1239,32 @@
     "age_band": "13-15 | 16+",
     "sport": "general",
     "summary": "Peer-reviewed study on visual-stimulus / light-pod reaction training; mixed evidence for transfer to sport performance.",
-    "key_principles": ["mixed evidence", "engagement utility", "assessment value"],
+    "key_principles": [
+      "mixed evidence",
+      "engagement utility",
+      "assessment value"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": true,
     "guardrail_reason": "Treat as add-on, not core performance engine.",
-    "do_not_use_for": ["primary performance claim"],
+    "do_not_use_for": [
+      "primary performance claim"
+    ],
     "coach_use_case": "Citation when discussing light pods.",
     "player_use_case": "",
     "parent_use_case": "",
     "practice_format": "article",
-    "equipment_needed": ["light pods"],
+    "equipment_needed": [
+      "light pods"
+    ],
     "duration_minutes": null,
     "progression_level": "advanced",
     "evidence_level": "medical/health source",
-    "tags": ["reaction", "research", "light-pods"]
+    "tags": [
+      "reaction",
+      "research",
+      "light-pods"
+    ]
   },
   {
     "title": "BlazePod (product site)",
@@ -944,20 +1275,30 @@
     "age_band": "9-12 | 13-15 | 16+",
     "sport": "general",
     "summary": "BlazePod reaction-light system product site.",
-    "key_principles": ["reaction lights", "drill app"],
+    "key_principles": [
+      "reaction lights",
+      "drill app"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": true,
     "guardrail_reason": "Optional add-on; not a replacement for sport decision-making.",
-    "do_not_use_for": ["primary skill development"],
+    "do_not_use_for": [
+      "primary skill development"
+    ],
     "coach_use_case": "Engagement layer.",
     "player_use_case": "Solo reaction games.",
     "parent_use_case": "Home reaction game.",
     "practice_format": "drill",
-    "equipment_needed": ["BlazePods"],
+    "equipment_needed": [
+      "BlazePods"
+    ],
     "duration_minutes": 10,
     "progression_level": "intro",
     "evidence_level": "product source",
-    "tags": ["blazepod", "reaction"]
+    "tags": [
+      "blazepod",
+      "reaction"
+    ]
   },
   {
     "title": "BlazePod iOS App",
@@ -972,16 +1313,24 @@
     "safe_to_prescribe": true,
     "requires_guardrail": true,
     "guardrail_reason": "Optional add-on only.",
-    "do_not_use_for": ["primary skill development"],
+    "do_not_use_for": [
+      "primary skill development"
+    ],
     "coach_use_case": "Drill library for pods.",
     "player_use_case": "",
     "parent_use_case": "",
     "practice_format": "drill",
-    "equipment_needed": ["BlazePods", "iOS device"],
+    "equipment_needed": [
+      "BlazePods",
+      "iOS device"
+    ],
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "product source",
-    "tags": ["blazepod", "app"]
+    "tags": [
+      "blazepod",
+      "app"
+    ]
   },
   {
     "title": "Positive Coaching Alliance (PCA)",
@@ -992,7 +1341,12 @@
     "age_band": "all",
     "sport": "general",
     "summary": "National nonprofit promoting positive youth sport culture: effort language, mistake response, confidence, parent-coach partnership.",
-    "key_principles": ["effort over outcome", "mistake response", "ELM tree", "double-goal coach"],
+    "key_principles": [
+      "effort over outcome",
+      "mistake response",
+      "ELM tree",
+      "double-goal coach"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -1005,7 +1359,11 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "consensus statement",
-    "tags": ["PCA", "culture", "mental"]
+    "tags": [
+      "PCA",
+      "culture",
+      "mental"
+    ]
   },
   {
     "title": "PCA Resource Zone",
@@ -1016,7 +1374,9 @@
     "age_band": "all",
     "sport": "general",
     "summary": "PCA resource library: articles, tools, videos.",
-    "key_principles": ["positive culture tools"],
+    "key_principles": [
+      "positive culture tools"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -1029,7 +1389,10 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["PCA", "resources"]
+    "tags": [
+      "PCA",
+      "resources"
+    ]
   },
   {
     "title": "PCA Workshops",
@@ -1053,7 +1416,10 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["PCA", "workshops"]
+    "tags": [
+      "PCA",
+      "workshops"
+    ]
   },
   {
     "title": "TrueSport",
@@ -1064,7 +1430,12 @@
     "age_band": "all",
     "sport": "general",
     "summary": "Coach/parent/athlete education on character, performance, and well-being from USADA's TrueSport program.",
-    "key_principles": ["character", "performance", "well-being", "anti-doping youth ed"],
+    "key_principles": [
+      "character",
+      "performance",
+      "well-being",
+      "anti-doping youth ed"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -1077,7 +1448,10 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "consensus statement",
-    "tags": ["truesport", "character"]
+    "tags": [
+      "truesport",
+      "character"
+    ]
   },
   {
     "title": "NFHS Learn (hub)",
@@ -1088,7 +1462,9 @@
     "age_band": "13-15 | 16+",
     "sport": "general",
     "summary": "NFHS Learning Center: 100+ courses for high-school coaches, 75+ free; accredited by Cognia.",
-    "key_principles": ["accredited coach ed"],
+    "key_principles": [
+      "accredited coach ed"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -1101,7 +1477,10 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "official rule",
-    "tags": ["NFHS", "coach-education"]
+    "tags": [
+      "NFHS",
+      "coach-education"
+    ]
   },
   {
     "title": "NFHS Coaching Mental Wellness Course",
@@ -1112,11 +1491,19 @@
     "age_band": "13-15 | 16+",
     "sport": "general",
     "summary": "Free 2-hour NFHS course (built with NFHS Sports Medicine Advisory Committee): wellness framework, stress/anxiety, depression, trauma, substance abuse, suicide prevention, mental health barriers. Coaches identify and refer — they do not diagnose.",
-    "key_principles": ["coach as liaison", "wellness framework (nutrition/sleep/exercise)", "identify-and-refer", "suicide-prevention awareness"],
+    "key_principles": [
+      "coach as liaison",
+      "wellness framework (nutrition/sleep/exercise)",
+      "identify-and-refer",
+      "suicide-prevention awareness"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": true,
     "guardrail_reason": "Educates coaches only; concerns must be escalated to parents/guardians and qualified professionals.",
-    "do_not_use_for": ["AI diagnosis of mental health", "treatment recommendations"],
+    "do_not_use_for": [
+      "AI diagnosis of mental health",
+      "treatment recommendations"
+    ],
     "coach_use_case": "Required coach mental wellness module.",
     "player_use_case": "",
     "parent_use_case": "",
@@ -1125,7 +1512,11 @@
     "duration_minutes": 120,
     "progression_level": "intro",
     "evidence_level": "official rule",
-    "tags": ["NFHS", "mental-wellness", "guardrail"]
+    "tags": [
+      "NFHS",
+      "mental-wellness",
+      "guardrail"
+    ]
   },
   {
     "title": "NFHS — Coaching Mental Wellness Course Announcement",
@@ -1149,7 +1540,10 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["NFHS", "news"]
+    "tags": [
+      "NFHS",
+      "news"
+    ]
   },
   {
     "title": "Project Play (Aspen Institute)",
@@ -1160,7 +1554,10 @@
     "age_band": "all",
     "sport": "general",
     "summary": "Aspen Institute's youth sports reform initiative.",
-    "key_principles": ["asking kids what they want", "8 plays for healthy youth sports"],
+    "key_principles": [
+      "asking kids what they want",
+      "8 plays for healthy youth sports"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -1173,7 +1570,10 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "consensus statement",
-    "tags": ["project-play", "policy"]
+    "tags": [
+      "project-play",
+      "policy"
+    ]
   },
   {
     "title": "Project Play — Playbook",
@@ -1184,7 +1584,11 @@
     "age_band": "all",
     "sport": "general",
     "summary": "Playbook of strategies to grow healthy youth sport participation.",
-    "key_principles": ["8 plays", "inclusion", "quality coaches"],
+    "key_principles": [
+      "8 plays",
+      "inclusion",
+      "quality coaches"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -1197,7 +1601,10 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "consensus statement",
-    "tags": ["project-play", "playbook"]
+    "tags": [
+      "project-play",
+      "playbook"
+    ]
   },
   {
     "title": "Project Play — Ask Kids What They Want",
@@ -1208,7 +1615,11 @@
     "age_band": "6-8 | 9-12 | 13-15",
     "sport": "general",
     "summary": "Evidence that designing youth sports around what kids want improves participation, fun, and retention.",
-    "key_principles": ["fun-first", "voice of the child", "retention"],
+    "key_principles": [
+      "fun-first",
+      "voice of the child",
+      "retention"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -1221,7 +1632,10 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "consensus statement",
-    "tags": ["project-play", "fun"]
+    "tags": [
+      "project-play",
+      "fun"
+    ]
   },
   {
     "title": "Sleep Foundation — Student Athletes Sleep Time",
@@ -1232,11 +1646,20 @@
     "age_band": "6-8 | 9-12 | 13-15 | 16+",
     "sport": "general",
     "summary": "Teens 13–18 need 8–10 hrs sleep; school-age 6–12 need 9–12 hrs. Sleep <8h is associated with 1.7x higher injury rate in adolescents. Naps acceptable; screen, training-time, and travel are key barriers.",
-    "key_principles": ["teens 8-10h", "school-age 9-12h", "<8h = 1.7x injury", "naps earlier in day", "sleep hygiene"],
+    "key_principles": [
+      "teens 8-10h",
+      "school-age 9-12h",
+      "<8h = 1.7x injury",
+      "naps earlier in day",
+      "sleep hygiene"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": true,
     "guardrail_reason": "Treat as guidance; do not diagnose sleep disorders.",
-    "do_not_use_for": ["sleep-disorder diagnosis", "sleep-aid recommendations"],
+    "do_not_use_for": [
+      "sleep-disorder diagnosis",
+      "sleep-aid recommendations"
+    ],
     "coach_use_case": "Underpins recovery score and tournament-day routines.",
     "player_use_case": "Sleep tracking cue.",
     "parent_use_case": "Bedtime conversation backup.",
@@ -1245,7 +1668,12 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "medical/health source",
-    "tags": ["sleep", "recovery", "youth", "guardrail"]
+    "tags": [
+      "sleep",
+      "recovery",
+      "youth",
+      "guardrail"
+    ]
   },
   {
     "title": "Sleep Foundation — Athletic Performance and Sleep",
@@ -1256,7 +1684,11 @@
     "age_band": "all",
     "sport": "general",
     "summary": "How sleep supports recovery, growth hormone release, cognition, and performance; sleep extension studies show reaction time and shooting accuracy gains.",
-    "key_principles": ["REM/SWS recovery", "sleep extension benefit", "cognition + reaction time"],
+    "key_principles": [
+      "REM/SWS recovery",
+      "sleep extension benefit",
+      "cognition + reaction time"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -1269,7 +1701,10 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "medical/health source",
-    "tags": ["sleep", "performance"]
+    "tags": [
+      "sleep",
+      "performance"
+    ]
   },
   {
     "title": "GSSI — Youth Athlete Development and Nutrition",
@@ -1280,11 +1715,18 @@
     "age_band": "9-12 | 13-15 | 16+",
     "sport": "general",
     "summary": "SSE article on nutrition for youth-athlete growth, maturation, and performance.",
-    "key_principles": ["growth-aware fueling", "balanced diet", "no supplements as substitute"],
+    "key_principles": [
+      "growth-aware fueling",
+      "balanced diet",
+      "no supplements as substitute"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": true,
     "guardrail_reason": "Nutrition education only; do not generate individualized meal plans.",
-    "do_not_use_for": ["individualized meal plans", "supplement recommendations"],
+    "do_not_use_for": [
+      "individualized meal plans",
+      "supplement recommendations"
+    ],
     "coach_use_case": "Education backing recovery score.",
     "player_use_case": "",
     "parent_use_case": "Family meal context.",
@@ -1293,7 +1735,11 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "medical/health source",
-    "tags": ["nutrition", "GSSI", "youth"]
+    "tags": [
+      "nutrition",
+      "GSSI",
+      "youth"
+    ]
   },
   {
     "title": "GSSI — The Healthy Youth Athlete: Hydration",
@@ -1304,20 +1750,37 @@
     "age_band": "9-12 | 13-15 | 16+",
     "sport": "general",
     "summary": "Hydration supports cognition, heat safety, and performance. Adolescent sweat rates exceed 1 L/h; mature adolescents can hit 2.5 L/h+. Avoid >2-3% body-mass deficit. Use body-weight change pre/post practice and first-morning urine color as practical estimators. Be more conservative with multi-session/heat days.",
-    "key_principles": ["pre-hydrate", "avoid >2-3% body mass loss", "weigh pre/post in heat", "urine color check", "repeat-bout caution"],
+    "key_principles": [
+      "pre-hydrate",
+      "avoid >2-3% body mass loss",
+      "weigh pre/post in heat",
+      "urine color check",
+      "repeat-bout caution"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": true,
     "guardrail_reason": "Hydration guidance — not clinical hydration treatment.",
-    "do_not_use_for": ["heat-illness diagnosis", "IV/clinical rehydration"],
+    "do_not_use_for": [
+      "heat-illness diagnosis",
+      "IV/clinical rehydration"
+    ],
     "coach_use_case": "Drives tournament/heat day rules in compiler.",
     "player_use_case": "Self-monitoring habit.",
     "parent_use_case": "Hydration education.",
     "practice_format": "safety rule",
-    "equipment_needed": ["water", "scale (optional)"],
+    "equipment_needed": [
+      "water",
+      "scale (optional)"
+    ],
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "medical/health source",
-    "tags": ["hydration", "GSSI", "heat", "guardrail"]
+    "tags": [
+      "hydration",
+      "GSSI",
+      "heat",
+      "guardrail"
+    ]
   },
   {
     "title": "GSSI — Youth Athlete (topic hub)",
@@ -1341,7 +1804,10 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "medical/health source",
-    "tags": ["GSSI", "hub"]
+    "tags": [
+      "GSSI",
+      "hub"
+    ]
   },
   {
     "title": "Gatorade — Nutrition Tips for Young Athletes",
@@ -1352,11 +1818,15 @@
     "age_band": "9-12 | 13-15",
     "sport": "general",
     "summary": "Consumer-facing nutrition tips for young athletes — convenience reference.",
-    "key_principles": ["balanced fueling"],
+    "key_principles": [
+      "balanced fueling"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": true,
     "guardrail_reason": "Product source; prefer GSSI for evidence-level claims.",
-    "do_not_use_for": ["evidence citations"],
+    "do_not_use_for": [
+      "evidence citations"
+    ],
     "coach_use_case": "Parent-friendly tips.",
     "player_use_case": "",
     "parent_use_case": "Quick fueling tips.",
@@ -1365,7 +1835,10 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "product source",
-    "tags": ["nutrition", "consumer"]
+    "tags": [
+      "nutrition",
+      "consumer"
+    ]
   },
   {
     "title": "Driveline Youth Individual Program",
@@ -1376,20 +1849,34 @@
     "age_band": "9-12 | 13-15",
     "sport": "baseball",
     "summary": "Driveline's youth individual development program — a structured throwing + hitting plan built around long-term skill development rather than chasing velocity.",
-    "key_principles": ["athleticism first", "movement quality before intensity", "not a velo-chasing plan"],
+    "key_principles": [
+      "athleticism first",
+      "movement quality before intensity",
+      "not a velo-chasing plan"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": true,
     "guardrail_reason": "Throwing volume must defer to Pitch Smart / Little League limits, not the program's prescribed loads.",
-    "do_not_use_for": ["overriding pitch-count or rest rules"],
+    "do_not_use_for": [
+      "overriding pitch-count or rest rules"
+    ],
     "coach_use_case": "Reference structure for individual youth throwing + hitting development blocks.",
     "player_use_case": "Home development framework under coach/parent supervision.",
     "parent_use_case": "Understand a development-first (not velo-first) training structure.",
     "practice_format": "program",
-    "equipment_needed": ["baseballs", "net or partner"],
+    "equipment_needed": [
+      "baseballs",
+      "net or partner"
+    ],
     "duration_minutes": null,
     "progression_level": "intermediate",
     "evidence_level": "coaching article",
-    "tags": ["driveline", "throwing", "hitting", "development"]
+    "tags": [
+      "driveline",
+      "throwing",
+      "hitting",
+      "development"
+    ]
   },
   {
     "title": "Driveline Youth Arm Care Program",
@@ -1400,20 +1887,36 @@
     "age_band": "9-12 | 13-15",
     "sport": "baseball",
     "summary": "Warm-up, recovery, and arm-care routine for youth pitchers — preparation and recovery work to support healthy throwing.",
-    "key_principles": ["warm up before throwing", "recovery is part of training", "arm care is routine, not optional"],
+    "key_principles": [
+      "warm up before throwing",
+      "recovery is part of training",
+      "arm care is routine, not optional"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": true,
     "guardrail_reason": "Supports but never overrides Pitch Smart pitch-count and rest-day rules; not a rehab/return-to-throw protocol.",
-    "do_not_use_for": ["injury rehab", "return-to-throw decisions", "overriding rest days"],
+    "do_not_use_for": [
+      "injury rehab",
+      "return-to-throw decisions",
+      "overriding rest days"
+    ],
     "coach_use_case": "Standardized arm-care warm-up/recovery routine for the pitching staff.",
     "player_use_case": "Pre- and post-throwing routine to build arm-care habits.",
     "parent_use_case": "Reinforce arm-care and recovery routines at home.",
     "practice_format": "routine",
-    "equipment_needed": ["bands", "lightweight balls (optional)"],
+    "equipment_needed": [
+      "bands",
+      "lightweight balls (optional)"
+    ],
     "duration_minutes": 15,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["driveline", "arm-care", "recovery", "guardrail"]
+    "tags": [
+      "driveline",
+      "arm-care",
+      "recovery",
+      "guardrail"
+    ]
   },
   {
     "title": "Driveline Youth Practice Guide",
@@ -1424,7 +1927,11 @@
     "age_band": "9-12 | 13-15",
     "sport": "baseball",
     "summary": "9U+ practice structure with blocks, templates, and QAB/QPA tracking for organized, high-rep youth practices.",
-    "key_principles": ["block-based practice", "high reps, low downtime", "track quality at-bats / quality pitches"],
+    "key_principles": [
+      "block-based practice",
+      "high reps, low downtime",
+      "track quality at-bats / quality pitches"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -1437,7 +1944,12 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["driveline", "practice-plan", "QAB", "templates"]
+    "tags": [
+      "driveline",
+      "practice-plan",
+      "QAB",
+      "templates"
+    ]
   },
   {
     "title": "Driveline Youth Baseball Practice Games",
@@ -1448,7 +1960,11 @@
     "age_band": "6-8 | 9-12",
     "sport": "baseball",
     "summary": "Game-based drills designed to keep young players active, engaged, and competitive during practice.",
-    "key_principles": ["games over drills", "keep kids moving", "competitive and fun"],
+    "key_principles": [
+      "games over drills",
+      "keep kids moving",
+      "competitive and fun"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -1461,7 +1977,11 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["driveline", "games", "engagement"]
+    "tags": [
+      "driveline",
+      "games",
+      "engagement"
+    ]
   },
   {
     "title": "Baseball Positive — Mark Linden Practice Plans",
@@ -1472,7 +1992,11 @@
     "age_band": "6-8 | 9-12",
     "sport": "baseball",
     "summary": "One of the best youth practice-plan systems; movement-based, high-activity plans well suited for 8–12U.",
-    "key_principles": ["everyone moving every minute", "movement-based skill teaching", "age-appropriate progressions"],
+    "key_principles": [
+      "everyone moving every minute",
+      "movement-based skill teaching",
+      "age-appropriate progressions"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -1485,7 +2009,11 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["baseball-positive", "practice-plan", "8-12U"]
+    "tags": [
+      "baseball-positive",
+      "practice-plan",
+      "8-12U"
+    ]
   },
   {
     "title": "Baseball Positive Coaching Manual",
@@ -1496,7 +2024,11 @@
     "age_band": "6-8 | 9-12",
     "sport": "baseball",
     "summary": "Full-season coaching structure with a movement-based youth coaching philosophy and practice organization.",
-    "key_principles": ["full-season structure", "movement-based coaching", "develop every player"],
+    "key_principles": [
+      "full-season structure",
+      "movement-based coaching",
+      "develop every player"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -1509,7 +2041,11 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["baseball-positive", "season-plan", "coaching-manual"]
+    "tags": [
+      "baseball-positive",
+      "season-plan",
+      "coaching-manual"
+    ]
   },
   {
     "title": "Baseball Positive 8–10 / 10–12 Practice Plans",
@@ -1520,7 +2056,11 @@
     "age_band": "6-8 | 9-12",
     "sport": "baseball",
     "summary": "Practical web-based practice plans and templates for the 8–10 and 10–12 age ranges.",
-    "key_principles": ["age-banded templates", "high activity", "fundamentals first"],
+    "key_principles": [
+      "age-banded templates",
+      "high activity",
+      "fundamentals first"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -1533,7 +2073,12 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["baseball-positive", "practice-plan", "U10", "U12"]
+    "tags": [
+      "baseball-positive",
+      "practice-plan",
+      "U10",
+      "U12"
+    ]
   },
   {
     "title": "Dugout Captain (drill library + practice plans)",
@@ -1544,7 +2089,11 @@
     "age_band": "all",
     "sport": "baseball",
     "summary": "Drill library plus ready-made practice plans from Tee Ball through 14U; free for Babe Ruth members / account-based.",
-    "key_principles": ["searchable drill library", "ready-made practice plans", "age-banded progressions"],
+    "key_principles": [
+      "searchable drill library",
+      "ready-made practice plans",
+      "age-banded progressions"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -1557,7 +2106,12 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["dugout-captain", "drill-library", "practice-plan", "account-gated"]
+    "tags": [
+      "dugout-captain",
+      "drill-library",
+      "practice-plan",
+      "account-gated"
+    ]
   },
   {
     "title": "Dugout Captain — Athlete Development Plan",
@@ -1568,7 +2122,11 @@
     "age_band": "all",
     "sport": "baseball",
     "summary": "A 'how to build a practice' framework with 60/90/120-minute practice templates.",
-    "key_principles": ["time-budgeted practice", "structured blocks", "scalable templates"],
+    "key_principles": [
+      "time-budgeted practice",
+      "structured blocks",
+      "scalable templates"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -1581,7 +2139,11 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["dugout-captain", "practice-template", "time-budget"]
+    "tags": [
+      "dugout-captain",
+      "practice-template",
+      "time-budget"
+    ]
   },
   {
     "title": "Dominate the Diamond — Development Guides",
@@ -1592,7 +2154,11 @@
     "age_band": "6-8 | 9-12",
     "sport": "baseball",
     "summary": "Youth coach/parent development guides organized by stage, with a confidence-first coaching emphasis. Free, email-gated.",
-    "key_principles": ["confidence-first coaching", "stage-based development", "coach + parent partnership"],
+    "key_principles": [
+      "confidence-first coaching",
+      "stage-based development",
+      "coach + parent partnership"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -1605,7 +2171,12 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["dominate-the-diamond", "confidence", "parent-guide", "email-gated"]
+    "tags": [
+      "dominate-the-diamond",
+      "confidence",
+      "parent-guide",
+      "email-gated"
+    ]
   },
   {
     "title": "Coach Baseball Right — Free Drill Library (Steve Nicollerat)",
@@ -1616,7 +2187,11 @@
     "age_band": "all",
     "sport": "baseball",
     "summary": "Free drill library organized by position — infield, catcher, outfield, hitting, and baserunning — with web/video instruction.",
-    "key_principles": ["position-specific drills", "fundamentals-driven", "video instruction"],
+    "key_principles": [
+      "position-specific drills",
+      "fundamentals-driven",
+      "video instruction"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -1629,7 +2204,11 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["coach-baseball-right", "drill-library", "position-specific"]
+    "tags": [
+      "coach-baseball-right",
+      "drill-library",
+      "position-specific"
+    ]
   },
   {
     "title": "Cornerstone Coaching Academy — Developing Dynamic Outfielders",
@@ -1640,7 +2219,11 @@
     "age_band": "9-12 | 13-15",
     "sport": "baseball",
     "summary": "Outfield teaching progression — footwork, reads, routes, and throws — useful for often-neglected youth outfield reps.",
-    "key_principles": ["outfield footwork and reads", "route efficiency", "throwing to bases"],
+    "key_principles": [
+      "outfield footwork and reads",
+      "route efficiency",
+      "throwing to bases"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -1653,7 +2236,11 @@
     "duration_minutes": null,
     "progression_level": "intermediate",
     "evidence_level": "coaching article",
-    "tags": ["cornerstone", "outfield", "fielding"]
+    "tags": [
+      "cornerstone",
+      "outfield",
+      "fielding"
+    ]
   },
   {
     "title": "Cornerstone Coaching Academy — Practice Session #1",
@@ -1664,7 +2251,10 @@
     "age_band": "9-12 | 13-15",
     "sport": "baseball",
     "summary": "A clipboard-style sample practice session laid out block by block.",
-    "key_principles": ["sample session blueprint", "block-based flow"],
+    "key_principles": [
+      "sample session blueprint",
+      "block-based flow"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -1677,7 +2267,11 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["cornerstone", "practice-plan", "sample-session"]
+    "tags": [
+      "cornerstone",
+      "practice-plan",
+      "sample-session"
+    ]
   },
   {
     "title": "Cornerstone Coaching Academy — Catching Drill Menu",
@@ -1688,7 +2282,11 @@
     "age_band": "9-12 | 13-15",
     "sport": "baseball",
     "summary": "Catcher receiving and blocking drill menu for building catching fundamentals.",
-    "key_principles": ["receiving fundamentals", "blocking technique", "catcher-specific reps"],
+    "key_principles": [
+      "receiving fundamentals",
+      "blocking technique",
+      "catcher-specific reps"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -1697,11 +2295,19 @@
     "player_use_case": "",
     "parent_use_case": "",
     "practice_format": "drill",
-    "equipment_needed": ["catcher's gear", "baseballs"],
+    "equipment_needed": [
+      "catcher's gear",
+      "baseballs"
+    ],
     "duration_minutes": null,
     "progression_level": "intermediate",
     "evidence_level": "coaching article",
-    "tags": ["cornerstone", "catcher", "receiving", "blocking"]
+    "tags": [
+      "cornerstone",
+      "catcher",
+      "receiving",
+      "blocking"
+    ]
   },
   {
     "title": "Cornerstone Coaching Academy — Generating Offense",
@@ -1712,7 +2318,11 @@
     "age_band": "9-12 | 13-15",
     "sport": "baseball",
     "summary": "Scoring without just 'hit better' — baserunning, on-base percentage, applying pressure, and manufacturing runs.",
-    "key_principles": ["baserunning pressure", "on-base focus", "manufacture runs"],
+    "key_principles": [
+      "baserunning pressure",
+      "on-base focus",
+      "manufacture runs"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -1725,7 +2335,12 @@
     "duration_minutes": null,
     "progression_level": "intermediate",
     "evidence_level": "coaching article",
-    "tags": ["cornerstone", "baserunning", "offense", "OBP"]
+    "tags": [
+      "cornerstone",
+      "baserunning",
+      "offense",
+      "OBP"
+    ]
   },
   {
     "title": "Ultimate Baseball Training — Circuit Guides",
@@ -1736,20 +2351,34 @@
     "age_band": "13-15 | 16+",
     "sport": "baseball",
     "summary": "Hitting and warm-up circuit ideas; more training-style than team-practice-style. Adapt volume for youth.",
-    "key_principles": ["circuit-based reps", "warm-up structure"],
+    "key_principles": [
+      "circuit-based reps",
+      "warm-up structure"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": true,
     "guardrail_reason": "Training-style volumes; scale down reps/intensity for youth and keep it age-appropriate.",
-    "do_not_use_for": ["unmodified youth prescription"],
+    "do_not_use_for": [
+      "unmodified youth prescription"
+    ],
     "coach_use_case": "Circuit/warm-up ideas to adapt into team practice.",
     "player_use_case": "",
     "parent_use_case": "",
     "practice_format": "circuit",
-    "equipment_needed": ["bat", "tee", "net"],
+    "equipment_needed": [
+      "bat",
+      "tee",
+      "net"
+    ],
     "duration_minutes": null,
     "progression_level": "intermediate",
     "evidence_level": "coaching article",
-    "tags": ["ultimate-baseball-training", "circuit", "hitting", "warmup"]
+    "tags": [
+      "ultimate-baseball-training",
+      "circuit",
+      "hitting",
+      "warmup"
+    ]
   },
   {
     "title": "Ultimate Baseball Training — Bat Speed Workout",
@@ -1760,20 +2389,34 @@
     "age_band": "13-15 | 16+",
     "sport": "baseball",
     "summary": "A bat-speed circuit; adapt volume and load for youth athletes.",
-    "key_principles": ["bat-speed development", "progressive overload (scaled)"],
+    "key_principles": [
+      "bat-speed development",
+      "progressive overload (scaled)"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": true,
     "guardrail_reason": "Reduce volume/load for youth; technique-first and age-appropriate per NSCA youth training guidance.",
-    "do_not_use_for": ["unmodified youth prescription", "maximal-load work for young athletes"],
+    "do_not_use_for": [
+      "unmodified youth prescription",
+      "maximal-load work for young athletes"
+    ],
     "coach_use_case": "Bat-speed circuit to scale for older youth.",
     "player_use_case": "",
     "parent_use_case": "",
     "practice_format": "circuit",
-    "equipment_needed": ["bat", "tee"],
+    "equipment_needed": [
+      "bat",
+      "tee"
+    ],
     "duration_minutes": null,
     "progression_level": "advanced",
     "evidence_level": "coaching article",
-    "tags": ["ultimate-baseball-training", "bat-speed", "hitting", "guardrail"]
+    "tags": [
+      "ultimate-baseball-training",
+      "bat-speed",
+      "hitting",
+      "guardrail"
+    ]
   },
   {
     "title": "The Hitting Vault — Off-Season Hitting Guide",
@@ -1784,7 +2427,11 @@
     "age_band": "9-12 | 13-15",
     "sport": "baseball",
     "summary": "A hitting routine framework useful for tee work, front toss, and at-home hitting homework. Free PDF guide.",
-    "key_principles": ["routine-based hitting", "tee and front-toss progressions", "off-season reps"],
+    "key_principles": [
+      "routine-based hitting",
+      "tee and front-toss progressions",
+      "off-season reps"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -1793,11 +2440,20 @@
     "player_use_case": "At-home tee/front-toss hitting routine.",
     "parent_use_case": "Support an at-home hitting routine.",
     "practice_format": "routine",
-    "equipment_needed": ["tee", "net", "baseballs"],
+    "equipment_needed": [
+      "tee",
+      "net",
+      "baseballs"
+    ],
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["hitting-vault", "hitting", "off-season", "homework"]
+    "tags": [
+      "hitting-vault",
+      "hitting",
+      "off-season",
+      "homework"
+    ]
   },
   {
     "title": "Coach Bob Bennett — 7 Free Youth Baseball Drills",
@@ -1808,7 +2464,10 @@
     "age_band": "6-8 | 9-12",
     "sport": "baseball",
     "summary": "Simple all-around youth drills covering hitting, fielding, throwing, and baserunning.",
-    "key_principles": ["simple fundamentals", "all-around skill coverage"],
+    "key_principles": [
+      "simple fundamentals",
+      "all-around skill coverage"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -1821,7 +2480,11 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["baseball-tutorials", "drills", "fundamentals"]
+    "tags": [
+      "baseball-tutorials",
+      "drills",
+      "fundamentals"
+    ]
   },
   {
     "title": "Baseball Dudes — Free Documents",
@@ -1832,11 +2495,17 @@
     "age_band": "9-12 | 13-15",
     "sport": "baseball",
     "summary": "Printable throwing plans, charts, bullpen routines, and practice-plan documents. Free, email-gated.",
-    "key_principles": ["printable throwing plans", "bullpen routines", "practice-plan docs"],
+    "key_principles": [
+      "printable throwing plans",
+      "bullpen routines",
+      "practice-plan docs"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": true,
     "guardrail_reason": "Throwing/bullpen volumes must defer to Pitch Smart / Little League pitch-count and rest rules.",
-    "do_not_use_for": ["overriding pitch-count or rest rules"],
+    "do_not_use_for": [
+      "overriding pitch-count or rest rules"
+    ],
     "coach_use_case": "Printable throwing plans, charts, and bullpen routines.",
     "player_use_case": "",
     "parent_use_case": "",
@@ -1845,7 +2514,13 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["baseball-dudes", "throwing-plan", "bullpen", "email-gated", "guardrail"]
+    "tags": [
+      "baseball-dudes",
+      "throwing-plan",
+      "bullpen",
+      "email-gated",
+      "guardrail"
+    ]
   },
   {
     "title": "USA Baseball Youth Baseball Manual",
@@ -1856,11 +2531,20 @@
     "age_band": "all",
     "sport": "baseball",
     "summary": "USA Baseball's flagship youth coaching manual: the American Development Model (ADM), age-appropriate development, practice-planning function, throwing program, mental skills, and sample practice plans. The best all-around philosophy + structure reference for youth coaches.",
-    "key_principles": ["American Development Model", "athlete-centered development", "written practice plans", "physical + mental warm-up", "age-appropriate progressions", "play-based fun"],
+    "key_principles": [
+      "American Development Model",
+      "athlete-centered development",
+      "written practice plans",
+      "physical + mental warm-up",
+      "age-appropriate progressions",
+      "play-based fun"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
-    "do_not_use_for": ["medical or rehab decisions"],
+    "do_not_use_for": [
+      "medical or rehab decisions"
+    ],
     "coach_use_case": "Primary framework for season and practice design across all youth ages.",
     "player_use_case": "",
     "parent_use_case": "Education on why youth development is staged and long-term, not win-now.",
@@ -1869,7 +2553,13 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "governing-body manual",
-    "tags": ["usa-baseball", "ADM", "practice-planning", "philosophy", "manual"]
+    "tags": [
+      "usa-baseball",
+      "ADM",
+      "practice-planning",
+      "philosophy",
+      "manual"
+    ]
   },
   {
     "title": "MLB Youth Baseball Instruction & Practice Manual",
@@ -1880,7 +2570,13 @@
     "age_band": "9-12 | 13-15",
     "sport": "baseball",
     "summary": "MLB's how-to-run-a-practice manual. Breaks practice into four fundamentals (throwing, fielding, hitting, running) with 90-minute to 2-hour schedule templates, a four-station hitting rotation (Live / Tee / Bunt / Shag), stretching routine, and infield/outfield drills.",
-    "key_principles": ["four fundamentals: throw/field/hit/run", "90-120 minute templates", "four-station hitting rotation", "warm up before throwing", "baserunning is the most overlooked skill"],
+    "key_principles": [
+      "four fundamentals: throw/field/hit/run",
+      "90-120 minute templates",
+      "four-station hitting rotation",
+      "warm up before throwing",
+      "baserunning is the most overlooked skill"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -1889,11 +2585,24 @@
     "player_use_case": "",
     "parent_use_case": "",
     "practice_format": "manual",
-    "equipment_needed": ["balls", "bats", "tees", "gloves", "L-screen"],
+    "equipment_needed": [
+      "balls",
+      "bats",
+      "tees",
+      "gloves",
+      "L-screen"
+    ],
     "duration_minutes": 120,
     "progression_level": "intermediate",
     "evidence_level": "governing-body manual",
-    "tags": ["mlb", "practice-template", "stations", "fundamentals", "90min", "120min"]
+    "tags": [
+      "mlb",
+      "practice-template",
+      "stations",
+      "fundamentals",
+      "90min",
+      "120min"
+    ]
   },
   {
     "title": "Little League Coach Pitch 12-Week Program",
@@ -1904,7 +2613,12 @@
     "age_band": "6-8",
     "sport": "baseball",
     "summary": "A week-by-week, 12-session coach-pitch curriculum for younger Minors. Each week layers fundamentals (throwing, fielding, hitting, baserunning) with clear objectives and progressions.",
-    "key_principles": ["week-by-week progression", "coach-pitch fundamentals", "repeatable objectives", "fun-first"],
+    "key_principles": [
+      "week-by-week progression",
+      "coach-pitch fundamentals",
+      "repeatable objectives",
+      "fun-first"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -1913,11 +2627,22 @@
     "player_use_case": "",
     "parent_use_case": "",
     "practice_format": "curriculum",
-    "equipment_needed": ["balls", "bats", "tees", "bases"],
+    "equipment_needed": [
+      "balls",
+      "bats",
+      "tees",
+      "bases"
+    ],
     "duration_minutes": 60,
     "progression_level": "intro",
     "evidence_level": "governing-body program",
-    "tags": ["little-league", "coach-pitch", "12-week", "curriculum", "minors"]
+    "tags": [
+      "little-league",
+      "coach-pitch",
+      "12-week",
+      "curriculum",
+      "minors"
+    ]
   },
   {
     "title": "Little League Tee Ball Program — Week 1",
@@ -1928,7 +2653,12 @@
     "age_band": "6-8",
     "sport": "baseball",
     "summary": "First-session tee-ball plan (~45 minutes) for brand-new players: simple throwing, running, and hitting progressions with heavy emphasis on fun and basic routines.",
-    "key_principles": ["45-minute sessions", "first-time players", "simple throw/run/hit progressions", "fun and belonging"],
+    "key_principles": [
+      "45-minute sessions",
+      "first-time players",
+      "simple throw/run/hit progressions",
+      "fun and belonging"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -1937,11 +2667,21 @@
     "player_use_case": "",
     "parent_use_case": "What a first practice should feel like for a 4-6 year old.",
     "practice_format": "practice-plan",
-    "equipment_needed": ["tee", "foam or plastic balls", "bases"],
+    "equipment_needed": [
+      "tee",
+      "foam or plastic balls",
+      "bases"
+    ],
     "duration_minutes": 45,
     "progression_level": "intro",
     "evidence_level": "governing-body program",
-    "tags": ["little-league", "tee-ball", "week-1", "beginner", "45min"]
+    "tags": [
+      "little-league",
+      "tee-ball",
+      "week-1",
+      "beginner",
+      "45min"
+    ]
   },
   {
     "title": "Little League Tee Ball Week 3 Full Practice Plan",
@@ -1952,7 +2692,12 @@
     "age_band": "6-8",
     "sport": "baseball",
     "summary": "A complete tee-ball practice example with position games, swing-and-run, throwing, and simple team activities — a good model for a full beginner session beyond opening day.",
-    "key_principles": ["position games", "swing and run", "simple team activities", "throwing progressions"],
+    "key_principles": [
+      "position games",
+      "swing and run",
+      "simple team activities",
+      "throwing progressions"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -1961,11 +2706,21 @@
     "player_use_case": "",
     "parent_use_case": "",
     "practice_format": "practice-plan",
-    "equipment_needed": ["tee", "foam or plastic balls", "bases"],
+    "equipment_needed": [
+      "tee",
+      "foam or plastic balls",
+      "bases"
+    ],
     "duration_minutes": 45,
     "progression_level": "intro",
     "evidence_level": "governing-body program",
-    "tags": ["little-league", "tee-ball", "week-3", "position-games", "beginner"]
+    "tags": [
+      "little-league",
+      "tee-ball",
+      "week-3",
+      "position-games",
+      "beginner"
+    ]
   },
   {
     "title": "Baseball Canada Rally Cap Coaches Manual",
@@ -1976,7 +2731,12 @@
     "age_band": "6-8",
     "sport": "baseball",
     "summary": "Baseball Canada's grassroots Rally Cap framework: station-based practices, skill-level (cap colour) progression, and a FUNdamentals-stage development model for early youth players.",
-    "key_principles": ["FUNdamentals stage", "station-based practice", "cap-colour skill leveling", "fun and physical literacy"],
+    "key_principles": [
+      "FUNdamentals stage",
+      "station-based practice",
+      "cap-colour skill leveling",
+      "fun and physical literacy"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -1989,7 +2749,13 @@
     "duration_minutes": 60,
     "progression_level": "intro",
     "evidence_level": "governing-body manual",
-    "tags": ["baseball-canada", "rally-cap", "FUNdamentals", "stations", "leveling"]
+    "tags": [
+      "baseball-canada",
+      "rally-cap",
+      "FUNdamentals",
+      "stations",
+      "leveling"
+    ]
   },
   {
     "title": "Baseball Canada Rally Cap Practice Plans (White & Grey Caps)",
@@ -2000,7 +2766,11 @@
     "age_band": "6-8",
     "sport": "baseball",
     "summary": "Downloadable Rally Cap practice-plan pack for the earliest skill levels (White and Grey caps) — ready-to-run station plans aligned to the Rally Cap manual.",
-    "key_principles": ["ready-to-run plans", "earliest skill levels", "station rotations"],
+    "key_principles": [
+      "ready-to-run plans",
+      "earliest skill levels",
+      "station rotations"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -2009,11 +2779,22 @@
     "player_use_case": "",
     "parent_use_case": "",
     "practice_format": "practice-plan",
-    "equipment_needed": ["bean bags", "wiffle balls", "tees", "bases"],
+    "equipment_needed": [
+      "bean bags",
+      "wiffle balls",
+      "tees",
+      "bases"
+    ],
     "duration_minutes": 60,
     "progression_level": "intro",
     "evidence_level": "governing-body program",
-    "tags": ["baseball-canada", "rally-cap", "white-cap", "grey-cap", "practice-plan"]
+    "tags": [
+      "baseball-canada",
+      "rally-cap",
+      "white-cap",
+      "grey-cap",
+      "practice-plan"
+    ]
   },
   {
     "title": "Baseball BC 6U Practice Plans",
@@ -2024,7 +2805,14 @@
     "age_band": "6-8",
     "sport": "baseball",
     "summary": "Ten 6U practice plans for first-year players. Simple throwing (Ready-Aim-Throw), hitting off a tee, catching (cradle the ball), and baserunning games with heavy parent-helper involvement and freeze-tag style warm-ups.",
-    "key_principles": ["Ready-Aim-Throw", "tee hitting", "cradle the catch", "freeze-tag warm-ups", "parent helpers", "no metal bats at 6U"],
+    "key_principles": [
+      "Ready-Aim-Throw",
+      "tee hitting",
+      "cradle the catch",
+      "freeze-tag warm-ups",
+      "parent helpers",
+      "no metal bats at 6U"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -2033,11 +2821,24 @@
     "player_use_case": "",
     "parent_use_case": "How parent helpers run stations and correct form at 6U.",
     "practice_format": "practice-plan",
-    "equipment_needed": ["bean bags", "wiffle balls", "foam bats", "tees", "hoola hoops", "drop-down bases"],
+    "equipment_needed": [
+      "bean bags",
+      "wiffle balls",
+      "foam bats",
+      "tees",
+      "hoola hoops",
+      "drop-down bases"
+    ],
     "duration_minutes": 60,
     "progression_level": "intro",
     "evidence_level": "governing-body program",
-    "tags": ["baseball-bc", "6U", "first-year", "stations", "practice-plan"]
+    "tags": [
+      "baseball-bc",
+      "6U",
+      "first-year",
+      "stations",
+      "practice-plan"
+    ]
   },
   {
     "title": "Baseball BC 7U Practice Plans",
@@ -2048,7 +2849,12 @@
     "age_band": "6-8",
     "sport": "baseball",
     "summary": "The next step after tee ball: 7U all-skills practice layouts with throwing, catching, fielding, hitting, and baserunning plus fun review games to consolidate the previous session's skills.",
-    "key_principles": ["all-skills layouts", "skill review games", "station rotation", "progression from tee ball"],
+    "key_principles": [
+      "all-skills layouts",
+      "skill review games",
+      "station rotation",
+      "progression from tee ball"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -2057,11 +2863,22 @@
     "player_use_case": "",
     "parent_use_case": "",
     "practice_format": "practice-plan",
-    "equipment_needed": ["balls", "foam bats", "tees", "bases"],
+    "equipment_needed": [
+      "balls",
+      "foam bats",
+      "tees",
+      "bases"
+    ],
     "duration_minutes": 60,
     "progression_level": "intro",
     "evidence_level": "governing-body program",
-    "tags": ["baseball-bc", "7U", "all-skills", "review-games", "practice-plan"]
+    "tags": [
+      "baseball-bc",
+      "7U",
+      "all-skills",
+      "review-games",
+      "practice-plan"
+    ]
   },
   {
     "title": "Baseball BC 8U Grassroots Practice Plans",
@@ -2072,7 +2889,13 @@
     "age_band": "6-8",
     "sport": "baseball",
     "summary": "Station-based 8U plans (four ~8-minute stations) covering throwing/catching ('show the dog the ball'), baserunning, tee hitting/soft toss, and fielding with the 'alligator' two-hand technique, plus base-race and wiffle-ball games.",
-    "key_principles": ["four 8-minute stations", "show the dog the ball", "alligator fielding", "tee + soft toss", "base race game"],
+    "key_principles": [
+      "four 8-minute stations",
+      "show the dog the ball",
+      "alligator fielding",
+      "tee + soft toss",
+      "base race game"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -2081,11 +2904,23 @@
     "player_use_case": "",
     "parent_use_case": "",
     "practice_format": "practice-plan",
-    "equipment_needed": ["balls", "wiffle balls", "tees", "bases", "bats"],
+    "equipment_needed": [
+      "balls",
+      "wiffle balls",
+      "tees",
+      "bases",
+      "bats"
+    ],
     "duration_minutes": 60,
     "progression_level": "intro",
     "evidence_level": "governing-body program",
-    "tags": ["baseball-bc", "8U", "stations", "grassroots", "practice-plan"]
+    "tags": [
+      "baseball-bc",
+      "8U",
+      "stations",
+      "grassroots",
+      "practice-plan"
+    ]
   },
   {
     "title": "North Shore Baseball 7-8 / 9U Coaches Training Manual",
@@ -2096,7 +2931,12 @@
     "age_band": "6-8 | 9-12",
     "sport": "baseball",
     "summary": "A local-association coach-training manual for 7U-9U: throwing drills, catching technique, fielding fundamentals, and how to structure practices with parent helpers.",
-    "key_principles": ["7U-9U coach training", "throwing drills", "catching technique", "parent-helper structure"],
+    "key_principles": [
+      "7U-9U coach training",
+      "throwing drills",
+      "catching technique",
+      "parent-helper structure"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -2105,11 +2945,22 @@
     "player_use_case": "",
     "parent_use_case": "How to be an effective parent helper.",
     "practice_format": "manual",
-    "equipment_needed": ["balls", "gloves", "tees", "bases"],
+    "equipment_needed": [
+      "balls",
+      "gloves",
+      "tees",
+      "bases"
+    ],
     "duration_minutes": 75,
     "progression_level": "intro",
     "evidence_level": "association manual",
-    "tags": ["north-shore", "9U", "coach-training", "parent-helper", "manual"]
+    "tags": [
+      "north-shore",
+      "9U",
+      "coach-training",
+      "parent-helper",
+      "manual"
+    ]
   },
   {
     "title": "Red Sox Foundation Baseball Practice Plan",
@@ -2120,7 +2971,14 @@
     "age_band": "9-12 | 13-15",
     "sport": "baseball",
     "summary": "A clean 90-minute intermediate plan for ages 9-18: dynamic + static warm-up, outfield attacking groundballs, relay throws, infield around-the-world, soft toss, top-hand/bottom-hand hitting, short hops, tagging up, and first-to-third reads.",
-    "key_principles": ["90-minute block structure", "warmup-hit-position-baserun-recap", "relay throws", "soft toss", "short hops", "tag up reads"],
+    "key_principles": [
+      "90-minute block structure",
+      "warmup-hit-position-baserun-recap",
+      "relay throws",
+      "soft toss",
+      "short hops",
+      "tag up reads"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -2129,11 +2987,22 @@
     "player_use_case": "",
     "parent_use_case": "",
     "practice_format": "practice-plan",
-    "equipment_needed": ["balls", "gloves", "bats", "nets"],
+    "equipment_needed": [
+      "balls",
+      "gloves",
+      "bats",
+      "nets"
+    ],
     "duration_minutes": 90,
     "progression_level": "intermediate",
     "evidence_level": "foundation program",
-    "tags": ["red-sox", "fenway-fundamentals", "90min", "intermediate", "practice-plan"]
+    "tags": [
+      "red-sox",
+      "fenway-fundamentals",
+      "90min",
+      "intermediate",
+      "practice-plan"
+    ]
   },
   {
     "title": "Cal Ripken Sr. Foundation Badges for Baseball Coaches Manual",
@@ -2144,11 +3013,18 @@
     "age_band": "all",
     "sport": "baseball",
     "summary": "The Badges for Baseball character-and-team-culture program: combines movement activities with explicit life-skills lessons (teamwork, respect, resilience) for use as a culture add-on to skills practice.",
-    "key_principles": ["character development", "life-skills lessons", "movement + values", "team culture"],
+    "key_principles": [
+      "character development",
+      "life-skills lessons",
+      "movement + values",
+      "team culture"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": true,
     "guardrail_reason": "Life-skills content is for culture-building, not clinical or mental-health intervention.",
-    "do_not_use_for": ["mental-health diagnosis or treatment"],
+    "do_not_use_for": [
+      "mental-health diagnosis or treatment"
+    ],
     "coach_use_case": "Add a character/culture lesson to a normal skills practice.",
     "player_use_case": "",
     "parent_use_case": "Understand the values curriculum behind team activities.",
@@ -2157,7 +3033,13 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "foundation program",
-    "tags": ["cal-ripken", "badges-for-baseball", "character", "life-skills", "culture"]
+    "tags": [
+      "cal-ripken",
+      "badges-for-baseball",
+      "character",
+      "life-skills",
+      "culture"
+    ]
   },
   {
     "title": "Rutgers Youth Sports T-Ball Manual, Drills & Practice Plans",
@@ -2168,7 +3050,12 @@
     "age_band": "6-8",
     "sport": "baseball",
     "summary": "An academic-backed tee-ball manual with hitting, fielding/throwing, gameplay, and scrimmage structure for volunteer coaches of the youngest players.",
-    "key_principles": ["tee-ball fundamentals", "gameplay structure", "scrimmage progressions", "volunteer-coach friendly"],
+    "key_principles": [
+      "tee-ball fundamentals",
+      "gameplay structure",
+      "scrimmage progressions",
+      "volunteer-coach friendly"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -2177,11 +3064,22 @@
     "player_use_case": "",
     "parent_use_case": "",
     "practice_format": "manual",
-    "equipment_needed": ["tee", "balls", "bats", "bases"],
+    "equipment_needed": [
+      "tee",
+      "balls",
+      "bats",
+      "bases"
+    ],
     "duration_minutes": 45,
     "progression_level": "intro",
     "evidence_level": "university extension manual",
-    "tags": ["rutgers", "tee-ball", "drills", "scrimmage", "manual"]
+    "tags": [
+      "rutgers",
+      "tee-ball",
+      "drills",
+      "scrimmage",
+      "manual"
+    ]
   },
   {
     "title": "YMCA Rookie / Tee Ball Practice Plan",
@@ -2192,7 +3090,11 @@
     "age_band": "6-8",
     "sport": "baseball",
     "summary": "A simple, coach-friendly beginner tee-ball plan with practical coaching tips for first-time volunteers running a rookie-level session.",
-    "key_principles": ["simple beginner plan", "practical coaching tips", "rec-level friendly"],
+    "key_principles": [
+      "simple beginner plan",
+      "practical coaching tips",
+      "rec-level friendly"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -2201,11 +3103,22 @@
     "player_use_case": "",
     "parent_use_case": "",
     "practice_format": "practice-plan",
-    "equipment_needed": ["tee", "balls", "bats", "bases"],
+    "equipment_needed": [
+      "tee",
+      "balls",
+      "bats",
+      "bases"
+    ],
     "duration_minutes": 45,
     "progression_level": "intro",
     "evidence_level": "rec-program plan",
-    "tags": ["ymca", "rookie", "tee-ball", "beginner", "rec"]
+    "tags": [
+      "ymca",
+      "rookie",
+      "tee-ball",
+      "beginner",
+      "rec"
+    ]
   },
   {
     "title": "Denver YMCA 6-9 Baseball Manual",
@@ -2216,7 +3129,12 @@
     "age_band": "6-8",
     "sport": "baseball",
     "summary": "A 7-week template manual for younger rec teams (ages 6-9): weekly practice layout and basic skill cues for throwing, catching, fielding, and hitting.",
-    "key_principles": ["7-week template", "weekly layout", "basic skill cues", "rec-level"],
+    "key_principles": [
+      "7-week template",
+      "weekly layout",
+      "basic skill cues",
+      "rec-level"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -2225,11 +3143,22 @@
     "player_use_case": "",
     "parent_use_case": "",
     "practice_format": "manual",
-    "equipment_needed": ["tee", "balls", "bats", "bases"],
+    "equipment_needed": [
+      "tee",
+      "balls",
+      "bats",
+      "bases"
+    ],
     "duration_minutes": 60,
     "progression_level": "intro",
     "evidence_level": "rec-program manual",
-    "tags": ["denver-ymca", "6-9", "7-week", "rec", "manual"]
+    "tags": [
+      "denver-ymca",
+      "6-9",
+      "7-week",
+      "rec",
+      "manual"
+    ]
   },
   {
     "title": "Hanover Township Little League Coaches Manual",
@@ -2240,7 +3169,12 @@
     "age_band": "9-12",
     "sport": "baseball",
     "summary": "A local-league coaches manual with specific fielding drills (backhand/forehand play), throwing mechanics, and practice organization for Little League-age teams.",
-    "key_principles": ["specific fielding drills", "backhand/forehand play", "throwing mechanics", "practice organization"],
+    "key_principles": [
+      "specific fielding drills",
+      "backhand/forehand play",
+      "throwing mechanics",
+      "practice organization"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -2249,11 +3183,22 @@
     "player_use_case": "",
     "parent_use_case": "",
     "practice_format": "manual",
-    "equipment_needed": ["balls", "gloves", "bats", "bases"],
+    "equipment_needed": [
+      "balls",
+      "gloves",
+      "bats",
+      "bases"
+    ],
     "duration_minutes": 90,
     "progression_level": "intermediate",
     "evidence_level": "association manual",
-    "tags": ["hanover", "little-league", "fielding", "backhand", "manual"]
+    "tags": [
+      "hanover",
+      "little-league",
+      "fielding",
+      "backhand",
+      "manual"
+    ]
   },
   {
     "title": "Elkhorn Athletics 7U-10U Baseball Practice Plan",
@@ -2264,7 +3209,13 @@
     "age_band": "6-8 | 9-12",
     "sport": "baseball",
     "summary": "A 1-2 hour 7U-10U plan with a strong baserunning section: home-to-first mechanics, rounding first (banana route), first-to-third reads, plus throwing (SHAK/Ready/Break/Power) and fielding progressions.",
-    "key_principles": ["baserunning reads", "rounding first banana route", "first to third", "SHAK throwing cues", "controlled fielding"],
+    "key_principles": [
+      "baserunning reads",
+      "rounding first banana route",
+      "first to third",
+      "SHAK throwing cues",
+      "controlled fielding"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -2273,11 +3224,23 @@
     "player_use_case": "",
     "parent_use_case": "",
     "practice_format": "practice-plan",
-    "equipment_needed": ["balls", "gloves", "bats", "tees", "bases"],
+    "equipment_needed": [
+      "balls",
+      "gloves",
+      "bats",
+      "tees",
+      "bases"
+    ],
     "duration_minutes": 90,
     "progression_level": "intro",
     "evidence_level": "association program",
-    "tags": ["elkhorn", "7U-10U", "baserunning", "throwing-cues", "practice-plan"]
+    "tags": [
+      "elkhorn",
+      "7U-10U",
+      "baserunning",
+      "throwing-cues",
+      "practice-plan"
+    ]
   },
   {
     "title": "Gorham Tee Ball / Baseball / Softball Practice Plans & Drills",
@@ -2288,7 +3251,11 @@
     "age_band": "6-8 | 9-12",
     "sport": "baseball",
     "summary": "A simple multi-age youth practice and drill packet for volunteer coaches spanning tee ball through baseball/softball, with quick-reference drills.",
-    "key_principles": ["multi-age drill packet", "volunteer-coach friendly", "quick-reference drills"],
+    "key_principles": [
+      "multi-age drill packet",
+      "volunteer-coach friendly",
+      "quick-reference drills"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": false,
     "guardrail_reason": "",
@@ -2297,11 +3264,22 @@
     "player_use_case": "",
     "parent_use_case": "",
     "practice_format": "practice-plan",
-    "equipment_needed": ["tee", "balls", "bats", "bases"],
+    "equipment_needed": [
+      "tee",
+      "balls",
+      "bats",
+      "bases"
+    ],
     "duration_minutes": 60,
     "progression_level": "intro",
     "evidence_level": "rec-program packet",
-    "tags": ["gorham", "tee-ball", "multi-age", "drill-packet", "rec"]
+    "tags": [
+      "gorham",
+      "tee-ball",
+      "multi-age",
+      "drill-packet",
+      "rec"
+    ]
   },
   {
     "title": "USA Baseball / Pitch Smart Pitch Count Recommendations",
@@ -2312,11 +3290,20 @@
     "age_band": "all",
     "sport": "baseball",
     "summary": "The canonical arm-care reference: age-banded daily-max pitch counts and required-rest thresholds, annual innings caps (60 IP for 8U, 80 IP for 9-12, 100 IP for 13-14), the no-pitching-three-consecutive-days rule, breaking-ball age guidance, and the catch-and-pitch restriction.",
-    "key_principles": ["daily max pitch counts by age", "required rest by pitch count", "annual innings caps", "no three consecutive pitching days", "no curveballs until consistent fastball/changeup ~13-14", "4 months off throwing per year"],
+    "key_principles": [
+      "daily max pitch counts by age",
+      "required rest by pitch count",
+      "annual innings caps",
+      "no three consecutive pitching days",
+      "no curveballs until consistent fastball/changeup ~13-14",
+      "4 months off throwing per year"
+    ],
     "safe_to_prescribe": true,
     "requires_guardrail": true,
     "guardrail_reason": "This is itself the guardrail; where a sanctioning league publishes stricter rules, league rules win.",
-    "do_not_use_for": ["overriding stricter league pitch-count rules"],
+    "do_not_use_for": [
+      "overriding stricter league pitch-count rules"
+    ],
     "coach_use_case": "Hard limits for pitcher usage, rest, and overuse prevention — enforced by the compiler.",
     "player_use_case": "",
     "parent_use_case": "Understand why a child must rest between pitching outings.",
@@ -2325,7 +3312,14 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "governing-body guideline",
-    "tags": ["pitch-smart", "arm-care", "pitch-count", "rest", "innings-cap", "safety"]
+    "tags": [
+      "pitch-smart",
+      "arm-care",
+      "pitch-count",
+      "rest",
+      "innings-cap",
+      "safety"
+    ]
   },
   {
     "title": "Coach RAC — Make Baseball Fun (Instagram)",
@@ -2336,11 +3330,21 @@
     "age_band": "6-8 | 9-12",
     "sport": "baseball",
     "summary": "High-energy youth-baseball creator (~953K IG, 1.5M+ across platforms) focused on making practice fun, kid buy-in, culture, and engagement. Primary voice/tone reference for the platform.",
-    "key_principles": ["fun-first", "high energy", "kid buy-in", "celebrate effort", "keep reps moving"],
+    "key_principles": [
+      "fun-first",
+      "high energy",
+      "kid buy-in",
+      "celebrate effort",
+      "keep reps moving"
+    ],
     "safe_to_prescribe": false,
     "requires_guardrail": true,
     "guardrail_reason": "Social-media creator content — use as voice/energy inspiration only; must be age-scaled and defer to Pitch Smart and Tier-1 safety rules.",
-    "do_not_use_for": ["pitch-count guidance", "loaded strength prescription", "medical/injury advice"],
+    "do_not_use_for": [
+      "pitch-count guidance",
+      "loaded strength prescription",
+      "medical/injury advice"
+    ],
     "coach_use_case": "Tone reference for practice energy, drill framing, and culture.",
     "player_use_case": "Motivation and fun drill ideas.",
     "parent_use_case": "Why keeping it fun drives long-term participation.",
@@ -2349,7 +3353,13 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["coach-rac", "voice-reference", "fun-first", "culture", "social"]
+    "tags": [
+      "coach-rac",
+      "voice-reference",
+      "fun-first",
+      "culture",
+      "social"
+    ]
   },
   {
     "title": "CHIPS Performance — Alex Hale (Instagram)",
@@ -2360,11 +3370,21 @@
     "age_band": "13-15 | 16+",
     "sport": "baseball",
     "summary": "Modern player-development brand (~331K IG) led by Alex Hale covering hitting, catching, pitching, and strength/speed. Culture-driven 'Built Different' voice (compete, be your BEST, iron sharpens iron). Secondary voice/tone reference for the platform.",
-    "key_principles": ["competitive culture", "player-led", "movement quality", "be your BEST", "process over hype"],
+    "key_principles": [
+      "competitive culture",
+      "player-led",
+      "movement quality",
+      "be your BEST",
+      "process over hype"
+    ],
     "safe_to_prescribe": false,
     "requires_guardrail": true,
     "guardrail_reason": "HS/college/pro-oriented training — use as voice/standards inspiration only; throwing volumes must defer to Pitch Smart and loaded strength requires supervision for minors.",
-    "do_not_use_for": ["<13 prescription", "overriding Pitch Smart", "unsupervised loaded lifting in minors"],
+    "do_not_use_for": [
+      "<13 prescription",
+      "overriding Pitch Smart",
+      "unsupervised loaded lifting in minors"
+    ],
     "coach_use_case": "Tone reference for high-standards, competitive culture framing.",
     "player_use_case": "Aspirational training standards (age-scaled).",
     "parent_use_case": "What a serious development environment looks like.",
@@ -2373,7 +3393,13 @@
     "duration_minutes": null,
     "progression_level": "advanced",
     "evidence_level": "coaching article",
-    "tags": ["chips", "alex-hale", "voice-reference", "culture", "social"]
+    "tags": [
+      "chips",
+      "alex-hale",
+      "voice-reference",
+      "culture",
+      "social"
+    ]
   },
   {
     "title": "Coach Ballgame — James Lowe (Instagram)",
@@ -2384,11 +3410,19 @@
     "age_band": "6-8 | 9-12",
     "sport": "baseball",
     "summary": "Fun-first 4-12U coaching creator (~308K IG), tied to MLB Play Ball; focuses on character, engagement, and avoiding toxic youth-sports culture. Voice/tone reference for the platform.",
-    "key_principles": ["fun-first", "character", "kid engagement", "positive culture"],
+    "key_principles": [
+      "fun-first",
+      "character",
+      "kid engagement",
+      "positive culture"
+    ],
     "safe_to_prescribe": false,
     "requires_guardrail": true,
     "guardrail_reason": "Social-media creator content — use as voice/culture inspiration only; must be age-scaled and defer to Tier-1 safety rules.",
-    "do_not_use_for": ["pitch-count guidance", "medical/injury advice"],
+    "do_not_use_for": [
+      "pitch-count guidance",
+      "medical/injury advice"
+    ],
     "coach_use_case": "Tone reference for fun-first 4-12U culture.",
     "player_use_case": "Fun drill ideas.",
     "parent_use_case": "Why positive youth-sports culture matters.",
@@ -2397,7 +3431,13 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["coach-ballgame", "voice-reference", "fun-first", "culture", "social"]
+    "tags": [
+      "coach-ballgame",
+      "voice-reference",
+      "fun-first",
+      "culture",
+      "social"
+    ]
   },
   {
     "title": "Dominate the Diamond — Duke Baxter / Steve Nikorak (Instagram)",
@@ -2408,11 +3448,19 @@
     "age_band": "6-8 | 9-12",
     "sport": "baseball",
     "summary": "Coach-the-coach platform (~195K IG) with youth practice plans, coach-pitch, and 8U-12U team fundamentals: catching, pitching, throwing, infield, outfield, hitting.",
-    "key_principles": ["coach the coach", "practice plans", "youth fundamentals", "reps and structure"],
+    "key_principles": [
+      "coach the coach",
+      "practice plans",
+      "youth fundamentals",
+      "reps and structure"
+    ],
     "safe_to_prescribe": false,
     "requires_guardrail": true,
     "guardrail_reason": "Social-media creator content — inspiration only; must be age-scaled and defer to Pitch Smart and Tier-1 safety rules.",
-    "do_not_use_for": ["pitch-count guidance", "medical/injury advice"],
+    "do_not_use_for": [
+      "pitch-count guidance",
+      "medical/injury advice"
+    ],
     "coach_use_case": "Practice-plan and drill structure inspiration for 8U-12U.",
     "player_use_case": "",
     "parent_use_case": "",
@@ -2421,7 +3469,12 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["dominate-the-diamond", "duke-baxter", "practice-plans", "social"]
+    "tags": [
+      "dominate-the-diamond",
+      "duke-baxter",
+      "practice-plans",
+      "social"
+    ]
   },
   {
     "title": "Coach Lisle — Matt Lisle (Instagram)",
@@ -2432,11 +3485,18 @@
     "age_band": "9-12 | 13-15 | 16+",
     "sport": "baseball",
     "summary": "Large coach/instructor audience (1M+ online) with strong hitting and coaching content, plus broader coaching-business material.",
-    "key_principles": ["hitting mechanics", "coaching frameworks", "cueing"],
+    "key_principles": [
+      "hitting mechanics",
+      "coaching frameworks",
+      "cueing"
+    ],
     "safe_to_prescribe": false,
     "requires_guardrail": true,
     "guardrail_reason": "Social-media creator content — inspiration only; must be age-scaled and defer to Tier-1 safety rules.",
-    "do_not_use_for": ["pitch-count guidance", "medical/injury advice"],
+    "do_not_use_for": [
+      "pitch-count guidance",
+      "medical/injury advice"
+    ],
     "coach_use_case": "Hitting cues and coaching framing.",
     "player_use_case": "",
     "parent_use_case": "",
@@ -2445,7 +3505,11 @@
     "duration_minutes": null,
     "progression_level": "intermediate",
     "evidence_level": "coaching article",
-    "tags": ["coach-lisle", "hitting", "social"]
+    "tags": [
+      "coach-lisle",
+      "hitting",
+      "social"
+    ]
   },
   {
     "title": "Ultimate Baseball Training — Coach Justin (YouTube)",
@@ -2456,11 +3520,18 @@
     "age_band": "9-12 | 13-15",
     "sport": "baseball",
     "summary": "YouTube training channel (~407K subs) covering hitting, throwing, fielding, and confidence/fundamentals — more player-training than team-practice planning.",
-    "key_principles": ["fundamentals", "confidence", "individual skill work"],
+    "key_principles": [
+      "fundamentals",
+      "confidence",
+      "individual skill work"
+    ],
     "safe_to_prescribe": false,
     "requires_guardrail": true,
     "guardrail_reason": "Social-media creator content — inspiration only; must be age-scaled and defer to Pitch Smart and Tier-1 safety rules.",
-    "do_not_use_for": ["pitch-count guidance", "medical/injury advice"],
+    "do_not_use_for": [
+      "pitch-count guidance",
+      "medical/injury advice"
+    ],
     "coach_use_case": "Individual-skill drill inspiration.",
     "player_use_case": "At-home skill videos.",
     "parent_use_case": "Home-practice videos.",
@@ -2469,7 +3540,11 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["ultimate-baseball-training", "video", "social"]
+    "tags": [
+      "ultimate-baseball-training",
+      "video",
+      "social"
+    ]
   },
   {
     "title": "YouGoProBaseball — John Madden (Instagram)",
@@ -2480,11 +3555,18 @@
     "age_band": "9-12 | 13-15 | 16+",
     "sport": "baseball",
     "summary": "Player-instruction library (66K IG, 300K+ YouTube) on pitching, throwing, infield, and hitting from former pro/college player John Madden. Good for coach self-education.",
-    "key_principles": ["infield play", "throwing mechanics", "pro instruction"],
+    "key_principles": [
+      "infield play",
+      "throwing mechanics",
+      "pro instruction"
+    ],
     "safe_to_prescribe": false,
     "requires_guardrail": true,
     "guardrail_reason": "Social-media creator content — inspiration only; throwing volumes must defer to Pitch Smart for youth.",
-    "do_not_use_for": ["pitch-count guidance", "medical/injury advice"],
+    "do_not_use_for": [
+      "pitch-count guidance",
+      "medical/injury advice"
+    ],
     "coach_use_case": "Coach self-education on infield/throwing.",
     "player_use_case": "",
     "parent_use_case": "",
@@ -2493,7 +3575,12 @@
     "duration_minutes": null,
     "progression_level": "intermediate",
     "evidence_level": "coaching article",
-    "tags": ["yougoprobaseball", "infield", "throwing", "social"]
+    "tags": [
+      "yougoprobaseball",
+      "infield",
+      "throwing",
+      "social"
+    ]
   },
   {
     "title": "D.R. Hitting — Drew Richard (Instagram)",
@@ -2504,20 +3591,32 @@
     "age_band": "9-12 | 13-15 | 16+",
     "sport": "baseball",
     "summary": "Hitting-specific creator (~267K IG) covering swing concepts and a 'box' approach — hitter development more than team coaching.",
-    "key_principles": ["swing concepts", "hitting approach", "box framework"],
+    "key_principles": [
+      "swing concepts",
+      "hitting approach",
+      "box framework"
+    ],
     "safe_to_prescribe": false,
     "requires_guardrail": true,
     "guardrail_reason": "Social-media creator content — inspiration only; must be age-scaled.",
-    "do_not_use_for": ["medical/injury advice"],
+    "do_not_use_for": [
+      "medical/injury advice"
+    ],
     "coach_use_case": "Hitting concept inspiration.",
     "player_use_case": "",
     "parent_use_case": "",
     "practice_format": "drill",
-    "equipment_needed": ["tee"],
+    "equipment_needed": [
+      "tee"
+    ],
     "duration_minutes": null,
     "progression_level": "intermediate",
     "evidence_level": "coaching article",
-    "tags": ["dr-hitting", "hitting", "social"]
+    "tags": [
+      "dr-hitting",
+      "hitting",
+      "social"
+    ]
   },
   {
     "title": "Coach Murph — iCoachBaseball (Instagram)",
@@ -2528,11 +3627,18 @@
     "age_band": "6-8 | 9-12",
     "sport": "baseball",
     "summary": "Youth-baseball coaching and hitting account (~203K IG) billed as 'the home for youth baseball coaching' — practical, simple cues for parents and coaches.",
-    "key_principles": ["simple cues", "youth coaching", "parent-friendly"],
+    "key_principles": [
+      "simple cues",
+      "youth coaching",
+      "parent-friendly"
+    ],
     "safe_to_prescribe": false,
     "requires_guardrail": true,
     "guardrail_reason": "Social-media creator content — inspiration only; must be age-scaled and defer to Tier-1 safety rules.",
-    "do_not_use_for": ["pitch-count guidance", "medical/injury advice"],
+    "do_not_use_for": [
+      "pitch-count guidance",
+      "medical/injury advice"
+    ],
     "coach_use_case": "Simple coaching cues for youth.",
     "player_use_case": "",
     "parent_use_case": "Plain-English cues for at-home help.",
@@ -2541,6 +3647,803 @@
     "duration_minutes": null,
     "progression_level": "intro",
     "evidence_level": "coaching article",
-    "tags": ["icoachbaseball", "coach-murph", "youth", "social"]
+    "tags": [
+      "icoachbaseball",
+      "coach-murph",
+      "youth",
+      "social"
+    ]
+  },
+  {
+    "title": "Cues & Drills to Let Your Body Deliver the Barrel to the Ball — Driveline Baseball (YouTube)",
+    "url": "https://www.youtube.com/watch?v=gCDudoxKwbI",
+    "source_name": "Driveline Baseball",
+    "source_tier": "Tier 3",
+    "topic": "throwing",
+    "age_band": "13-15 | 16+",
+    "sport": "baseball",
+    "summary": "\"Cues & Drills to Let Your Body Deliver the Barrel to the Ball\" — a YouTube video from Driveline Baseball. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
+    "key_principles": [],
+    "safe_to_prescribe": false,
+    "requires_guardrail": true,
+    "guardrail_reason": "Defer to Pitch Smart for youth volumes.",
+    "do_not_use_for": [
+      "<13 prescription"
+    ],
+    "coach_use_case": "Drill inspiration.",
+    "player_use_case": "",
+    "parent_use_case": "",
+    "practice_format": "drill",
+    "equipment_needed": [],
+    "duration_minutes": null,
+    "progression_level": "advanced",
+    "evidence_level": "coaching article",
+    "tags": [
+      "driveline",
+      "video",
+      "driveline-baseball",
+      "auto-added"
+    ]
+  },
+  {
+    "title": "The Rangers Signed Him After +4 MPH Bat Speed In 6 Weeks — Driveline Baseball (YouTube)",
+    "url": "https://www.youtube.com/watch?v=ufh2XNcw8dA",
+    "source_name": "Driveline Baseball",
+    "source_tier": "Tier 3",
+    "topic": "throwing",
+    "age_band": "13-15 | 16+",
+    "sport": "baseball",
+    "summary": "\"The Rangers Signed Him After +4 MPH Bat Speed In 6 Weeks\" — a YouTube video from Driveline Baseball. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
+    "key_principles": [],
+    "safe_to_prescribe": false,
+    "requires_guardrail": true,
+    "guardrail_reason": "Defer to Pitch Smart for youth volumes.",
+    "do_not_use_for": [
+      "<13 prescription"
+    ],
+    "coach_use_case": "Drill inspiration.",
+    "player_use_case": "",
+    "parent_use_case": "",
+    "practice_format": "drill",
+    "equipment_needed": [],
+    "duration_minutes": null,
+    "progression_level": "advanced",
+    "evidence_level": "coaching article",
+    "tags": [
+      "driveline",
+      "video",
+      "driveline-baseball",
+      "auto-added"
+    ]
+  },
+  {
+    "title": "Driveline Roadmap: Your Development. Your Data. Your Path. — Driveline Baseball (YouTube)",
+    "url": "https://www.youtube.com/watch?v=0eyxyh7uw94",
+    "source_name": "Driveline Baseball",
+    "source_tier": "Tier 3",
+    "topic": "throwing",
+    "age_band": "13-15 | 16+",
+    "sport": "baseball",
+    "summary": "\"Driveline Roadmap: Your Development. Your Data. Your Path.\" — a YouTube video from Driveline Baseball. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
+    "key_principles": [],
+    "safe_to_prescribe": false,
+    "requires_guardrail": true,
+    "guardrail_reason": "Defer to Pitch Smart for youth volumes.",
+    "do_not_use_for": [
+      "<13 prescription"
+    ],
+    "coach_use_case": "Drill inspiration.",
+    "player_use_case": "",
+    "parent_use_case": "",
+    "practice_format": "drill",
+    "equipment_needed": [],
+    "duration_minutes": null,
+    "progression_level": "advanced",
+    "evidence_level": "coaching article",
+    "tags": [
+      "driveline",
+      "video",
+      "driveline-baseball",
+      "auto-added"
+    ]
+  },
+  {
+    "title": "His bat path is costing him — Driveline Baseball (YouTube)",
+    "url": "https://www.youtube.com/watch?v=RczpZSjZgQA",
+    "source_name": "Driveline Baseball",
+    "source_tier": "Tier 3",
+    "topic": "throwing",
+    "age_band": "13-15 | 16+",
+    "sport": "baseball",
+    "summary": "\"His bat path is costing him\" — a YouTube video from Driveline Baseball. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
+    "key_principles": [],
+    "safe_to_prescribe": false,
+    "requires_guardrail": true,
+    "guardrail_reason": "Defer to Pitch Smart for youth volumes.",
+    "do_not_use_for": [
+      "<13 prescription"
+    ],
+    "coach_use_case": "Drill inspiration.",
+    "player_use_case": "",
+    "parent_use_case": "",
+    "practice_format": "drill",
+    "equipment_needed": [],
+    "duration_minutes": null,
+    "progression_level": "advanced",
+    "evidence_level": "coaching article",
+    "tags": [
+      "driveline",
+      "video",
+      "driveline-baseball",
+      "auto-added"
+    ]
+  },
+  {
+    "title": "Stop Getting Greedy on Your Pitch (Swing Design) — Driveline Baseball (YouTube)",
+    "url": "https://www.youtube.com/watch?v=F-od2QhIRGY",
+    "source_name": "Driveline Baseball",
+    "source_tier": "Tier 3",
+    "topic": "throwing",
+    "age_band": "13-15 | 16+",
+    "sport": "baseball",
+    "summary": "\"Stop Getting Greedy on Your Pitch (Swing Design)\" — a YouTube video from Driveline Baseball. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
+    "key_principles": [],
+    "safe_to_prescribe": false,
+    "requires_guardrail": true,
+    "guardrail_reason": "Defer to Pitch Smart for youth volumes.",
+    "do_not_use_for": [
+      "<13 prescription"
+    ],
+    "coach_use_case": "Drill inspiration.",
+    "player_use_case": "",
+    "parent_use_case": "",
+    "practice_format": "drill",
+    "equipment_needed": [],
+    "duration_minutes": null,
+    "progression_level": "advanced",
+    "evidence_level": "coaching article",
+    "tags": [
+      "driveline",
+      "video",
+      "driveline-baseball",
+      "auto-added"
+    ]
+  },
+  {
+    "title": "Cleaner Swing Path = More Barrels vs Velo & Lefties (Swing Design ft. ABL MVP) — Driveline Baseball (YouTube)",
+    "url": "https://www.youtube.com/watch?v=xMbjlQ2v0vI",
+    "source_name": "Driveline Baseball",
+    "source_tier": "Tier 3",
+    "topic": "throwing",
+    "age_band": "13-15 | 16+",
+    "sport": "baseball",
+    "summary": "\"Cleaner Swing Path = More Barrels vs Velo & Lefties (Swing Design ft. ABL MVP)\" — a YouTube video from Driveline Baseball. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
+    "key_principles": [],
+    "safe_to_prescribe": false,
+    "requires_guardrail": true,
+    "guardrail_reason": "Defer to Pitch Smart for youth volumes.",
+    "do_not_use_for": [
+      "<13 prescription"
+    ],
+    "coach_use_case": "Drill inspiration.",
+    "player_use_case": "",
+    "parent_use_case": "",
+    "practice_format": "drill",
+    "equipment_needed": [],
+    "duration_minutes": null,
+    "progression_level": "advanced",
+    "evidence_level": "coaching article",
+    "tags": [
+      "driveline",
+      "video",
+      "driveline-baseball",
+      "auto-added"
+    ]
+  },
+  {
+    "title": "How A Pro Hitter Gets Ready for MLB Spring Training | Seattle Mariners MiLB Victor Labrada — Driveline Baseball (YouTube)",
+    "url": "https://www.youtube.com/watch?v=isfuQ58avok",
+    "source_name": "Driveline Baseball",
+    "source_tier": "Tier 3",
+    "topic": "throwing",
+    "age_band": "13-15 | 16+",
+    "sport": "baseball",
+    "summary": "\"How A Pro Hitter Gets Ready for MLB Spring Training | Seattle Mariners MiLB Victor Labrada\" — a YouTube video from Driveline Baseball. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
+    "key_principles": [],
+    "safe_to_prescribe": false,
+    "requires_guardrail": true,
+    "guardrail_reason": "Defer to Pitch Smart for youth volumes.",
+    "do_not_use_for": [
+      "<13 prescription"
+    ],
+    "coach_use_case": "Drill inspiration.",
+    "player_use_case": "",
+    "parent_use_case": "",
+    "practice_format": "drill",
+    "equipment_needed": [],
+    "duration_minutes": null,
+    "progression_level": "advanced",
+    "evidence_level": "coaching article",
+    "tags": [
+      "driveline",
+      "video",
+      "driveline-baseball",
+      "auto-added"
+    ]
+  },
+  {
+    "title": "3 Drills To Improve Rotation (feat. John Rhodes, LA Dodgers) — Driveline Baseball (YouTube)",
+    "url": "https://www.youtube.com/watch?v=sKTs4WImtp4",
+    "source_name": "Driveline Baseball",
+    "source_tier": "Tier 3",
+    "topic": "throwing",
+    "age_band": "13-15 | 16+",
+    "sport": "baseball",
+    "summary": "\"3 Drills To Improve Rotation (feat. John Rhodes, LA Dodgers)\" — a YouTube video from Driveline Baseball. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
+    "key_principles": [],
+    "safe_to_prescribe": false,
+    "requires_guardrail": true,
+    "guardrail_reason": "Defer to Pitch Smart for youth volumes.",
+    "do_not_use_for": [
+      "<13 prescription"
+    ],
+    "coach_use_case": "Drill inspiration.",
+    "player_use_case": "",
+    "parent_use_case": "",
+    "practice_format": "drill",
+    "equipment_needed": [],
+    "duration_minutes": null,
+    "progression_level": "advanced",
+    "evidence_level": "coaching article",
+    "tags": [
+      "driveline",
+      "video",
+      "driveline-baseball",
+      "auto-added"
+    ]
+  },
+  {
+    "title": "The CRAZIEST Play of the D3 College World Series Championship 😳 — Antonelli Baseball (YouTube)",
+    "url": "https://www.youtube.com/watch?v=c2sRMwZfN74",
+    "source_name": "Antonelli Baseball",
+    "source_tier": "Tier 3",
+    "topic": "baseball",
+    "age_band": "9-12 | 13-15",
+    "sport": "baseball",
+    "summary": "\"The CRAZIEST Play of the D3 College World Series Championship 😳\" — a YouTube video from Antonelli Baseball. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
+    "key_principles": [],
+    "safe_to_prescribe": false,
+    "requires_guardrail": true,
+    "guardrail_reason": "Social-media creator content — inspiration only; must be age-scaled and defer to Pitch Smart and Tier-1 safety rules.",
+    "do_not_use_for": [
+      "pitch-count guidance",
+      "medical/injury advice"
+    ],
+    "coach_use_case": "Video drill inspiration.",
+    "player_use_case": "",
+    "parent_use_case": "",
+    "practice_format": "drill",
+    "equipment_needed": [],
+    "duration_minutes": null,
+    "progression_level": "intro",
+    "evidence_level": "coaching article",
+    "tags": [
+      "antonelli",
+      "video",
+      "antonelli-baseball",
+      "auto-added"
+    ]
+  },
+  {
+    "title": "Did He Deserve to Be Ejected for This Collision? — Antonelli Baseball (YouTube)",
+    "url": "https://www.youtube.com/watch?v=inc02gAmvHQ",
+    "source_name": "Antonelli Baseball",
+    "source_tier": "Tier 3",
+    "topic": "baseball",
+    "age_band": "9-12 | 13-15",
+    "sport": "baseball",
+    "summary": "\"Did He Deserve to Be Ejected for This Collision?\" — a YouTube video from Antonelli Baseball. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
+    "key_principles": [],
+    "safe_to_prescribe": false,
+    "requires_guardrail": true,
+    "guardrail_reason": "Social-media creator content — inspiration only; must be age-scaled and defer to Pitch Smart and Tier-1 safety rules.",
+    "do_not_use_for": [
+      "pitch-count guidance",
+      "medical/injury advice"
+    ],
+    "coach_use_case": "Video drill inspiration.",
+    "player_use_case": "",
+    "parent_use_case": "",
+    "practice_format": "drill",
+    "equipment_needed": [],
+    "duration_minutes": null,
+    "progression_level": "intro",
+    "evidence_level": "coaching article",
+    "tags": [
+      "antonelli",
+      "video",
+      "antonelli-baseball",
+      "auto-added"
+    ]
+  },
+  {
+    "title": "Most People Don’t Know This Baseball Rule — Antonelli Baseball (YouTube)",
+    "url": "https://www.youtube.com/watch?v=XKoPypZeotk",
+    "source_name": "Antonelli Baseball",
+    "source_tier": "Tier 3",
+    "topic": "baseball",
+    "age_band": "9-12 | 13-15",
+    "sport": "baseball",
+    "summary": "\"Most People Don’t Know This Baseball Rule\" — a YouTube video from Antonelli Baseball. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
+    "key_principles": [],
+    "safe_to_prescribe": false,
+    "requires_guardrail": true,
+    "guardrail_reason": "Social-media creator content — inspiration only; must be age-scaled and defer to Pitch Smart and Tier-1 safety rules.",
+    "do_not_use_for": [
+      "pitch-count guidance",
+      "medical/injury advice"
+    ],
+    "coach_use_case": "Video drill inspiration.",
+    "player_use_case": "",
+    "parent_use_case": "",
+    "practice_format": "drill",
+    "equipment_needed": [],
+    "duration_minutes": null,
+    "progression_level": "intro",
+    "evidence_level": "coaching article",
+    "tags": [
+      "antonelli",
+      "video",
+      "antonelli-baseball",
+      "auto-added"
+    ]
+  },
+  {
+    "title": "Shortest Sac Fly of All Time — Antonelli Baseball (YouTube)",
+    "url": "https://www.youtube.com/watch?v=1iRn3pDQ4zQ",
+    "source_name": "Antonelli Baseball",
+    "source_tier": "Tier 3",
+    "topic": "baseball",
+    "age_band": "9-12 | 13-15",
+    "sport": "baseball",
+    "summary": "\"Shortest Sac Fly of All Time\" — a YouTube video from Antonelli Baseball. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
+    "key_principles": [],
+    "safe_to_prescribe": false,
+    "requires_guardrail": true,
+    "guardrail_reason": "Social-media creator content — inspiration only; must be age-scaled and defer to Pitch Smart and Tier-1 safety rules.",
+    "do_not_use_for": [
+      "pitch-count guidance",
+      "medical/injury advice"
+    ],
+    "coach_use_case": "Video drill inspiration.",
+    "player_use_case": "",
+    "parent_use_case": "",
+    "practice_format": "drill",
+    "equipment_needed": [],
+    "duration_minutes": null,
+    "progression_level": "intro",
+    "evidence_level": "coaching article",
+    "tags": [
+      "antonelli",
+      "video",
+      "antonelli-baseball",
+      "auto-added"
+    ]
+  },
+  {
+    "title": "This Is One Way to Defend a Squeeze… — Antonelli Baseball (YouTube)",
+    "url": "https://www.youtube.com/watch?v=dJGxNHartGI",
+    "source_name": "Antonelli Baseball",
+    "source_tier": "Tier 3",
+    "topic": "baseball",
+    "age_band": "9-12 | 13-15",
+    "sport": "baseball",
+    "summary": "\"This Is One Way to Defend a Squeeze…\" — a YouTube video from Antonelli Baseball. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
+    "key_principles": [],
+    "safe_to_prescribe": false,
+    "requires_guardrail": true,
+    "guardrail_reason": "Social-media creator content — inspiration only; must be age-scaled and defer to Pitch Smart and Tier-1 safety rules.",
+    "do_not_use_for": [
+      "pitch-count guidance",
+      "medical/injury advice"
+    ],
+    "coach_use_case": "Video drill inspiration.",
+    "player_use_case": "",
+    "parent_use_case": "",
+    "practice_format": "drill",
+    "equipment_needed": [],
+    "duration_minutes": null,
+    "progression_level": "intro",
+    "evidence_level": "coaching article",
+    "tags": [
+      "antonelli",
+      "video",
+      "antonelli-baseball",
+      "auto-added"
+    ]
+  },
+  {
+    "title": "The Simplest 1st & 3rd Play Ever… and It Worked — Antonelli Baseball (YouTube)",
+    "url": "https://www.youtube.com/watch?v=Ses2gkD64oo",
+    "source_name": "Antonelli Baseball",
+    "source_tier": "Tier 3",
+    "topic": "baseball",
+    "age_band": "9-12 | 13-15",
+    "sport": "baseball",
+    "summary": "\"The Simplest 1st & 3rd Play Ever… and It Worked\" — a YouTube video from Antonelli Baseball. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
+    "key_principles": [],
+    "safe_to_prescribe": false,
+    "requires_guardrail": true,
+    "guardrail_reason": "Social-media creator content — inspiration only; must be age-scaled and defer to Pitch Smart and Tier-1 safety rules.",
+    "do_not_use_for": [
+      "pitch-count guidance",
+      "medical/injury advice"
+    ],
+    "coach_use_case": "Video drill inspiration.",
+    "player_use_case": "",
+    "parent_use_case": "",
+    "practice_format": "drill",
+    "equipment_needed": [],
+    "duration_minutes": null,
+    "progression_level": "intro",
+    "evidence_level": "coaching article",
+    "tags": [
+      "antonelli",
+      "video",
+      "antonelli-baseball",
+      "auto-added"
+    ]
+  },
+  {
+    "title": "He Faked the Catch…And He Was Right to Do It — Antonelli Baseball (YouTube)",
+    "url": "https://www.youtube.com/watch?v=fzKpTAANWkg",
+    "source_name": "Antonelli Baseball",
+    "source_tier": "Tier 3",
+    "topic": "baseball",
+    "age_band": "9-12 | 13-15",
+    "sport": "baseball",
+    "summary": "\"He Faked the Catch…And He Was Right to Do It\" — a YouTube video from Antonelli Baseball. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
+    "key_principles": [],
+    "safe_to_prescribe": false,
+    "requires_guardrail": true,
+    "guardrail_reason": "Social-media creator content — inspiration only; must be age-scaled and defer to Pitch Smart and Tier-1 safety rules.",
+    "do_not_use_for": [
+      "pitch-count guidance",
+      "medical/injury advice"
+    ],
+    "coach_use_case": "Video drill inspiration.",
+    "player_use_case": "",
+    "parent_use_case": "",
+    "practice_format": "drill",
+    "equipment_needed": [],
+    "duration_minutes": null,
+    "progression_level": "intro",
+    "evidence_level": "coaching article",
+    "tags": [
+      "antonelli",
+      "video",
+      "antonelli-baseball",
+      "auto-added"
+    ]
+  },
+  {
+    "title": "How was this Ball a Home Run?!? 🤷‍♂️ — Antonelli Baseball (YouTube)",
+    "url": "https://www.youtube.com/watch?v=WyAYPRS_twE",
+    "source_name": "Antonelli Baseball",
+    "source_tier": "Tier 3",
+    "topic": "baseball",
+    "age_band": "9-12 | 13-15",
+    "sport": "baseball",
+    "summary": "\"How was this Ball a Home Run?!? 🤷‍♂️\" — a YouTube video from Antonelli Baseball. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
+    "key_principles": [],
+    "safe_to_prescribe": false,
+    "requires_guardrail": true,
+    "guardrail_reason": "Social-media creator content — inspiration only; must be age-scaled and defer to Pitch Smart and Tier-1 safety rules.",
+    "do_not_use_for": [
+      "pitch-count guidance",
+      "medical/injury advice"
+    ],
+    "coach_use_case": "Video drill inspiration.",
+    "player_use_case": "",
+    "parent_use_case": "",
+    "practice_format": "drill",
+    "equipment_needed": [],
+    "duration_minutes": null,
+    "progression_level": "intro",
+    "evidence_level": "coaching article",
+    "tags": [
+      "antonelli",
+      "video",
+      "antonelli-baseball",
+      "auto-added"
+    ]
+  },
+  {
+    "title": "How to Field a Ground Ball (in 60 seconds!) — Ultimate Baseball Training (YouTube)",
+    "url": "https://www.youtube.com/watch?v=OPg_PMXBnjU",
+    "source_name": "Ultimate Baseball Training",
+    "source_tier": "Tier 3",
+    "topic": "baseball",
+    "age_band": "9-12 | 13-15",
+    "sport": "baseball",
+    "summary": "\"How to Field a Ground Ball (in 60 seconds!)\" — a YouTube video from Ultimate Baseball Training. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
+    "key_principles": [
+      "fundamentals",
+      "confidence",
+      "individual skill work"
+    ],
+    "safe_to_prescribe": false,
+    "requires_guardrail": true,
+    "guardrail_reason": "Social-media creator content — inspiration only; must be age-scaled and defer to Pitch Smart and Tier-1 safety rules.",
+    "do_not_use_for": [
+      "pitch-count guidance",
+      "medical/injury advice"
+    ],
+    "coach_use_case": "Individual-skill drill inspiration.",
+    "player_use_case": "At-home skill videos.",
+    "parent_use_case": "Home-practice videos.",
+    "practice_format": "drill",
+    "equipment_needed": [],
+    "duration_minutes": null,
+    "progression_level": "intro",
+    "evidence_level": "coaching article",
+    "tags": [
+      "ultimate-baseball-training",
+      "video",
+      "social",
+      "auto-added"
+    ]
+  },
+  {
+    "title": "Pitchers! Never Forget These 4 Pitching Secrets 🤫 — Ultimate Baseball Training (YouTube)",
+    "url": "https://www.youtube.com/watch?v=QdeNVja8DC0",
+    "source_name": "Ultimate Baseball Training",
+    "source_tier": "Tier 3",
+    "topic": "baseball",
+    "age_band": "9-12 | 13-15",
+    "sport": "baseball",
+    "summary": "\"Pitchers! Never Forget These 4 Pitching Secrets 🤫\" — a YouTube video from Ultimate Baseball Training. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
+    "key_principles": [
+      "fundamentals",
+      "confidence",
+      "individual skill work"
+    ],
+    "safe_to_prescribe": false,
+    "requires_guardrail": true,
+    "guardrail_reason": "Social-media creator content — inspiration only; must be age-scaled and defer to Pitch Smart and Tier-1 safety rules.",
+    "do_not_use_for": [
+      "pitch-count guidance",
+      "medical/injury advice"
+    ],
+    "coach_use_case": "Individual-skill drill inspiration.",
+    "player_use_case": "At-home skill videos.",
+    "parent_use_case": "Home-practice videos.",
+    "practice_format": "drill",
+    "equipment_needed": [],
+    "duration_minutes": null,
+    "progression_level": "intro",
+    "evidence_level": "coaching article",
+    "tags": [
+      "ultimate-baseball-training",
+      "video",
+      "social",
+      "auto-added"
+    ]
+  },
+  {
+    "title": "FOCUS ON THE PROCESS — Ultimate Baseball Training (YouTube)",
+    "url": "https://www.youtube.com/watch?v=R8huqEtjFhc",
+    "source_name": "Ultimate Baseball Training",
+    "source_tier": "Tier 3",
+    "topic": "baseball",
+    "age_band": "9-12 | 13-15",
+    "sport": "baseball",
+    "summary": "\"FOCUS ON THE PROCESS\" — a YouTube video from Ultimate Baseball Training. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
+    "key_principles": [
+      "fundamentals",
+      "confidence",
+      "individual skill work"
+    ],
+    "safe_to_prescribe": false,
+    "requires_guardrail": true,
+    "guardrail_reason": "Social-media creator content — inspiration only; must be age-scaled and defer to Pitch Smart and Tier-1 safety rules.",
+    "do_not_use_for": [
+      "pitch-count guidance",
+      "medical/injury advice"
+    ],
+    "coach_use_case": "Individual-skill drill inspiration.",
+    "player_use_case": "At-home skill videos.",
+    "parent_use_case": "Home-practice videos.",
+    "practice_format": "drill",
+    "equipment_needed": [],
+    "duration_minutes": null,
+    "progression_level": "intro",
+    "evidence_level": "coaching article",
+    "tags": [
+      "ultimate-baseball-training",
+      "video",
+      "social",
+      "auto-added"
+    ]
+  },
+  {
+    "title": "5 BEST “Old School” Hitting Tips — Ultimate Baseball Training (YouTube)",
+    "url": "https://www.youtube.com/watch?v=IJPjlaByqYw",
+    "source_name": "Ultimate Baseball Training",
+    "source_tier": "Tier 3",
+    "topic": "baseball",
+    "age_band": "9-12 | 13-15",
+    "sport": "baseball",
+    "summary": "\"5 BEST “Old School” Hitting Tips\" — a YouTube video from Ultimate Baseball Training. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
+    "key_principles": [
+      "fundamentals",
+      "confidence",
+      "individual skill work"
+    ],
+    "safe_to_prescribe": false,
+    "requires_guardrail": true,
+    "guardrail_reason": "Social-media creator content — inspiration only; must be age-scaled and defer to Pitch Smart and Tier-1 safety rules.",
+    "do_not_use_for": [
+      "pitch-count guidance",
+      "medical/injury advice"
+    ],
+    "coach_use_case": "Individual-skill drill inspiration.",
+    "player_use_case": "At-home skill videos.",
+    "parent_use_case": "Home-practice videos.",
+    "practice_format": "drill",
+    "equipment_needed": [],
+    "duration_minutes": null,
+    "progression_level": "intro",
+    "evidence_level": "coaching article",
+    "tags": [
+      "ultimate-baseball-training",
+      "video",
+      "social",
+      "auto-added"
+    ]
+  },
+  {
+    "title": "AVOID THESE BATTING PRACTICE MISTAKES! — Ultimate Baseball Training (YouTube)",
+    "url": "https://www.youtube.com/watch?v=JcUA0Xqe0v4",
+    "source_name": "Ultimate Baseball Training",
+    "source_tier": "Tier 3",
+    "topic": "baseball",
+    "age_band": "9-12 | 13-15",
+    "sport": "baseball",
+    "summary": "\"AVOID THESE BATTING PRACTICE MISTAKES!\" — a YouTube video from Ultimate Baseball Training. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
+    "key_principles": [
+      "fundamentals",
+      "confidence",
+      "individual skill work"
+    ],
+    "safe_to_prescribe": false,
+    "requires_guardrail": true,
+    "guardrail_reason": "Social-media creator content — inspiration only; must be age-scaled and defer to Pitch Smart and Tier-1 safety rules.",
+    "do_not_use_for": [
+      "pitch-count guidance",
+      "medical/injury advice"
+    ],
+    "coach_use_case": "Individual-skill drill inspiration.",
+    "player_use_case": "At-home skill videos.",
+    "parent_use_case": "Home-practice videos.",
+    "practice_format": "drill",
+    "equipment_needed": [],
+    "duration_minutes": null,
+    "progression_level": "intro",
+    "evidence_level": "coaching article",
+    "tags": [
+      "ultimate-baseball-training",
+      "video",
+      "social",
+      "auto-added"
+    ]
+  },
+  {
+    "title": "5 WORST “Old School” Hitting Tips — Ultimate Baseball Training (YouTube)",
+    "url": "https://www.youtube.com/watch?v=50VKr9anKAU",
+    "source_name": "Ultimate Baseball Training",
+    "source_tier": "Tier 3",
+    "topic": "baseball",
+    "age_band": "9-12 | 13-15",
+    "sport": "baseball",
+    "summary": "\"5 WORST “Old School” Hitting Tips\" — a YouTube video from Ultimate Baseball Training. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
+    "key_principles": [
+      "fundamentals",
+      "confidence",
+      "individual skill work"
+    ],
+    "safe_to_prescribe": false,
+    "requires_guardrail": true,
+    "guardrail_reason": "Social-media creator content — inspiration only; must be age-scaled and defer to Pitch Smart and Tier-1 safety rules.",
+    "do_not_use_for": [
+      "pitch-count guidance",
+      "medical/injury advice"
+    ],
+    "coach_use_case": "Individual-skill drill inspiration.",
+    "player_use_case": "At-home skill videos.",
+    "parent_use_case": "Home-practice videos.",
+    "practice_format": "drill",
+    "equipment_needed": [],
+    "duration_minutes": null,
+    "progression_level": "intro",
+    "evidence_level": "coaching article",
+    "tags": [
+      "ultimate-baseball-training",
+      "video",
+      "social",
+      "auto-added"
+    ]
+  },
+  {
+    "title": "Don’t Fear Failure! — Ultimate Baseball Training (YouTube)",
+    "url": "https://www.youtube.com/watch?v=5G46IgvzjkM",
+    "source_name": "Ultimate Baseball Training",
+    "source_tier": "Tier 3",
+    "topic": "baseball",
+    "age_band": "9-12 | 13-15",
+    "sport": "baseball",
+    "summary": "\"Don’t Fear Failure!\" — a YouTube video from Ultimate Baseball Training. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
+    "key_principles": [
+      "fundamentals",
+      "confidence",
+      "individual skill work"
+    ],
+    "safe_to_prescribe": false,
+    "requires_guardrail": true,
+    "guardrail_reason": "Social-media creator content — inspiration only; must be age-scaled and defer to Pitch Smart and Tier-1 safety rules.",
+    "do_not_use_for": [
+      "pitch-count guidance",
+      "medical/injury advice"
+    ],
+    "coach_use_case": "Individual-skill drill inspiration.",
+    "player_use_case": "At-home skill videos.",
+    "parent_use_case": "Home-practice videos.",
+    "practice_format": "drill",
+    "equipment_needed": [],
+    "duration_minutes": null,
+    "progression_level": "intro",
+    "evidence_level": "coaching article",
+    "tags": [
+      "ultimate-baseball-training",
+      "video",
+      "social",
+      "auto-added"
+    ]
+  },
+  {
+    "title": "Maximizing Your 2021 Summer Ball! (Summer Baseball Tips) — Ultimate Baseball Training (YouTube)",
+    "url": "https://www.youtube.com/watch?v=IZycQJrpfvc",
+    "source_name": "Ultimate Baseball Training",
+    "source_tier": "Tier 3",
+    "topic": "baseball",
+    "age_band": "9-12 | 13-15",
+    "sport": "baseball",
+    "summary": "\"Maximizing Your 2021 Summer Ball! (Summer Baseball Tips)\" — a YouTube video from Ultimate Baseball Training. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
+    "key_principles": [
+      "fundamentals",
+      "confidence",
+      "individual skill work"
+    ],
+    "safe_to_prescribe": false,
+    "requires_guardrail": true,
+    "guardrail_reason": "Social-media creator content — inspiration only; must be age-scaled and defer to Pitch Smart and Tier-1 safety rules.",
+    "do_not_use_for": [
+      "pitch-count guidance",
+      "medical/injury advice"
+    ],
+    "coach_use_case": "Individual-skill drill inspiration.",
+    "player_use_case": "At-home skill videos.",
+    "parent_use_case": "Home-practice videos.",
+    "practice_format": "drill",
+    "equipment_needed": [],
+    "duration_minutes": null,
+    "progression_level": "intro",
+    "evidence_level": "coaching article",
+    "tags": [
+      "ultimate-baseball-training",
+      "video",
+      "social",
+      "auto-added"
+    ]
   }
 ]

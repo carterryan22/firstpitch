@@ -1,0 +1,16 @@
+{
+  "description": "Opportunity-scoring model for competitor-research insights. Score each insight 1-5 on every dimension; opportunity_score = sum (range 8-40). >= mvp_threshold => MVP consideration. Do NOT just average star ratings. See competitor-research-corpus-plan.md \u00a77.",
+  "scale": { "min": 1, "max": 5 },
+  "max_score": 40,
+  "mvp_threshold": 32,
+  "dimensions": [
+    { "id": "frequency", "label": "Frequency", "measures": "How often this issue appears across sources." },
+    { "id": "severity", "label": "Severity", "measures": "How much it hurts the coach/player/parent." },
+    { "id": "youth_specificity", "label": "Youth baseball specificity", "measures": "Whether this is a real baseball problem, not generic app whining." },
+    { "id": "workflow_proximity", "label": "Workflow proximity", "measures": "How close it is to the product wedge (lineup \u2192 development loop)." },
+    { "id": "competitive_gap", "label": "Competitive gap", "measures": "Whether current apps clearly fail to solve it." },
+    { "id": "willingness_to_pay", "label": "Willingness to pay", "measures": "Whether users already pay or build workarounds." },
+    { "id": "trust_impact", "label": "Trust impact", "measures": "Whether it affects fairness, safety, stats accuracy, or parent conflict." },
+    { "id": "implementation_leverage", "label": "Implementation leverage", "measures": "Whether solving it unlocks multiple workflows." }
+  ]
+}

@@ -14,6 +14,7 @@ const METRICS: Array<{ key: string; label: string; unit: string; sport: Sport; a
   { key: "EV_LIVE",         label: "Exit Velo (Live)",        unit: "mph", sport: Sport.both,     ageBands: [AgeBand.AGE_13_15, AgeBand.AGE_16_PLUS] },
   { key: "BAT_SPEED",       label: "Bat Speed",               unit: "mph", sport: Sport.both,     ageBands: [AgeBand.AGE_13_15, AgeBand.AGE_16_PLUS] },
   { key: "ATTACK_ANGLE",    label: "Attack Angle",            unit: "deg", sport: Sport.both,     ageBands: [AgeBand.AGE_13_15, AgeBand.AGE_16_PLUS] },
+  { key: "DISTANCE",        label: "Batted-ball Distance",    unit: "ft",  sport: Sport.both,     ageBands: [AgeBand.AGE_13_15, AgeBand.AGE_16_PLUS] },
   { key: "HARD_HIT_PCT",    label: "Hard Hit %",              unit: "%",   sport: Sport.both,     ageBands: [AgeBand.AGE_13_15, AgeBand.AGE_16_PLUS] },
   { key: "K_RATE",          label: "Strikeout Rate",          unit: "%",   sport: Sport.both,     ageBands: [AgeBand.AGE_9_12, AgeBand.AGE_13_15, AgeBand.AGE_16_PLUS] },
   { key: "BB_RATE",         label: "Walk Rate",               unit: "%",   sport: Sport.both,     ageBands: [AgeBand.AGE_9_12, AgeBand.AGE_13_15, AgeBand.AGE_16_PLUS] },

@@ -16,6 +16,7 @@
     "typecheck": "npm run --workspaces --if-present typecheck",
     "eval": "tsx packages/eval/src/cli.ts",
     "seed": "tsx packages/db/src/seed.ts",
+    "research": "tsx packages/research/src/cli.ts",
     "qa": "npm --prefix scripts/qa-agent run qa",
     "qa:headed": "npm --prefix scripts/qa-agent run qa:headed",
     "launch-review": "npm --prefix scripts/launch-review run review",

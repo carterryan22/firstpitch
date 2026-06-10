@@ -39,3 +39,4 @@ Return a prioritized report — no file changes:
 - **⚠️ Voice violations**: file+line, the off-brand text, an on-brand rewrite preserving numbers + verification cues.
 - **Rule-ref / provenance issues**: orphaned IDs, missing `safe_to_prescribe:false`, missing guardrails.
 - **✅ Clean**: surfaces audited that passed.
+- **Assumptions & confidence**: flag every assumption about how copy renders or where a drill/mission is surfaced, and rate confidence 1–10 per call. Conservatism wins — when confidence on a safety item is low, escalate it to human review rather than clearing it.

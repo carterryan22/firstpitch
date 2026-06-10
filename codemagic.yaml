@@ -1,0 +1,66 @@
+# Codemagic CI — OPTIONAL cloud-Mac build → TestFlight for the First Pitch
+# Capacitor iOS shell. You don't need this if you build locally on your Mac;
+# it's here so you can cut TestFlight builds without a physical Mac.
+#
+# This file is INERT in GitHub Actions — it only runs if you connect the repo
+# to https://codemagic.io and trigger this workflow.
+#
+# One-time setup in the Codemagic UI before the first run:
+#   1. Teams → Integrations → App Store Connect: add an API key (Issuer ID,
+#      Key ID, .p8). Name the integration "First Pitch ASC" (or edit below).
+#   2. App Store Connect → register bundle id `app.firstpitch.coach`.
+#
+# NOTE on Info.plist: each CI run regenerates `ios/` from scratch, so manual
+# plist edits (WKAppBoundDomains, privacy strings) won't persist. Either commit
+# the generated `platform/mobile/ios/` project (drop it from mobile/.gitignore)
+# or add a step here that patches Info.plist with PlistBuddy. The simplest path
+# is to commit `ios/` once you've generated and configured it on your Mac.
+
+workflows:
+  ios-testflight:
+    name: First Pitch iOS → TestFlight
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    integrations:
+      app_store_connect: First Pitch ASC # ← must match the integration name in Codemagic UI
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: app.firstpitch.coach
+      vars:
+        FIRST_PITCH_APP_URL: "https://firstpitch.app"
+        XCODE_WORKSPACE: "platform/mobile/ios/App/App.xcworkspace"
+        XCODE_SCHEME: "App"
+      node: "24"
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Install web + shell deps
+        script: |
+          cd platform && npm ci --no-audit --no-fund
+          cd mobile && npm ci --no-audit --no-fund
+      - name: Add iOS platform, sync, generate assets
+        script: |
+          cd platform/mobile
+          npx cap add ios || true
+          npx cap sync ios
+          npx @capacitor/assets generate --ios || true
+      - name: Fetch signing profiles
+        script: xcode-project use-profiles
+      - name: Install CocoaPods
+        script: |
+          cd platform/mobile/ios/App && pod install
+      - name: Build IPA
+        script: |
+          cd platform/mobile/ios/App
+          xcode-project build-ipa --workspace App.xcworkspace --scheme "$XCODE_SCHEME"
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+        # Optional internal tester groups (must already exist in App Store Connect):
+        # beta_groups:
+        #   - First Pitch Coaches

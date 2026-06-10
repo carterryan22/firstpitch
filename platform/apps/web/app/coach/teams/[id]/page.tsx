@@ -30,7 +30,14 @@ export default async function TeamDetailPage({
 
   const { team, coaches, players, parents } = await getTeamRoster(id);
   if (!team) notFound();
-  const plans = await plansForTeam(id);
+  const [plans, rosterPlayers] = await Promise.all([
+    plansForTeam(id),
+    getRepos().players.byTeam(id),
+  ]);
+  const linkablePlayers = rosterPlayers.map((p) => ({
+    id: p.id,
+    name: `${p.firstName} ${p.lastName}`.trim(),
+  }));
 
   return (
     <div className="space-y-10">
@@ -62,6 +69,12 @@ export default async function TeamDetailPage({
             More
           </Link>
           <Link
+            href={`/coach/teams/${team.id}/memory`}
+            className="btn-ghost no-underline hover:no-underline"
+          >
+            🧠 Coach Memory
+          </Link>
+          <Link
             href={`/practice/new?teamId=${team.id}`}
             data-tour="team-build-practice"
             className="btn-primary no-underline hover:no-underline"
@@ -85,7 +98,7 @@ export default async function TeamDetailPage({
               Adding by email auto-provisions the account. They'll see this team after they sign in.
             </p>
             <div className="mt-3">
-              <AddMemberForm teamId={team.id} />
+              <AddMemberForm teamId={team.id} players={linkablePlayers} />
             </div>
           </Card>
         </section>

@@ -20,11 +20,15 @@ import type {
   PlanRecord,
   PlayerGameStatsRecord,
   PlayerRecord,
+  QuickTagRecord,
+  ParentReportRecord,
+  ParentReportStatus,
   SessionRecord,
   LoginTokenRecord,
   TeamMembershipRecord,
   TeamMemberRole,
   TeamRecord,
+  ThrowingLogRecord,
   UserRecord,
 } from "./types";
 
@@ -89,12 +93,33 @@ export interface Repos {
     update(id: string, patch: Partial<Omit<GameNoteRecord, "id" | "createdAt" | "gameId" | "teamId" | "playerId" | "authorUserId">>): Promise<GameNoteRecord | undefined>;
     delete(id: string): Promise<void>;
   };
+  quickTags: {
+    list(filter?: { teamId?: string; playerId?: string; playerIds?: string[]; gameId?: string; since?: string }): Promise<QuickTagRecord[]>;
+    byId(id: string): Promise<QuickTagRecord | undefined>;
+    create(input: Omit<QuickTagRecord, "id" | "createdAt">): Promise<QuickTagRecord>;
+    delete(id: string): Promise<void>;
+  };
+  parentReports: {
+    list(filter?: { teamId?: string; playerId?: string; playerIds?: string[]; status?: ParentReportStatus; periodStart?: string }): Promise<ParentReportRecord[]>;
+    byId(id: string): Promise<ParentReportRecord | undefined>;
+    /** Existing draft for the same (player, period), if any — used to avoid duplicate drafts. */
+    findForPeriod(playerId: string, periodStart: string): Promise<ParentReportRecord | undefined>;
+    create(input: Omit<ParentReportRecord, "id" | "createdAt">): Promise<ParentReportRecord>;
+    update(id: string, patch: Partial<Omit<ParentReportRecord, "id" | "createdAt" | "teamId" | "playerId">>): Promise<ParentReportRecord | undefined>;
+    delete(id: string): Promise<void>;
+  };
   playerGameStats: {
     list(filter?: { teamId?: string; gameId?: string; playerId?: string }): Promise<PlayerGameStatsRecord[]>;
     byId(id: string): Promise<PlayerGameStatsRecord | undefined>;
     upsert(input: Omit<PlayerGameStatsRecord, "id" | "createdAt">): Promise<PlayerGameStatsRecord>;
     delete(id: string): Promise<void>;
     deleteByGame(gameId: string): Promise<number>;
+  };
+  throwingLogs: {
+    list(filter?: { teamId?: string; playerId?: string; playerIds?: string[]; from?: string; to?: string }): Promise<ThrowingLogRecord[]>;
+    byId(id: string): Promise<ThrowingLogRecord | undefined>;
+    create(input: Omit<ThrowingLogRecord, "id" | "createdAt">): Promise<ThrowingLogRecord>;
+    delete(id: string): Promise<void>;
   };
   metricEntries: {
     list(filter?: { playerId?: string; playerIds?: string[]; metricKey?: string }): Promise<MetricEntryRecord[]>;
@@ -402,6 +427,80 @@ export function makeRepos(store: Store): Repos {
           if (i >= 0) db.gameNotes.splice(i, 1);
         }),
     },
+    quickTags: {
+      async list(filter) {
+        const all = (await store.read()).quickTags ?? [];
+        return all.filter(
+          (t) =>
+            (!filter?.teamId || t.teamId === filter.teamId) &&
+            (!filter?.playerId || t.playerId === filter.playerId) &&
+            (!filter?.playerIds || (t.playerId !== undefined && filter.playerIds.includes(t.playerId))) &&
+            (!filter?.gameId || t.gameId === filter.gameId) &&
+            (!filter?.since || t.createdAt >= filter.since),
+        );
+      },
+      byId: async (id) => ((await store.read()).quickTags ?? []).find((t) => t.id === id),
+      create: (input) =>
+        mutate((db) => {
+          if (!db.quickTags) db.quickTags = [];
+          const rec: QuickTagRecord = {
+            ...input,
+            id: cid("qt"),
+            createdAt: new Date().toISOString(),
+          };
+          db.quickTags.push(rec);
+          return rec;
+        }),
+      delete: (id) =>
+        mutate((db) => {
+          if (!db.quickTags) db.quickTags = [];
+          const i = db.quickTags.findIndex((t) => t.id === id);
+          if (i >= 0) db.quickTags.splice(i, 1);
+        }),
+    },
+    parentReports: {
+      async list(filter) {
+        const all = (await store.read()).parentReports ?? [];
+        return all.filter(
+          (r) =>
+            (!filter?.teamId || r.teamId === filter.teamId) &&
+            (!filter?.playerId || r.playerId === filter.playerId) &&
+            (!filter?.playerIds || filter.playerIds.includes(r.playerId)) &&
+            (!filter?.status || r.status === filter.status) &&
+            (!filter?.periodStart || r.periodStart === filter.periodStart),
+        );
+      },
+      byId: async (id) => ((await store.read()).parentReports ?? []).find((r) => r.id === id),
+      findForPeriod: async (playerId, periodStart) =>
+        ((await store.read()).parentReports ?? []).find(
+          (r) => r.playerId === playerId && r.periodStart === periodStart,
+        ),
+      create: (input) =>
+        mutate((db) => {
+          if (!db.parentReports) db.parentReports = [];
+          const rec: ParentReportRecord = {
+            ...input,
+            id: cid("prpt"),
+            createdAt: new Date().toISOString(),
+          };
+          db.parentReports.push(rec);
+          return rec;
+        }),
+      update: (id, patch) =>
+        mutate((db) => {
+          if (!db.parentReports) db.parentReports = [];
+          const rec = db.parentReports.find((r) => r.id === id);
+          if (!rec) return undefined;
+          Object.assign(rec, patch, { updatedAt: new Date().toISOString() });
+          return rec;
+        }),
+      delete: (id) =>
+        mutate((db) => {
+          if (!db.parentReports) db.parentReports = [];
+          const i = db.parentReports.findIndex((r) => r.id === id);
+          if (i >= 0) db.parentReports.splice(i, 1);
+        }),
+    },
     playerGameStats: {
       async list(filter) {
         const all = (await store.read()).playerGameStats ?? [];
@@ -444,6 +543,33 @@ export function makeRepos(store: Store): Repos {
           const before = db.playerGameStats.length;
           db.playerGameStats = db.playerGameStats.filter((s) => s.gameId !== gameId);
           return before - db.playerGameStats.length;
+        }),
+    },
+    throwingLogs: {
+      async list(filter) {
+        const ids = filter?.playerIds ? new Set(filter.playerIds) : undefined;
+        return ((await store.read()).throwingLogs ?? []).filter(
+          (l) =>
+            (!filter?.teamId || l.teamId === filter.teamId) &&
+            (!filter?.playerId || l.playerId === filter.playerId) &&
+            (!ids || ids.has(l.playerId)) &&
+            (!filter?.from || l.date >= filter.from) &&
+            (!filter?.to || l.date <= filter.to),
+        );
+      },
+      byId: async (id) => ((await store.read()).throwingLogs ?? []).find((l) => l.id === id),
+      create: (input) =>
+        mutate((db) => {
+          if (!db.throwingLogs) db.throwingLogs = [];
+          const rec: ThrowingLogRecord = { ...input, id: cid("tl"), createdAt: new Date().toISOString() };
+          db.throwingLogs.push(rec);
+          return rec;
+        }),
+      delete: (id) =>
+        mutate((db) => {
+          if (!db.throwingLogs) db.throwingLogs = [];
+          const i = db.throwingLogs.findIndex((l) => l.id === id);
+          if (i >= 0) db.throwingLogs.splice(i, 1);
         }),
     },
     metricEntries: {

@@ -1,12 +1,20 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { getRepos } from "@platform/storage";
-import { canPitchToday } from "@platform/safety";
+import {
+  canPitchToday,
+  buildLoadPassport,
+  loadStatusBadgeClass,
+  LOAD_STATUS_LABEL,
+  LOAD_FLAG_LABEL,
+} from "@platform/safety";
 import { getSession } from "../../../../lib/session";
 import { userCanManageTeam } from "../../../../lib/teams";
 import { ageFromDob, fullName, sortRoster } from "../../../../lib/players";
 import { nextAvailableDate, projectReadinessForGame } from "../../../../lib/pitchingBoard";
+import { playerThrowingEvents, outingsFromEvents } from "../../../../lib/throwingEvents";
 import { Card } from "../../../../components/ui";
+import { ThrowingLogForm } from "./ThrowingLogForm";
 
 export const metadata = { title: "Pitching board" };
 
@@ -35,14 +43,16 @@ export default async function PitchingBoardPage({ params }: { params: Promise<{ 
   if (!(await userCanManageTeam(session.user.id, id))) redirect("/coach");
 
   const repos = getRepos();
-  const [team, players, games] = await Promise.all([
+  const [team, players, games, throwingLogs] = await Promise.all([
     repos.teams.byId(id),
     repos.players.byTeam(id),
     repos.games.list({ teamId: id }),
+    repos.throwingLogs.list({ teamId: id }),
   ]);
   if (!team) notFound();
 
   const today = new Date();
+  const todayKey = today.toISOString().slice(0, 10);
   const fallbackAge = ageBandCenter(team.ageBand);
   const pitchers = sortRoster(players).filter((p) => p.canPitch);
 
@@ -53,21 +63,21 @@ export default async function PitchingBoardPage({ params }: { params: Promise<{ 
   const nextGameDate = nextGame ? new Date(nextGame.startsAt) : null;
 
   const rows = pitchers.map((p) => {
-    const outingsByDate: Record<string, number> = {};
+    const events = playerThrowingEvents(p.id, games, throwingLogs);
+    const outingsByDate = outingsFromEvents(events);
     let lastDate: string | null = null;
     let lastCount = 0;
-    for (const g of games) {
-      const entry = g.pitchCounts?.[p.id];
-      if (!entry || !entry.pitches) continue;
-      const day = (g.startsAt ?? "").slice(0, 10);
-      if (!day) continue;
-      outingsByDate[day] = (outingsByDate[day] ?? 0) + entry.pitches;
+    for (const [day, count] of Object.entries(outingsByDate)) {
       if (!lastDate || day > lastDate) {
         lastDate = day;
-        lastCount = entry.pitches;
+        lastCount = count;
       }
     }
     const age = p.dob ? ageFromDob(p.dob) : fallbackAge;
+    // Highest soreness logged for this player today, if any.
+    const soreToday = throwingLogs
+      .filter((l) => l.playerId === p.id && l.date === todayKey && l.soreness1to10)
+      .reduce((m, l) => Math.max(m, l.soreness1to10 ?? 0), 0);
     const check = canPitchToday({
       age,
       date: today,
@@ -91,7 +101,14 @@ export default async function PitchingBoardPage({ params }: { params: Promise<{ 
     const nextGameReadiness = nextGameDate
       ? projectReadinessForGame({ age, gameDate: nextGameDate, outingsByDate })
       : null;
-    return { player: p, age, lastDate, lastCount, week, check, nextAvailable, nextGameReadiness };
+    const passport = buildLoadPassport({
+      age,
+      today,
+      events,
+      soreness1to10: soreToday || undefined,
+      playerName: p.firstName,
+    });
+    return { player: p, age, lastDate, lastCount, week, check, nextAvailable, nextGameReadiness, passport };
   });
 
   const readyForNextGame = rows.filter((r) => r.nextGameReadiness?.ready).length;
@@ -106,8 +123,8 @@ export default async function PitchingBoardPage({ params }: { params: Promise<{ 
         </p>
         <h1 className="mt-1">Pitching board</h1>
         <p className="mt-1 text-sm text-slate-500">
-          Pitch Smart-aware availability for every pitcher on this team. Daily max comes from the
-          age table; rest comes from each player&apos;s last outing.
+          One arm-load status per pitcher — Pitch Smart rest plus bullpens, long toss, lessons, and
+          innings caught. Green is fresh, yellow means manage the volume, red owes rest.
         </p>
       </header>
 
@@ -132,6 +149,13 @@ export default async function PitchingBoardPage({ params }: { params: Promise<{ 
         </Card>
       ) : null}
 
+      {pitchers.length > 0 ? (
+        <ThrowingLogForm
+          teamId={id}
+          players={pitchers.map((p) => ({ id: p.id, name: fullName(p) }))}
+        />
+      ) : null}
+
       {rows.length === 0 ? (
         <Card>
           <p className="text-sm text-slate-500">
@@ -149,23 +173,13 @@ export default async function PitchingBoardPage({ params }: { params: Promise<{ 
                 <th className="px-4 py-3">Last outing</th>
                 <th className="px-4 py-3">7-day</th>
                 <th className="px-4 py-3">Daily max</th>
-                <th className="px-4 py-3">Status</th>
+                <th className="px-4 py-3">Arm load</th>
                 <th className="px-4 py-3">Next available</th>
                 {nextGameDate ? <th className="px-4 py-3">Next game</th> : null}
               </tr>
             </thead>
             <tbody>
-              {rows.map(({ player, age, lastDate, lastCount, week, check, nextAvailable, nextGameReadiness }) => {
-                const status = check.allowed
-                  ? check.warnings.length > 0
-                    ? { label: "Available • warn", cls: "badge-warn" }
-                    : { label: "Available", cls: "badge-ok" }
-                  : check.requiredRestDaysRemaining > 0
-                  ? {
-                      label: `Rest ${check.requiredRestDaysRemaining}d`,
-                      cls: "badge-danger",
-                    }
-                  : { label: "Blocked", cls: "badge-danger" };
+              {rows.map(({ player, age, lastDate, lastCount, week, check, nextAvailable, nextGameReadiness, passport }) => {
                 return (
                   <tr key={player.id} className="border-t border-slate-100">
                     <td className="px-4 py-3">
@@ -182,22 +196,37 @@ export default async function PitchingBoardPage({ params }: { params: Promise<{ 
                     </td>
                     <td className="px-4 py-3 text-slate-600">{week}p</td>
                     <td className="px-4 py-3 text-slate-600">{check.effectiveDailyMax}</td>
-                    <td className="px-4 py-3">
-                      <span className={status.cls}>{status.label}</span>
-                      {check.reasons.length > 0 ? (
-                        <ul className="mt-1 list-disc pl-4 text-xs text-slate-500">
-                          {check.reasons.map((r) => (
-                            <li key={r}>{r}</li>
-                          ))}
-                        </ul>
-                      ) : null}
-                      {check.warnings.length > 0 ? (
-                        <ul className="mt-1 list-disc pl-4 text-xs text-amber-700">
-                          {check.warnings.map((w) => (
-                            <li key={w}>{w}</li>
-                          ))}
-                        </ul>
-                      ) : null}
+                    <td className="px-4 py-3 align-top">
+                      <span className={loadStatusBadgeClass(passport.status)}>
+                        {LOAD_STATUS_LABEL[passport.status]}
+                      </span>
+                      <p className="mt-1 text-xs text-slate-600">{passport.headline}</p>
+                      {passport.flags.length > 0 ? (
+                        <details className="mt-1">
+                          <summary className="cursor-pointer text-xs text-slate-500">
+                            {passport.flags.length} flag{passport.flags.length === 1 ? "" : "s"}
+                          </summary>
+                          <ul className="mt-1 space-y-1 text-xs">
+                            {passport.flags.map((f) => (
+                              <li
+                                key={f.code + f.message}
+                                className={f.severity === "block" ? "text-red-600" : "text-amber-700"}
+                              >
+                                <span className="font-semibold">{LOAD_FLAG_LABEL[f.code]}:</span> {f.message}
+                              </li>
+                            ))}
+                          </ul>
+                          <p className="mt-2 text-xs text-slate-500">
+                            7-day load {passport.rollingWeekLoad} · bullpen{" "}
+                            {passport.bullpenOkToday ? "OK" : "hold"}
+                          </p>
+                          <p className="mt-1 border-l-2 border-field-700/40 pl-2 text-xs italic text-slate-600">
+                            {passport.parentSummary}
+                          </p>
+                        </details>
+                      ) : (
+                        <p className="mt-1 text-xs italic text-slate-500">{passport.parentSummary}</p>
+                      )}
                     </td>
                     <td className="px-4 py-3 text-slate-600">
                       {nextAvailable.inDays === 0 ? (
