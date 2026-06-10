@@ -103,7 +103,7 @@ export default async function TransferPage({
         <h1 className="mt-1">Transfer Score</h1>
         <p className="mt-1 text-sm text-slate-500">
           Is the training showing up in games? Pick a training-block window and we compare game
-          stats before vs. during the block — never concluding from too small a sample.
+          stats before vs. during the block, never concluding from too small a sample.
         </p>
       </header>
 
@@ -181,7 +181,7 @@ export default async function TransferPage({
                     <span className={m.delta === 0 ? "text-slate-400" : m.improved ? "text-field-700" : "text-rose-600"}>
                       {m.delta > 0 ? "+" : ""}
                       {fmtVal(m.format, m.delta)}
-                      {m.delta !== 0 ? (m.improved ? " ✓" : " ✗") : " —"}
+                      {m.delta !== 0 ? (m.improved ? " ✓" : " ✗") : " -"}
                     </span>
                   </td>
                 </tr>

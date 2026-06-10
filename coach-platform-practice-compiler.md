@@ -146,7 +146,7 @@ Example: *"Group pitchers and catchers away from the high-volume throwing statio
 |---|---|
 | **Build Practice** | Balanced plan from time/players/coaches/space |
 | **Fix Last Game** | Coach picks the symptom (too many walks, Ks, bad throws, missed cutoffs, poor baserunning, low energy, catchers struggled, couldn't hit velo) → compiler builds around it |
-| **GameChanger-Driven** | Imports stats (core §15) → diagnoses team issue → recommends focus → builds plan. *Ingests/interprets GameChanger signals; does not compete with GameChanger's own layer.* |
+| **GameChanger-Driven** | Imports stats (core §15) → diagnoses team issue → recommends focus → builds plan. *Ingests/interprets imported GameChanger stats; lives outside the scorekeeping app's own layer.* |
 | **Tournament Recovery** | Light throwing only, tee/contact, baserunning reads, confidence reps, mobility — no overuse (core §12; aligns with Pitch Smart rest guidance) |
 | **Indoor / Rainout** | Cage/gym/no-balls/no-bats/one-net/30-min → footwork, dry swing, reaction, mirror, plyo/sock-ball patterns, video review |
 | **Substitute Coach** | For a parent volunteer: "Run this exact 45-min practice. One cue per station. Rotate every 8 min." Setup diagram, one cue, safety note, success picture, common mistake, easy scoring. (Makes the app beloved by rec coaches.) |
@@ -334,7 +334,7 @@ Bad: *"Here are 20 hitting drills."* Great: *"Your 10U team has 75 minutes, 12 p
 
 **Then add:** GameChanger import + player mapping (core §15) → data-driven practice suggestions → practice quality score → anti-line + grouping engines → live practice companion → grounded AI practice planner → game-transfer check.
 
-> **The strategic shift this pillar completes:** the product is no longer just player development — it's a **development operating system for the time between games.** GameChanger owns the game; this platform owns what to practice, how to practice, who needs what, what parents do at home, whether it transferred, how coaches plan better practices, and how facilities verify progress.
+> **The strategic shift this pillar completes:** the product is no longer just player development — it's a **development operating system for the time between games.** A scorekeeping app owns the game; this platform owns what to practice, how to practice, who needs what, what parents do at home, whether it transferred, how coaches plan better practices, and how facilities verify progress.
 
 ---
 

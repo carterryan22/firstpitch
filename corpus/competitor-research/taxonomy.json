@@ -79,7 +79,7 @@
     { "id": "multi_game_tournament_planner", "label": "Multi-game tournament planner" },
     { "id": "gamechanger_import", "label": "GameChanger import" },
     { "id": "pocket_radar_import", "label": "Pocket Radar import" },
-    { "id": "manual_device_import", "label": "Rapsodo/HitTrax/Blast/DK manual import" },
+    { "id": "manual_device_import", "label": "Rapsodo/HitTrax/Blast manual import" },
     { "id": "player_owned_profile", "label": "Player-owned profile" },
     { "id": "parent_progress_report", "label": "Parent progress report" },
     { "id": "practice_plan_generator", "label": "Practice-plan generator" },

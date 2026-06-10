@@ -219,7 +219,7 @@ export default async function ParentDashboard() {
             href={`/missions?age=${ageRef}`}
             className="btn-primary mt-4 inline-flex min-h-[44px] items-center no-underline hover:no-underline md:mt-0"
           >
-            Start — {home.duration_minutes ?? 5} min
+            Start ({home.duration_minutes ?? 5} min)
           </Link>
         </section>
       ) : null}

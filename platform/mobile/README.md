@@ -138,6 +138,16 @@ npm run run:android
 7. **Age rating**: youth sports → set "Made for Kids" appropriately. If we
    collect any data from users under 13, we trigger COPPA-equivalent
    requirements.
+8. **Privacy policy URL** (required for App Store Connect and the Kids
+   Category): `https://firstpitch.app/policy/privacy`. It is COPPA-first
+   (children never self-register; verifiable parental consent; no behavioral
+   ads or child profiling; export/delete rights).
+9. **No third-party tracking in kid flows**: the only analytics is optional,
+   cookieless Plausible, and it is gated to **public marketing pages only** —
+   `app/layout.tsx` renders `<Analytics />` solely for signed-out visitors, so
+   no tracking script ever loads while a child's roster, metrics, or lineup is
+   on screen. Keep it that way; do not move `<Analytics />` outside the
+   signed-out branch.
 
 ## What the web app already does to be a good iOS citizen
 
@@ -163,7 +173,19 @@ resolve from the native shell at runtime):
 | `@capacitor/share`               | installed | Share-digest button |
 | `@capacitor/haptics`             | installed | Button confirmations |
 | `@capacitor/local-notifications` | installed | `scheduleLocalNotification()` — pitch-rest end reminders (no iOS plist string needed for local notifications) |
+| `@capacitor/network`             | installed | `OfflineBanner` — warns coaches the moment they lose signal on a field so they know edits may not be saving. No permission or plist string required. |
 | `@capacitor/camera`              | **referenced in code, plugin NOT installed** | `captureFromCamera()` in `AttachmentsCell.tsx` falls back to a file picker until the plugin is added. Enabling it requires `NSCameraUsageDescription` + `NSPhotoLibraryUsageDescription` and — because this is a youth app — a deliberate COPPA review of capturing minors' photos before you turn it on. |
+
+### Guideline 4.2 (minimum functionality) — why this isn't a "thin wrapper"
+
+Apple can reject web wrappers that add nothing a website couldn't. First Pitch
+ships genuine native capability that a Safari tab cannot: a native share sheet,
+haptic feedback, scheduled **local notifications** (pitch-rest / arm-care
+reminders that fire even when the app is closed), a native **splash screen** and
+status-bar treatment, and **offline-aware connectivity** (`@capacitor/network`)
+that warns a coach on a signal-dead diamond that their edits may not be saving.
+If a reviewer still pushes back, the next native lever is `@capacitor/camera`
+for swing-video capture — deliberately gated behind a COPPA review (see below).
 
 ## Roadmap (native-only features)
 

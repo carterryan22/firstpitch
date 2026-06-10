@@ -2,7 +2,7 @@ import { getRepos } from "@platform/storage";
 import { TeamTabs } from "./TeamTabs";
 
 /**
- * Team shell: persistent 5-tab navigation (WoS §2.3) around every
+ * Team shell: persistent 5-tab navigation (game-day ref §2.3) around every
  * `/coach/teams/{id}/...` surface. Auth + 404 stay on the individual pages;
  * this layout only adds the tab chrome and bottom padding so the fixed mobile
  * tab bar never overlaps page content.

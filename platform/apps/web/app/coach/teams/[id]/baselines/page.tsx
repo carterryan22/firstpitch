@@ -101,7 +101,7 @@ export default async function BaselinesPage({ params }: { params: Promise<{ id: 
                     if (!v) {
                       return (
                         <td key={m.key} className="px-2 py-3 text-center text-slate-300">
-                          —
+                          -
                         </td>
                       );
                     }

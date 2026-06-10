@@ -208,7 +208,7 @@ export default async function PlayerBaselinePage({
                     <span className="text-slate-500"> {def?.unit}</span>
                   </div>
                   <div className="mt-1 text-xs text-slate-500">
-                    Current: <span className="font-mono">{p.currentValue ?? "—"}</span>
+                    Current: <span className="font-mono">{p.currentValue ?? "-"}</span>
                     {p.goal.targetDate ? (
                       <> · Due {new Date(p.goal.targetDate).toLocaleDateString()}</>
                     ) : null}

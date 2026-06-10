@@ -69,7 +69,7 @@ export default async function FavoritesPage() {
                       <h3 className="mt-1">{f.name}</h3>
                       <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
                         {rs.count > 0 ? (
-                          <span className="quote text-ink">{stars(rs.avg)} <span className="text-dirt-300">{rs.avg.toFixed(1)}</span></span>
+                          <span className="quote text-ink">{stars(rs.avg)} <span className="text-dirt-700">{rs.avg.toFixed(1)}</span></span>
                         ) : (
                           <span className="quote">No reviews</span>
                         )}

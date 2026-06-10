@@ -25,7 +25,7 @@ const NUMERIC_RULES: Partial<Record<LineupRuleKey, { unit: string; max: number }
 
 const BOOL_RULES: LineupRuleKey[] = ["pitcherBenchInningBefore", "equalBenchTime"];
 
-/** Order rules the way Who's on Second groups them in Settings → §8.2. */
+/** Order rules the way the game-day competitor groups them in Settings → §8.2. */
 const RULE_ORDER: LineupRuleKey[] = [
   "minFieldInnings",
   "minInfieldInnings",
@@ -39,7 +39,7 @@ const RULE_ORDER: LineupRuleKey[] = [
 ];
 
 /**
- * Value-provenance badge (WoS §8.2): does this rule's current value still come
+ * Value-provenance badge (game-day ref §8.2): does this rule's current value still come
  * from the applied rule set ("League rule", tagged with the governing body) or
  * has the coach changed it ("Custom")? Off rules show nothing.
  */
@@ -166,7 +166,7 @@ export function RulesSettingsForm({
           </label>
           {presetId ? (
             <span className="text-xs text-slate-500">
-              {ruleSetPreset(presetId)?.blurb} — review below, then Save.
+              {ruleSetPreset(presetId)?.blurb}. Review below, then Save.
             </span>
           ) : (
             <span className="text-xs text-slate-500">

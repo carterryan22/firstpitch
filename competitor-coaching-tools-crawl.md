@@ -1,14 +1,13 @@
-# Dugout Edge — Competitor Crawl
+# Coaching-Tools Competitor — Crawl Notes
 
-Source target: `https://www.dugoutedge.com/premium/practice-plans` (sign-in gated).
-Crawled equivalents (public): `/practice-plans`, `/practice-plans/baseball`, `/practice-planner`, `/drills`, `/pricing`.
+Anonymized field notes on a coaching-tools competitor (practice-plan library, drill library, lineup generator, printables). Brand name, URLs, and proprietary slugs have been removed; only generic structure and our own takeaways are retained.
 Date: 2026-05-26.
 
 ---
 
 ## 1. Premium gate behavior
 
-`/premium/practice-plans` redirects unauthenticated visitors to the **Sign In** screen (email/password + Google OAuth). No public preview of premium-only plan content. The premium plan content is the same library shown on `/practice-plans/baseball` and `/practice-plans/softball`, but premium unlocks:
+The premium practice-plans area redirects unauthenticated visitors to a **Sign In** screen (email/password + Google OAuth). No public preview of premium-only plan content. The premium plan content mirrors the public baseball/softball library, but premium unlocks:
 
 - Save / reuse plans against a team roster
 - Custom team drills
@@ -20,10 +19,10 @@ Date: 2026-05-26.
 
 ## 2. Pricing
 
-- **Dugout Edge Pro — $8/mo monthly** (yearly plan advertised as **"Save 38%"** vs monthly).
+- **Pro tier — ~$8/mo monthly** (annual plan discounted vs monthly).
 - 7-day free trial, cancel anytime.
-- Stripe-processed; Visa/MC/Amex/Discover.
-- League/group pricing exists at `/league-pricing`.
+- Stripe-processed; major cards.
+- League/group pricing tier exists.
 - No refunds post-trial (case-by-case).
 
 Premium feature matrix (vs free public tools):
@@ -36,12 +35,12 @@ Premium feature matrix (vs free public tools):
 | Lineup algorithm | Basic | Advanced (pin + reshuffle) |
 | PDF/CSV exports | Limited | Full |
 | Reusable practice playbook | — | ✓ |
-| Drill library (240+ drills, 25+ templates) | Browse only | Add to plans |
+| Drill library (a few hundred drills, ~25 templates) | Browse only | Add to plans |
 | Custom team drills | — | ✓ |
 | Sideline printables + coaching handbook | — | ✓ |
 | Priority email support | — | ✓ |
 
-Note: the pricing page claims "240+ drills, 25+ templates" in one place and "100+ drills" in the FAQ — inconsistent self-reporting.
+Note: their marketing claims an inconsistent drill count (a few hundred in one place, ~100 in the FAQ) — inconsistent self-reporting.
 
 ---
 
@@ -50,8 +49,8 @@ Note: the pricing page claims "240+ drills, 25+ templates" in one place and "100
 The library is organized as **age bands × format** with three classes per band:
 
 - **Downloadable** — static PDF, branded thumbnail, no customization.
-- **Customizable** — opens in the drag-and-drop Practice Planner with a `customizeSlug=v2-{ageBand}-{duration}-{coachCount}coach-baseball-{variant}` URL parameter.
-- **Blank templates** (6 layouts): Simple, Detailed, Station-Based, Compact, Drill-Focused, Generic Printable.
+- **Customizable** — opens in a drag-and-drop practice planner parameterized by age band, duration, coach count, and a variant tag.
+- **Blank templates** (~6 layouts): simple, detailed, station-based, compact, drill-focused, generic printable.
 
 ### Age bands covered
 4-6 (Tee Ball), 7-8 (Coach Pitch), 9-10, 11-12, 13-14, 15-16, 17-18, 18+.
@@ -66,21 +65,12 @@ The library is organized as **age bands × format** with three classes per band:
 - 17-18: 6 customizable.
 - 18+: 6 customizable.
 
-Hero metrics on the index: **"12+ Templates · 50+ Practice Plans · 100% Free"**.
+Hero metrics on the index advertise a dozen-plus templates and ~50 free practice plans.
 
-### Slug taxonomy (customizable plans)
-Pattern: `v2-{age}-{duration}min-{N}coach-baseball-{a|b|defense}`
+### Plan-generation pattern
+Customizable plans are parameterized by age, duration, coach count, and a small set of variant tags (team-building vs skills, single- vs multi-coach station rotations, plus a defense-focus specialty for one band).
 
-Variant naming scheme that repeats across age bands:
-- 1-coach-a → "Team Building"
-- 1-coach-b → "Skills Development"
-- 2-coach-a → "Team Station Rotations"
-- 2-coach-b → "Skills Station Rotations"
-- 3-coach-a → "Advanced Team Stations"
-- 3-coach-b → "Advanced Fun Stations"
-- 9-10 only: `1coach-baseball-defense` → "Team Defense Focus" (90 min)
-
-So the library is **algorithmically generated** from a 6-variant × 8-age-band matrix (mostly 120 min, with a single 90-min specialty). This is a useful signal about how their content team scaled — and how thin the differentiation between bands likely is.
+So the library is **algorithmically generated** from a ~6-variant × ~8-age-band matrix (mostly 120 min, with a single 90-min specialty). This is a useful signal about how their content team scaled — and how thin the differentiation between bands likely is.
 
 ---
 
@@ -149,7 +139,7 @@ Top-level nav groups:
 - **Printables**: Lineup Card Templates, Coaching Printables, Scorecards (baseball/softball), Scorebooks
 - **Company**: About, Pricing, Reviews, FAQs, Contact, Compare
 
-Heavy SEO-content tail on every page (long-form "Complete Guide to…" copy, FAQ accordions). Pages are Next.js (image URLs are `_next/image?url=...&dpl=dpl_...`).
+Heavy SEO-content tail on every page (long-form "Complete Guide to…" copy, FAQ accordions). Built on Next.js.
 
 ---
 
@@ -157,14 +147,14 @@ Heavy SEO-content tail on every page (long-form "Complete Guide to…" copy, FAQ
 
 Relevant deltas vs `coach-platform-build-plan.md` / `product-feature-addendum.md`:
 
-1. **Generation is templated, not AI.** Dugout Edge's "customizable plans" are a 6-variant × 8-age-band matrix — no per-team adaptation, no diagnosis-driven content. Our `compiler` + `diagnosis` packages already aim higher; the differentiator to lean on is **plans that respond to last-week's data + roster context**, not just static catalog filtering.
-2. **Price anchor at $8/mo** for a single-team coach. Our pricing should account for this anchor — premium positioning needs either league/club bundles (their `league-pricing` gap) or a clearly richer per-team value (compliance, fairness reports, player development tracking).
+1. **Generation is templated, not AI.** The competitor's "customizable plans" are a ~6-variant × ~8-age-band matrix — no per-team adaptation, no diagnosis-driven content. Our `compiler` + `diagnosis` packages already aim higher; the differentiator to lean on is **plans that respond to last-week's data + roster context**, not just static catalog filtering.
+2. **Price anchor at ~$8/mo** for a single-team coach. Our pricing should account for this anchor — premium positioning needs either league/club bundles (their league-pricing gap) or a clearly richer per-team value (compliance, fairness reports, player development tracking).
 3. **No safety / compliance posture.** Zero mention of Pitch Smart, throwing limits, age-band rules, refusal logic. Our `tier1-safety-rules.json` + `corpus/pitch-smart-tables.json` + safety package is an untouched moat.
-4. **No fairness/equity tooling.** Their "Advanced Lineup Algorithm" is marketed as pin-and-reshuffle. Our Slice 8 fairness grid (per-team innings × position, season + last-5) is a structurally different artifact — parents and league boards will value this; Dugout Edge has nothing comparable.
+4. **No fairness/equity tooling.** Their "Advanced Lineup Algorithm" is marketed as pin-and-reshuffle. Our Slice 8 fairness grid (per-team innings × position, season + last-5) is a structurally different artifact — parents and league boards will value this; the competitor has nothing comparable.
 5. **No parent/player-facing surface.** Entirely coach-side. Our `parent/` and `missions/` app routes are net-new category.
 6. **Block taxonomy to mirror.** Their block names (WARM-UP AND THROWING, STATION A: TEE WORK, TEAM DEFENSE, FUN GAME, BASERUNNING) align with conventions coaches already recognize — worth aligning our compiler's section headers to this vocabulary for UX familiarity.
 7. **Field-resource input is good signal.** Quantities of full field / cage / bullpen / infield-only / open space is a clean constraint format we should accept in our practice compiler. Not currently surfaced in `coach-platform-practice-compiler.md`.
-8. **Coach-count → station fan-out** is their core scheduling primitive. Worth making explicit in our compiler too (already implicit in `customizeSlug` pattern `{N}coach`).
+8. **Coach-count → station fan-out** is their core scheduling primitive. Worth making explicit in our compiler too (already implicit in their coach-count plan parameter).
 9. **Free PDF export is table stakes.** They give it away with no account. Our gated exports need to either match this for a free tier or pair the gate with clear premium value (roster-aware, fairness-flagged, safety-annotated).
 10. **Library is SEO bait, not product.** Each plan page is wrapped in 800+ words of generic "how to run a practice" content. Their growth motion is organic search, not product-led. We should expect their funnel to be Google → free PDF → trial nag.
 

@@ -99,9 +99,8 @@ export function Hero({
           <dl className="mt-6 flex flex-wrap gap-x-10 gap-y-3">
             {stats.map((s) => (
               <div key={s.label} className="flex items-baseline gap-2">
-                <dt className="sr-only">{s.label}</dt>
-                <dd className="text-3xl text-ink" style={{ fontFamily: "var(--font-display)" }}>{s.value}</dd>
-                <span className="text-[11px] uppercase tracking-[0.18em] text-dirt-300" style={{ fontFamily: "var(--font-type)" }}>{s.label}</span>
+                <dt className="order-2 text-[11px] uppercase tracking-[0.18em] text-dirt-700" style={{ fontFamily: "var(--font-type)" }}>{s.label}</dt>
+                <dd className="order-1 m-0 text-3xl text-ink" style={{ fontFamily: "var(--font-display)" }}>{s.value}</dd>
               </div>
             ))}
           </dl>

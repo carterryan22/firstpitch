@@ -20,7 +20,7 @@ export default async function DrillsPage({ searchParams }: { searchParams: Promi
   if (tier) drills = drills.filter((d) => d.environment_tier === tier);
 
   return (
-    <main className="mx-auto max-w-5xl space-y-6">
+    <div className="mx-auto max-w-5xl space-y-6">
       <header className="space-y-2">
         <h1>Drill library</h1>
         <p className="text-sm uppercase tracking-wide text-ink/60">
@@ -31,7 +31,7 @@ export default async function DrillsPage({ searchParams }: { searchParams: Promi
           <p className="card text-sm">
             {invalidTopic ? <>Unknown topic <code>{invalidTopic}</code>. </> : null}
             {invalidTier ? (
-              <>Unknown tier <code>{invalidTier}</code> — try {Object.keys(TIER_LABELS).join(", ")} or short forms T1–T4. </>
+              <>Unknown tier <code>{invalidTier}</code>. Try {Object.keys(TIER_LABELS).join(", ")} or short forms T1–T4. </>
             ) : null}
             <Link href="/drills" className="underline">Clear filters</Link>.
           </p>
@@ -105,7 +105,7 @@ export default async function DrillsPage({ searchParams }: { searchParams: Promi
           ))}
         </ul>
       )}
-    </main>
+    </div>
   );
 }
 

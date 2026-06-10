@@ -93,7 +93,7 @@ export function playerCapabilityBadges(
     badges.push({
       label: "Injured",
       tone: "danger",
-      title: player.injuryNote ? `Injured — ${player.injuryNote}` : "Marked injured by a coach.",
+      title: player.injuryNote ? `Injured: ${player.injuryNote}` : "Marked injured by a coach.",
     });
   }
 

@@ -11,7 +11,7 @@ type Status = "granted" | "expired" | "invalid" | "already" | "missing";
 const STATUS_COPY: Record<Status, { tone: string; title: string; body: string }> = {
   granted: {
     tone: "badge-ok",
-    title: "Consent confirmed — thank you!",
+    title: "Consent confirmed, thank you!",
     body:
       "Your child's profile is now active. You stay in control: you can review, export, or delete their data anytime from Your data rights.",
   },
@@ -86,7 +86,7 @@ export default async function ConsentPage({
       <section className="space-y-3">
         <h2 className="m-0">What we collect for a child</h2>
         <ul className="list-disc pl-6 space-y-1">
-          <li>Name, jersey number, and age band — to build lineups and practices.</li>
+          <li>Name, jersey number, and age band, to build lineups and practices.</li>
           <li>Optional development metrics and goals a coach or you enter.</li>
           <li>Nothing more than is reasonably necessary to run training.</li>
         </ul>

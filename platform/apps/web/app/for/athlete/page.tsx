@@ -3,7 +3,7 @@ import { Hero, FeatureGrid, RoleTile } from "../../components/ui";
 
 export const dynamic = "force-dynamic";
 export const metadata = {
-  title: "For athletes — Know your role, get your reps",
+  title: "For athletes: Know your role, get your reps",
   description:
     "Triple Play scenarios for baseball-IQ reps, position-aware drills, and home missions you can do in the backyard. Short, focused, age-appropriate.",
 };
@@ -45,8 +45,8 @@ export default async function ForAthlete() {
         <FeatureGrid
           items={[
             {
-              title: "Triple Play — baseball IQ on demand",
-              description: "Position-aware scenarios. Runner on second, one out, ball hit to short — where do you go? Quick reps that make game day slower in your head.",
+              title: "Triple Play: baseball IQ on demand",
+              description: "Position-aware scenarios. Runner on second, one out, ball hit to short. Where do you go? Quick reps that make game day slower in your head.",
             },
             {
               title: "Home missions tailored to your spot",
@@ -63,7 +63,7 @@ export default async function ForAthlete() {
       <section className="space-y-4">
         <header className="flex items-end justify-between">
           <h2 className="m-0">Pick up where you left off</h2>
-          <span className="quote text-sm">Tap and go — no setup</span>
+          <span className="quote text-sm">Tap and go, no setup</span>
         </header>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <RoleTile
@@ -81,7 +81,7 @@ export default async function ForAthlete() {
           <RoleTile
             href="/missions?age=11"
             title="Home missions"
-            description="Short drills for the backyard. Pick your age — missions filter to fit."
+            description="Short drills for the backyard. Pick your age. Missions filter to fit."
             cta="See missions"
           />
           <RoleTile
@@ -99,7 +99,7 @@ export default async function ForAthlete() {
           <RoleTile
             href="/safety"
             title="Why coach won't let you throw 80 pitches"
-            description="The same rulebook coaches use. Pitch counts, rest days, heat rules — straight from Pitch Smart."
+            description="The same rulebook coaches use. Pitch counts, rest days, heat rules, straight from Pitch Smart."
             cta="Read the rules"
           />
         </div>
@@ -110,7 +110,7 @@ export default async function ForAthlete() {
           <div>
             <h3>Got an account? Sign in to track your missions and goals</h3>
             <p className="mt-2 text-sm text-ink/80">
-              Most players sign in through their parent&apos;s account. Ask a parent or coach to set you up — then your dashboard tracks the reps you put in.
+              Most players sign in through their parent&apos;s account. Ask a parent or coach to set you up, then your dashboard tracks the reps you put in.
             </p>
           </div>
           <a href="/login" className="btn-primary mt-4 inline-flex md:mt-0 no-underline hover:no-underline">

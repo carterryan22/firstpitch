@@ -16,26 +16,26 @@
 
 | # | Score | MVP | Platform | Product implication |
 | --- | --- | --- | --- | --- |
-| 1 | 38 | ★ | GameChanger | The translation layer ('this number means this, therefore do this next') is the single highest-leverage MVP bet. |
-| 2 | 36 | ★ | GameChanger | Position around the missing layer, not against GameChanger: 'GameChanger tracks the game. We track the player.' |
-| 3 | 35 | ★ | Stack the Lineup | Make fair rotation a core feature with season-long history: game-by-game grid, innings-by-position, bench count, IF/OF ratio, catcher innings, pitcher/catcher eligibility, parent-proof history, exportable PDF. |
-| 4 | 34 | ★ | Rizzler Baseball | Build a multi-game weekend planner that cascades Pitch Smart rest-day enforcement across games — a strong wedge that combines fairness, planning, and arm-care safety. |
-| 5 | 33 | ★ | GameChanger | Design around repeatable skill tests, personal progress, and coach-approved goals — NOT youth game stats. |
+| 1 | 38 | ★ | Competitor A | The translation layer ('this number means this, therefore do this next') is the single highest-leverage MVP bet. |
+| 2 | 36 | ★ | Competitor A | Position around the missing layer, not against Competitor A: 'Competitor A tracks the game. We track the player.' |
+| 3 | 35 | ★ | Competitor D | Make fair rotation a core feature with season-long history: game-by-game grid, innings-by-position, bench count, IF/OF ratio, catcher innings, pitcher/catcher eligibility, parent-proof history, exportable PDF. |
+| 4 | 34 | ★ | Competitor E | Build a multi-game weekend planner that cascades Pitch Smart rest-day enforcement across games — a strong wedge that combines fairness, planning, and arm-care safety. |
+| 5 | 33 | ★ | Competitor A | Design around repeatable skill tests, personal progress, and coach-approved goals — NOT youth game stats. |
 | 6 | 33 | ★ | (category: training) | Killer workflow: coach assigns a focus -> parent executes a home version -> player completes -> coach sees if it helped. Make home homework first-class. |
-| 7 | 32 | ★ | Rizzler Baseball | Pitch-count + compliance is now table stakes. Our differentiation must be REAL Pitch Smart rest-day enforcement (vs user-set caps) tied to the development loop, not just a counter. |
+| 7 | 32 | ★ | Competitor E | Pitch-count + compliance is now table stakes. Our differentiation must be REAL Pitch Smart rest-day enforcement (vs user-set caps) tied to the development loop, not just a counter. |
 | 8 | 32 | ★ | (category: hardware_metrics) | Support manual entry first + optional device imports. Start with EV, pitch velo, throwing velo, home-to-first, 60-yd, catcher pop, strike %, first-pitch strike %, 9-box command, attendance, coach notes. |
-| 9 | 31 |  | Driveline / TRAQ | A unified, low-cost measurable hub (manual entry first + optional device import) is validated demand; TRAQ proves the value but leaves the youth/rec price point wide open. |
-| 10 | 31 |  | GameChanger | Own the wedge INSIDE lineups: optimize for fairness + development + arm-care, with season-long playing-time accountability, where GameChanger optimizes to win. |
+| 9 | 31 |  | Competitor K | A unified, low-cost measurable hub (manual entry first + optional device import) is validated demand; Competitor K proves the value but leaves the youth/rec price point wide open. |
+| 10 | 31 |  | Competitor A | Own the wedge INSIDE lineups: optimize for fairness + development + arm-care, with season-long playing-time accountability, where Competitor A optimizes to win. |
 
 ## MVP-candidate insights (≥ 32)
 
-- **38** — GameChanger (`cr-0002-stats-but-now-what`): The translation layer ('this number means this, therefore do this next') is the single highest-leverage MVP bet.
-- **36** — GameChanger (`cr-0001-gc-not-development-first`): Position around the missing layer, not against GameChanger: 'GameChanger tracks the game. We track the player.'
-- **35** — Stack the Lineup (`cr-0004-fair-rotation-wedge`): Make fair rotation a core feature with season-long history: game-by-game grid, innings-by-position, bench count, IF/OF ratio, catcher innings, pitcher/catcher eligibility, parent-proof history, exportable PDF.
-- **34** — Rizzler Baseball (`cr-0020-tournament-weekend-pitching-planning`): Build a multi-game weekend planner that cascades Pitch Smart rest-day enforcement across games — a strong wedge that combines fairness, planning, and arm-care safety.
-- **33** — GameChanger (`cr-0003-youth-stats-drama-garbage`): Design around repeatable skill tests, personal progress, and coach-approved goals — NOT youth game stats.
+- **38** — Competitor A (`cr-0002-stats-but-now-what`): The translation layer ('this number means this, therefore do this next') is the single highest-leverage MVP bet.
+- **36** — Competitor A (`cr-0001-not-development-first`): Position around the missing layer, not against Competitor A: 'Competitor A tracks the game. We track the player.'
+- **35** — Competitor D (`cr-0004-fair-rotation-wedge`): Make fair rotation a core feature with season-long history: game-by-game grid, innings-by-position, bench count, IF/OF ratio, catcher innings, pitcher/catcher eligibility, parent-proof history, exportable PDF.
+- **34** — Competitor E (`cr-0020-tournament-weekend-pitching-planning`): Build a multi-game weekend planner that cascades Pitch Smart rest-day enforcement across games — a strong wedge that combines fairness, planning, and arm-care safety.
+- **33** — Competitor A (`cr-0003-youth-stats-drama-garbage`): Design around repeatable skill tests, personal progress, and coach-approved goals — NOT youth game stats.
 - **33** — (category: training) (`cr-0013-between-practices-structure`): Killer workflow: coach assigns a focus -> parent executes a home version -> player completes -> coach sees if it helped. Make home homework first-class.
-- **32** — Rizzler Baseball (`cr-0005-rizzler-compliance-moat`): Pitch-count + compliance is now table stakes. Our differentiation must be REAL Pitch Smart rest-day enforcement (vs user-set caps) tied to the development loop, not just a counter.
+- **32** — Competitor E (`cr-0005-compliance-moat`): Pitch-count + compliance is now table stakes. Our differentiation must be REAL Pitch Smart rest-day enforcement (vs user-set caps) tied to the development loop, not just a counter.
 - **32** — (category: hardware_metrics) (`cr-0018-measurables-fragmented`): Support manual entry first + optional device imports. Start with EV, pitch velo, throwing velo, home-to-first, 60-yd, catcher pop, strike %, first-pitch strike %, 9-box command, attendance, coach notes.
 
 ## Top pain points
@@ -63,7 +63,7 @@
 | Player-owned profile | 5 |
 | Skill test dashboard | 5 |
 | Training recommendations | 5 |
-| Rapsodo/HitTrax/Blast/DK manual import | 4 |
+| Rapsodo/HitTrax/Blast manual import | 4 |
 | Exportable PDF | 3 |
 | Team-level development dashboard | 3 |
 | Fair rotation generator | 2 |

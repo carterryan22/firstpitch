@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
       magicLink,
       "",
       "This link expires in 15 minutes and can only be used once.",
-      "If you didn't request it, ignore this email — no account changes happen until the link is opened.",
+      "If you didn't request it, ignore this email. No account changes happen until the link is opened.",
     ].join("\n"),
     html: [
       "<p>Tap the link below to sign in to First Pitch.</p>",

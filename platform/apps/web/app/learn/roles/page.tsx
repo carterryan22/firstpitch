@@ -10,7 +10,7 @@ import { PrintButton } from "../../components/PrintButton";
 export const metadata: Metadata = {
   title: "Your Role on the Team",
   description:
-    "Every spot in the batting order and every position on the field has a job — and a personality. Meet the characters that make a baseball team work.",
+    "Every spot in the batting order and every position on the field has a job, and a personality. Meet the characters that make a baseball team work.",
 };
 
 export default function RolesPage() {
@@ -22,7 +22,7 @@ export default function RolesPage() {
         </p>
         <h1 className="m-0">Your Role on the Team</h1>
         <p className="max-w-3xl text-slate-600">
-          A great team is nine kids doing nine different jobs really well — not
+          A great team is nine kids doing nine different jobs really well, not
           nine kids all trying to be the same player. Find your spot, meet your
           character, and learn why your role matters every single inning.
         </p>
@@ -45,7 +45,7 @@ export default function RolesPage() {
           <div>
             <h2 className="m-0">The Batting Order</h2>
             <p className="mt-1 max-w-2xl text-sm text-slate-600">
-              Nine spots, nine jobs — plus three more if your team bats
+              Nine spots, nine jobs, plus three more if your team bats
               everyone. Coaches don&apos;t put the best hitter first and the
               &quot;worst&quot; hitter last. They build a lineup like a story,
               with each spot setting up the next.
@@ -60,7 +60,7 @@ export default function RolesPage() {
             your job, get on base, run hard, and pass the bat.&rdquo;
           </blockquote>
           <figcaption className="mt-2 text-xs uppercase tracking-wide text-slate-500">
-            — Coach
+            Coach
           </figcaption>
         </figure>
 
@@ -76,7 +76,7 @@ export default function RolesPage() {
           <div>
             <h2 className="m-0">Fielding Positions</h2>
             <p className="mt-1 max-w-2xl text-sm text-slate-600">
-              Pitcher to right field — every glove on the diamond has a
+              Pitcher to right field. Every glove on the diamond has a
               superpower. Some you see on every pitch, some win the game with
               one play. All nine matter.
             </p>
@@ -90,7 +90,7 @@ export default function RolesPage() {
             the play, and turn the ball into outs.&rdquo;
           </blockquote>
           <figcaption className="mt-2 text-xs uppercase tracking-wide text-slate-500">
-            — Coach
+            Coach
           </figcaption>
         </figure>
 
@@ -106,7 +106,7 @@ export default function RolesPage() {
         <p className="mt-2 text-sm text-slate-700">
           A leadoff hitter who can&apos;t bunt loses games. A right fielder who
           backs up first base on every grounder wins them. The best players in
-          the world are the ones who learn <em>their</em> job first — and then
+          the world are the ones who learn <em>their</em> job first, and then
           help the player next to them do <em>theirs</em>.
         </p>
       </section>

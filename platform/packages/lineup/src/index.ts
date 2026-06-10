@@ -23,7 +23,7 @@ export type Position = (typeof POSITIONS)[number] | (typeof EXTRA_POSITIONS)[num
 export type Slot = Position | "BN";
 export type Rating = "preferred" | "ok" | "avoid";
 
-/** Defensive presets matching the Dugout Edge / common youth IA. */
+/** Defensive presets matching common youth IA. */
 export type DefensivePreset = "standard9" | "standard10" | "coachPitch";
 export const PRESET_POSITIONS: Record<DefensivePreset, Position[]> = {
   // Standard 9 — full diamond.

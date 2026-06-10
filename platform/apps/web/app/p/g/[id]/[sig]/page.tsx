@@ -83,11 +83,11 @@ export default async function PressBoxPage({
 
       <section className="card space-y-3">
         <h2 className="m-0 text-lg">Roster</h2>
-        <p className="text-xs text-dirt-700">First names only — parent-safe view.</p>
+        <p className="text-xs text-dirt-700">First names only. Parent-safe view.</p>
         <ul className="grid grid-cols-2 gap-2 text-sm md:grid-cols-3">
           {roster.map((p) => (
             <li key={p.id} className="flex items-baseline gap-2">
-              <span className="quote text-dirt-700">#{p.jerseyNumber ?? "—"}</span>
+              <span className="quote text-dirt-700">#{p.jerseyNumber ?? "-"}</span>
               <span>{p.firstName}</span>
             </li>
           ))}
@@ -116,12 +116,12 @@ export default async function PressBoxPage({
                   return (
                     <tr key={pid} className="border-b border-dirt-200">
                       <td className="py-1 pr-3">
-                        <span className="quote text-dirt-700">#{p.jerseyNumber ?? "—"}</span>{" "}
+                        <span className="quote text-dirt-700">#{p.jerseyNumber ?? "-"}</span>{" "}
                         {p.firstName}
                       </td>
                       {lineup.map((inning, i) => (
                         <td key={i} className="px-2 py-1 text-center">
-                          {inning[pid] ?? "—"}
+                          {inning[pid] ?? "-"}
                         </td>
                       ))}
                     </tr>
@@ -150,7 +150,7 @@ export default async function PressBoxPage({
             {pitchEntries.map(({ player, entry }) => (
               <li key={player!.id} className="flex justify-between border-b border-dirt-200 py-1">
                 <span>
-                  <span className="quote text-dirt-700">#{player!.jerseyNumber ?? "—"}</span>{" "}
+                  <span className="quote text-dirt-700">#{player!.jerseyNumber ?? "-"}</span>{" "}
                   {player!.firstName}
                 </span>
                 <span className="quote">

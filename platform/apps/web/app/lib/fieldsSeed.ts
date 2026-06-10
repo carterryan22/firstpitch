@@ -42,7 +42,7 @@ export const FIELD_SEEDS: FieldSeed[] = [
     type: "baseball",
     surface: "mixed",
     lights: false,
-    notes: "Tight foul lines — heads up on the third-base side. Decent dugouts.",
+    notes: "Tight foul lines. Heads up on the third-base side. Decent dugouts.",
   },
   {
     slug: "federal-field-bellevue-wa",
@@ -62,7 +62,7 @@ export const FIELD_SEEDS: FieldSeed[] = [
     type: "baseball",
     surface: "grass",
     lights: false,
-    notes: "Hidden gem. Bring water — fountain doesn't always work.",
+    notes: "Hidden gem. Bring water. Fountain doesn't always work.",
   },
   {
     slug: "boeing-mariners-care-athletic-field-bellevue-wa",
@@ -72,7 +72,7 @@ export const FIELD_SEEDS: FieldSeed[] = [
     type: "baseball",
     surface: "turf",
     lights: true,
-    notes: "All-turf showpiece. Reserve ahead — heavy demand.",
+    notes: "All-turf showpiece. Reserve ahead, heavy demand.",
   },
   {
     slug: "field-2-bellevue-wa-3",
@@ -92,7 +92,7 @@ export const FIELD_SEEDS: FieldSeed[] = [
     type: "baseball",
     surface: "grass",
     lights: false,
-    notes: "Standard rec diamond next to the playground — parents have a spot to park kids during practice.",
+    notes: "Standard rec diamond next to the playground, so parents have a spot to park kids during practice.",
   },
   {
     slug: "field-6-issaquah-wa",
@@ -102,7 +102,7 @@ export const FIELD_SEEDS: FieldSeed[] = [
     type: "baseball",
     surface: "grass",
     lights: true,
-    notes: "Foul balls go into the parking lot — park accordingly.",
+    notes: "Foul balls go into the parking lot, so park accordingly.",
   },
   {
     slug: "issaquah-community-ball-park-1-issaquah-wa",
@@ -122,7 +122,7 @@ export const FIELD_SEEDS: FieldSeed[] = [
     type: "softball",
     surface: "dirt",
     lights: true,
-    notes: "Softball-size diamond. Shared parking with ICBP #1 — arrive early for tournaments.",
+    notes: "Softball-size diamond. Shared parking with ICBP #1, so arrive early for tournaments.",
   },
   {
     slug: "central-park-tball-issaquah-wa",
@@ -132,7 +132,7 @@ export const FIELD_SEEDS: FieldSeed[] = [
     type: "tee-ball",
     surface: "grass",
     lights: false,
-    notes: "Shade for parents on the first-base side. Playground 20 yards away — a win.",
+    notes: "Shade for parents on the first-base side. Playground 20 yards away, a win.",
   },
 ];
 

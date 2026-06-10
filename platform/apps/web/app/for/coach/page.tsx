@@ -4,7 +4,7 @@ import { Hero, FeatureGrid, RoleTile } from "../../components/ui";
 
 export const dynamic = "force-dynamic";
 export const metadata = {
-  title: "For coaches — Build a safe practice in under a minute",
+  title: "For coaches: Build a safe practice in under a minute",
   description:
     "Compile age-appropriate practice plans gated by Pitch Smart, NSCA, and CDC. Manage your roster, share plans, and never guess at pitch counts again.",
 };
@@ -29,7 +29,7 @@ export default async function ForCoach() {
             Show up with a plan. <em>Not a clipboard full of guesses.</em>
           </>
         }
-        description="Pick age, length, and focus areas. The compiler returns a safety-checked practice plan with warm-up, station rotations, and a closer — gated by Pitch Smart pitch counts, weather rules, and equipment on hand."
+        description="Pick age, length, and focus areas. The compiler returns a safety-checked practice plan with warm-up, station rotations, and a closer, gated by Pitch Smart pitch counts, weather rules, and equipment on hand."
         primary={
           signedInAsCoach
             ? { href: "/coach", label: "Open coach dashboard" }
@@ -66,7 +66,7 @@ export default async function ForCoach() {
       <section className="space-y-4">
         <header className="flex items-end justify-between">
           <h2 className="m-0">Your coach workflow</h2>
-          <span className="quote text-sm">Each tile is a real route — try them now</span>
+          <span className="quote text-sm">Each tile is a real route. Try them now</span>
         </header>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <RoleTile
@@ -96,7 +96,7 @@ export default async function ForCoach() {
           <RoleTile
             href="/safety"
             title="Safety rulebook"
-            description="The corpus that gates every plan. Sourced, dated, reviewable — show parents anytime."
+            description="The corpus that gates every plan. Sourced, dated, reviewable. Show parents anytime."
             cta="Read the rules"
           />
           <RoleTile

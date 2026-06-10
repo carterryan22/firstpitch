@@ -68,7 +68,7 @@ export default async function FairnessPage({
   }));
 
   // Fairness metrics. Verdicts use deviation from the roster mean of field
-  // innings (WoS §9.2 wording: "Sitting more than most" / "Even" / "Playing
+  // innings (game-day ref §9.2 wording: "Sitting more than most" / "Even" / "Playing
   // more than most"). A player is flagged when they're more than ~15% off the
   // mean, so a balanced roster reads "Even" across the board.
   const innings = rows.map((r) => r.fieldInnings);
@@ -81,7 +81,7 @@ export default async function FairnessPage({
   );
 
   function verdict(field: number): { label: string; cls: string } {
-    if (meanField === 0) return { label: "—", cls: "badge" };
+    if (meanField === 0) return { label: "-", cls: "badge" };
     if (field < meanField - band) return { label: "Sitting more than most", cls: "badge-warn" };
     if (field > meanField + band) return { label: "Playing more than most", cls: "badge-info" };
     return { label: "Even", cls: "badge-ok" };
@@ -97,7 +97,7 @@ export default async function FairnessPage({
   }
 
   // Surface the single biggest imbalance as a coach nudge (the "Improve" the
-  // WoS reference calls out — explain *why* + who to move).
+  // game-day reference calls out — explain *why* + who to move).
   const sorted = rows.slice().sort((a, b) => a.fieldInnings - b.fieldInnings);
   const lowest = sorted[0];
   const highest = sorted[sorted.length - 1];

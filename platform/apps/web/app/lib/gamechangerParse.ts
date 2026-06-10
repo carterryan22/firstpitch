@@ -222,7 +222,7 @@ export function parseGameChangerCsv(
   const headers = splitCsvLine(lines[0] ?? "", sep);
   const kind = detectKind(headers);
   if (kind === "unknown") {
-    warnings.push("Could not detect batting/pitching/fielding block — header markers not recognized.");
+    warnings.push("Could not detect batting/pitching/fielding block. Header markers not recognized.");
   }
   const ids = findIdentityCols(headers);
 

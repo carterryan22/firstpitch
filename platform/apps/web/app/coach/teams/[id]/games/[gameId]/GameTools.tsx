@@ -19,7 +19,7 @@ export type GameToolsGame = {
 };
 
 /**
- * Game Tools dropdown (Who's on Second §7.2.4 parity). Keeps advanced verbs out
+ * Game Tools dropdown (game-day-competitor §7.2.4 parity). Keeps advanced verbs out
  * of the primary UI: Revert to Draft, Complete Game, Game Stats, Edit Game
  * Details (modal — there is intentionally NO `/edit` route), Mark as Scrimmage,
  * Duplicate, Share Lineup, Print, Delete. Every action hits the existing

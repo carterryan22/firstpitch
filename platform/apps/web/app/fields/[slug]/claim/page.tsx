@@ -50,7 +50,7 @@ export default async function ClaimFieldPage({ params }: { params: Promise<Param
         <h2 className="m-0 text-base uppercase">Coming soon</h2>
         <p className="text-sm">
           We&apos;re finishing the claim workflow now. Tell us you want this field and we&apos;ll
-          verify and hand you the keys (figuratively — please don&apos;t mail us actual keys).
+          verify and hand you the keys (figuratively, please don&apos;t mail us actual keys).
         </p>
         <p className="text-sm">
           For now, email{" "}

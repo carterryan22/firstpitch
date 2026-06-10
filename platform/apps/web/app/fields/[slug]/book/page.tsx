@@ -28,7 +28,7 @@ export default async function BookFieldPage({
         <h1>Request booking help for <em>{field.name}</em>.</h1>
         <p className="quote">
           We&apos;ll collect the details and send you the official booking link or contact for the
-          field manager. We don&apos;t yet auto-confirm slots — but we get you to the right person
+          field manager. We don&apos;t yet auto-confirm slots, but we get you to the right person
           fast.
         </p>
       </header>
@@ -38,7 +38,7 @@ export default async function BookFieldPage({
       ) : (
         <div className="card max-w-lg">
           <h3 className="m-0">Sign in to send the request</h3>
-          <p className="mt-2 text-sm">No password — we email you a magic link.</p>
+          <p className="mt-2 text-sm">No password. We email you a magic link.</p>
           <Link href={`/login?next=/fields/${field.slug}/book`} className="btn-primary mt-3 inline-flex no-underline hover:no-underline">
             Send magic link
           </Link>

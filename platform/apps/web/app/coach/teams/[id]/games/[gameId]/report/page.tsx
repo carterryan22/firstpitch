@@ -42,7 +42,7 @@ export default async function GameReportPage({
       : score.us < score.them
       ? "L"
       : "T"
-    : "—";
+    : "-";
 
   return (
     <div className="space-y-6 print:space-y-3">
@@ -122,7 +122,7 @@ export default async function GameReportPage({
                       </span>{" "}
                       {fullName(p)}
                     </td>
-                    <td className="px-4 py-2 text-slate-700">{att ?? "—"}</td>
+                    <td className="px-4 py-2 text-slate-700">{att ?? "-"}</td>
                     <td className="px-4 py-2 text-slate-700">{s?.fieldInnings ?? 0}</td>
                     <td className="px-4 py-2 text-slate-700">{s?.benchInnings ?? 0}</td>
                     <td className="px-4 py-2 text-slate-700">
@@ -130,7 +130,7 @@ export default async function GameReportPage({
                     </td>
                     <td className="px-4 py-2 text-slate-500">{positions}</td>
                     <td className="px-4 py-2 text-slate-700">
-                      {pitchRow?.pitches ? `${pitchRow.pitches}p / ${pitchRow.innings ?? 0}ip` : "—"}
+                      {pitchRow?.pitches ? `${pitchRow.pitches}p / ${pitchRow.innings ?? 0}ip` : "-"}
                     </td>
                   </tr>
                 );

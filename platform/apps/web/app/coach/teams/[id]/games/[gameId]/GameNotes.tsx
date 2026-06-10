@@ -122,7 +122,7 @@ export function GameNotes({ gameId, innings, roster, initialNotes }: Props) {
               onChange={(e) => setInningIdx(e.target.value)}
               className="rounded border border-slate-300 bg-white px-2 py-1"
             >
-              <option value="">—</option>
+              <option value="">-</option>
               {Array.from({ length: innings }, (_, i) => (
                 <option key={i} value={i}>
                   Inning {i + 1}
@@ -233,7 +233,7 @@ export function GameNotes({ gameId, innings, roster, initialNotes }: Props) {
         )}
       </ul>
       <p className="text-xs text-slate-500">
-        Notes attach to the player record. Toggle sharing on/off any time — parents see shared notes in the family dashboard; players see them in their account view.
+        Notes attach to the player record. Toggle sharing on/off any time. Parents see shared notes in the family dashboard; players see them in their account view.
       </p>
     </section>
   );

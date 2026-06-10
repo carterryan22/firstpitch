@@ -4,7 +4,7 @@ import { getRepos } from "@platform/storage";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-// WoS URL-grammar parity: the reference IA addresses team surfaces as
+// Game-day-competitor URL-grammar parity: the reference IA addresses team surfaces as
 // `/teams/{slug}/roster`, `/teams/{slug}/games/{id}`, etc. Our coach surfaces
 // live at `/coach/teams/{id}/…` (id-based, auth-gated). This catch-all resolves
 // the slug to a team id and forwards to the canonical coach route, so external

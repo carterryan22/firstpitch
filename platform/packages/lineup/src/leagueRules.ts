@@ -1,16 +1,16 @@
 /**
  * League-rule constraints for lineup generation.
  *
- * Distilled from the four highest-signal Dugout Edge feature requests still
- * unmet on their `/feature-requests` board (Coaches DJ, Phillip, Ryan, Josh),
- * generalised into a declarative rule shape we can both validate against and
- * feed into `autoLineup` as soft constraints.
+ * Distilled from the four highest-signal coaching-tools-competitor feature
+ * requests still unmet on their public feature board, generalised into a
+ * declarative rule shape we can both validate against and feed into
+ * `autoLineup` as soft constraints.
  *
- * - DJ:      Minimum playing time + infield-by-inning N + no-consecutive-sits.
- * - Phillip: Position-pair locks (lock a tandem like P+C, shuffle the rest).
- * - Ryan:    No two innings in a row in the outfield.
- * - Josh:    Pair a pitcher's bench-inning with the inning before they pitch
- *            (so they can warm up).
+ * - Minimum playing time + infield-by-inning N + no-consecutive-sits.
+ * - Position-pair locks (lock a tandem like P+C, shuffle the rest).
+ * - No two innings in a row in the outfield.
+ * - Pair a pitcher's bench-inning with the inning before they pitch
+ *   (so they can warm up).
  */
 
 import type { Inning, Position, Slot } from "./index";
@@ -42,22 +42,22 @@ export interface LeagueRules {
    * to warm up. (Generator tries; validator confirms.)
    */
   pitcherBenchInningBefore?: boolean;
-  /** Phillip: tandem position locks. Honored by `autoLineup` if passed in. */
+  /** Tandem position locks. Honored by `autoLineup` if passed in. */
   pairedPositions?: PositionPairLock[];
   /**
-   * WoS "Equal bench time": no player sits a second inning until every present
+   * Equal bench time: no player sits a second inning until every present
    * player has sat at least once (i.e. bench innings stay within 1 of each
    * other across the roster).
    */
   equalBenchTime?: boolean;
   /**
-   * WoS "No consecutive position innings": a player may not play the same
+   * No consecutive position innings: a player may not play the same
    * defensive position more than this many innings in a row.
    */
   maxConsecutiveSamePosition?: number;
-  /** WoS "Minimum infield innings per game": each present player needs ≥ this. */
+  /** Minimum infield innings per game: each present player needs ≥ this. */
   minInfieldInnings?: number;
-  /** WoS "Minimum outfield innings per game": each present player needs ≥ this. */
+  /** Minimum outfield innings per game: each present player needs ≥ this. */
   minOutfieldInnings?: number;
 }
 
@@ -86,7 +86,7 @@ export type LineupRuleKey =
   | "minOutfieldInnings";
 
 /**
- * Coach-voice label + origin for each rule, mirroring the Who's on Second
+ * Coach-voice label + origin for each rule, mirroring the game-day competitor's
  * Settings UX (§8.2) where every rule shows a plain-English name and an origin
  * badge — `Little League` for governing-body defaults vs `Custom` for the ones
  * we added. Drives the rule-adherence panel so a coach can tell at a glance
@@ -150,7 +150,7 @@ export const LINEUP_RULE_META: Record<
 };
 
 /**
- * One-tap rule-set presets, mirroring Who's on Second's "Apply rule set" wizard
+ * One-tap rule-set presets, mirroring the game-day competitor's "Apply rule set" wizard
  * (§2.1, §8.2) where a coach picks a governing body + age band and gets the
  * mandated minimum-play rules in a single action instead of toggling each rule.
  * `rules` is a complete `LeagueRules` value (anything omitted = rule off).
@@ -253,7 +253,7 @@ export function ruleSetPreset(id: RuleSetPresetId): RuleSetPreset | undefined {
 }
 
 /**
- * Per-rule value provenance for the Settings surface (WoS §8.2 parity).
+ * Per-rule value provenance for the Settings surface (game-day ref §8.2 parity).
  *
  * Given the team's current rule values and the id of the rule-set preset last
  * applied, decide whether each rule's *value* still comes from that governing-body
@@ -409,7 +409,7 @@ export function validateLineup(
       }
     }
 
-    // minInfieldInnings (WoS)
+    // minInfieldInnings (game-day ref)
     if (rules.minInfieldInnings !== undefined) {
       const infield = slots.filter(
         (s) => s && s !== "BN" && INFIELD_POSITIONS.has(s as Position)
@@ -423,7 +423,7 @@ export function validateLineup(
       }
     }
 
-    // minOutfieldInnings (WoS)
+    // minOutfieldInnings (game-day ref)
     if (rules.minOutfieldInnings !== undefined) {
       const outfield = slots.filter(
         (s) => s && s !== "BN" && OUTFIELD_POSITIONS.has(s as Position)
@@ -437,7 +437,7 @@ export function validateLineup(
       }
     }
 
-    // maxConsecutiveSamePosition (WoS)
+    // maxConsecutiveSamePosition (game-day ref)
     if (rules.maxConsecutiveSamePosition !== undefined) {
       let prev: Slot | undefined;
       let run = 0;
@@ -462,7 +462,7 @@ export function validateLineup(
     }
   }
 
-  // equalBenchTime (WoS): bench innings stay within 1 across the roster — no
+  // equalBenchTime (game-day ref): bench innings stay within 1 across the roster — no
   // player sits a second time until everyone has sat once.
   if (rules.equalBenchTime && playerIds.length > 0) {
     const benchByPlayer = new Map<string, number>();

@@ -186,7 +186,7 @@ To stop the fork, each doc gets one job:
 
 ### D9 — Monetization: who pays, and the coach-churn trap 🔶 Recommended
 
-**Position / reality** — Monetization is **not absent in the spec set** (only in the handoff). There's a full ladder: **Free / Coach $39 / Multi-Team $79 / Club $299 / League $799** ([coach-platform-build-plan.md](coach-platform-build-plan.md) Pricing Ladder; [market-research-positioning.md](market-research-positioning.md) §11). For reference, Dugout Edge sells at ~$8/mo (repo memory).
+**Position / reality** — Monetization is **not absent in the spec set** (only in the handoff). There's a full ladder: **Free / Coach $39 / Multi-Team $79 / Club $299 / League $799** ([coach-platform-build-plan.md](coach-platform-build-plan.md) Pricing Ladder; [market-research-positioning.md](market-research-positioning.md) §11). For reference, the coaching-tools competitor sells at ~$8/mo (repo memory).
 
 **Conflict** — Volunteer rec coaches are price-sensitive, and narrow lineup tools sell cheap. The realistic payer is **parents (per-player passport)** or **leagues/clubs (B2B)** — not the individual volunteer coach. Plus **coach churn**: rec coaches quit when their kid ages out, so coach-side acquisition never compounds the way a player-side dataset would.
 

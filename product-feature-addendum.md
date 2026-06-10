@@ -2,7 +2,7 @@
 
 **Companion to:** `player-development-metric-schema.md` (the core engineering spec). That document defines the metrics, the closed-loop training engine, driver-tree diagnosis, safety guardrails, the 9-box module, the verification ladder (§8.1), and the data model. **This addendum does not redefine those** — it specifies the product, UX, account, gamification, and business layers that sit on top of the engine.
 
-**Product thesis:** this is not a stat tracker. It is a **youth baseball/softball development operating system** — the layer that owns the space between GameChanger (*what happened*), Perfect Game (*how you compare*), YouTube (*random drills*), and facilities (*paid training*). It answers the one question none of them do: **what should this player work on next, how do we do it safely, and is it actually working?**
+**Product thesis:** this is not a stat tracker. It is a **youth baseball/softball development operating system** — the layer that owns the space between scorekeeping apps (*what happened*), showcase platforms (*how you compare*), YouTube (*random drills*), and facilities (*paid training*). It answers the one question none of them do: **what should this player work on next, how do we do it safely, and is it actually working?**
 
 > **Reading note:** features below are documented at equal depth. Sequencing lives in the core spec's build order (§18.2) and in the *Phase tags* on each feature here (`[P1]`–`[P4]`). A `[P1]` feature is MVP; `[P4]` is post-development-maturity. The tag is the only prioritization signal; depth of treatment is intentionally uniform.
 
@@ -399,7 +399,7 @@ Especially for younger kids: track sprint, jump, agility, throwing, balance, coo
 **For players:** *Beat your score. Level up your skills. Prove your progress.*
 **Cross-audience:** *Simple enough for parents. Fun enough for kids. Structured enough for coaches. Verified enough for older players.*
 
-**The OS framing:** the app owns the space between GameChanger (*what happened*), Perfect Game (*how you compare*), YouTube (*random drills*), facilities (*paid training*), and the parent's recurring question (*what do we do next?*). It answers: **what should this player work on next, how do we do it safely, and is it actually working?**
+**The OS framing:** the app owns the space between scorekeeping apps (*what happened*), showcase platforms (*how you compare*), YouTube (*random drills*), facilities (*paid training*), and the parent's recurring question (*what do we do next?*). It answers: **what should this player work on next, how do we do it safely, and is it actually working?**
 
 ---
 

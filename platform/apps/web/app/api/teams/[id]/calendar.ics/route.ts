@@ -85,7 +85,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
       `DTSTAMP:${icsDate(p.createdAt) || start}`,
       `DTSTART:${start}`,
       `DTEND:${end}`,
-      `SUMMARY:${escapeText(`Practice — ${p.name}`)}`,
+      `SUMMARY:${escapeText(`Practice: ${p.name}`)}`,
       ...(p.location ? [`LOCATION:${escapeText(p.location)}`] : []),
       `DESCRIPTION:${escapeText(desc)}`,
       "END:VEVENT",

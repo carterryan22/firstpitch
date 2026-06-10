@@ -34,7 +34,7 @@ export default function PolicyPage() {
       <section className="space-y-3">
         <h2 className="m-0">AI never replaces a coach, doctor, or parent.</h2>
         <p>
-          We use AI to draft text, summarize, and search — never to diagnose injuries, predict
+          We use AI to draft text, summarize, and search, never to diagnose injuries, predict
           college recruitment, rank kids publicly, or give mental-health advice. Read the full{" "}
           <Link href="/policy/ai-boundaries" className="underline">AI boundaries page</Link> for
           what&apos;s in and out of scope.
@@ -63,7 +63,7 @@ export default function PolicyPage() {
       <section className="space-y-3">
         <h2 className="m-0">What we won&apos;t do with your data.</h2>
         <ul className="list-disc pl-6 space-y-1">
-          <li>We won&apos;t sell or rent personally identifiable data — ever.</li>
+          <li>We won&apos;t sell or rent personally identifiable data, ever.</li>
           <li>We won&apos;t publish a player&apos;s metrics, video, or notes outside their team without explicit coach + parent action.</li>
           <li>We won&apos;t use your team&apos;s data to train third-party models without an opt-in.</li>
           <li>We won&apos;t keep deleted accounts beyond what the law requires.</li>
@@ -73,7 +73,7 @@ export default function PolicyPage() {
       <section className="space-y-3">
         <h2 className="m-0">Reporting a problem.</h2>
         <p>
-          Bad field info, safety concern, mistaken claim, or anything that feels off — email{" "}
+          Bad field info, safety concern, mistaken claim, or anything that feels off, email{" "}
           <a href="mailto:hello@firstpitch.app" className="underline">hello@firstpitch.app</a>.
           For urgent safety issues affecting a kid right now, contact your local emergency
           services first. We&apos;re a planning tool, not an emergency service.

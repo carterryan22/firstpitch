@@ -32,7 +32,7 @@ const RATING_LABELS: Array<[number, string]> = [
   [4.2, "Solid effort"],
   [3.8, "Good hustle"],
   [3.3, "Showed up & competed"],
-  [2.5, "Tough day — kept battling"],
+  [2.5, "Tough day, kept battling"],
   [0, "Missed you out there"],
 ];
 
@@ -76,7 +76,7 @@ function ratingFromBatting(b: PlayerGameBattingStats): { score: number; highligh
   if (hr >= 1) { score += 0.4; highlights.push(hr === 1 ? "Home run! 🎉" : `${hr} HRs!`); }
   else if (xbh >= 1) { score += 0.15; highlights.push("Extra-base hit"); }
   else if (h >= 1) { highlights.push(h > 1 ? `${h}-for-${ab}` : "Got a hit"); }
-  if (bb >= 1) { score += 0.1; if (bb >= 2) highlights.push(`${bb} walks — great eye`); }
+  if (bb >= 1) { score += 0.1; if (bb >= 2) highlights.push(`${bb} walks, great eye`); }
   if (sb >= 1) { score += 0.1; highlights.push(`${sb} SB`); }
   if (qab >= 1) { score += 0.05 * Math.min(qab, 3); }
   // Strikeouts only ding lightly, and only if dominant
@@ -109,7 +109,7 @@ function ratingFromPitching(p: PlayerGamePitchingStats): { score: number; highli
   else if (ip >= 1 && er / Math.max(ip, 0.5) >= 2) score -= 0.25;
   if (pitches > 0 && ip > 0) {
     const ppi = pitches / ip;
-    if (ppi <= 15) { score += 0.15; highlights.push("Efficient — low pitch count"); }
+    if (ppi <= 15) { score += 0.15; highlights.push("Efficient, low pitch count"); }
     else if (ppi >= 25) score -= 0.1;
   }
   if (wp + hbp >= 3) score -= 0.15;

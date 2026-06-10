@@ -20,7 +20,7 @@ export interface CompileInput {
   focus: string[]; // e.g. ['throwing','speed','reaction']
   /**
    * Optional venue inventory — number of each kind of work area available.
-   * Mirrors the Dugout Edge Practice Planner "Field Resources" input. Used
+   * Mirrors a common practice-planner "Field Resources" input. Used
    * by `stationCount()` and the anti-line check to size parallel work.
    */
   fieldResources?: FieldResources;

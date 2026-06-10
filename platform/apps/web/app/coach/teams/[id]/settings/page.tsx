@@ -148,7 +148,7 @@ function MemberGroup({
         {people.map(({ user }) => (
           <li key={user.id} className="flex items-center gap-2 text-sm text-slate-700">
             <span className={`${badge} text-[10px]`}>{title.slice(0, -1)}</span>
-            <span className="font-medium">{user.name ?? "—"}</span>
+            <span className="font-medium">{user.name ?? "-"}</span>
             {user.email ? <span className="text-slate-400">· {user.email}</span> : null}
           </li>
         ))}

@@ -359,7 +359,7 @@ This is the core product loop:
      └──────────────────────── loop ─────────────────────┘
 ```
 
-This is the layer that separates the product from every competitor. Hardware (Pocket Radar, Blast, HitTrax) *measures*; content (CamWood, BRX, Slash-Your-60, YouTube/IG) *prescribes*; nothing connects the kid's measured data to the plan that addresses it. **We close that loop.** We are the intelligence/connection layer — we diagnose and route to age-appropriate, credentialed programming. We do not need to author superior drills to win; we win on connection, personalization, safety, and neutrality.
+This is the layer that separates the product from every competitor. Hardware (velo radars, bat sensors, launch monitors) *measures*; content (training-bat and S&C program apps, YouTube/IG) *prescribes*; nothing connects the kid's measured data to the plan that addresses it. **We close that loop.** We are the intelligence/connection layer — we diagnose and route to age-appropriate, credentialed programming. We do not need to author superior drills to win; we win on connection, personalization, safety, and neutrality.
 
 ### 8.1 Verification Ladder (the gear/diagnosis/trust gate)
 
@@ -565,14 +565,14 @@ The app does not pretend every solution is internal. Routing is **source-agnosti
 |---|---|
 | Internal plan | Built-in 21-day barrel-control block |
 | Free content | Curated YouTube drill from a trusted coach |
-| Partner program | BRX, CamWood, a speed or catching coach |
+| Partner program | an S&C program, a bat-speed program, a speed or catching coach |
 | Equipment | Pocket Radar, tee, net, med ball, training bat (always **optional**) |
 | Coach referral | Local instructor or facility |
 | Safety recommendation | Rest, reduce throwing, seek evaluation |
 
 **Routing priority:** (1) best fit for diagnosed driver + age band, filtered by passed readiness and guardrail tags and by what equipment the player actually has (§17); (2) prefer credentialed content beyond general mechanics; (3) among equal-fit options, transparency over monetization — a well-fit free clip can outrank a paid one; (4) always surface *why* ("Recommended because your bat speed is high but exit velo lags → contact-quality drill").
 
-**Product language:** *"Based on your data, this is the most likely bottleneck. Here are the safest ways to train it."* This is the honest-broker position the brand-funnels (CamWood, Trosky, BRX) structurally cannot occupy — because our revenue doesn't depend on selling any one tool. **Guard this neutrality; it is the moat.**
+**Product language:** *"Based on your data, this is the most likely bottleneck. Here are the safest ways to train it."* This is the honest-broker position the single-product brand-funnels structurally cannot occupy — because our revenue doesn't depend on selling any one tool. **Guard this neutrality; it is the moat.**
 
 ---
 
@@ -903,11 +903,11 @@ TransferAnalysis
 
 | Competitor type | Their edge | Structural gap | How the loop wins |
 |---|---|---|---|
-| Hardware (Pocket Radar, Blast, HitTrax) | Accurate measurement | Vendor-locked; no "now what" | Adds diagnosis + plan + portable record |
-| Brand program-in-app (CamWood) | Polished structured plans | Funnel to sell one product; no longitudinal/cross-skill record | Data-triggered + neutral + owns full athlete record |
-| Coach content (Trosky 365) | Credibility, mindset, reels | Deliberately not metrics-first | Objective measurables drive the plan |
-| Expert programs (BRX, Slash-Your-60) | Real S&C quality | Static; unaware of the kid's data | Baseline-aware selection + auto re-test + progress proof |
-| Hub + AI (Pitch2Pitch / Diamond Allegiance) | Closest concept; metrics hub + recruiting | Tied to their academies; baseball-centric | True neutrality + softball parity + 9-box + guardrail-first safety |
+| Hardware (velo radars, bat sensors, launch monitors) | Accurate measurement | Vendor-locked; no "now what" | Adds diagnosis + plan + portable record |
+| Brand program-in-app (a training-bat brand) | Polished structured plans | Funnel to sell one product; no longitudinal/cross-skill record | Data-triggered + neutral + owns full athlete record |
+| Coach content (a subscription content app) | Credibility, mindset, reels | Deliberately not metrics-first | Objective measurables drive the plan |
+| Expert programs (S&C training subscriptions) | Real S&C quality | Static; unaware of the kid's data | Baseline-aware selection + auto re-test + progress proof |
+| Hub + AI (a club-tied metrics-hub platform) | Closest concept; metrics hub + recruiting | Tied to their academies; baseball-centric | True neutrality + softball parity + 9-box + guardrail-first safety |
 | YouTube / Instagram | Free, infinite | No progression, filter, or personalization | Curation + "this drill, because your data says so" |
 
 **The four pillars of "best":**

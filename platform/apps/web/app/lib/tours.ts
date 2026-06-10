@@ -1,7 +1,7 @@
 import type { Tour } from "./walkthrough";
 
 /**
- * Named walkthrough definitions, mirroring Who's on Second's per-surface tours
+ * Named walkthrough definitions, mirroring the game-day competitor's per-surface tours
  * (Dashboard / Roster / Lineup / Team rules). Copy lives here so it can be
  * tweaked without touching the overlay component, and so each `data-tour`
  * anchor has a single source of truth.
@@ -18,12 +18,12 @@ export const TEAM_HOME_TOUR: Tour = {
     {
       target: "team-nav",
       title: "Five tabs, everywhere",
-      body: "Home, Games, Roster, Pitching, and More. The same five tabs show up on your phone's bottom bar — so it's the same muscle memory at the field.",
+      body: "Home, Games, Roster, Pitching, and More. The same five tabs show up on your phone's bottom bar, so it's the same muscle memory at the field.",
     },
     {
       target: "team-roster",
       title: "Your roster",
-      body: "Add players, mark who can pitch or catch, and invite parents. Everything downstream — lineups, fairness, missions — reads from here.",
+      body: "Add players, mark who can pitch or catch, and invite parents. Everything downstream (lineups, fairness, missions) reads from here.",
     },
     {
       target: "team-build-practice",
@@ -33,7 +33,7 @@ export const TEAM_HOME_TOUR: Tour = {
     {
       target: "team-practices",
       title: "Your practices live here",
-      body: "Scheduled, past, and draft plans stack up in this column so you can reuse what worked. That's it — you're ready to coach.",
+      body: "Scheduled, past, and draft plans stack up in this column so you can reuse what worked. That's it. You're ready to coach.",
     },
   ],
 };

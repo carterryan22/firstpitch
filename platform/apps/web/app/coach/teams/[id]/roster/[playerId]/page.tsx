@@ -48,7 +48,7 @@ export default async function PlayerDetailPage({
         </p>
         <div className="mt-1 flex items-baseline gap-3">
           <span className="text-3xl font-bold tabular-nums text-slate-900">
-            #{player.jerseyNumber || "—"}
+            #{player.jerseyNumber || "-"}
           </span>
           <h1 className="m-0">{fullName(player)}</h1>
         </div>

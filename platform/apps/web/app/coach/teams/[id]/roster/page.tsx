@@ -57,7 +57,7 @@ export default async function RosterPage({ params }: { params: Promise<{ id: str
             >
               <header className="flex items-baseline gap-2">
                 <span className="text-2xl font-bold tabular-nums text-slate-900">
-                  #{p.jerseyNumber || "—"}
+                  #{p.jerseyNumber || "-"}
                 </span>
                 <span className="truncate text-base font-medium text-slate-800">
                   {fullName(p)}

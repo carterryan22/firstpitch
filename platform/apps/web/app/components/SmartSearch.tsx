@@ -102,7 +102,7 @@ export function SmartSearch() {
           <p className="m-0 text-sm">{intent.summary}</p>
           {intent.kind === "unknown" ? (
             <p className="m-0 text-xs uppercase tracking-wide text-ink/60">
-              Not sure what you meant — here&apos;s a place to start.
+              Not sure what you meant. Here&apos;s a place to start.
             </p>
           ) : null}
           <button

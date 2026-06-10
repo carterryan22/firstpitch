@@ -25,7 +25,7 @@ export function GoalForm({
 
   const def = goalable.find((m) => m.key === metricKey)!;
   const baseline = latestByMetric[metricKey];
-  const baselineDisplay = baseline ?? "—";
+  const baselineDisplay = baseline ?? "-";
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -70,10 +70,10 @@ export function GoalForm({
     type === "delta"
       ? def.lowerIsBetter
         ? `e.g. -0.2 means improve from ${baselineDisplay} ${def.unit} to ${
-            typeof baseline === "number" ? (baseline - 0.2).toFixed(2) : "—"
+            typeof baseline === "number" ? (baseline - 0.2).toFixed(2) : "-"
           } ${def.unit}`
         : `e.g. +3 means improve from ${baselineDisplay} ${def.unit} to ${
-            typeof baseline === "number" ? baseline + 3 : "—"
+            typeof baseline === "number" ? baseline + 3 : "-"
           } ${def.unit}`
       : `Absolute target value in ${def.unit}`;
 

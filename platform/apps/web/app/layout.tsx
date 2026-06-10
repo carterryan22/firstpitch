@@ -5,6 +5,7 @@ import { Nav } from "./components/Nav";
 import { LogoutButton } from "./components/LogoutButton";
 import { MobileRefresh } from "./components/MobileRefresh";
 import { UpdateBanner } from "./components/UpdateBanner";
+import { OfflineBanner } from "./components/OfflineBanner";
 import { Wordmark } from "./components/ui";
 import { Analytics } from "./components/Analytics";
 import { getSession } from "./lib/session";
@@ -21,7 +22,7 @@ const body = Inter({ subsets: ["latin"], variable: "--font-body", display: "swap
 export const metadata = {
   metadataBase: new URL(siteUrl()),
   title: {
-    default: "First Pitch — Know before you throw. Plan, train, track.",
+    default: "First Pitch: Know before you throw. Plan, train, track.",
     template: "%s · First Pitch",
   },
   description:
@@ -69,6 +70,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           Skip to content
         </a>
         <UpdateBanner />
+        <OfflineBanner />
         <header className="sticky top-0 z-30 border-b-2 border-ink bg-ink text-cream">
           <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-3">
             <Link href="/" className="inline-flex min-h-[44px] items-center no-underline hover:no-underline">
@@ -101,22 +103,20 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         {/* Pushes new web deploys into the iOS/iPad Capacitor shell and
             installed PWAs without requiring a TestFlight rebuild. */}
         <MobileRefresh />
-        <Analytics />
+        {/* Third-party analytics never loads in signed-in areas, so no tracking
+            script runs while a child's roster, metrics, or lineup is on screen
+            (Apple Kids Category / COPPA). Public marketing pages only, and only
+            when an analytics domain is configured. */}
+        {session ? null : <Analytics />}
         <footer className="border-t-2 border-ink bg-cream">
           <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-8 text-xs text-dirt-700 md:flex-row md:items-center md:justify-between">
-            <p className="quote">
-              &quot;If the dugout&apos;s got splinters, we&apos;ll tell ya.&quot; · Sourced from{" "}
-              <a className="text-ink no-underline hover:underline" href="https://www.mlb.com/pitch-smart">
-                USA Baseball Pitch Smart
-              </a>
-              {" · "}NSCA YT&amp;C · CDC Heads Up · Stop Sports Injuries
-            </p>
             <p className="flex flex-wrap items-center gap-x-4 gap-y-1 quote">
               <Link className="inline-flex min-h-[44px] items-center text-ink no-underline hover:underline" href="/fields">Fields</Link>
               <Link className="inline-flex min-h-[44px] items-center text-ink no-underline hover:underline" href="/gear">Gear</Link>
               <Link className="inline-flex min-h-[44px] items-center text-ink no-underline hover:underline" href="/safety">Safety</Link>
               <Link className="inline-flex min-h-[44px] items-center text-ink no-underline hover:underline" href="/policy/ai-boundaries">Policy</Link>
               <Link className="inline-flex min-h-[44px] items-center text-ink no-underline hover:underline" href="/policy/privacy">Privacy</Link>
+              <Link className="inline-flex min-h-[44px] items-center text-ink no-underline hover:underline" href="/policy/cookies">Cookies</Link>
               <Link className="inline-flex min-h-[44px] items-center text-ink no-underline hover:underline" href="/policy/terms">Terms</Link>
               <span>© {new Date().getFullYear()} First Pitch</span>
             </p>

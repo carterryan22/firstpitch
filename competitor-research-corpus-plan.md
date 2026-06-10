@@ -39,35 +39,35 @@ cmd /c "npm run research -- report"    # (re)generate research-report.md
 Eight categories. The first is the youth-coach wedge; the rest are context that keeps us from accidentally rebuilding an incumbent.
 
 ### A — Lineup, batting order, defensive rotation *(the wedge)*
-Where volunteers still use spreadsheets, whiteboards, and clipboard charts. **GameChanger** (now AI lineup recommendations on sabermetric principles), **Stack the Lineup** (fair-play, infield/outfield balance, bench warnings, PDF export), **Rizzler** (all-in-one: lineups, fielding, pitching, AI optimization, tournament planning, pitch counting, scoring, evaluations, compliance), **GameTime Lineups** (simpler fair-rotation tool), **Baseball Fielding Rotation App / FreeBaseballLineups** (free generator), **Lineup Card** (legacy UX), **Coach Joel's Way**.
+Where volunteers still use spreadsheets, whiteboards, and clipboard charts. **Competitor A** (now AI lineup recommendations on sabermetric principles), **Competitor D** (fair-play, infield/outfield balance, bench warnings, PDF export), **Competitor E** (all-in-one: lineups, fielding, pitching, AI optimization, tournament planning, pitch counting, scoring, evaluations, compliance), **Competitor P** (simpler fair-rotation tool), **Competitor F** (free fielding-rotation generator), **Competitor G** (legacy UX), **Competitor Q**.
 **Insight goal:** what lineup tools miss — multi-game planning, catcher/pitcher restrictions, fairness *history*, parent-proof transparency, development-first rotation logic.
 
 ### B — Scorekeeping, stats, livestream, game history *(the incumbent behavior)*
-**GameChanger** (the default), **iScore** (deep scorebook, spray/pitch charts, no extra fee for stats), **TeamSnap** (admin incumbent), **AthletesGoLive** (mixed UX sentiment), **DiamondKast / Perfect Game** (tournament/showcase ecosystem), **Ballplayer** ("stats that follow the player").
-**Insight goal:** don't beat GameChanger at GameChanger. Extract what users still do *outside* it — rotation spreadsheets, progress notes, parent reports, private development logs.
+**Competitor A** (the default), **Competitor B** (deep scorebook, spray/pitch charts, no extra fee for stats), **Competitor C** (admin incumbent), **Competitor R** (mixed UX sentiment), **Competitor AA** (tournament/showcase ecosystem), **Competitor S** ("stats that follow the player").
+**Insight goal:** don't beat the dominant scorekeeping incumbent at its own game. Extract what users still do *outside* it — rotation spreadsheets, progress notes, parent reports, private development logs.
 
 ### C — Team / club / league / tournament management *(the operating layer)*
-**TeamSnap** (+ MOJO acquisition), **SportsEngine**, **LeagueApps**, **Spond**, **TeamLinkt**, **SportsEngine Tourney / Tourney Machine**.
+**Competitor C** (which acquired the content app **Competitor H**), **Competitor AH**, **Competitor AI**, **Competitor AJ**, **Competitor AK**, **Competitor AL**.
 **Insight goal:** integrate with or complement these; don't replicate registration/payments/calendar without a youth-baseball-specific advantage.
 
 ### D — Coaching, drills, practice plans, coach education
-**MOJO** (TeamSnap content), **USA Baseball / USAB Develops / Mobile Coach** (free standards baseline — 300+ drills, Pitch Smart, Skills Matrix, badges/challenges), **Dominate the Diamond**, **Baseball Blueprint**, **Trosky 365**.
+**Competitor H** (content), **Competitor I** (free standards baseline — 300+ drills, Pitch Smart, Skills Matrix, badges/challenges), **Competitor J**, **Competitor T**, **Competitor M**.
 **Insight goal:** most apps offer "content." The opportunity is **contextual recommendation**: "Your 10U team struggled with force plays — here's a 90-minute plan." *(Do not ingest paid drill libraries wholesale — public metadata + reviews only.)*
 
 ### E — Player training & development systems
-**Driveline / TRAQ** (data-driven; integrates Rapsodo/Blast/TrackMan/Pocket Radar/Diamond Kinetics/PitchLogic; "reduce clutter, integrate tech"), **Mustard** (phone-first pitching mechanics; video → report card → training plan, Tom House framework), **Trosky 365**, **CoachNow**, **OnForm** (video analysis), **KineVision / Coach's Eye successors**.
+**Competitor K** (data-driven; integrates velo radars, bat/ball sensors, and launch monitors; "reduce clutter, integrate tech"), **Competitor L** (phone-first pitching mechanics; video → report card → training plan), **Competitor M**, **Competitor N**, **Competitor O** (video analysis), and other video-analysis tools.
 **Insight goal:** where training apps are too advanced, too narrow, too content-heavy, or disconnected from team/game context. Youth winner = **age-scaled, arm-health-first, measurable-based, coach-supervised**.
 
 ### F — Hardware-linked data platforms *(the data exhaust)*
-**Pocket Radar / Smart Coach** (affordable velo, GameChanger integration), **Rapsodo** (hitting+pitching, facility/elite tier), **HitTrax** (cage sim), **Blast Motion** (bat sensor + swing metrics), **Diamond Kinetics** (bat sensor + games + MLB content), **TrackMan** (showcase/facility tier via PBR).
-**Insight goal:** map which metrics are accessible to normal youth coaches vs facility-only. Support low-friction first: Pocket Radar, stopwatch, phone video, manual EV, home-to-first, throwing velo, catcher pop, strike %, 9-box command.
+**Competitor U** (affordable velo, scorekeeping-app integration), **Competitor V** (hitting+pitching, facility/elite tier), **Competitor W** (cage sim), **Competitor X** (bat sensor + swing metrics), **Competitor Y** (bat sensor + games + MLB content), **Competitor Z** (showcase/facility tier).
+**Insight goal:** map which metrics are accessible to normal youth coaches vs facility-only. Support low-friction first: a velo radar, stopwatch, phone video, manual EV, home-to-first, throwing velo, catcher pop, strike %, 9-box command.
 
 ### G — Showcase, recruiting, player-profile platforms
-**Perfect Game / DiamondKast / PG Profile**, **Prep Baseball / PBR**, **FieldLevel**, **SportsRecruits**, **NCSA**.
+**Competitor AA**, **Competitor AB**, **Competitor AC**, **Competitor AD**, **Competitor AE**.
 **Insight goal:** copy the **profile structure**, not the recruiting pressure. For youth: "development record that follows the kid," not "get recruited at 10U."
 
 ### H — Club development networks & emerging ecosystems
-**CURVE Sports / Diamond Allegiance / CURVE Test** (unified club + testing + standards + recruiting; "Ball / Body / Brain"), **Pitch 2 Pitch**.
+**Competitor AF** (unified club + testing + standards + recruiting; a three-pillar physical/skill/mental assessment model), **Competitor AG**.
 **Insight goal:** the future is **club OS + development platform + trusted testing**. Our opportunity is the lightweight version for independent teams, Little League, and small travel programs.
 
 ---
@@ -92,7 +92,7 @@ Where volunteers still use spreadsheets, whiteboards, and clipboard charts. **Ga
 
 - **Use sanctioned access.** Reddit's official Data API (OAuth, ~100 queries/min/free client — respect headers). Apple App Store Connect API exposes reviews **for your own app**; for competitors use public pages carefully or a licensed provider. Google Play Developer API replies to **your own** app's reviews, not competitor mining at scale. Product Hunt has an official GraphQL API with documented limits.
 - **No brittle TOS-violating scraping.** Prefer APIs, public pages, manual exports, licensed datasets.
-- **Never ingest paid drill/training content wholesale.** For Trosky 365, Dominate the Diamond, Driveline, etc.: collect public feature claims, pricing, public reviews, and our own manual notes. The corpus learns **customer pain and product gaps**, not content to clone.
+- **Never ingest paid drill/training content wholesale.** For Competitor M, Competitor J, Competitor K, etc.: collect public feature claims, pricing, public reviews, and our own manual notes. The corpus learns **customer pain and product gaps**, not content to clone.
 - **Respect copyright.** Store *paraphrased* `clean_text` + extracted structured insight + provenance `url`. Do not warehouse long verbatim review text. `raw_text` is optional and minimal.
 - **Strip tracking params** (`utm_*`, `srsltid`, etc.) before storing URLs.
 
@@ -106,7 +106,7 @@ Each item conforms to `corpus/competitor-research/corpus.schema.json`. Shape:
 {
   "source_id": "uuid",
   "source_type": "app_review | reddit | forum | product_page | help_doc | release_note | youtube | social | pricing_page | manual_note",
-  "platform_name": "GameChanger",
+  "platform_name": "Competitor A",
   "platform_category": ["lineup", "scorekeeping", "stats", "team_management",
     "practice_planning", "training", "video_analysis", "hardware_metrics", "recruiting", "club_ops"],
   "source_platform": "apple_app_store | google_play | reddit | web | youtube | facebook | product_site",
@@ -152,9 +152,9 @@ Controlled vocabulary lives in `corpus/competitor-research/taxonomy.json` and is
 
 Full structured list in `corpus/competitor-research/platforms.json`.
 
-- **Wave 1 — core baseball apps (cleanest signal).** GameChanger, iScore, TeamSnap, Stack the Lineup, Rizzler, FreeBaseballLineups/Fielding Rotation, Lineup Card, MOJO, USA Baseball Mobile Coach, Dominate the Diamond, Driveline/TRAQ, Mustard, Trosky 365, CoachNow, OnForm. *Target: 1,500–2,500 items.*
-- **Wave 2 — data, hardware, player-profile.** Pocket Radar, Rapsodo, HitTrax, Blast, Diamond Kinetics, TrackMan (via PBR), Perfect Game/DiamondKast, PBR, FieldLevel, SportsRecruits, NCSA, CURVE/Diamond Allegiance. *Target: 1,000–1,500 items.*
-- **Wave 3 — team/league/tournament ops.** SportsEngine, LeagueApps, Spond, TeamLinkt, Tourney Machine, registration/payment tools, local league sites, tournament rule PDFs. *Target: 750–1,250 items.*
+- **Wave 1 — core baseball apps (cleanest signal).** Competitors A, B, C, D, E, F, G, H, I, J, K, L, M, N, O. *Target: 1,500–2,500 items.*
+- **Wave 2 — data, hardware, player-profile.** Competitors U, V, W, X, Y, Z, AA, AB, AC, AD, AE, AF. *Target: 1,000–1,500 items.*
+- **Wave 3 — team/league/tournament ops.** Competitors AH, AI, AJ, AK, AL, plus registration/payment tools, local league sites, tournament rule PDFs. *Target: 750–1,250 items.*
 
 ---
 
@@ -179,7 +179,7 @@ Config in `corpus/competitor-research/scoring.json`; computed by `@platform/rese
 
 ## 8. Insights we expect to surface
 
-1. **GameChanger is dominant but not development-first.** Position around the missing layer: *"GameChanger tracks the game. We track the player."*
+1. **Competitor A is dominant but not development-first.** Position around the missing layer: *"Competitor A tracks the game. We track the player."*
 2. **Fair defensive rotation is a real wedge.** Make it core, not a side feature: game-by-game grid, season innings-by-position, bench count, IF/OF ratio, catcher innings, pitcher/catcher eligibility, parent-proof history, exportable PDF.
 3. **Training apps are too serious / too narrow / too disconnected.** Youth training should be coach-supervised, age-scaled, arm-health-first, tied to measurable deltas, family-light — not a velo-chasing machine.
 4. **Objective measurables are fragmented.** Support manual entry *and* device imports. Start: exit velo, pitch velo, throwing velo, home-to-first, 60-yd, catcher pop, strike %, first-pitch strike %, 9-box command, attendance, coach notes.
@@ -189,9 +189,9 @@ Config in `corpus/competitor-research/scoring.json`; computed by `@platform/rese
 
 ## 9. Product wedge
 
-**Don't build:** another GameChanger, another TeamSnap, another generic drill library, another recruiting marketplace, another hardware-locked data platform.
+**Don't build:** another scorekeeping app, another team-management app, another generic drill library, another recruiting marketplace, another hardware-locked data platform.
 
-**Build: the Youth Baseball Development OS** — player profile (follows the kid across teams/seasons; measurables, coach notes, video, history) · team development dashboard (strengths/weaknesses, practice priorities, testing cadence, attendance, progression) · lineup + fair-rotation engine (batting order, defensive grid, bench fairness, catcher/pitcher restrictions, tournament planning) · measurable capture (phone/manual first, Pocket Radar-friendly, optional device import) · age-scaled training plans (arm-health guardrails, 6-week blocks, coach-approved homework) · parent/player report (improvement-focused, no toxic ranking).
+**Build: the Youth Baseball Development OS** — player profile (follows the kid across teams/seasons; measurables, coach notes, video, history) · team development dashboard (strengths/weaknesses, practice priorities, testing cadence, attendance, progression) · lineup + fair-rotation engine (batting order, defensive grid, bench fairness, catcher/pitcher restrictions, tournament planning) · measurable capture (phone/manual first, velo-radar-friendly, optional device import) · age-scaled training plans (arm-health guardrails, 6-week blocks, coach-approved homework) · parent/player report (improvement-focused, no toxic ranking).
 
 ---
 
@@ -209,7 +209,7 @@ Config in `corpus/competitor-research/scoring.json`; computed by `@platform/rese
 1. **Youth coach wedge** — roster, lineup builder, defensive rotation grid, season playing-time ledger, bench/IF/OF fairness dashboard, printable lineup card, coach notes, basic player profile.
 2. **Development tracker** — testing-day module, EV/velo/speed/pop/command tracking, progress charts, age-band context, parent progress report, practice-plan recommendations.
 3. **Training engine** — skill driver trees, 6-week blocks, arm-care guardrails, player homework, coach approval, video upload/feedback.
-4. **Ecosystem integrations** — GameChanger import/export, Pocket Radar capture, CSV import (Rapsodo/HitTrax/Blast/DK), TeamSnap/SportsEngine schedule import, shareable profile.
+4. **Ecosystem integrations** — GameChanger import/export, Pocket Radar capture, sensor CSV import (Rapsodo/HitTrax/Blast), team-management schedule import, shareable profile.
 
 ---
 

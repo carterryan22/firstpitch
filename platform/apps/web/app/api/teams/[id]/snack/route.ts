@@ -16,7 +16,7 @@ interface Body {
 }
 
 /**
- * Auto-balance snack duty across all upcoming games (WoS §3.12). Pulls the
+ * Auto-balance snack duty across all upcoming games (game-day ref §3.12). Pulls the
  * volunteer pool from the team's parents unless the body overrides it, runs the
  * deterministic balancer, and persists `snackDuty` on each upcoming game.
  */

@@ -5,9 +5,9 @@ import { GearTest } from "./GearTest";
 import { GearCard } from "./GearCard";
 
 export const metadata = {
-  title: "Gear test — what your player actually needs",
+  title: "Gear test: what your player actually needs",
   description:
-    "Answer four questions and get a tailored youth-baseball gear kit, cheapest rep-getters first. Honest picks with ratings — no signup.",
+    "Answer four questions and get a tailored youth-baseball gear kit, cheapest rep-getters first. Honest picks with ratings, no signup.",
 };
 
 export const dynamic = "force-dynamic";
@@ -35,7 +35,7 @@ export default function GearPage() {
             Stop guessing what <em>gear</em> to buy.
           </>
         }
-        description="Take the gear test and we'll build a kit for your player's age, focus, and budget — cheapest thing that gets the rep done, first. Every pick is a real recommendation, not a catalog dump."
+        description="Take the gear test and we'll build a kit for your player's age, focus, and budget: cheapest thing that gets the rep done, first. Every pick is a real recommendation, not a catalog dump."
         primary={{ href: "#gear-test", label: "Take the gear test" }}
         secondary={{ href: "#guide", label: "Browse all gear" }}
         stats={[

@@ -571,7 +571,7 @@ export function TileBuilder({
                     if (t) setAge(AGE_BAND_DEFAULT[t.ageBand]);
                   }}
                 >
-                  <option value="">No team — personal draft</option>
+                  <option value="">No team, personal draft</option>
                   {teams.map((t) => (
                     <option key={t.id} value={t.id}>{t.name} ({t.ageBand})</option>
                   ))}
@@ -636,7 +636,7 @@ export function TileBuilder({
         </button>
         {trayDrills.length === 0 && !busy ? (
           <p className="text-xs text-ink/60">
-            No drills picked yet — we'll build a balanced, safety-checked plan from your age,
+            No drills picked yet. We'll build a balanced, safety-checked plan from your age,
             time slot, and focus. Add tiles above to customize it.
           </p>
         ) : null}
@@ -721,7 +721,7 @@ function BudgetBar({ budget }: { budget: ReturnType<typeof computeBudget> }) {
       </div>
       {budget.slack < 0 ? (
         <p className="text-xs text-danger">
-          Over by {Math.abs(budget.slack)} min — remove a drill or add time.
+          Over by {Math.abs(budget.slack)} min. Remove a drill or add time.
         </p>
       ) : budget.slack > 10 ? (
         <p className="text-xs text-warn">

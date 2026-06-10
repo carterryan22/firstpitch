@@ -123,7 +123,7 @@ export default async function PitchingBoardPage({ params }: { params: Promise<{ 
         </p>
         <h1 className="mt-1">Pitching board</h1>
         <p className="mt-1 text-sm text-slate-500">
-          One arm-load status per pitcher — Pitch Smart rest plus bullpens, long toss, lessons, and
+          One arm-load status per pitcher: Pitch Smart rest plus bullpens, long toss, lessons, and
           innings caught. Green is fresh, yellow means manage the volume, red owes rest.
         </p>
       </header>
@@ -144,7 +144,7 @@ export default async function PitchingBoardPage({ params }: { params: Promise<{ 
             </p>
           </div>
           <p className="mt-1 text-xs text-slate-500">
-            Projected from each pitcher&apos;s outing history — plan the rotation before game day, not after.
+            Projected from each pitcher&apos;s outing history. Plan the rotation before game day, not after.
           </p>
         </Card>
       ) : null}
@@ -192,7 +192,7 @@ export default async function PitchingBoardPage({ params }: { params: Promise<{ 
                     </td>
                     <td className="px-4 py-3 text-slate-600">{age}</td>
                     <td className="px-4 py-3 text-slate-600">
-                      {lastDate ? `${lastDate} · ${lastCount}p` : "—"}
+                      {lastDate ? `${lastDate} · ${lastCount}p` : "-"}
                     </td>
                     <td className="px-4 py-3 text-slate-600">{week}p</td>
                     <td className="px-4 py-3 text-slate-600">{check.effectiveDailyMax}</td>

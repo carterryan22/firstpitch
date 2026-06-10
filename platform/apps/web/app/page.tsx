@@ -35,14 +35,14 @@ export default async function Home() {
   return (
     <div className="space-y-12">
       <Hero
-        eyebrow="First Pitch — know before you throw"
+        eyebrow="First Pitch: know before you throw"
         title={
           <>
             Know before you <em>throw</em>. Plan, train, track.
           </>
         }
-        description="Inclusive youth-baseball training, planning, and tracking — for every kid on the roster. Compile a safe practice in under a minute, scout the field before you book it, and watch each player grow."
-        primary={session ? { href: "/coach", label: "Open coach console" } : { href: "/practice/new", label: "Try the compiler — no signup" }}
+        description="Inclusive youth-baseball training, planning, and tracking for every kid on the roster. Compile a safe practice in under a minute, scout the field before you book it, and watch each player grow."
+        primary={session ? { href: "/coach", label: "Open coach console" } : { href: "/practice/new", label: "Try the compiler, no signup" }}
         secondary={{ href: "/fields", label: `Browse ${fieldsCount || ""} fields →`.replace("  ", " ") }}
         stats={[
           { value: publishedDrills, label: "Drills vetted" },
@@ -74,7 +74,7 @@ export default async function Home() {
       <section className="space-y-4">
         <header className="flex items-end justify-between">
           <h2 className="m-0">Who&apos;s it for?</h2>
-          <span className="quote text-sm">Three roles, three landings — sign in unlocks personal views</span>
+          <span className="quote text-sm">Three roles, three landings. Sign in unlocks personal views</span>
         </header>
         <div className="grid gap-4 md:grid-cols-3">
           <RoleTile
@@ -101,7 +101,7 @@ export default async function Home() {
       <section className="space-y-4">
         <header className="flex items-end justify-between">
           <h2 className="m-0">Jump straight in</h2>
-          <span className="quote text-sm">Skip the landing pages — go to the tool</span>
+          <span className="quote text-sm">Skip the landing pages, go to the tool</span>
         </header>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <RoleTile
@@ -131,7 +131,7 @@ export default async function Home() {
           <RoleTile
             href="/learn"
             title="Triple Play game"
-            description="Position-aware baseball-IQ scenarios. Quick reps for players and parents — in the car, dugout, or living room."
+            description="Position-aware baseball-IQ scenarios. Quick reps for players and parents, in the car, dugout, or living room."
             cta="Play & learn"
           />
           <RoleTile
@@ -143,7 +143,7 @@ export default async function Home() {
           <RoleTile
             href="/favorites"
             title="★ Saved fields"
-            description="Your shortlist of diamonds — pull it up before you book."
+            description="Your shortlist of diamonds. Pull it up before you book."
             cta="Open shortlist"
           />
         </div>
@@ -154,7 +154,7 @@ export default async function Home() {
           <div>
             <h3>Sign in to save plans, fields, and missions</h3>
             <p className="mt-2 text-sm text-ink/80">
-              Coach, parent, or player — your view changes to match. No password. Magic link, you click it, you&apos;re in.
+              Coach, parent, or player. Your view changes to match. No password. Magic link, you click it, you&apos;re in.
             </p>
           </div>
           <a href="/login" className="btn-primary mt-4 inline-flex md:mt-0 no-underline hover:no-underline">

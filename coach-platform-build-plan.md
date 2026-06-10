@@ -1,6 +1,6 @@
 # Coach Platform — Build Plan
 
-Compiled from: [whosonsecond-ui-reference.md](whosonsecond-ui-reference.md), [product-feature-addendum.md](product-feature-addendum.md), [player-development-metric-schema.md](player-development-metric-schema.md), [market-research-positioning.md](market-research-positioning.md), [competitor-crawl-summary.md](competitor-crawl-summary.md), [coach-platform-practice-compiler.md](coach-platform-practice-compiler.md), [youth-training-corpus-seed.md](youth-training-corpus-seed.md).
+Compiled from: [competitor-gameday-os-ui-reference.md](competitor-gameday-os-ui-reference.md), [product-feature-addendum.md](product-feature-addendum.md), [player-development-metric-schema.md](player-development-metric-schema.md), [market-research-positioning.md](market-research-positioning.md), [competitor-crawl-summary.md](competitor-crawl-summary.md), [coach-platform-practice-compiler.md](coach-platform-practice-compiler.md), [youth-training-corpus-seed.md](youth-training-corpus-seed.md).
 
 This file is the single source of truth for what gets built and in what order. Every line in the research docs that says "borrow", "ship", "match", or "we should" has been compiled into a tracked todo below with a phase, owner discipline, and acceptance criteria.
 
@@ -48,14 +48,14 @@ These are non-negotiable and must be enforced in PR review:
 - [ ] Tables: `organizations`, `seasons`, `teams`, `team_members` (with 5-role enum), `players`, `parents`, `games`, `lineups`, `lineup_slots`, `at_bats`, `pitches`, `practices`, `drills`, `practice_blocks`, `rule_packages`, `team_rule_overrides`.
 - [ ] Audit log table (`audit_events`) — every write tracked with actor + timestamp + diff.
 - [ ] Row-level security: org → season → team isolation enforced at DB layer (Postgres RLS or equivalent).
-- [ ] Slug + base36 ID URL grammar matches WoS (`/teams/{slug}/{section}/{id}`).
+- [ ] Slug + base36 ID URL grammar follows a conventional `/teams/{slug}/{section}/{id}` pattern.
 
 ### 0.3 Auth & roles
 - [ ] Email magic link + Google OAuth (no SMS at MVP).
 - [ ] 5-role enforcement: Admin / Head Coach / Staff / Player / Viewer.
-- [ ] Invite flow with role pre-selection (matches WoS modal).
+- [ ] Invite flow with role pre-selection (mirrors the game-day competitor's invite modal).
 - [ ] Parent accounts are `Viewer` role scoped to their child(ren) only.
-- [ ] **Public links with no login** for: snack/duty signup, schedule view, parent RSVP, score-share. (Coach Joel's pattern.)
+- [ ] **Public links with no login** for: snack/duty signup, schedule view, parent RSVP, score-share. (A competing lineup app's pattern.)
 
 ### 0.4 Design system
 - [ ] Token set: dark-first palette, semantic colors for status/roles/badges.
@@ -66,7 +66,7 @@ These are non-negotiable and must be enforced in PR review:
 ### 0.5 Infra
 - [ ] Cloudflare or Vercel edge hosting; Postgres (Neon or Supabase); R2/S3 for media.
 - [ ] Service worker for offline cache of: rulebook JSON, current team roster, current/next game lineup, last 5 games' history.
-- [ ] CSP: `script-src 'self' 'strict-dynamic'` (match WoS hardening).
+- [ ] CSP: `script-src 'self' 'strict-dynamic'` (match the game-day competitor's CSP hardening).
 
 ---
 
@@ -76,20 +76,20 @@ The minimum lovable product. Ship nothing else until these are all done.
 
 ### 1.1 Roster management
 - [ ] Add/edit/archive player with: name, jersey #, DOB → age auto-calc, positions (favorite/OK/disliked), skill level (optional, P/C only), parent contacts.
-- [ ] **AI Lineup Card Scanning** — photo → roster extraction. (Steal from Scouting IQ.) Acceptance: 90%+ field accuracy on a printed lineup card photo.
-- [ ] **CSV import with column auto-detection** for TeamSnap, GameChanger, SportsEngine, LeagueApps exports. (Match Inning Wizard.)
+- [ ] **AI Lineup Card Scanning** — photo → roster extraction. (Adopt the OCR-scan approach.) Acceptance: 90%+ field accuracy on a printed lineup card photo.
+- [ ] **CSV import with column auto-detection** for GameChanger and common team-management/league exports. (Mirror a guided import wizard.)
 - [ ] Roster Stats tab: per-player season totals (games, PA, AVG, OBP, position innings split by IF/OF/bench).
 
 ### 1.2 Rulebook Library (the differentiator)
 - [ ] `RulePackage` TypeScript schema implemented per §10.1 of UI reference.
 - [ ] **Seed 9 rulebooks for 2026**: Little League, Perfect Game, Triple Crown / TTB, USSSA, NFHS, AAU, Babe Ruth / Cal Ripken, PONY, NCAA. Each with all age divisions.
-- [ ] Team-level rule override UI: pick base package + overlay org/league/team deltas (3-tier inheritance, matches WoS).
+- [ ] Team-level rule override UI: pick base package + overlay org/league/team deltas (3-tier inheritance, mirrors the game-day competitor).
 - [ ] Diff viewer: pick body A + body B + age → side-by-side rules diff.
 - [ ] **Cross-sanctioning pitch-count ledger**: every pitch logged once; eligibility re-computed against every active rule package the player is exposed to that week.
-- [ ] Change Rule Set wizard with confirmation modal (matches WoS).
+- [ ] Change Rule Set wizard with confirmation modal (mirrors the game-day competitor).
 
 ### 1.3 Lineup generator — **Game Script**
-- [ ] **Algorithm: Game Script** = CSP solver (backtracking + forward checking) + multi-factor fairness scoring + summary notes output. (Steal Coach Joel's engine.)
+- [ ] **Algorithm: Game Script** = CSP solver (backtracking + forward checking) + multi-factor fairness scoring + summary notes output. (Adapt a competing lineup app's solver approach.)
 - [ ] Hard constraints: 1 player/position/inning; no >2 consecutive innings same position; pitcher/catcher rest rules from active rule package.
 - [ ] Soft constraints: position preferences, skill gates (P/C), bench equalization, development goals from Position Trust Matrix (Phase 3).
 - [ ] **Top/Middle/Bottom band fairness** for batting order. Color-coded with gradients showing last→this game movement.
@@ -101,7 +101,7 @@ The minimum lovable product. Ship nothing else until these are all done.
 ### 1.4 In-Game Quick Reference chip strip
 - [ ] Persistent bottom strip during game mode showing active rule chips: pitch cap, current count, rest required, time limit, run rule status, courtesy runner eligibility.
 - [ ] Each chip tappable → opens rule citation drawer with exact rulebook section.
-- [ ] **Pre-pitch intelligence chip** (Scouting IQ steal): if opponent data present, show count-specific tendency for current batter.
+- [ ] **Pre-pitch intelligence chip** (scouting-tool-inspired): if opponent data present, show count-specific tendency for current batter.
 
 ### 1.5 Free funnel tool
 - [ ] **Cross-Sanctioning Pitch-Count Calculator** — public, no login. Input pitches by date → eligibility under LL/PG/TTB/USSSA/NFHS/AAU/PONY simultaneously. Funnels to signup with "Save this for your team."
@@ -109,11 +109,11 @@ The minimum lovable product. Ship nothing else until these are all done.
 
 ### 1.6 Billing
 - [ ] Stripe Checkout with 4 tiers: Free / Coach $39 / Multi-Team $79 / Club $299. (League $799 deferred to Phase 5.)
-- [ ] Whole-team billing model: one paid coach unlocks for all team members. (Match WoS.)
+- [ ] Whole-team billing model: one paid coach unlocks for all team members. (Mirror the game-day competitor.)
 - [ ] 14-day trial, no CC required.
 
 ### 1.7 MVP exit criteria
-- [ ] 10 founding coaches recruited (manually reviewed, like Inning Wizard's Founding Leagues).
+- [ ] 10 founding coaches recruited (manually reviewed, like a competing app's founding-leagues program).
 - [ ] Each runs ≥3 games on the platform.
 - [ ] <5% churn after 30 days.
 - [ ] NPS ≥40.
@@ -129,11 +129,11 @@ The minimum lovable product. Ship nothing else until these are all done.
 - [ ] Sync indicator visible at all times (Synced / Pending N writes / Error).
 
 ### 2.2 Pitch tracking — **tap-drag-release**
-- [ ] Pixel-accurate location entry via tap-drag-release gesture. (Steal Scouting IQ.)
+- [ ] Pixel-accurate location entry via tap-drag-release gesture. (Adopt the scouting-tool gesture.)
 - [ ] Auto-tracks count, outs, runners, score.
 - [ ] One-tap pitch result: ball / strike-called / strike-swinging / foul / in-play.
 - [ ] In-play: tap-drag-release on field diagram for hit location.
-- [ ] **Undo** always one tap away. (Dugout Edge parity.)
+- [ ] **Undo** always one tap away. (Coaching-tools-competitor parity.)
 
 ### 2.3 **Workload Passport** (cross-body fatigue ledger)
 - [ ] Every pitch logged once → recomputes pitcher eligibility under every rule package they're exposed to (LL Sun game + PG Sat tournament = both checked).
@@ -147,7 +147,7 @@ The minimum lovable product. Ship nothing else until these are all done.
 - [ ] Opt-out toggle per game (private games stay private).
 
 ### 2.5 Live scorekeeping
-- [ ] Full ball/strike/foul tracking with auto-walk/auto-K. (Dugout Edge parity.)
+- [ ] Full ball/strike/foul tracking with auto-walk/auto-K. (Coaching-tools-competitor parity.)
 - [ ] All hit types (1B/2B/3B/HR), all out types (ground/fly/line/pop/K/sac bunt/sac fly/DP).
 - [ ] Live stats panel: AVG, OBP, H, RBI, BB, K.
 - [ ] Per-game summary with leaders after game end.
@@ -174,7 +174,7 @@ The minimum lovable product. Ship nothing else until these are all done.
 
 ### 3.4 Snack/Duty public signup
 - [ ] Per-team public signup page, no login. Slots auto-rotated by Game Script logic.
-- [ ] Allergy warnings, custom instructions per slot, reminder emails 48h before. (Coach Joel's parity.)
+- [ ] Allergy warnings, custom instructions per slot, reminder emails 48h before. (Competing lineup-app parity.)
 - [ ] Parents sign up on behalf of specific players via roster dropdown.
 - [ ] Generalize to "Team Duties": Snack, Field Setup, Scorebook, Pitch Counter, Dugout Parent.
 
@@ -183,7 +183,7 @@ The minimum lovable product. Ship nothing else until these are all done.
 ## Phase 4 — Practice Compiler
 
 ### 4.1 Drill library
-- [ ] Seed 200+ drills tagged by: age group, sport, focus area (11-axis taxonomy from Dugout Edge), equipment, duration, station-capable (Y/N), max players.
+- [ ] Seed 200+ drills tagged by: age group, sport, focus area (11-axis taxonomy from the coaching-tools competitor), equipment, duration, station-capable (Y/N), max players.
 - [ ] CRUD for custom team drills.
 - [ ] Public preview of library (free tool) — full library is paid.
 
@@ -212,7 +212,7 @@ The minimum lovable product. Ship nothing else until these are all done.
 ### 5.1 League admin dashboard
 - [ ] Org → Season → Division → Team hierarchy navigable in one tree view.
 - [ ] Cross-team views: pitch-count compliance audit, fairness audit, roster completeness.
-- [ ] **Co-admins do NOT need paid subscriptions** — one league seat covers all coordinators. (Match Inning Wizard.)
+- [ ] **Co-admins do NOT need paid subscriptions** — one league seat covers all coordinators. (Mirror a competing app's model.)
 
 ### 5.2 Bulk operations
 - [ ] CSV bulk import: rosters, divisions, schedules in one upload with column auto-detection.
@@ -220,12 +220,12 @@ The minimum lovable product. Ship nothing else until these are all done.
 - [ ] Bulk rule package assignment per division.
 
 ### 5.3 Tournament Mode (for sanctioning bodies)
-- [ ] Bracket generator: single elim, double elim, pool play. (Dugout Edge parity.)
+- [ ] Bracket generator: single elim, double elim, pool play. (Coaching-tools-competitor parity.)
 - [ ] **Cross-sanctioning workload ledger** at tournament level: every team's pitchers/catchers tracked against tournament-day caps + carry-over from league play.
 - [ ] Director dashboard: real-time eligibility status for every roster.
 
 ### 5.4 Founding Leagues GTM
-- [ ] Hand-pick 5–10 leagues at launch for free season in exchange for written feedback within 30 days. (Match Inning Wizard.)
+- [ ] Hand-pick 5–10 leagues at launch for free season in exchange for written feedback within 30 days. (Mirror a competing app's launch model.)
 - [ ] Public application form with manual review.
 
 ### 5.5 Pricing tier ship
@@ -235,7 +235,7 @@ The minimum lovable product. Ship nothing else until these are all done.
 
 ## Phase 6 — Suite Expansion
 
-### 6.1 Scouting Companion (Scouting IQ-class)
+### 6.1 Scouting Companion (scouting-tool class)
 - [ ] **AI Scouting Reports** from historical game data: threat levels, tendencies, strategic recommendations per opponent batter.
 - [ ] **5×5 zone heatmaps** for pitcher command + hitter tendencies.
 - [ ] **Spray charts** per opponent batter.
@@ -298,17 +298,17 @@ The minimum lovable product. Ship nothing else until these are all done.
 | Offline sync conflicts | Last-write-wins for additive events (pitches, at-bats); coach-prompted merge for structural edits (lineup changes) | Game Day eng |
 | Privacy (kids' data) | No real names in analytics/logs/AI prompts without consent; per-org data isolation via RLS; parental consent flow at signup | All |
 | Stripe integration complexity at league tier | Defer League tier to Phase 5; use Stripe Billing native invoicing | Billing |
-| Native iOS pressure (Coach Joel's has app, we don't) | Lead with PWA install rate metrics; consider Capacitor wrapper at Phase 5 if signups stall | Product |
+| Native iOS pressure (a competing lineup app has a native app, we don't) | Lead with PWA install rate metrics; consider Capacitor wrapper at Phase 5 if signups stall | Product |
 
 ---
 
 ## Out of Scope (explicit non-goals)
 
 - Native iOS/Android apps before Phase 5.
-- Video streaming/highlight reels (GameChanger's lane — don't compete).
-- Payment processing for league registration fees (TeamSnap/LeagueApps lane).
-- Team messaging/chat (TeamSnap lane — integrate, don't replicate).
-- Replacing scorebooks for non-coach scorekeepers (parent-facing scorekeeping is GameChanger's lane).
+- Video streaming/highlight reels (a scorekeeping app's lane — don't compete).
+- Payment processing for league registration fees (team-management/registration platforms' lane).
+- Team messaging/chat (team-management apps' lane — integrate, don't replicate).
+- Replacing scorebooks for non-coach scorekeepers (parent-facing scorekeeping is a scorekeeping app's lane).
 - Mechanics breakdown video coaching (Krossover/Hudl lane).
 
 ---

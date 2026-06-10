@@ -92,7 +92,7 @@ export interface TeamRecord {
   ownerCoachUserId: string;
   /**
    * Team-level lineup rule set (governing-body + house rules) used as the
-   * default when building a game lineup. Mirrors the Who's on Second
+   * default when building a game lineup. Mirrors the game-day competitor's
    * Settings → rules surface. Structurally a subset of `@platform/lineup`'s
    * `LeagueRules` (scalar rules only — per-game tandem locks live on the game).
    */
@@ -326,7 +326,7 @@ export interface GameRecord {
   completedAt?: string;
 }
 
-/** Who's bringing snacks / running the table for a game (WoS §3.12). */
+/** Who's bringing snacks / running the table for a game (game-day ref §3.12). */
 export interface SnackDuty {
   /** Stable key (parent userId or family slug) when assigned from the pool. */
   volunteerId?: string;

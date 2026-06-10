@@ -16,7 +16,7 @@ interface ShareBody {
 
 function emailBody(playerName: string, periodLabel: string, c: ParentReportContent): string {
   const lines = [
-    `${playerName} — ${periodLabel} progress update`,
+    `${playerName}: ${periodLabel} progress update`,
     "",
     c.summary,
     "",
@@ -75,7 +75,7 @@ export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string
       const playerName = player ? `${player.firstName} ${player.lastName}`.trim() : "Your player";
       const res = await sendEmail({
         to: parent.email,
-        subject: `${playerName} — ${report.periodLabel} progress update`,
+        subject: `${playerName}: ${report.periodLabel} progress update`,
         text: emailBody(playerName, report.periodLabel, report.content),
       }).catch(() => ({ ok: false, provider: "console" as const }));
       emailDelivery = res.ok ? res.provider : "failed";

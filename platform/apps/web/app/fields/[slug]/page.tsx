@@ -80,9 +80,9 @@ export default async function FieldDetailPage({
         <h1>{field.name}</h1>
         <div className="flex flex-wrap items-center gap-3 text-sm">
           {rs.count > 0 ? (
-            <span className="quote text-ink">{stars(rs.avg)} <span className="text-dirt-300">{rs.avg.toFixed(1)} · {rs.count} review{rs.count === 1 ? "" : "s"}</span></span>
+            <span className="quote text-ink">{stars(rs.avg)} <span className="text-dirt-700">{rs.avg.toFixed(1)} · {rs.count} review{rs.count === 1 ? "" : "s"}</span></span>
           ) : (
-            <span className="quote">No reviews yet — be the first to spill the dirt.</span>
+            <span className="quote">No reviews yet. Be the first to spill the dirt.</span>
           )}
           <FavoriteButton fieldId={field.id} initial={isFavorited} signedIn={Boolean(userId)} />
         </div>
@@ -205,7 +205,7 @@ function Fact({ label, value }: { label: string; value: string }) {
 
 const VERIFICATION_LABEL: Record<NonNullable<import("@platform/storage").FieldRecord["verification"]>, { tone: string; label: string; blurb: string }> = {
   verified: { tone: "bg-grass/15 border-grass/40 text-grass-dark", label: "Verified", blurb: "Walked, photographed, and confirmed by our team." },
-  community: { tone: "bg-cream/80 border-ink/30 text-ink", label: "Community-maintained", blurb: "Updated by local coaches and parents — flag anything wrong." },
+  community: { tone: "bg-cream/80 border-ink/30 text-ink", label: "Community-maintained", blurb: "Updated by local coaches and parents. Flag anything wrong." },
   imported: { tone: "bg-cream/60 border-dirt-300 text-ink/80", label: "Imported", blurb: "Pulled from a public source. Details not yet hand-checked." },
   unverified: { tone: "bg-warn-soft/40 border-warn/50 text-ink", label: "Unverified", blurb: "Listed on user word. Confirm before you show up." },
 };

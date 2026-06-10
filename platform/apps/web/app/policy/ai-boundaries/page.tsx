@@ -3,7 +3,7 @@ import Link from "next/link";
 export const metadata = {
   title: "AI boundaries · Policy",
   description:
-    "How First Pitch uses AI safely — what it will and won't do, and what gets escalated to a real human.",
+    "How First Pitch uses AI safely: what it will and won't do, and what gets escalated to a real human.",
 };
 
 export default function AiBoundariesPolicy() {
@@ -17,7 +17,7 @@ export default function AiBoundariesPolicy() {
         <h1>AI boundaries</h1>
         <p className="text-ink/80">
           First Pitch uses AI to compile practice plans, suggest drills, and summarize team data.
-          It does not — and will not — diagnose injuries, prescribe rehab, give medical advice, or
+          It does not, and will not, diagnose injuries, prescribe rehab, give medical advice, or
           generate supplement plans for kids. These limits are enforced in code, not just on this
           page.
         </p>
@@ -46,8 +46,8 @@ export default function AiBoundariesPolicy() {
       <section className="card space-y-3">
         <h2 className="m-0 text-base uppercase">What gets escalated</h2>
         <p className="text-sm">
-          Concerning observations — head impacts, persistent pain, signs of anxiety/depression,
-          arm overuse — are routed to parents/guardians and qualified professionals. The AI does
+          Concerning observations (head impacts, persistent pain, signs of anxiety/depression,
+          arm overuse) are routed to parents/guardians and qualified professionals. The AI does
           not attempt to handle these directly.
         </p>
       </section>

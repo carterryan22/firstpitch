@@ -422,8 +422,8 @@ function interpret(args: {
     const { unit, need } = moreNeeded(role, postWindow.sample);
     return {
       result: "insufficient",
-      insight: `Not enough game data yet — need ~${need} more ${unit} before we can judge transfer.`,
-      parentInsight: `We need a few more games before we can tell if ${name}'s training is showing up. Keep tracking — about ${need} more ${unit} should do it.`,
+      insight: `Not enough game data yet. Need ~${need} more ${unit} before we can judge transfer.`,
+      parentInsight: `We need a few more games before we can tell if ${name}'s training is showing up. Keep tracking. About ${need} more ${unit} should do it.`,
       kidInsight: `Keep logging your games! A few more and we'll see your training pay off. 💪`,
       confidenceReason,
     };
@@ -435,8 +435,8 @@ function interpret(args: {
     return {
       result: "strong",
       insight: `Strong transfer: practice gains are showing up in games (${head}). Confidence: ${conf}.`,
-      parentInsight: `${name}'s work is paying off — it's showing up in real games (${head}). Confidence: ${conf}, over ${postWindow.games} games.`,
-      kidInsight: `Your hard work is showing up in games — keep it going! 🔥`,
+      parentInsight: `${name}'s work is paying off. It's showing up in real games (${head}). Confidence: ${conf}, over ${postWindow.games} games.`,
+      kidInsight: `Your hard work is showing up in games. Keep it going! 🔥`,
       confidenceReason,
     };
   }
@@ -444,25 +444,25 @@ function interpret(args: {
     return {
       result: "game_only",
       insight: `Game numbers are up (${head}) over ${postWindow.games} games. Confidence: ${conf}.`,
-      parentInsight: `${name}'s game numbers are trending up (${head}). Could be the training clicking — let's keep tracking to be sure.`,
-      kidInsight: `Your game numbers are climbing — nice work! Keep stacking good reps. 📈`,
+      parentInsight: `${name}'s game numbers are trending up (${head}). Could be the training clicking. Let's keep tracking to be sure.`,
+      kidInsight: `Your game numbers are climbing. Nice work! Keep stacking good reps. 📈`,
       confidenceReason,
     };
   }
   if (practiceImproved === true) {
     return {
       result: "practice_only",
-      insight: `Practice is improving but it hasn't shown up in games yet — next focus: live timing / pitch-recognition reps.`,
-      parentInsight: `${name} is getting better in practice, but it hasn't reached game day yet. That usually means timing or seeing it live — totally normal, we'll bridge it.`,
-      kidInsight: `Your practice is looking great — next step is taking it into games. You've got this! 🎯`,
+      insight: `Practice is improving but it hasn't shown up in games yet. Next focus: live timing / pitch-recognition reps.`,
+      parentInsight: `${name} is getting better in practice, but it hasn't reached game day yet. That usually means timing or seeing it live. Totally normal, we'll bridge it.`,
+      kidInsight: `Your practice is looking great. Next step is taking it into games. You've got this! 🎯`,
       confidenceReason,
     };
   }
   return {
     result: "flat",
-    insight: `Game numbers are flat so far (${head}). Keep tracking — could be small-sample noise or opponent level.`,
-    parentInsight: `${name}'s game numbers are about the same so far. That can just be small samples or tough opponents — we'll keep watching.`,
-    kidInsight: `Steady as you go — keep showing up and putting in the reps. 🙌`,
+    insight: `Game numbers are flat so far (${head}). Keep tracking. Could be small-sample noise or opponent level.`,
+    parentInsight: `${name}'s game numbers are about the same so far. That can just be small samples or tough opponents, so we'll keep watching.`,
+    kidInsight: `Steady as you go, keep showing up and putting in the reps. 🙌`,
     confidenceReason,
   };
 }

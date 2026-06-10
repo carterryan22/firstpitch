@@ -147,7 +147,7 @@ export function BookForm({ slug, defaultName }: { slug: string; defaultName: str
           onChange={(e) => setBackupDate(e.target.value)}
         />
         <p className="mt-1 text-xs text-ink/60">
-          Cuts dead ends in half — if your first pick is taken, we try the backup.
+          Cuts dead ends in half. If your first pick is taken, we try the backup.
         </p>
       </div>
 
@@ -158,7 +158,7 @@ export function BookForm({ slug, defaultName }: { slug: string; defaultName: str
         </p>
         <div className="flex flex-wrap gap-2 pt-1">
           {([
-            ["yes", "Yes — ready to upload"],
+            ["yes", "Yes, ready to upload"],
             ["no", "Not yet"],
             ["unsure", "Not sure"],
           ] as const).map(([val, label]) => {

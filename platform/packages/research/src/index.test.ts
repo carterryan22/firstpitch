@@ -73,7 +73,7 @@ describe("opportunityStats", () => {
     expect(stats.scored).toBe(items.length);
     expect(stats.unscored).toBe(0);
     expect(stats.top[0]!.score).toBe(38);
-    expect(stats.top[0]!.platform).toBe("GameChanger");
+    expect(stats.top[0]!.platform).toBe("Competitor A");
     expect(stats.mvpCandidates).toBe(8);
   });
 });
@@ -108,7 +108,7 @@ describe("feature matrix", () => {
   it("renders markdown with the legend, our target row, and white space", () => {
     const md = renderFeatureMatrix();
     expect(md).toContain("# Competitor Feature Matrix");
-    expect(md).toContain("GameChanger");
+    expect(md).toContain("Competitor A");
     expect(md).toContain("First Pitch (target)");
     expect(md).toContain("White space");
     expect(md).toContain("\u2713");
@@ -133,7 +133,7 @@ describe("report", () => {
     expect(md).toContain("# Competitor Research Report");
     expect(md).toContain("Top opportunities");
     expect(md).toContain("MVP-candidate insights");
-    expect(md).toContain("GameChanger");
+    expect(md).toContain("Competitor A");
     expect(md).toContain("2026-01-02");
   });
 });

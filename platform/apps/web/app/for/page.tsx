@@ -12,7 +12,7 @@ export default function ForIndex() {
         <span className="eyebrow">Role-aware product</span>
         <h1 className="mt-4">Who&apos;s it for?</h1>
         <p className="mt-3 max-w-2xl text-ink/80">
-          First Pitch wears three hats. Pick the one that fits you today — every page below is a real,
+          First Pitch wears three hats. Pick the one that fits you today. Every page below is a real,
           working surface, no marketing waiting list.
         </p>
       </header>

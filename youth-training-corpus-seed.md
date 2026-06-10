@@ -45,9 +45,6 @@ A curated knowledge base (URLs, summaries, tags, safe-use rules, drill templates
 - https://www.littleleague.org/university/articles/the-little-league-coach-pitch-program/
 - https://www.littleleague.org/university/articles/8-helpful-tips-for-new-little-league-coaches/
 - https://www.littleleague.org/university/articles/breakdown-baserunning-drill/
-- https://www.drivelinebaseball.com/
-- https://edu.drivelinebaseball.com/
-- https://www.youtube.com/user/drivelinebaseball
 - https://www.antonellibaseball.com/instructionalvideos
 - https://www.youtube.com/@AntonelliBaseball
 
@@ -89,7 +86,7 @@ A curated knowledge base (URLs, summaries, tags, safe-use rules, drill templates
 |---|---|---|
 | **Tier 1: Safety / rules / medical-adjacent guardrails** | Pitch counts, throwing rest, soreness, youth lifting safety, hydration, sleep, mental wellness escalation | Pitch Smart, Little League, NSCA, CDC, HSS, GSSI, Sleep Foundation, NFHS |
 | **Tier 2: Development frameworks** | Age-appropriate training across years, not weeks | NSCA LTAD, USOPC ADM, Sport for Life, Project Play |
-| **Tier 3: Drill / practice inspiration** | Practice plans, games, skill drills, speed games, baseball drills | USA Baseball, Little League University, SimpliFaster, ALTIS, Sportsmith, Driveline, Antonelli, Pro Baseball Insider |
+| **Tier 3: Drill / practice inspiration** | Practice plans, games, skill drills, speed games, baseball drills | USA Baseball, Little League University, SimpliFaster, ALTIS, Sportsmith, Antonelli, Pro Baseball Insider |
 | **Tier 4: Tools / products** | Optional gear ideas, reaction-light drills, tech features | BlazePod, FITLIGHT-style research, training apps |
 
 **Hard line:** Tier 1 controls anything safety-relevant. Drill blogs, YouTube, and product sites never override Pitch Smart, Little League, NSCA, HSS, CDC, GSSI, or mental-wellness sources.
@@ -266,7 +263,7 @@ Sleep Foundation: school-age 9–12 hrs, teens 8–10 hrs. GSSI hydration and nu
 4. **PCA + TrueSport + NFHS + Project Play** — mental/culture layer.
 5. **Sleep Foundation + GSSI** — recovery/fuel/hydration.
 6. **ALTIS + SimpliFaster + Sportsmith** — speed/agility module.
-7. **Driveline + Antonelli + Pro Baseball Insider** — drill inspiration.
+7. **Antonelli + Pro Baseball Insider** — drill inspiration.
 8. **BlazePod / visual training research** — optional reaction-tech layer.
 
 **Result:** official safety sources at the center, practical drill sources around the edge, and AI freeform allowed only to remix within the guardrails.
@@ -313,7 +310,7 @@ Each Tier 1 rule in `corpus/tier1-safety-rules.json` has an `applies_to` field. 
 
 | Source | Used by | Doc anchor |
 |---|---|---|
-| USA Baseball practice plans, Little League University drills, Antonelli, Driveline EDU (13+ only), SimpliFaster, Sportsmith | Drill library + practice plan compilation | [coach-platform-practice-compiler.md §2](coach-platform-practice-compiler.md), §11 |
+| USA Baseball practice plans, Little League University drills, Antonelli, SimpliFaster, Sportsmith | Drill library + practice plan compilation | [coach-platform-practice-compiler.md §2](coach-platform-practice-compiler.md), §11 |
 | Pro Baseball Insider hand-eye drills | Drill library (reaction module — add-on weighting per `REACTION_TECH_IS_ADDON`) | [coach-platform-practice-compiler.md §2](coach-platform-practice-compiler.md) |
 
 Tier 3 drills must be re-authored to the contract in [corpus/drill-template.md](corpus/drill-template.md) — never copied. The drill object aligns with the core drill object in [player-development-metric-schema.md §16.3](player-development-metric-schema.md) and uses environment tiers from §17.

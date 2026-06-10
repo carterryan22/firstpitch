@@ -54,7 +54,7 @@ export function DataRequestPanel({ signedIn }: { signedIn: boolean }) {
       <div className="card space-y-3">
         <h2 className="m-0">Export your data</h2>
         <p className="m-0 text-ink/80">
-          Download a JSON file of everything we hold for your account — your profile, the players
+          Download a JSON file of everything we hold for your account: your profile, the players
           you manage, teams, plans, goals, and metrics.
         </p>
         <a href="/api/account/export" className="btn-primary w-fit" download>

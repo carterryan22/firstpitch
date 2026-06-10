@@ -117,7 +117,7 @@ export default async function AuditPage({
                         <div className="text-[10px] text-slate-400">{e.userId}</div>
                       </>
                     ) : (
-                      <span className="font-mono text-[10px] text-slate-400">{e.userId ?? "—"}</span>
+                      <span className="font-mono text-[10px] text-slate-400">{e.userId ?? "-"}</span>
                     )}
                   </td>
                   <td className="px-3 py-2 font-mono text-xs">

@@ -1,12 +1,12 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Foul ball — page not found",
+  title: "Foul ball: page not found",
   robots: { index: false, follow: false },
 };
 
 /**
- * Branded 404 (WoS §9.1 parity). Rendered inside the root layout, so the
+ * Branded 404 (game-day ref §9.1 parity). Rendered inside the root layout, so the
  * Dugout Dirt theme + fonts apply. Keeps the voice on-brand and points lost
  * visitors back to the surfaces that matter.
  */

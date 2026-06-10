@@ -186,7 +186,7 @@ export function buildCoachMemory(input: CoachMemoryInput): CoachMemory {
         kind: "injured",
         tone: "danger",
         label: "Injured",
-        detail: p.injuryNote?.trim() || "On the injury list — clear before full reps.",
+        detail: p.injuryNote?.trim() || "On the injury list. Clear before full reps.",
       });
     }
 
@@ -198,14 +198,14 @@ export function buildCoachMemory(input: CoachMemoryInput): CoachMemory {
         kind: "arm_care",
         tone: "watch",
         label: "Pitched recently",
-        detail: `Threw ${lastPitches} pitch${lastPitches === 1 ? "" : "es"} last game — mind Pitch Smart rest.`,
+        detail: `Threw ${lastPitches} pitch${lastPitches === 1 ? "" : "es"} last game. Mind Pitch Smart rest.`,
       });
     } else if (lastCatch >= 3) {
       needs.push({
         kind: "arm_care",
         tone: "watch",
         label: "Caught recently",
-        detail: `Caught ${lastCatch} innings last game — watch the throwing load.`,
+        detail: `Caught ${lastCatch} innings last game. Watch the throwing load.`,
       });
     }
 
@@ -216,7 +216,7 @@ export function buildCoachMemory(input: CoachMemoryInput): CoachMemory {
         kind: "sat_last_game",
         tone: "watch",
         label: "Sat last game",
-        detail: `Benched ${lg.benchInnings} of ${lg.benchInnings + lg.fieldInnings} innings${lastGame?.opponent ? ` vs ${lastGame.opponent}` : ""} — get them going early.`,
+        detail: `Benched ${lg.benchInnings} of ${lg.benchInnings + lg.fieldInnings} innings${lastGame?.opponent ? ` vs ${lastGame.opponent}` : ""}. Get them going early.`,
       });
     }
 
@@ -228,14 +228,14 @@ export function buildCoachMemory(input: CoachMemoryInput): CoachMemory {
         kind: "only_outfield",
         tone: "watch",
         label: "Only outfield",
-        detail: `${ofReps} OF innings, 0 infield over the last ${windowed.length} games — rotate in some infield.`,
+        detail: `${ofReps} OF innings, 0 infield over the last ${windowed.length} games. Rotate in some infield.`,
       });
     } else if (a.fieldInnings >= 4 && ifReps <= 1 && !p.canCatch) {
       needs.push({
         kind: "needs_infield_reps",
         tone: "watch",
         label: "Needs infield reps",
-        detail: `Only ${ifReps} infield inning${ifReps === 1 ? "" : "s"} lately — give them some dirt time.`,
+        detail: `Only ${ifReps} infield inning${ifReps === 1 ? "" : "s"} lately. Give them some dirt time.`,
       });
     }
 
@@ -284,7 +284,7 @@ export function buildCoachMemory(input: CoachMemoryInput): CoachMemory {
         kind: "missed_practice",
         tone: "neutral",
         label: "Missed practice",
-        detail: `Missed ${absences} recent practice${absences === 1 ? "" : "s"} — may need catch-up reps.`,
+        detail: `Missed ${absences} recent practice${absences === 1 ? "" : "s"}. May need catch-up reps.`,
       });
     }
 

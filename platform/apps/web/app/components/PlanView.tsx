@@ -168,7 +168,7 @@ export function PlanWarnings({ plan }: { plan: PlanSummary }) {
               const label = block?.drill?.name ?? (block ? TYPE_LABEL[block.type] : "Block");
               return (
                 <li key={f.blockId}>
-                  <strong>{label}</strong> — about {f.ratio} players per station. Split into{" "}
+                  <strong>{label}</strong>: about {f.ratio} players per station. Split into{" "}
                   <strong>{f.suggestedStations}</strong> stations to keep everyone active.
                 </li>
               );
@@ -341,8 +341,8 @@ function PlanSafetySummary({ plan }: { plan: PlanSummary }) {
   const throwingNote =
     typeof plan.totalThrowingLoad === "number"
       ? plan.totalThrowingLoad > 60
-        ? `Throwing load is ${plan.totalThrowingLoad} — above the 60-throw soft cap. Watch arm fatigue and rest days per Pitch Smart.`
-        : `Throwing load is ${plan.totalThrowingLoad} — within the soft cap. Pitch Smart rest still applies to any pitchers.`
+        ? `Throwing load is ${plan.totalThrowingLoad}, above the 60-throw soft cap. Watch arm fatigue and rest days per Pitch Smart.`
+        : `Throwing load is ${plan.totalThrowingLoad}, within the soft cap. Pitch Smart rest still applies to any pitchers.`
       : null;
   return (
     <Card className="border-ink/30 bg-cream/40">
@@ -357,7 +357,7 @@ function PlanSafetySummary({ plan }: { plan: PlanSummary }) {
         <li>Each block uses drills filtered by age band, equipment, and environment tier.</li>
         {throwingNote ? <li>{throwingNote}</li> : null}
         {plan.focus && plan.focus.length > 0 ? (
-          <li>Focus areas: {plan.focus.join(", ")} — used to pick skill blocks.</li>
+          <li>Focus areas: {plan.focus.join(", ")} (used to pick skill blocks).</li>
         ) : null}
       </ul>
     </Card>
@@ -423,7 +423,7 @@ function PlanEquipment({ blocks }: { blocks: PlanBlock[] }) {
       </ul>
       {gear.length > 0 ? (
         <div className="mt-4 border-t border-ink/15 pt-3">
-          <p className="m-0 text-xs uppercase tracking-[0.12em] text-dirt-300" style={{ fontFamily: "var(--font-type)" }}>
+          <p className="m-0 text-xs uppercase tracking-[0.12em] text-dirt-700" style={{ fontFamily: "var(--font-type)" }}>
             Don't have it? Tested picks
           </p>
           <ul className="mt-2 flex flex-wrap gap-2">
@@ -444,7 +444,7 @@ function PlanEquipment({ blocks }: { blocks: PlanBlock[] }) {
             })}
           </ul>
           <p className="mt-2 text-[11px] italic text-ink/55">
-            Affiliate links — small commission, never changes your price. Gear is optional.
+            Affiliate links: small commission, never changes your price. Gear is optional.
           </p>
         </div>
       ) : null}
@@ -458,7 +458,7 @@ function ParentVersion({ plan }: { plan: PlanSummary }) {
     <section id="parent-version" className="mt-8 border-t-2 border-dashed border-ink/30 pt-6">
       <header className="space-y-1">
         <p className="eyebrow">For the parent group chat</p>
-        <h2 className="m-0">Tonight&apos;s practice — the short version</h2>
+        <h2 className="m-0">Tonight&apos;s practice: the short version</h2>
         <p className="quote text-sm">
           Plain-English version you can copy/paste to parents. No coach jargon, no safety tables.
         </p>
@@ -471,7 +471,7 @@ function ParentVersion({ plan }: { plan: PlanSummary }) {
         <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm">
           {plan.blocks.map((b, i) => (
             <li key={b.blockId ?? i}>
-              <strong>{b.durationMin} min — {b.drill?.name ?? TYPE_LABEL[b.type]}.</strong>{" "}
+              <strong>{b.durationMin} min: {b.drill?.name ?? TYPE_LABEL[b.type]}.</strong>{" "}
               {b.drill?.kid_friendly?.explain ?? b.drill?.short_description ?? "Open block."}
             </li>
           ))}

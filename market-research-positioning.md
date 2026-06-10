@@ -13,7 +13,7 @@ This is **not a blue-ocean idea.** The market already has stat apps, sensor apps
 
 > A **parent-owned, player-centered development app** that connects home/facility drills, objective measurables, coach feedback, safety guardrails, and age-scaled gamification into one **closed loop.**
 
-Winning positioning is **not** "track your kid's stats." It is: **"Know what your player should work on next, how to do it safely, and whether it's actually working."** That is the gap between GameChanger, Perfect Game, Pocket Radar, YouTube drills, private lessons, and facility tech.
+Winning positioning is **not** "track your kid's stats." It is: **"Know what your player should work on next, how to do it safely, and whether it's actually working."** That is the gap between scorekeeping apps, showcase platforms, velo radars, YouTube drills, private lessons, and facility tech.
 
 ---
 
@@ -26,8 +26,8 @@ Winning positioning is **not** "track your kid's stats." It is: **"Know what you
 - [VERIFY] U.S. youth-sports industry commonly estimated ~$40B/yr, with PE and large operators targeting clubs, tournaments, academies, tech, and facilities.
 
 **Software spend is already validated:**
-- [VERIFY] GameChanger: >9M users, 1M teams, 9M games/yr; Dick's FY2025 SEC filing cited ~10M unique active users and ~$150M revenue.
-- [VERIFY] TeamSnap: ~30M users (2025); registration, scheduling, comms, coaching resources, streaming.
+- [VERIFY] The dominant scorekeeping app: >9M users, 1M teams, 9M games/yr; its parent company's FY2025 SEC filing cited ~10M unique active users and ~$150M revenue.
+- [VERIFY] The leading team-management app: ~30M users (2025); registration, scheduling, comms, coaching resources, streaming.
 
 **Implication:** families already pay for youth-sports software. The open question isn't "will they use an app" — it's whether they need *another* one badly enough. Yes, **only** if it lives outside the team-admin lane and solves "what should my kid do next?"
 
@@ -36,23 +36,23 @@ Winning positioning is **not** "track your kid's stats." It is: **"Know what you
 ## 3. Current market map
 
 ### A — Team management / scorekeeping
-GameChanger (dominant baseball/softball; game/event-first), TeamSnap (admin-first, multi-sport), SportsEngine / LeagueApps / Stack (B2B league/club infra). **Gap:** none is a kid-owned *development* record.
-**Implication:** do not compete as a better GameChanger — that's a trap. Let it track games; this app interprets practice, progress, and next actions.
+The dominant scorekeeping app (baseball/softball; game/event-first), the team-admin incumbent (admin-first, multi-sport), and B2B league/club platforms (league/club infra). **Gap:** none is a kid-owned *development* record.
+**Implication:** do not compete as a better scorekeeping app — that's a trap. Let it track games; this app interprets practice, progress, and next actions.
 
 ### B — Measurement hardware / sensor apps
-Pocket Radar (velo + video, hardware-tethered), Blast Motion ([VERIFY] ~$120 sensor + subscription; hitting-only), Diamond Kinetics (bat sensor + games; hitting-focused, closest to kid-engagement), Rapsodo ([VERIFY] Pro 2.0 Softball ~$3,500; facility/elite tier), HitTrax ([VERIFY] Home ~$49.99/mo up to 4 players), OnForm (video + coach feedback).
+Velocity radars (velo + video, hardware-tethered), swing sensors ([VERIFY] ~$120 sensor + subscription; hitting-only), bat sensors + games (hitting-focused, closest to kid-engagement), ball-flight trackers ([VERIFY] elite/facility tier ~$3,500), hitting launch-monitors ([VERIFY] home ~$49.99/mo up to 4 players), video-feedback apps (video + coach feedback).
 **Implication:** the market already *measures.* The gap is **measurement translation** — "this number means this, therefore do this next."
 
 ### C — Training content / programs
-CamWood (bat-speed/exit-velo programs tied to training bats; hardware/content funnel), Trosky 365 ([VERIFY] ~$19.99/mo; content-first, baseball-first), BRX Performance ([VERIFY] ~$34.99/mo or lifetime; training not measurement OS), Slash Your 60 (narrow), YouTube/IG (infinite, no sequencing/personalization/accountability).
+Training-bat programs (bat-speed/exit-velo tied to training bats; hardware/content funnel), subscription content apps ([VERIFY] ~$19.99/mo; content-first, baseball-first), training-subscription apps ([VERIFY] ~$34.99/mo or lifetime; training not measurement OS), narrow speed programs, YouTube/IG (infinite, no sequencing/personalization/accountability).
 **Implication:** don't try to be the best drill author first. Be the **routing layer** — based on the kid's data, age, gear, schedule, and soreness, here's the right plan.
 
 ### D — Recruiting / showcase / verified profile
-Perfect Game (showcase profiles, PG grades, rankings; exposure-first, older-player bias, [VERIFY] expensive), NCSA (recruiting profile + college search), Prep Baseball (event-first verified metrics).
+The dominant showcase platform (showcase profiles, grades, rankings; exposure-first, older-player bias, [VERIFY] expensive), recruiting-profile services (recruiting profile + college search), event-based verified-metrics services (event-first verified metrics).
 **Implication:** recruiting is **Phase 4, not MVP.** Leading with recruiting enters a crowded, mistrusted category. Lead with development.
 
-### E — The closest direct competitor: Diamond Allegiance / CURVE
-**Study this hardest.** [VERIFY] CURVE describes a central metrics hub (60-yd, exit velo) tracked over time + recruiting profile, with 12-week re-testing, daily plans off a "CURVE Score," mobility correctives, and a "Ball/Body/Brain" assessment model; positioned as an individualized, often club/academy-tied platform with AI testing and workload management.
+### E — The closest direct competitor: a club-tied metrics-hub platform
+**Study this hardest.** [VERIFY] It describes a central metrics hub (60-yd, exit velo) tracked over time + recruiting profile, with 12-week re-testing, daily plans off a composite test score, mobility correctives, and a three-pillar (physical/skill/mental) assessment model; positioned as an individualized, often club/academy-tied platform with AI testing and workload management.
 **The concept is not novel.** Novelty must come from **execution + wedge:** (1) parent-owned not academy-owned, (2) home-first not testing-center-first, (3) baseball + softball day one, (4) coach-assigned / parent-executed, (5) U10 gamified but U14 serious, (6) safety-first / workload-aware, (7) vendor-neutral integrations not a closed ecosystem.
 
 ---
@@ -60,17 +60,17 @@ Perfect Game (showcase profiles, PG grades, rankings; exposure-first, older-play
 ## 4. Customer pain signals
 *(These are the qualitative signals that most directly justify the wedge; they echo the r/Homeplate research from the start of this project.)*
 
-1. **"The stats are nice — but now what?"** The strongest pain. Coaches/parents see contact %, hard-hit %, QAB, K-rate, etc. in GameChanger and don't know what to *do* with it. **This is the core product gap.**
+1. **"The stats are nice — but now what?"** The strongest pain. Coaches/parents see contact %, hard-hit %, QAB, K-rate, etc. in their scorekeeping app and don't know what to *do* with it. **This is the core product gap.**
 2. **Youth game stats create drama and are often garbage.** Errors scored as hits, kids over-focused on stats, coaches editing stats. → **Design rule:** build around repeatable skill tests, personal progress, and coach-approved goals, *not* youth game stats.
 3. **Families want structure between lessons/practices** — the "between practices" wedge.
-4. **Parents distrust showcase economics** — early Perfect Game invites seen as "money grabs." → Room for an anti-waste message: *"Don't pay for a showcase yet; your player's verified metrics suggest focusing on X for 8 weeks."*
+4. **Parents distrust showcase economics** — early showcase invites seen as "money grabs." → Room for an anti-waste message: *"Don't pay for a showcase yet; your player's verified metrics suggest focusing on X for 8 weeks."*
 5. **Sensor subscriptions frustrate people** — e.g., metrics gated after a daily swing limit. → Opening for a **neutral** app that doesn't trap the development record in one vendor.
 
 ---
 
 ## 5. Target personas
 
-**Primary buyer — "committed but sane parent":** pays for lessons, gear, tournaments, maybe a Pocket Radar/Blast; not trying to make a 10-year-old pro; wants **clarity.** Jobs-to-be-done: tell me what to work on this week · make home practice useful without me becoming a coach · don't let me overdo it · show progress without comparison · help me understand what the coach meant.
+**Primary buyer — "committed but sane parent":** pays for lessons, gear, tournaments, maybe a velo radar or swing sensor; not trying to make a 10-year-old pro; wants **clarity.** Jobs-to-be-done: tell me what to work on this week · make home practice useful without me becoming a coach · don't let me overdo it · show progress without comparison · help me understand what the coach meant.
 
 **Secondary user — the kid (by age):** U8–10 fun missions/points/streaks; U11–12 skill challenges/PRs; U13–14 serious progress/position ladders; U15+ verified metrics/recruiting readiness. → one engine, different skins.
 
@@ -103,13 +103,13 @@ That list **is** the product. (All are specified in the core spec / addendum.)
 
 ## 7. Positioning
 
-**Bad positioning (all owned by incumbents):** "a stat tracker" (GameChanger), "a recruiting profile" (Perfect Game/NCSA), "a training app" (Trosky/CamWood/BRX/YouTube), "a sensor app" (hardware makers).
+**Bad positioning (all owned by incumbents):** "a stat tracker" (scorekeeping apps), "a recruiting profile" (showcase/recruiting platforms), "a training app" (training subscriptions/YouTube), "a sensor app" (hardware makers).
 
 **Strong positioning:** *The youth baseball/softball development app that turns real measurements and coach feedback into safe, age-appropriate home and facility training plans.*
 
 | Audience | Line |
 |---|---|
-| Sharper | "GameChanger shows what happened. This shows what to work on next." |
+| Sharper | "Scorekeeping apps show what happened. This shows what to work on next." |
 | Parent | "Know what to practice, how much is enough, and whether your player is improving." |
 | Coach | "Assign between-practice missions families can actually do." |
 | Facility | "Run verified player baselines, generate reports, and keep athletes coming back." |
@@ -120,7 +120,7 @@ That list **is** the product. (All are specified in the core spec / addendum.)
 
 ## 8. Differentiation matrix
 
-| Feature | GameChanger | Pocket Radar | Blast/DK | Trosky/CamWood/BRX | CURVE | This app |
+| Feature | Scorekeeping app | Velo radar | Bat sensors | Training subs | Club metrics hub | This app |
 |---|---|---|---|---|---|---|
 | Game stats | ✅ | ❌ | ❌ | ❌ | Limited | Optional |
 | Player-owned profile | Partial | Partial | Partial | Partial | Club-dependent | ✅ Core |
@@ -147,7 +147,7 @@ Because the product involves children under 13, **parent ownership is foundation
 ---
 
 ## 11. Pricing (recommended; competitor prices [VERIFY])
-Market signals of willingness to pay: GameChanger at scale, Trosky [VERIFY] ~$19.99/mo, BRX [VERIFY] ~$34.99/mo, HitTrax Home [VERIFY] ~$49.99/mo, OnForm individual/coach tiers.
+Market signals of willingness to pay: the dominant scorekeeping app at scale, content subscriptions [VERIFY] ~$19.99/mo, training subscriptions [VERIFY] ~$34.99/mo, home launch-monitors [VERIFY] ~$49.99/mo, video-feedback apps' individual/coach tiers.
 
 | Tier | Price | User |
 |---|---|---|
@@ -164,9 +164,9 @@ Market signals of willingness to pay: GameChanger at scale, Trosky [VERIFY] ~$19
 
 ## 12. Go-to-market
 
-**Beachhead:** U9–U14 committed baseball/softball families and coaches who already use GameChanger but don't know what to do between practices. (Already app-trained, already spending, development-focused, burnout-sensitive, don't need recruiting proof yet.)
+**Beachhead:** U9–U14 committed baseball/softball families and coaches who already use a scorekeeping app but don't know what to do between practices. (Already app-trained, already spending, development-focused, burnout-sensitive, don't need recruiting proof yet.)
 
-**Channels:** coaches ("assign one thing this week") · facilities ("run baseline week / progress reports") · parents ("what should we practice at home?") · travel teams ("development dashboard without exposing kid stats") · softball communities ("softball equal, not an afterthought") · Reddit/FB groups (problem-led education, not hard selling) · Pocket Radar/tee/net affiliates.
+**Channels:** coaches ("assign one thing this week") · facilities ("run baseline week / progress reports") · parents ("what should we practice at home?") · travel teams ("development dashboard without exposing kid stats") · softball communities ("softball equal, not an afterthought") · Reddit/FB groups (problem-led education, not hard selling) · radar/tee/net affiliates.
 
 **Strongest paid channel — facility-led "Baseline Night in a Box":** check-in, standardized protocols, player profiles, EV/throwing/speed/9-box tests, auto player cards, recommended home plan, 6–8 week retest. Facility value: more premium than cage rental, repeat visits, parent report, verified data, off-season programming.
 
@@ -185,7 +185,7 @@ Youth-baseball coaching creators for seeding, affiliate, and content partnership
 | 7 | YouGoProBaseball — John Madden | Pitching, throwing, infield, hitting; coach self-education | ~66K IG; 300K+ YT | Former SD Padres / NY Mets / Auburn. |
 | 8 | D.R. Hitting — Drew Richard | Swing concepts, "box" approach; hitter-development focus | ~267K IG | Popular hitting-specific account. |
 | 9 | Coach Murph / iCoachBaseball | Youth coaching + hitting; practical simple cues for parents/coaches | ~203K IG | Self-styled "home for youth baseball coaching." |
-| 10 | Dominate the Diamond — Duke Baxter / Steve Nikorak | Youth drills, practice plans, coach-pitch, 8U–12U, team fundamentals | ~195K IG (Duke) | Best "coach the coach" platform on this list. |
+| 10 | Youth coaching brand (coach-the-coach) | Youth drills, practice plans, coach-pitch, 8U–12U, team fundamentals | ~195K IG | Best "coach the coach" account on this list. |
 | 11 | Coach Ferber — Jason Ferber | Youth hitting, energy, simple cues | ~226K IG | Big youth-baseball account. |
 | 12 | Hitting Done Right / Baseball Doctor — Josh Cathcart | Hitting drills, swing fixes | ~193K IG | Feedspot ranks him high among baseball coach influencers. |
 | 13 | Coach Lou Colon | Infield work, footwork, hands, transfers | ~152K IG | Strong infield-specific content. |
@@ -200,9 +200,9 @@ Youth-baseball coaching creators for seeding, affiliate, and content partnership
 ---
 
 ## 13. Competitive threat & defense
-- **Highest — CURVE/Diamond Allegiance:** clearest overlap. Defend by staying parent-owned, cheaper/lighter, home-first, equipment-aware, coach/facility-optional (not club-dependent), truly softball-equal, U10–U14 usability over elite-pipeline language.
-- **Medium — GameChanger:** could add development features; huge distribution. Defend by *not depending on its data*, owning the cross-team player record, centering home practice + parent workflow, building trust around safety not stats.
-- **Medium — sensor apps (Blast/DK/Pocket Radar/HitTrax):** could add plans. Defend by integrating them **neutrally**, owning the cross-skill record, keeping data useful without hardware.
+- **Highest — the club-tied metrics-hub platform:** clearest overlap. Defend by staying parent-owned, cheaper/lighter, home-first, equipment-aware, coach/facility-optional (not club-dependent), truly softball-equal, U10–U14 usability over elite-pipeline language.
+- **Medium — the dominant scorekeeping app:** could add development features; huge distribution. Defend by *not depending on its data*, owning the cross-team player record, centering home practice + parent workflow, building trust around safety not stats.
+- **Medium — sensor apps (swing/bat sensors, velo radars, launch-monitors):** could add plans. Defend by integrating them **neutrally**, owning the cross-skill record, keeping data useful without hardware.
 
 ---
 
@@ -212,7 +212,7 @@ Not the app — the **dataset and workflow.** Longitudinal player-owned data · 
 ---
 
 ## 15. What to avoid
-Public U10 leaderboard · recruiting-first · GameChanger clone · giant drill library with no guidance · sensor-dependent product · max-effort throwing plans for young kids · fake percentiles before you have data · social features letting strangers contact minors · "AI swing diagnosis" as the first wedge · anything that makes parents *more* anxious.
+Public U10 leaderboard · recruiting-first · scorekeeping-app clone · giant drill library with no guidance · sensor-dependent product · max-effort throwing plans for young kids · fake percentiles before you have data · social features letting strangers contact minors · "AI swing diagnosis" as the first wedge · anything that makes parents *more* anxious.
 
 ---
 

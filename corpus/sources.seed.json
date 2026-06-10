@@ -976,14 +976,14 @@
     ]
   },
   {
-    "title": "Driveline Baseball (site)",
-    "url": "https://www.drivelinebaseball.com/",
-    "source_name": "Driveline Baseball",
+    "title": "Pitching-Lab (site)",
+    "url": "https://www.anonymized-pitching-lab.com/",
+    "source_name": "Pitching-Lab",
     "source_tier": "Tier 3",
     "topic": "throwing",
     "age_band": "13-15 | 16+",
     "sport": "baseball",
-    "summary": "Driveline programs, tech, and content for pitching/hitting development.",
+    "summary": "Pitching-Lab programs, tech, and content for pitching/hitting development.",
     "key_principles": [
       "data-driven",
       "velocity development"
@@ -1004,19 +1004,19 @@
     "progression_level": "advanced",
     "evidence_level": "coaching article",
     "tags": [
-      "driveline",
+      "pitching-lab",
       "velocity"
     ]
   },
   {
-    "title": "Driveline EDU",
-    "url": "https://edu.drivelinebaseball.com/",
-    "source_name": "Driveline Baseball",
+    "title": "Pitching-Lab EDU",
+    "url": "https://edu.anonymized-pitching-lab.com/",
+    "source_name": "Pitching-Lab",
     "source_tier": "Tier 3",
     "topic": "throwing",
     "age_band": "13-15 | 16+",
     "sport": "baseball",
-    "summary": "Driveline's educational platform.",
+    "summary": "Pitching-Lab's educational platform.",
     "key_principles": [
       "coach education"
     ],
@@ -1035,19 +1035,19 @@
     "progression_level": "advanced",
     "evidence_level": "coaching article",
     "tags": [
-      "driveline",
+      "pitching-lab",
       "education"
     ]
   },
   {
-    "title": "Driveline Baseball — YouTube",
-    "url": "https://www.youtube.com/user/drivelinebaseball",
-    "source_name": "Driveline Baseball",
+    "title": "Pitching-Lab — YouTube",
+    "url": "https://www.youtube.com/user/anonymized-pitching-lab",
+    "source_name": "Pitching-Lab",
     "source_tier": "Tier 3",
     "topic": "throwing",
     "age_band": "13-15 | 16+",
     "sport": "baseball",
-    "summary": "Video library of Driveline drills and concepts.",
+    "summary": "Video library of Pitching-Lab drills and concepts.",
     "key_principles": [],
     "safe_to_prescribe": false,
     "requires_guardrail": true,
@@ -1064,7 +1064,7 @@
     "progression_level": "advanced",
     "evidence_level": "coaching article",
     "tags": [
-      "driveline",
+      "pitching-lab",
       "video"
     ]
   },
@@ -1841,14 +1841,14 @@
     ]
   },
   {
-    "title": "Driveline Youth Individual Program",
-    "url": "https://edu.drivelinebaseball.com/",
-    "source_name": "Driveline Baseball",
+    "title": "Pitching-Lab Youth Individual Program",
+    "url": "https://edu.anonymized-pitching-lab.com/",
+    "source_name": "Pitching-Lab",
     "source_tier": "Tier 3",
     "topic": "baseball",
     "age_band": "9-12 | 13-15",
     "sport": "baseball",
-    "summary": "Driveline's youth individual development program — a structured throwing + hitting plan built around long-term skill development rather than chasing velocity.",
+    "summary": "Pitching-Lab's youth individual development program — a structured throwing + hitting plan built around long-term skill development rather than chasing velocity.",
     "key_principles": [
       "athleticism first",
       "movement quality before intensity",
@@ -1872,16 +1872,16 @@
     "progression_level": "intermediate",
     "evidence_level": "coaching article",
     "tags": [
-      "driveline",
+      "pitching-lab",
       "throwing",
       "hitting",
       "development"
     ]
   },
   {
-    "title": "Driveline Youth Arm Care Program",
-    "url": "https://edu.drivelinebaseball.com/",
-    "source_name": "Driveline Baseball",
+    "title": "Pitching-Lab Youth Arm Care Program",
+    "url": "https://edu.anonymized-pitching-lab.com/",
+    "source_name": "Pitching-Lab",
     "source_tier": "Tier 1",
     "topic": "throwing",
     "age_band": "9-12 | 13-15",
@@ -1912,16 +1912,16 @@
     "progression_level": "intro",
     "evidence_level": "coaching article",
     "tags": [
-      "driveline",
+      "pitching-lab",
       "arm-care",
       "recovery",
       "guardrail"
     ]
   },
   {
-    "title": "Driveline Youth Practice Guide",
-    "url": "https://www.drivelinebaseball.com/practice-guide/",
-    "source_name": "Driveline Baseball",
+    "title": "Pitching-Lab Youth Practice Guide",
+    "url": "https://www.anonymized-pitching-lab.com/practice-guide/",
+    "source_name": "Pitching-Lab",
     "source_tier": "Tier 3",
     "topic": "baseball",
     "age_band": "9-12 | 13-15",
@@ -1945,16 +1945,16 @@
     "progression_level": "intro",
     "evidence_level": "coaching article",
     "tags": [
-      "driveline",
+      "pitching-lab",
       "practice-plan",
       "QAB",
       "templates"
     ]
   },
   {
-    "title": "Driveline Youth Baseball Practice Games",
+    "title": "Pitching-Lab Youth Baseball Practice Games",
     "url": "https://dt5602vnjxv0c.cloudfront.net/portals/25096/docs/coaches/practice%20skills.pdf",
-    "source_name": "Driveline Baseball",
+    "source_name": "Pitching-Lab",
     "source_tier": "Tier 3",
     "topic": "baseball",
     "age_band": "6-8 | 9-12",
@@ -1978,7 +1978,7 @@
     "progression_level": "intro",
     "evidence_level": "coaching article",
     "tags": [
-      "driveline",
+      "pitching-lab",
       "games",
       "engagement"
     ]
@@ -2146,9 +2146,9 @@
     ]
   },
   {
-    "title": "Dominate the Diamond — Development Guides",
-    "url": "https://www.dominatethediamond.com/free-resources",
-    "source_name": "Dominate The Diamond",
+    "title": "Youth Coaching Program — Development Guides",
+    "url": "https://www.anonymized-youth-coaching.com/free-resources",
+    "source_name": "Youth Coaching Program",
     "source_tier": "Tier 3",
     "topic": "baseball",
     "age_band": "6-8 | 9-12",
@@ -2172,7 +2172,7 @@
     "progression_level": "intro",
     "evidence_level": "coaching article",
     "tags": [
-      "dominate-the-diamond",
+      "youth-coaching",
       "confidence",
       "parent-guide",
       "email-gated"
@@ -3440,9 +3440,9 @@
     ]
   },
   {
-    "title": "Dominate the Diamond — Duke Baxter / Steve Nikorak (Instagram)",
-    "url": "https://www.instagram.com/dukebaxter/",
-    "source_name": "Dominate the Diamond",
+    "title": "Youth Coaching Program (Instagram)",
+    "url": "https://www.instagram.com/anonymized-youth-coaching/",
+    "source_name": "Youth Coaching Program",
     "source_tier": "Tier 3",
     "topic": "baseball",
     "age_band": "6-8 | 9-12",
@@ -3470,8 +3470,8 @@
     "progression_level": "intro",
     "evidence_level": "coaching article",
     "tags": [
-      "dominate-the-diamond",
-      "duke-baxter",
+      "youth-coaching",
+      "youth-coaching",
       "practice-plans",
       "social"
     ]
@@ -3655,14 +3655,14 @@
     ]
   },
   {
-    "title": "Cues & Drills to Let Your Body Deliver the Barrel to the Ball — Driveline Baseball (YouTube)",
+    "title": "Cues & Drills to Let Your Body Deliver the Barrel to the Ball — Pitching-Lab (YouTube)",
     "url": "https://www.youtube.com/watch?v=gCDudoxKwbI",
-    "source_name": "Driveline Baseball",
+    "source_name": "Pitching-Lab",
     "source_tier": "Tier 3",
     "topic": "throwing",
     "age_band": "13-15 | 16+",
     "sport": "baseball",
-    "summary": "\"Cues & Drills to Let Your Body Deliver the Barrel to the Ball\" — a YouTube video from Driveline Baseball. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
+    "summary": "\"Cues & Drills to Let Your Body Deliver the Barrel to the Ball\" — a YouTube video from Pitching-Lab. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
     "key_principles": [],
     "safe_to_prescribe": false,
     "requires_guardrail": true,
@@ -3679,21 +3679,21 @@
     "progression_level": "advanced",
     "evidence_level": "coaching article",
     "tags": [
-      "driveline",
+      "pitching-lab",
       "video",
-      "driveline-baseball",
+      "pitching-lab",
       "auto-added"
     ]
   },
   {
-    "title": "The Rangers Signed Him After +4 MPH Bat Speed In 6 Weeks — Driveline Baseball (YouTube)",
+    "title": "The Rangers Signed Him After +4 MPH Bat Speed In 6 Weeks — Pitching-Lab (YouTube)",
     "url": "https://www.youtube.com/watch?v=ufh2XNcw8dA",
-    "source_name": "Driveline Baseball",
+    "source_name": "Pitching-Lab",
     "source_tier": "Tier 3",
     "topic": "throwing",
     "age_band": "13-15 | 16+",
     "sport": "baseball",
-    "summary": "\"The Rangers Signed Him After +4 MPH Bat Speed In 6 Weeks\" — a YouTube video from Driveline Baseball. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
+    "summary": "\"The Rangers Signed Him After +4 MPH Bat Speed In 6 Weeks\" — a YouTube video from Pitching-Lab. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
     "key_principles": [],
     "safe_to_prescribe": false,
     "requires_guardrail": true,
@@ -3710,21 +3710,21 @@
     "progression_level": "advanced",
     "evidence_level": "coaching article",
     "tags": [
-      "driveline",
+      "pitching-lab",
       "video",
-      "driveline-baseball",
+      "pitching-lab",
       "auto-added"
     ]
   },
   {
-    "title": "Driveline Roadmap: Your Development. Your Data. Your Path. — Driveline Baseball (YouTube)",
+    "title": "Pitching-Lab Roadmap: Your Development. Your Data. Your Path. — Pitching-Lab (YouTube)",
     "url": "https://www.youtube.com/watch?v=0eyxyh7uw94",
-    "source_name": "Driveline Baseball",
+    "source_name": "Pitching-Lab",
     "source_tier": "Tier 3",
     "topic": "throwing",
     "age_band": "13-15 | 16+",
     "sport": "baseball",
-    "summary": "\"Driveline Roadmap: Your Development. Your Data. Your Path.\" — a YouTube video from Driveline Baseball. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
+    "summary": "\"Pitching-Lab Roadmap: Your Development. Your Data. Your Path.\" — a YouTube video from Pitching-Lab. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
     "key_principles": [],
     "safe_to_prescribe": false,
     "requires_guardrail": true,
@@ -3741,21 +3741,21 @@
     "progression_level": "advanced",
     "evidence_level": "coaching article",
     "tags": [
-      "driveline",
+      "pitching-lab",
       "video",
-      "driveline-baseball",
+      "pitching-lab",
       "auto-added"
     ]
   },
   {
-    "title": "His bat path is costing him — Driveline Baseball (YouTube)",
+    "title": "His bat path is costing him — Pitching-Lab (YouTube)",
     "url": "https://www.youtube.com/watch?v=RczpZSjZgQA",
-    "source_name": "Driveline Baseball",
+    "source_name": "Pitching-Lab",
     "source_tier": "Tier 3",
     "topic": "throwing",
     "age_band": "13-15 | 16+",
     "sport": "baseball",
-    "summary": "\"His bat path is costing him\" — a YouTube video from Driveline Baseball. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
+    "summary": "\"His bat path is costing him\" — a YouTube video from Pitching-Lab. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
     "key_principles": [],
     "safe_to_prescribe": false,
     "requires_guardrail": true,
@@ -3772,21 +3772,21 @@
     "progression_level": "advanced",
     "evidence_level": "coaching article",
     "tags": [
-      "driveline",
+      "pitching-lab",
       "video",
-      "driveline-baseball",
+      "pitching-lab",
       "auto-added"
     ]
   },
   {
-    "title": "Stop Getting Greedy on Your Pitch (Swing Design) — Driveline Baseball (YouTube)",
+    "title": "Stop Getting Greedy on Your Pitch (Swing Design) — Pitching-Lab (YouTube)",
     "url": "https://www.youtube.com/watch?v=F-od2QhIRGY",
-    "source_name": "Driveline Baseball",
+    "source_name": "Pitching-Lab",
     "source_tier": "Tier 3",
     "topic": "throwing",
     "age_band": "13-15 | 16+",
     "sport": "baseball",
-    "summary": "\"Stop Getting Greedy on Your Pitch (Swing Design)\" — a YouTube video from Driveline Baseball. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
+    "summary": "\"Stop Getting Greedy on Your Pitch (Swing Design)\" — a YouTube video from Pitching-Lab. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
     "key_principles": [],
     "safe_to_prescribe": false,
     "requires_guardrail": true,
@@ -3803,21 +3803,21 @@
     "progression_level": "advanced",
     "evidence_level": "coaching article",
     "tags": [
-      "driveline",
+      "pitching-lab",
       "video",
-      "driveline-baseball",
+      "pitching-lab",
       "auto-added"
     ]
   },
   {
-    "title": "Cleaner Swing Path = More Barrels vs Velo & Lefties (Swing Design ft. ABL MVP) — Driveline Baseball (YouTube)",
+    "title": "Cleaner Swing Path = More Barrels vs Velo & Lefties (Swing Design ft. ABL MVP) — Pitching-Lab (YouTube)",
     "url": "https://www.youtube.com/watch?v=xMbjlQ2v0vI",
-    "source_name": "Driveline Baseball",
+    "source_name": "Pitching-Lab",
     "source_tier": "Tier 3",
     "topic": "throwing",
     "age_band": "13-15 | 16+",
     "sport": "baseball",
-    "summary": "\"Cleaner Swing Path = More Barrels vs Velo & Lefties (Swing Design ft. ABL MVP)\" — a YouTube video from Driveline Baseball. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
+    "summary": "\"Cleaner Swing Path = More Barrels vs Velo & Lefties (Swing Design ft. ABL MVP)\" — a YouTube video from Pitching-Lab. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
     "key_principles": [],
     "safe_to_prescribe": false,
     "requires_guardrail": true,
@@ -3834,21 +3834,21 @@
     "progression_level": "advanced",
     "evidence_level": "coaching article",
     "tags": [
-      "driveline",
+      "pitching-lab",
       "video",
-      "driveline-baseball",
+      "pitching-lab",
       "auto-added"
     ]
   },
   {
-    "title": "How A Pro Hitter Gets Ready for MLB Spring Training | Seattle Mariners MiLB Victor Labrada — Driveline Baseball (YouTube)",
+    "title": "How A Pro Hitter Gets Ready for MLB Spring Training | Seattle Mariners MiLB Victor Labrada — Pitching-Lab (YouTube)",
     "url": "https://www.youtube.com/watch?v=isfuQ58avok",
-    "source_name": "Driveline Baseball",
+    "source_name": "Pitching-Lab",
     "source_tier": "Tier 3",
     "topic": "throwing",
     "age_band": "13-15 | 16+",
     "sport": "baseball",
-    "summary": "\"How A Pro Hitter Gets Ready for MLB Spring Training | Seattle Mariners MiLB Victor Labrada\" — a YouTube video from Driveline Baseball. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
+    "summary": "\"How A Pro Hitter Gets Ready for MLB Spring Training | Seattle Mariners MiLB Victor Labrada\" — a YouTube video from Pitching-Lab. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
     "key_principles": [],
     "safe_to_prescribe": false,
     "requires_guardrail": true,
@@ -3865,21 +3865,21 @@
     "progression_level": "advanced",
     "evidence_level": "coaching article",
     "tags": [
-      "driveline",
+      "pitching-lab",
       "video",
-      "driveline-baseball",
+      "pitching-lab",
       "auto-added"
     ]
   },
   {
-    "title": "3 Drills To Improve Rotation (feat. John Rhodes, LA Dodgers) — Driveline Baseball (YouTube)",
+    "title": "3 Drills To Improve Rotation (feat. John Rhodes, LA Dodgers) — Pitching-Lab (YouTube)",
     "url": "https://www.youtube.com/watch?v=sKTs4WImtp4",
-    "source_name": "Driveline Baseball",
+    "source_name": "Pitching-Lab",
     "source_tier": "Tier 3",
     "topic": "throwing",
     "age_band": "13-15 | 16+",
     "sport": "baseball",
-    "summary": "\"3 Drills To Improve Rotation (feat. John Rhodes, LA Dodgers)\" — a YouTube video from Driveline Baseball. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
+    "summary": "\"3 Drills To Improve Rotation (feat. John Rhodes, LA Dodgers)\" — a YouTube video from Pitching-Lab. Auto-added from the creator watch list; use as coaching inspiration only, age-scale it, and defer to Pitch Smart and Tier-1 safety rules.",
     "key_principles": [],
     "safe_to_prescribe": false,
     "requires_guardrail": true,
@@ -3896,9 +3896,9 @@
     "progression_level": "advanced",
     "evidence_level": "coaching article",
     "tags": [
-      "driveline",
+      "pitching-lab",
       "video",
-      "driveline-baseball",
+      "pitching-lab",
       "auto-added"
     ]
   },

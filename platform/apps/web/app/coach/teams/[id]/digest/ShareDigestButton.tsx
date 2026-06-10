@@ -16,7 +16,7 @@ interface DigestPayload {
 
 function buildText(d: DigestPayload): string {
   const lines: string[] = [];
-  lines.push(`${d.teamName} — weekly digest`);
+  lines.push(`${d.teamName}: weekly digest`);
   lines.push(
     `${new Date(d.windowStart).toLocaleDateString()} → ${new Date(d.windowEnd).toLocaleDateString()}`,
   );
@@ -24,20 +24,20 @@ function buildText(d: DigestPayload): string {
     lines.push("");
     lines.push("Games:");
     for (const g of d.upcomingGames) {
-      lines.push(`  ${g.homeAway === "home" ? "vs" : "@"} ${g.opponent} — ${new Date(g.startsAt).toLocaleString()}`);
+      lines.push(`  ${g.homeAway === "home" ? "vs" : "@"} ${g.opponent}: ${new Date(g.startsAt).toLocaleString()}`);
     }
   }
   if (d.upcomingPractices.length) {
     lines.push("");
     lines.push("Practices:");
     for (const p of d.upcomingPractices) {
-      lines.push(`  ${p.name} — ${new Date(p.scheduledAt).toLocaleString()}`);
+      lines.push(`  ${p.name}: ${new Date(p.scheduledAt).toLocaleString()}`);
     }
   }
   if (d.pitcherReturns.length) {
     lines.push("");
     lines.push("Pitchers returning:");
-    for (const p of d.pitcherReturns) lines.push(`  ${p.name} — ${p.availableOn}`);
+    for (const p of d.pitcherReturns) lines.push(`  ${p.name}: ${p.availableOn}`);
   }
   if (d.goalsAchievedThisWeek.length) {
     lines.push("");
@@ -58,7 +58,7 @@ export function ShareDigestButton({ digest, url }: { digest: DigestPayload; url:
   async function onClick() {
     void hapticTap();
     const result = await share({
-      title: `${digest.teamName} — weekly digest`,
+      title: `${digest.teamName}: weekly digest`,
       text: buildText(digest),
       url,
     });

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { POSITIONS, type Position, type PositionRating, type Bats, type Throws } from "@platform/storage/types";
 
 const RATINGS: Array<{ value: PositionRating | ""; label: string; color: string }> = [
-  { value: "", label: "—", color: "bg-slate-50 text-slate-400" },
+  { value: "", label: "-", color: "bg-slate-50 text-slate-400" },
   { value: "preferred", label: "Pref", color: "bg-teal-600 text-white" },
   { value: "ok", label: "OK", color: "bg-amber-100 text-amber-900" },
   { value: "avoid", label: "Avoid", color: "bg-slate-200 text-slate-600" },
@@ -174,7 +174,7 @@ export function PlayerForm({
             value={v.bats ?? ""}
             onChange={(e) => set("bats", (e.target.value || undefined) as Bats | undefined)}
           >
-            <option value="">—</option>
+            <option value="">-</option>
             <option value="L">L</option>
             <option value="R">R</option>
             <option value="S">S</option>
@@ -188,7 +188,7 @@ export function PlayerForm({
             value={v.throws ?? ""}
             onChange={(e) => set("throws", (e.target.value || undefined) as Throws | undefined)}
           >
-            <option value="">—</option>
+            <option value="">-</option>
             <option value="L">L</option>
             <option value="R">R</option>
           </select>
@@ -209,7 +209,7 @@ export function PlayerForm({
               )
             }
           >
-            <option value="">—</option>
+            <option value="">-</option>
             <option value="M">Male</option>
             <option value="F">Female</option>
             <option value="X">Non-binary / prefer not</option>

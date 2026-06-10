@@ -167,7 +167,7 @@ export function PracticeBuilder({
               value={teamId}
               onChange={(e) => onTeamChange(e.target.value)}
             >
-              <option value="">No team — personal draft</option>
+              <option value="">No team, personal draft</option>
               {teams.map((t) => (
                 <option key={t.id} value={t.id}>
                   {t.name} ({t.ageBand})
@@ -241,7 +241,7 @@ export function PracticeBuilder({
           >
             {ENV_OPTIONS.map((o) => (
               <option key={o.value} value={o.value}>
-                {o.label} — {o.hint}
+                {o.label}: {o.hint}
               </option>
             ))}
           </select>
@@ -323,7 +323,7 @@ export function PracticeBuilder({
               <input
                 id="name"
                 className="input"
-                placeholder="Tuesday — speed + reaction"
+                placeholder="Tuesday: speed + reaction"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />

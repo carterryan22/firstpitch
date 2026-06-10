@@ -60,7 +60,7 @@ export default async function NewPracticePage({
         <h1>Build a practice</h1>
         <p className="mt-2 text-slate-600">
           Browse drill tiles, drop them in your plan, and we'll compile a safety-checked timeline
-          that fits your time slot — water breaks and transitions included.
+          that fits your time slot, water breaks and transitions included.
         </p>
       </header>
       <TileBuilder

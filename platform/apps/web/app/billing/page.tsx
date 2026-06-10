@@ -31,7 +31,7 @@ export default async function BillingPage({
 
       {status === "success" && (
         <div className="card border-field-500">
-          <p className="m-0">Thanks — your subscription is active. It may take a moment to reflect.</p>
+          <p className="m-0">Thanks, your subscription is active. It may take a moment to reflect.</p>
         </div>
       )}
       {status === "cancelled" && (
@@ -42,7 +42,7 @@ export default async function BillingPage({
       {!isBillingEnabled() && (
         <div className="card">
           <p className="m-0 text-ink/80">
-            Billing isn&apos;t switched on yet — <strong>everything is free during launch</strong>.
+            Billing isn&apos;t switched on yet. <strong>Everything is free during launch</strong>.
             These tiers show where we&apos;re headed.
           </p>
         </div>

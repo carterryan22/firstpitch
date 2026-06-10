@@ -118,7 +118,7 @@ export default async function FixLastGamePage({
             Build the {durationMin}-min practice →
           </Link>
           <p className="m-0 text-xs text-slate-500">
-            Pre-loads the builder with {plan.focus.join(", ")} — every plan still runs the safety
+            Pre-loads the builder with {plan.focus.join(", ")}. Every plan still runs the safety
             corpus + Pitch Smart gate before it ships.
           </p>
         </Card>

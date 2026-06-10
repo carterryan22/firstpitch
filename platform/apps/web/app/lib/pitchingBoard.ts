@@ -3,7 +3,7 @@ import { canPitchToday, type CanPitchResult, type PitchHistory } from "@platform
 /**
  * Planning-aware pitching projections layered on top of the Pitch Smart engine.
  *
- * Who's on Second's pitching board is purely *reactive* — it tells a coach who
+ * The game-day competitor's pitching board is purely *reactive* — it tells a coach who
  * owes rest right now. Because we already carry the schedule, we can answer the
  * question a coach actually asks the night before a game: "who can I pitch on
  * Saturday, and for how many?" These helpers turn the same engine output into a

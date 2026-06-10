@@ -20,8 +20,8 @@ function p(id: string, extras: Partial<LineupPlayer> = {}): LineupPlayer {
   return { id, canPitch: false, canCatch: false, ...extras };
 }
 
-describe("validateLineup — Dugout Edge feature-request rules", () => {
-  it("flags minFieldInnings violations (Coach DJ)", () => {
+describe("validateLineup — coaching-tools-competitor feature-request rules", () => {
+  it("flags minFieldInnings violations (coach-requested)", () => {
     const innings: Inning[] = [
       { a: "1B", b: "BN", c: "BN" },
       { a: "1B", b: "BN", c: "2B" },
@@ -33,7 +33,7 @@ describe("validateLineup — Dugout Edge feature-request rules", () => {
     expect(ids).not.toContain("a"); // 2 field
   });
 
-  it("flags infieldRequiredByInning violations (Coach DJ)", () => {
+  it("flags infieldRequiredByInning violations (coach-requested)", () => {
     const innings: Inning[] = [
       { a: "LF", b: "1B" },
       { a: "RF", b: "BN" },
@@ -45,7 +45,7 @@ describe("validateLineup — Dugout Edge feature-request rules", () => {
     expect(v.find((x) => x.rule === "infieldRequiredByInning" && x.playerId === "b")).toBeFalsy();
   });
 
-  it("flags maxConsecutiveBench (Coach DJ)", () => {
+  it("flags maxConsecutiveBench (coach-requested)", () => {
     const innings: Inning[] = [
       { a: "BN" },
       { a: "BN" },
@@ -55,7 +55,7 @@ describe("validateLineup — Dugout Edge feature-request rules", () => {
     expect(v.find((x) => x.rule === "maxConsecutiveBench")).toBeTruthy();
   });
 
-  it("flags maxConsecutiveOutfield (Coach Ryan)", () => {
+  it("flags maxConsecutiveOutfield (coach-requested)", () => {
     const innings: Inning[] = [
       { a: "LF" },
       { a: "CF" },
@@ -65,7 +65,7 @@ describe("validateLineup — Dugout Edge feature-request rules", () => {
     expect(v.find((x) => x.rule === "maxConsecutiveOutfield" && x.inning === 2)).toBeTruthy();
   });
 
-  it("flags pitcherBenchInningBefore (Coach Josh)", () => {
+  it("flags pitcherBenchInningBefore (coach-requested)", () => {
     const innings: Inning[] = [
       { a: "SS" }, // not benched
       { a: "P" }, // pitches without warmup window
@@ -77,7 +77,7 @@ describe("validateLineup — Dugout Edge feature-request rules", () => {
     expect(validateLineup(ok, { pitcherBenchInningBefore: true }, ["a"])).toEqual([]);
   });
 
-  it("flags pairedPositions violations (Coach Phillip)", () => {
+  it("flags pairedPositions violations (coach-requested)", () => {
     const innings: Inning[] = [{ a: "P", b: "1B" }];
     const v = validateLineup(
       innings,
@@ -88,7 +88,7 @@ describe("validateLineup — Dugout Edge feature-request rules", () => {
   });
 });
 
-describe("validateLineup — Who's on Second minimum-play rules", () => {
+describe("validateLineup — game-day-competitor minimum-play rules", () => {
   it("flags equalBenchTime when bench gap exceeds 1", () => {
     const innings: Inning[] = [
       { a: "BN", b: "1B", c: "2B" },
@@ -134,7 +134,7 @@ describe("validateLineup — Who's on Second minimum-play rules", () => {
     expect(vOut.find((x) => x.rule === "minOutfieldInnings" && x.playerId === "a")).toBeFalsy();
   });
 
-  it("exposes coach-voice labels + origin badges for every rule (WoS §8.2 parity)", async () => {
+  it("exposes coach-voice labels + origin badges for every rule (game-day ref §8.2 parity)", async () => {
     const { LINEUP_RULE_META } = await import("./leagueRules");
     expect(LINEUP_RULE_META.equalBenchTime.label).toBe("Equal bench time");
     expect(LINEUP_RULE_META.minInfieldInnings.origin).toBe("Little League");
@@ -145,7 +145,7 @@ describe("validateLineup — Who's on Second minimum-play rules", () => {
     }
   });
 
-  it("provides applyable rule-set presets (WoS apply-rule-set wizard)", async () => {
+  it("provides applyable rule-set presets (game-day ref apply-rule-set wizard)", async () => {
     const { RULE_SET_PRESETS, ruleSetPreset } = await import("./leagueRules");
     expect(RULE_SET_PRESETS.length).toBeGreaterThanOrEqual(5);
     const ll = ruleSetPreset("littleLeague_11_12");
@@ -224,7 +224,7 @@ describe("autoLineup with leagueRules", () => {
   });
 });
 
-describe("ruleProvenance — Settings value provenance (WoS §8.2)", () => {
+describe("ruleProvenance — Settings value provenance (game-day ref §8.2)", () => {
   it("reports 'off' for a rule that isn't enabled", () => {
     expect(ruleProvenance("minFieldInnings", {}, "littleLeague_11_12")).toEqual({ source: "off" });
   });

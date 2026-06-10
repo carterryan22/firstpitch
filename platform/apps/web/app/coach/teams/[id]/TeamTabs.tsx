@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 type Tab = { key: string; label: string; href: string; icon: string };
 
 /**
- * 5-tab team navigation (Who's on Second §2.3 parity): Home · Games · Roster ·
+ * 5-tab team navigation (game-day-competitor §2.3 parity): Home · Games · Roster ·
  * Pitching · More. Renders inline under the team header on desktop and as a
  * fixed bottom tab bar on mobile — the same 5 tabs in both, so muscle memory
  * carries between web and the Capacitor iOS shell.

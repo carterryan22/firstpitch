@@ -30,7 +30,7 @@ export const BATTING_ORDER_CHARACTERS: RoleCharacter[] = [
     subtitle: "Leadoff hitter",
     emoji: "⚡",
     tagline: "Get on base and start the offense.",
-    job: "Lead off the game and lead off innings. See pitches, work the count, get on any way you can — walk, bunt, hit-by-pitch, line drive, infield hit. They all count the same.",
+    job: "Lead off the game and lead off innings. See pitches, work the count, get on any way you can: walk, bunt, hit-by-pitch, line drive, infield hit. They all count the same.",
     superpower:
       "Patience plus speed. You take close pitches and turn singles into doubles on the bases.",
     whyMatters:
@@ -44,7 +44,7 @@ export const BATTING_ORDER_CHARACTERS: RoleCharacter[] = [
     subtitle: "Two-hole hitter",
     emoji: "🔗",
     tagline: "Move Spark along and connect to the big bats.",
-    job: "Move the runner. Bat control is your thing — hit-and-runs, bunts, opposite-field grounders, and long at-bats that let Spark steal.",
+    job: "Move the runner. Bat control is your thing: hit-and-runs, bunts, opposite-field grounders, and long at-bats that let Spark steal.",
     superpower:
       "You put the bat on almost any pitch and choose where the ball goes.",
     whyMatters:
@@ -62,7 +62,7 @@ export const BATTING_ORDER_CHARACTERS: RoleCharacter[] = [
     superpower:
       "You barrel up the baseball. A single drives in a runner from second; a double clears the bases.",
     whyMatters:
-      "You come up in almost every big inning. The top of the order is supposed to be on base when you walk up — and you cash them in.",
+      "You come up in almost every big inning. The top of the order is supposed to be on base when you walk up, and you cash them in.",
   },
   {
     id: "4",
@@ -70,7 +70,7 @@ export const BATTING_ORDER_CHARACTERS: RoleCharacter[] = [
     subtitle: "Cleanup hitter",
     emoji: "💥",
     tagline: "Bring runners home.",
-    job: "Drive runners in. You're often the strongest hitter — line drives in the gaps, deep fly balls, hard contact that scores runners from anywhere.",
+    job: "Drive runners in. You're often the strongest hitter: line drives in the gaps, deep fly balls, hard contact that scores runners from anywhere.",
     superpower:
       "Power. When you square one up, the outfielders take a step back.",
     whyMatters:
@@ -120,7 +120,7 @@ export const BATTING_ORDER_CHARACTERS: RoleCharacter[] = [
     subtitle: "Eight-hole hitter",
     emoji: "💨",
     tagline: "Run hard and pressure the defense.",
-    job: "Get on base however you can — then run. Beat out grounders, take the extra base, steal when the catcher isn't looking.",
+    job: "Get on base however you can, then run. Beat out grounders, take the extra base, steal when the catcher isn't looking.",
     superpower:
       "Hustle and speed. You turn fielders' small mistakes into bases.",
     whyMatters:
@@ -138,7 +138,7 @@ export const BATTING_ORDER_CHARACTERS: RoleCharacter[] = [
     whyMatters:
       "In youth games the lineup turns over fast. A 9-1-2 mini-rally is how scores explode in the late innings.",
     proTip:
-      "Hitting ninth is NOT a punishment — great coaches put a fast, smart hitter here on purpose.",
+      "Hitting ninth is NOT a punishment: great coaches put a fast, smart hitter here on purpose.",
   },
   {
     id: "10",
@@ -146,7 +146,7 @@ export const BATTING_ORDER_CHARACTERS: RoleCharacter[] = [
     subtitle: "Ten-hole (continuous lineup)",
     emoji: "⚔️",
     tagline: "Create something when the inning feels quiet.",
-    job: "When the bottom of the order keeps batting, you're the one who has to manufacture a run. Move a runner, slap a single, lay down a bunt — make something happen.",
+    job: "When the bottom of the order keeps batting, you're the one who has to manufacture a run. Move a runner, slap a single, lay down a bunt. Make something happen.",
     superpower:
       "You play with no pressure and nothing to lose. That's a weapon.",
     whyMatters:
@@ -160,7 +160,7 @@ export const BATTING_ORDER_CHARACTERS: RoleCharacter[] = [
     tagline: "Run everything out and help the team.",
     job: "Never give an at-bat away. Sprint out of the box on every ball you put in play, take the extra base, slide hard but safe.",
     superpower:
-      "Effort. You make the defense rush — and rushed defenses make errors.",
+      "Effort. You make the defense rush, and rushed defenses make errors.",
     whyMatters:
       "The team that hustles late in the order wins more youth games than the team with the bigger bats. Effort is contagious.",
     proTip:
@@ -172,7 +172,7 @@ export const BATTING_ORDER_CHARACTERS: RoleCharacter[] = [
     subtitle: "Twelve-hole (continuous lineup)",
     emoji: "🧨",
     tagline: "Get on base and light it up for the top.",
-    job: "Light the fuse for Spark. Reach base any way you can — a walk, an error, a bloop, a hard grounder — and pass the bat back to the top.",
+    job: "Light the fuse for Spark. Reach base any way you can (a walk, an error, a bloop, a hard grounder) and pass the bat back to the top.",
     superpower:
       "You set up the explosion. The biggest innings start with the kid at the bottom getting on.",
     whyMatters:
@@ -188,9 +188,9 @@ export const FIELDING_CHARACTERS: RoleCharacter[] = [
     subtitle: "Pitcher",
     emoji: "🔥",
     tagline: "Starts every play, controls the pace, attacks the zone.",
-    job: "Throw strikes, change speeds, and field your position — comebackers, bunts, and covering first base on grounders to the right side.",
+    job: "Throw strikes, change speeds, and field your position: comebackers, bunts, and covering first base on grounders to the right side.",
     superpower:
-      "Control. A pitcher who throws strikes beats a pitcher who throws hard but wild — every single time.",
+      "Control. A pitcher who throws strikes beats a pitcher who throws hard but wild, every single time.",
     whyMatters:
       "Nothing happens until you throw the ball. Strikes keep your defense awake; walks put runs on the board for free.",
     proTip:
@@ -207,7 +207,7 @@ export const FIELDING_CHARACTERS: RoleCharacter[] = [
     superpower:
       "Toughness and brains. You wear all the gear, take all the foul tips, and know what every fielder is doing on every pitch.",
     whyMatters:
-      "You're the only player facing the field. You see things nobody else can — and you're the one who keeps the runner at third instead of letting them score on a wild pitch.",
+      "You're the only player facing the field. You see things nobody else can, and you're the one who keeps the runner at third instead of letting them score on a wild pitch.",
     proTip:
       "Talk. Loud. Call the outs, remind cutoffs, fire up the pitcher. Quiet catchers don't lead.",
   },
@@ -218,7 +218,7 @@ export const FIELDING_CHARACTERS: RoleCharacter[] = [
     subtitle: "First baseman",
     emoji: "🧲",
     tagline: "Catches everything, saves throws, owns the bag.",
-    job: "Catch every throw from the infield — high, low, in the dirt. Hold runners on, scoop short-hops, and cover first on bunts.",
+    job: "Catch every throw from the infield: high, low, in the dirt. Hold runners on, scoop short-hops, and cover first on bunts.",
     superpower:
       "Soft hands and a long reach. You turn bad throws into outs.",
     whyMatters:
@@ -248,7 +248,7 @@ export const FIELDING_CHARACTERS: RoleCharacter[] = [
     superpower:
       "Range, arm, and instincts. You read the swing before the bat hits the ball.",
     whyMatters:
-      "Coaches put their best athlete here for a reason — more plays come your way than anywhere on the infield, and a great shortstop hides a lot of weaknesses.",
+      "Coaches put their best athlete here for a reason: more plays come your way than anywhere on the infield, and a great shortstop hides a lot of weaknesses.",
     proTip:
       "Communicate on every pitch. Who's covering on a steal? Who has the bag on a bunt? You decide.",
   },
@@ -261,7 +261,7 @@ export const FIELDING_CHARACTERS: RoleCharacter[] = [
     tagline: "Brave corner, hard shots, no fear.",
     job: "Guard the line, field bunts and slow rollers barehanded, make the long throw to first, and tag runners coming from second on a hit.",
     superpower:
-      "Quick reactions and a strong arm. You don't have time to think — you react.",
+      "Quick reactions and a strong arm. You don't have time to think. You react.",
     whyMatters:
       "Right-handed hitters pull the hardest balls right at you. A third baseman who isn't afraid saves doubles down the line every inning.",
   },
@@ -274,7 +274,7 @@ export const FIELDING_CHARACTERS: RoleCharacter[] = [
     tagline: "Tracks fly balls, backs up third, protects the line.",
     job: "Catch fly balls in left, back up every throw to second and third base, charge ground balls, and hit the cutoff.",
     superpower:
-      "Hustle and reads. The ball is in the air longer here — your first step decides if it's a catch or a triple.",
+      "Hustle and reads. The ball is in the air longer here. Your first step decides if it's a catch or a triple.",
     whyMatters:
       "Most youth hitters are right-handed and pull the ball. That means more balls come to left field than anywhere else in the outfield.",
     proTip:
@@ -289,11 +289,11 @@ export const FIELDING_CHARACTERS: RoleCharacter[] = [
     tagline: "Covers the most grass, leads the outfield, backs up everyone.",
     job: "Cover the biggest piece of grass on the field. Call off the other outfielders on anything you can catch, back up second base, and run down balls in the gaps.",
     superpower:
-      "Speed and confidence. You're the captain of the outfield — everyone else takes a step back when you call it.",
+      "Speed and confidence. You're the captain of the outfield. Everyone else takes a step back when you call it.",
     whyMatters:
       "A great centerfielder turns extra-base hits into outs. One robbed double can save the whole inning.",
     proTip:
-      'Call it loud — "Ball! Ball! Ball!" — and call it early. Collisions happen when nobody calls it.',
+      'Call it loud, "Ball! Ball! Ball!", and call it early. Collisions happen when nobody calls it.',
   },
   {
     id: "RF",
@@ -304,9 +304,9 @@ export const FIELDING_CHARACTERS: RoleCharacter[] = [
     tagline: "Strong throws, backs up first, keeps runners honest.",
     job: "Catch fly balls in right, throw out runners trying to take an extra base, back up first base on EVERY ground ball, and back up second on throws from the catcher.",
     superpower:
-      "The strongest outfield arm. Your throw to third is the longest one on the field — and it has to be on a line.",
+      "The strongest outfield arm. Your throw to third is the longest one on the field, and it has to be on a line.",
     whyMatters:
-      "Right field is NOT where you hide a player. Backing up first base saves overthrown grounders from becoming runs every game — and a left-handed pull hitter sends rockets your way.",
+      "Right field is NOT where you hide a player. Backing up first base saves overthrown grounders from becoming runs every game, and a left-handed pull hitter sends rockets your way.",
     proTip:
       "When a ground ball is hit ANYWHERE on the infield, sprint toward first base. Every time. No exceptions.",
   },

@@ -172,7 +172,7 @@ export function StatsImportForm({ roster }: { roster: RosterEntry[] }) {
             </p>
           ) : report.ambiguousNames.length + report.unmatchedNames.length > 0 ? (
             <p className="rounded bg-emerald-50 px-3 py-2 text-sm text-emerald-800">
-              All flagged names resolved — {matched} of {report.rows.length} rows mapped.
+              All flagged names resolved. {matched} of {report.rows.length} rows mapped.
             </p>
           ) : null}
 
@@ -257,7 +257,7 @@ export function StatsImportForm({ roster }: { roster: RosterEntry[] }) {
                                 {resolved ? " (you)" : ""}
                               </span>
                             ) : (
-                              <span className="text-slate-400">—</span>
+                              <span className="text-slate-400">-</span>
                             )}
                           </td>
                           <td className="px-2 py-1 tabular-nums">{r.pa ?? ""}</td>

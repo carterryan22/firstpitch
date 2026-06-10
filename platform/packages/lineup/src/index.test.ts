@@ -99,6 +99,49 @@ describe("autoLineup", () => {
     expect(second.innings[0]?.a).toBe("SS");
   });
 
+  // Models FieldBoard's one-tap "Out tonight" re-solve: lock every OTHER
+  // player's field cell, drop the out player from `present`, and re-run. Only
+  // the vacated slot may change; a benched player backfills it.
+  it("marking a player out re-solves only the vacated slot, preserving the rest", () => {
+    const ids = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k"]; // 11 → 9 field + 2 bench
+    const players: LineupPlayer[] = ids.map((id) => p(id, { canPitch: true, canCatch: true }));
+    const first = autoLineup({ innings: 3, players, present: ids });
+
+    // Out = whoever is on the field at SS-or-any position in inning 0.
+    const out = Object.entries(first.innings[0]!).find(([, s]) => s !== "BN")![0];
+    const vacated = first.innings[0]![out]!;
+
+    // Lock all other field cells (leave BN free to backfill), drop `out`.
+    const lockKeys = new Set<string>();
+    first.innings.forEach((inn, i) => {
+      for (const [pid, slot] of Object.entries(inn)) {
+        if (pid === out || slot === "BN") continue;
+        lockKeys.add(`${i}:${pid}`);
+      }
+    });
+    const second = autoLineup({
+      innings: 3,
+      players,
+      present: ids.filter((id) => id !== out),
+      locks: buildLocks(first.innings, lockKeys),
+    });
+
+    // The out player is gone from every inning.
+    for (const inn of second.innings) expect(inn[out]).toBeUndefined();
+    // Every other player's field assignment is byte-identical.
+    first.innings.forEach((inn, i) => {
+      for (const [pid, slot] of Object.entries(inn)) {
+        if (pid === out || slot === "BN") continue;
+        expect(second.innings[i]?.[pid]).toBe(slot);
+      }
+    });
+    // The vacated position is backfilled (no empty slot, not by the out player).
+    const filledBy = Object.entries(second.innings[0]!).find(([, s]) => s === vacated)?.[0];
+    expect(filledBy).toBeDefined();
+    expect(filledBy).not.toBe(out);
+    expect(second.warnings).toEqual([]);
+  });
+
   it("respects coachPitch preset (no P / C in slots)", () => {
     const players: LineupPlayer[] = ["a", "b", "c", "d", "e", "f", "g", "h"].map((id) => p(id));
     const { innings } = autoLineup({ innings: 3, players, preset: "coachPitch" });

@@ -1,7 +1,7 @@
 import type { Scenario, ScenarioContext } from "../types.ts";
 
 /**
- * E25 "Team Operations Surfaces" sweep (WoS-parity IA). Builds a team + roster +
+ * E25 "Team Operations Surfaces" sweep (game-day-competitor-parity IA). Builds a team + roster +
  * game, then walks every team-centric surface — roster, games, pitching,
  * fairness, snack rotation, settings, more, and the public Press Box — asserting
  * each renders a heading and is free of `undefined` / `[object Object]` leakage.

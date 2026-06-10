@@ -1,13 +1,16 @@
-# Deep Review Harness — runner kit (v3, First Pitch)
+# Deep Review Harness — runner kit (v4, First Pitch)
 
-Operational split of the canonical [DEEP_REVIEW_HARNESS.md](../DEEP_REVIEW_HARNESS.md) (v3) into
-**paste-and-run** pieces, so a full deep review is one dimension per session keyed to a shared
+Operational split of the canonical [DEEP_REVIEW_HARNESS_V4.md](../DEEP_REVIEW_HARNESS_V4.md) (v4)
+into **paste-and-run** pieces, so a full deep review is one dimension per session keyed to a shared
 `run_id`, then a single merge pass that computes the run-over-run diff and the unified report.
 
-The canonical doc is the single source of truth for check semantics; these runners are its
-mechanical split with First Pitch config pre-filled. This kit exists because a full v3 run
-against First Pitch with Claude in Chrome is a long, multi-part session. Splitting it makes the
-split *mechanical*: you never hand-assemble the harness, you paste one file per session.
+v4 keeps the v3 contract (stable check IDs, computed severity, machine-readable output, run-over-run
+diffing) and adds two new dimensions — **IOS** (Apple/WebKit compat) and **E2E** (cross-surface
+journeys) — and promotes **DATA** (integrity) and **PERF** (performance/scale) to their own
+catalogs. The v3 doc [DEEP_REVIEW_HARNESS.md](../DEEP_REVIEW_HARNESS.md) remains the source of truth
+for the *semantics* of the web dimensions it defines (SEC, UI, USA, SUP); v4 inherits those
+verbatim. These runners are the mechanical split with First Pitch config pre-filled — you never
+hand-assemble the harness, you paste one file per session.
 
 ## Stack reality (read this first)
 
@@ -26,19 +29,32 @@ are pre-corrected for the real stack:
   **never** appear in the client bundle: `PLATFORM_AUTH_SECRET`, `RESEND_API_KEY`,
   `KV_REST_API_URL`/`KV_REST_API_TOKEN`, `CRON_SECRET`, `STRIPE_SECRET_KEY`, `OPENAI_API_KEY`,
   `SENTRY_DSN`/`ERROR_WEBHOOK_URL`, `PRIVACY_INBOX` (`SEC-CLNT-001`).
+- **iOS ships two ways at once** (drives the new IOS dimension): a **Capacitor 6 WKWebView** shell
+  (`platform/mobile`, `limitsNavigationsToAppBoundDomains: true`, `StatusBar.overlaysWebView: true`,
+  camera not installed → file-picker fallback, push = local-notifications only, `MobileRefresh`
+  polls `/api/version`) loading `https://firstpitch.app`, **and** the same site as responsive web
+  in Safari. The WKWebView has its own cookie jar, so the magic-link return path
+  (`IOS-AUTH-001/005`) is the load-bearing iOS check. Run the IOS dimension against **both** surfaces.
 
 ## File map
 
 | File | Role | Session |
 |---|---|---|
-| [runners/sec.md](runners/sec.md) | Security catalog (40 checks) | `dimension:sec` |
+| [runners/sec.md](runners/sec.md) | Security **+ Privacy** catalog (`SEC-*` incl. the `SEC-PRIV-*` block) | `dimension:sec` |
 | [runners/ui.md](runners/ui.md) | Visual quality (12 checks) | `dimension:ui` |
 | [runners/usa.md](runners/usa.md) | Usability + UX-A11Y + copy (24 checks) | `dimension:usa` |
 | [runners/sup.md](runners/sup.md) | Supportability / shift-left (19 checks) | `dimension:sup` |
+| [runners/ios.md](runners/ios.md) | Apple / mobile-WebKit compat (34 checks) — **new in v4** | `dimension:ios` |
+| [runners/e2e.md](runners/e2e.md) | Cross-surface journeys (7 journeys × 5 + 2 global) — **new in v4** | `dimension:e2e` |
+| [runners/data.md](runners/data.md) | Data integrity (25 checks) — **promoted in v4** | `dimension:data` |
+| [runners/perf.md](runners/perf.md) | Performance & scale (22 checks) — **promoted in v4** | `dimension:perf` |
 | [merge.md](merge.md) | Merge partial manifests → diff → unified report | final pass |
 
 `ux` from the v3 mode enum is **folded into the USA runner** (the catalog block is
-"Usability (measured) & UX-A11Y"). There is no standalone `ux` runner.
+"Usability (measured) & UX-A11Y"). There is no standalone `ux` runner. Likewise **`priv` is folded
+into the SEC runner** — privacy is enforced by the same route-handler authz, so the `SEC-PRIV-*`
+block ships inside `sec.md` and there is no standalone `priv` runner; its findings are tagged and
+surface in the visibility-leakage matrix.
 
 ## Operating workflow
 
@@ -51,6 +67,12 @@ are pre-corrected for the real stack:
    Save each partial as `platform/reports/deep-review/<run_id>.<dim>.partial.json`.
    - Order is free, but `sec` first is recommended: its authz/over-fetch results feed the
      severity coupling in `SEC-CLNT-001` and the privacy matrix.
+   - **`ios` and `e2e` want a real iPhone** (+ Safari Web Inspector from a Mac, and a TestFlight
+     build for the app-surface auth checks) and the **deployed** target — on a simulator/emulator
+     their real-device checks are recorded `partial`, never `pass`.
+   - **`data` wants a seeded, known dataset on localhost** (you hand-recompute every total against
+     it); **`perf` wants a warmed, deployed build** measured on a throttled mobile profile (report
+     cold vs warm separately — a cold-compile number is a false finding).
 4. **Run the merge pass once** — open a session, paste [merge.md](merge.md), then paste all
    partial manifests **and** the previous review's merged manifest (or `null` for a baseline).
    It produces the merged manifest + the run-over-run diff (NEW / REGRESSED / FIXED /
@@ -66,11 +88,19 @@ flowchart LR
   cfg --> ui[ui.md]
   cfg --> usa[usa.md]
   cfg --> sup[sup.md]
+  cfg --> ios[ios.md]
+  cfg --> e2e[e2e.md]
+  cfg --> data[data.md]
+  cfg --> perf[perf.md]
   sec --> p1[(sec.partial.json)]
   ui --> p2[(ui.partial.json)]
   usa --> p3[(usa.partial.json)]
   sup --> p4[(sup.partial.json)]
-  p1 & p2 & p3 & p4 --> m[merge.md]
+  ios --> p5[(ios.partial.json)]
+  e2e --> p6[(e2e.partial.json)]
+  data --> p7[(data.partial.json)]
+  perf --> p8[(perf.partial.json)]
+  p1 & p2 & p3 & p4 & p5 & p6 & p7 & p8 --> m[merge.md]
   prev[(prior merged manifest)] --> m
   m --> out[(merged-manifest.json + report.md)]
   out -. next review .-> prev
@@ -108,7 +138,11 @@ that masquerade as `SEC-AUTH`/`SUP-REL` P0s. Loop until each returns 200:
 > A localhost dev run cannot judge transport/header checks honestly (`SEC-TRAN-*`,
 > `SEC-CLNT-002` source maps): HTTPS, HSTS, and prod CSP only exist on the deployed build.
 > Run those against `https://firstpitch.app`. Functional/authz/UX/supportability checks are
-> fine against localhost.
+> fine against localhost. The same honesty rule extends to the v4 dimensions: **`ios`/`e2e`** need
+> a real device + the deployed build (and a TestFlight build for the app surface) — simulator runs
+> are `partial`; **`perf`** must be measured **warm** on the deployed build (report cold vs warm);
+> **`data`** is the exception that prefers localhost, because you need a seeded known dataset to
+> hand-recompute every total.
 
 ## Rules of engagement (apply in every session)
 

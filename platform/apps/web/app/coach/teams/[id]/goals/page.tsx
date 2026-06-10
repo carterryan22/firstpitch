@@ -128,7 +128,7 @@ export default async function TeamGoalsPage({
                     <td className="px-4 py-2 font-mono text-xs text-slate-600">
                       {p.goal.baseline} → {p.targetValue} {def?.unit}
                     </td>
-                    <td className="px-4 py-2 font-mono">{p.currentValue ?? "—"}</td>
+                    <td className="px-4 py-2 font-mono">{p.currentValue ?? "-"}</td>
                     <td className="px-4 py-2">
                       <div className="flex items-center gap-2">
                         <div className="h-1.5 w-24 rounded-full bg-slate-100">
@@ -141,7 +141,7 @@ export default async function TeamGoalsPage({
                       <span className={badge.cls}>{badge.label}</span>
                     </td>
                     <td className="px-4 py-2 text-xs text-slate-500">
-                      {p.goal.targetDate ? new Date(p.goal.targetDate).toLocaleDateString() : "—"}
+                      {p.goal.targetDate ? new Date(p.goal.targetDate).toLocaleDateString() : "-"}
                     </td>
                   </tr>
                 );

@@ -1,4 +1,4 @@
-// Snack-duty / volunteer rotation (Who's on Second §3.12 — Press-Box opt-in).
+// Snack-duty / volunteer rotation (game-day ref §3.12 — Press-Box opt-in).
 // Pure, deterministic auto-balancer: spreads snack duty evenly across the
 // volunteer pool over a run of upcoming games, never assigning the same family
 // twice in a row when an alternative exists, and honoring duty already served

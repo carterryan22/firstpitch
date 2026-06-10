@@ -53,7 +53,7 @@ export const FIELDING_ROLE_BY_POSITION: Record<string, RoleChip> = {
   LF: { emoji: "🦅", name: "Hawk", tagline: "Tracks fly balls, backs up third, protects the line." },
   CF: { emoji: "🏃‍♂️", name: "Ranger", tagline: "Covers the most grass, leads the outfield, backs up everyone." },
   RF: { emoji: "🎯", name: "Cannon", tagline: "Strong throws, backs up first, keeps runners honest." },
-  RV: { emoji: "🦅", name: "Rover", tagline: "Extra outfielder — read the ball, run it down, back up the gap." },
+  RV: { emoji: "🦅", name: "Rover", tagline: "Extra outfielder: read the ball, run it down, back up the gap." },
 };
 
 export function fieldingRoleFor(position: string): RoleChip | undefined {

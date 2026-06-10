@@ -43,8 +43,8 @@ export default async function StatusPage() {
       <header className="max-w-2xl">
         <h1>Platform status</h1>
         <p className="mt-2 text-slate-600">
-          Live snapshot of the corpus, eval suite, and HTTP surface. This page exists for operators
-          — coaches and parents never need it.
+          Live snapshot of the corpus, eval suite, and HTTP surface. This page exists for operators.
+          Coaches and parents never need it.
         </p>
       </header>
 
@@ -66,7 +66,7 @@ export default async function StatusPage() {
           <ul className="mt-2 list-disc pl-6 text-sm">
             {evalRun.failures.slice(0, 10).map((f) => (
               <li key={f.id}>
-                <code>{f.id}</code> — {f.description}{" "}
+                <code>{f.id}</code>: {f.description}{" "}
                 <em className="text-slate-600">({f.detail})</em>
               </li>
             ))}

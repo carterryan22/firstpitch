@@ -15,7 +15,7 @@ export function GearCard({ product, amazonTag }: { product: GearProduct; amazonT
         <div>
           <p className="eyebrow">{categoryLabel(product.category)}</p>
           <h3 className="m-0 text-lg">{product.name}</h3>
-          <p className="mt-1 text-xs uppercase tracking-[0.14em] text-dirt-300" style={{ fontFamily: "var(--font-type)" }}>
+          <p className="mt-1 text-xs uppercase tracking-[0.14em] text-dirt-700" style={{ fontFamily: "var(--font-type)" }}>
             {product.brand} · {product.role}
           </p>
         </div>

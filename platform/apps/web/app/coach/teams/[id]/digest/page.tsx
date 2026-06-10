@@ -112,7 +112,7 @@ export default async function DigestPage({ params }: { params: Promise<{ id: str
                   <span className="text-xs text-slate-500">{new Date(g.startsAt).toLocaleString()}</span>
                 </div>
                 <p className="text-xs text-slate-500">
-                  RSVPs · ✓ {g.rsvpYes} · ✕ {g.rsvpNo} · ? {g.rsvpMaybe} · — {g.rsvpUnknown}
+                  RSVPs · ✓ {g.rsvpYes} · ✕ {g.rsvpNo} · ? {g.rsvpMaybe} · - {g.rsvpUnknown}
                   {g.venue ? ` · ${g.venue}` : ""}
                 </p>
               </li>
@@ -165,7 +165,7 @@ export default async function DigestPage({ params }: { params: Promise<{ id: str
               <li key={g.goalId} className="flex justify-between py-2">
                 <span>
                   <span className="font-medium">{g.name}</span>{" "}
-                  <span className="text-xs text-slate-500">— {g.metricKey}</span>
+                  <span className="text-xs text-slate-500">({g.metricKey})</span>
                 </span>
                 <span className="badge-ok">🎉 achieved</span>
               </li>

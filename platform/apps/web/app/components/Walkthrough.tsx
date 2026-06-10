@@ -12,7 +12,7 @@ import {
 } from "../lib/walkthrough";
 
 /**
- * Guided walkthrough overlay — a dependency-free version of Who's on Second's
+ * Guided walkthrough overlay — a dependency-free version of the game-day competitor's
  * replayable named tours (§11). Drop `<Walkthrough tour={...} />` on a page:
  *
  *   - It auto-runs once per browser (tracked in localStorage by tour id) and

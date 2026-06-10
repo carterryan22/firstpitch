@@ -170,7 +170,7 @@ export default async function PlayerProfilePage({
         </div>
         <p className="mt-3 text-xs text-slate-400">
           A development profile, not a ranking. Bands describe where a player is today against
-          age-appropriate expectations — they are private coaching tools, never a leaderboard.
+          age-appropriate expectations. They are private coaching tools, never a leaderboard.
         </p>
       </section>
     </div>

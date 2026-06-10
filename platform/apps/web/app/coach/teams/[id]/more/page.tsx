@@ -51,7 +51,7 @@ export default async function TeamMorePage({
         { label: "Baselines", href: `${base}/baselines`, desc: "Per-player metrics + diagnosis.", icon: "📊" },
         { label: "Goals", href: `${base}/goals`, desc: "Development goals + progress.", icon: "🎯" },
         { label: "Weekly digest", href: `${base}/digest`, desc: "Send-ready parent summary.", icon: "📰" },
-        { label: "Parent reports", href: `${base}/parent-reports`, desc: "Monthly progress reports — review & approve before sharing.", icon: "📝" },
+        { label: "Parent reports", href: `${base}/parent-reports`, desc: "Monthly progress reports. Review & approve before sharing.", icon: "📝" },
         { label: "Missions", href: `${base}/missions`, desc: "Assign home training to players.", icon: "🏠" },
       ],
     },
@@ -81,7 +81,7 @@ export default async function TeamMorePage({
         </p>
         <h1 className="m-0">More</h1>
         <p className="mt-1 text-sm text-slate-600">
-          Everything beyond the four core tabs — settings, insights, sharing and help for{" "}
+          Everything beyond the four core tabs: settings, insights, sharing and help for{" "}
           <strong>{team.name}</strong>.
         </p>
       </header>

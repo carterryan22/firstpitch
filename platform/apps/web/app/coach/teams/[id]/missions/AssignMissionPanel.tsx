@@ -83,7 +83,7 @@ export function AssignMissionPanel({
                 onChange={() => toggle(p.id)}
                 className="h-4 w-4"
               />
-              <span className="quote text-dirt-700">#{p.jerseyNumber ?? "—"}</span>
+              <span className="quote text-dirt-700">#{p.jerseyNumber ?? "-"}</span>
               <span className="flex-1 truncate">{p.name}</span>
               {p.alreadyAssigned ? (
                 <span className="badge" title="Already assigned">

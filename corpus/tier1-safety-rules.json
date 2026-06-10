@@ -33,7 +33,7 @@
       "enforcement": "hard_block",
       "applies_to": ["practice_compiler", "ai_layer"],
       "overrides_allowed": ["league_rule_if_more_restrictive"],
-      "never_overridden_by": ["Driveline", "Antonelli", "youtube", "ai_freeform"],
+      "never_overridden_by": ["third-party training labs", "Antonelli", "youtube", "ai_freeform"],
       "ui_strings": {
         "block_reason": "Action would violate Pitch Smart.",
         "parent_message": "Throwing prescriptions on this platform follow Pitch Smart."

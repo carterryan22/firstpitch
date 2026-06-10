@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { fieldingRoleFor } from "../../../../../lib/roles";
@@ -34,6 +34,8 @@ type RosterEntry = LineupPlayer & {
   jerseyNumber?: string;
 };
 
+type Snapshot = { lineup: Inning[]; out: Set<string> };
+
 const MAX_HISTORY = 30;
 
 export function FieldBoard({
@@ -60,8 +62,16 @@ export function FieldBoard({
       ? initial
       : Array.from({ length: innings }, (_, i) => initial[i] ?? {});
   const [lineup, setLineupRaw] = useState<Inning[]>(seedLineup);
-  const [history, setHistory] = useState<Inning[][]>([]);
-  const [future, setFuture] = useState<Inning[][]>([]);
+  // Players the coach taps "out tonight" on the board — layered on top of the
+  // server-provided `present` (game attendance) and kept in undo history so a
+  // mis-tap is one Undo away.
+  const [outTonight, setOutTonight] = useState<Set<string>>(new Set());
+  const outRef = useRef(outTonight);
+  useEffect(() => {
+    outRef.current = outTonight;
+  }, [outTonight]);
+  const [history, setHistory] = useState<Snapshot[]>([]);
+  const [future, setFuture] = useState<Snapshot[]>([]);
   const [locked, setLocked] = useState<Set<string>>(new Set());
   const [preset, setPreset] = useState<DefensivePreset>("standard9");
   const [competitive, setCompetitive] = useState<number>(30); // 0..100
@@ -80,11 +90,12 @@ export function FieldBoard({
   const [rulesOpen, setRulesOpen] = useState(false);
   const [familyView, setFamilyView] = useState(false);
 
-  // setLineup that also records history for undo
+  // setLineup that also records history for undo (snapshots the out-tonight set
+  // alongside the grid so Undo restores availability and assignments together).
   const setLineup = useCallback((updater: (cur: Inning[]) => Inning[]) => {
     setLineupRaw((cur) => {
       const next = updater(cur);
-      setHistory((h) => [...h.slice(-MAX_HISTORY + 1), cur]);
+      setHistory((h) => [...h.slice(-MAX_HISTORY + 1), { lineup: cur, out: outRef.current }]);
       setFuture([]);
       return next;
     });
@@ -94,21 +105,23 @@ export function FieldBoard({
     setHistory((h) => {
       if (h.length === 0) return h;
       const prev = h[h.length - 1]!;
-      setFuture((f) => [lineup, ...f].slice(0, MAX_HISTORY));
-      setLineupRaw(prev);
+      setFuture((f) => [{ lineup, out: outTonight }, ...f].slice(0, MAX_HISTORY));
+      setLineupRaw(prev.lineup);
+      setOutTonight(prev.out);
       return h.slice(0, -1);
     });
-  }, [lineup]);
+  }, [lineup, outTonight]);
 
   const redo = useCallback(() => {
     setFuture((f) => {
       if (f.length === 0) return f;
       const [next, ...rest] = f;
-      setHistory((h) => [...h, lineup].slice(-MAX_HISTORY));
-      setLineupRaw(next!);
+      setHistory((h) => [...h, { lineup, out: outTonight }].slice(-MAX_HISTORY));
+      setLineupRaw(next!.lineup);
+      setOutTonight(next!.out);
       return rest;
     });
-  }, [lineup]);
+  }, [lineup, outTonight]);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -136,13 +149,21 @@ export function FieldBoard({
     return m;
   }, [roster]);
 
+  // The roster actually available right now = server attendance minus anyone the
+  // coach has tapped "out tonight" on the board. Everything downstream (rules,
+  // generate, shuffle, the family plan, row styling) keys off this.
+  const effectivePresent = useMemo(
+    () => present.filter((id) => !outTonight.has(id)),
+    [present, outTonight],
+  );
+
   const violations = useMemo(() => {
     if (!rulesEnabled) return [];
-    return validateLineup(lineup, leagueRules, present);
-  }, [lineup, leagueRules, present, rulesEnabled]);
+    return validateLineup(lineup, leagueRules, effectivePresent);
+  }, [lineup, leagueRules, effectivePresent, rulesEnabled]);
 
   // Group violations by rule for a more scannable list (pattern borrowed from
-  // Who's On Second's "Rules & Compliance" card — coaches want to see
+  // the game-day competitor's "Rules & Compliance" card — coaches want to see
   // "NO CONSECUTIVE BENCH: Carson · innings 1,2 ; Levi · innings 1,2"
   // rather than a flat per-player feed.
   const RULE_LABELS: Record<string, { title: string; explain: string }> = {
@@ -163,7 +184,7 @@ export function FieldBoard({
     for (const v of violations) {
       const arr = byRule.get(v.rule) ?? [];
       if (!v.playerId) {
-        arr.push({ playerId: "—", innings: [] });
+        arr.push({ playerId: "-", innings: [] });
       } else {
         const existing = arr.find((e) => e.playerId === v.playerId);
         if (existing) {
@@ -209,7 +230,7 @@ export function FieldBoard({
     const res = autoLineup({
       innings,
       players: roster,
-      present,
+      present: effectivePresent,
       preset,
       competitiveWeight: competitive / 100,
       varietyWeight: LINEUP_MODES[mode].varietyWeight,
@@ -230,7 +251,7 @@ export function FieldBoard({
     const res = shuffleNonLocked(lineup, locked, {
       innings,
       players: roster,
-      present,
+      present: effectivePresent,
       preset,
       competitiveWeight: competitive / 100,
       varietyWeight: LINEUP_MODES[mode].varietyWeight,
@@ -239,6 +260,54 @@ export function FieldBoard({
     });
     setLineup(() => res.innings);
     setWarnings(res.warnings);
+  }
+
+  // One-tap "X is out tonight": drop the player from availability and re-solve
+  // ONLY the slots they vacated. Every other player's field assignment is locked
+  // in place and a benched player backfills the open spot — the 5-minutes-before-
+  // first-pitch path, with no full regenerate and no per-inning hand-editing.
+  function markOutTonight(playerId: string) {
+    // Snapshot current state for Undo before mutating.
+    setHistory((h) => [...h.slice(-MAX_HISTORY + 1), { lineup, out: outTonight }]);
+    setFuture([]);
+    const nextOut = new Set(outTonight);
+    nextOut.add(playerId);
+    const nextPresent = present.filter((id) => !nextOut.has(id));
+    // Lock every remaining player's FIELD cell; leave BN cells free so a benched
+    // player can be pulled into the position the out player vacated.
+    const lockKeys = new Set<string>();
+    lineup.forEach((inn, i) => {
+      for (const [pid, slot] of Object.entries(inn)) {
+        if (nextOut.has(pid) || slot === "BN") continue;
+        lockKeys.add(`${i}:${pid}`);
+      }
+    });
+    const res = autoLineup({
+      innings,
+      players: roster,
+      present: nextPresent,
+      preset,
+      competitiveWeight: competitive / 100,
+      varietyWeight: LINEUP_MODES[mode].varietyWeight,
+      locks: buildLocks(lineup, lockKeys),
+      pitcherUnavailable,
+      leagueRules: rulesEnabled ? leagueRules : undefined,
+    });
+    setOutTonight(nextOut);
+    setLineupRaw(res.innings);
+    setWarnings(res.warnings);
+  }
+
+  // Reverse of markOutTonight — bring a player back into availability. Their
+  // cells stay empty; the coach can Shuffle / Auto-generate or hand-place them.
+  function backIn(playerId: string) {
+    setHistory((h) => [...h.slice(-MAX_HISTORY + 1), { lineup, out: outTonight }]);
+    setFuture([]);
+    setOutTonight((cur) => {
+      const next = new Set(cur);
+      next.delete(playerId);
+      return next;
+    });
   }
 
   function clearAll() {
@@ -628,15 +697,45 @@ export function FieldBoard({
           <tbody>
             {roster.map((p, ri) => {
               const stats = fairness[ri];
-              const isAbsent = !present.includes(p.id);
+              const isOutTonight = outTonight.has(p.id);
+              const serverPresent = present.includes(p.id);
+              const isAbsent = !effectivePresent.includes(p.id);
               return (
                 <tr key={p.id} className={isAbsent ? "opacity-40" : ""}>
                   <td className="border-b border-slate-100 px-2 py-1.5 whitespace-nowrap">
-                    <span className="inline-block w-7 text-right text-xs font-bold tabular-nums text-slate-700">
-                      {p.jerseyNumber ? `#${p.jerseyNumber}` : ""}
-                    </span>{" "}
-                    {p.name}
-                    {p.injured ? <span className="ml-1 badge-danger">Inj</span> : null}
+                    <div className="flex items-center gap-2">
+                      <span>
+                        <span className="inline-block w-7 text-right text-xs font-bold tabular-nums text-slate-700">
+                          {p.jerseyNumber ? `#${p.jerseyNumber}` : ""}
+                        </span>{" "}
+                        {p.name}
+                        {p.injured ? <span className="ml-1 badge-danger">Inj</span> : null}
+                        {isOutTonight ? <span className="ml-1 badge-warn">Out</span> : null}
+                      </span>
+                      {/* One-tap availability fix. Only offered for players the
+                          server marks present — server-absent players are managed
+                          on the game's Roster (attendance) tab. */}
+                      {serverPresent ? (
+                        <button
+                          type="button"
+                          onClick={() => (isOutTonight ? backIn(p.id) : markOutTonight(p.id))}
+                          disabled={p.injured}
+                          aria-pressed={isOutTonight}
+                          title={
+                            isOutTonight
+                              ? `Bring ${p.name} back into tonight's lineup`
+                              : `Mark ${p.name} out tonight and auto-fill their spots from the bench`
+                          }
+                          className={`no-print ml-auto inline-flex min-h-[44px] items-center rounded px-2 text-xs font-medium disabled:opacity-30 ${
+                            isOutTonight
+                              ? "text-field-700 hover:bg-field-700/10"
+                              : "text-slate-500 hover:bg-slate-100"
+                          }`}
+                        >
+                          {isOutTonight ? "↩ Back in" : "Out tonight"}
+                        </button>
+                      ) : null}
+                    </div>
                   </td>
                   {Array.from({ length: innings }, (_, i) => {
                     const slot = (lineup[i]?.[p.id] ?? "") as Slot | "";
@@ -645,7 +744,7 @@ export function FieldBoard({
                     const role = slot && slot !== "BN" ? fieldingRoleFor(slot) : undefined;
                     const cellTitle = slot
                       ? role
-                        ? `${role.emoji} ${role.name} — ${role.tagline}\n\n${explainCell(p, slot, i).detail}`
+                        ? `${role.emoji} ${role.name}: ${role.tagline}\n\n${explainCell(p, slot, i).detail}`
                         : explainCell(p, slot, i).detail
                       : undefined;
                     return (
@@ -662,7 +761,7 @@ export function FieldBoard({
                             disabled={isAbsent || p.injured}
                             onChange={(e) => setSlot(p.id, i, e.target.value as Slot | "")}
                           >
-                            <option value="">—</option>
+                            <option value="">-</option>
                             {ALL_SLOTS.map((s) => {
                               const rating = p.positionRatings?.[s as never];
                               const blocked = rating === "avoid";
@@ -683,7 +782,7 @@ export function FieldBoard({
                           <button
                             type="button"
                             aria-label={isLocked ? `Unlock ${p.name} inning ${i + 1}` : `Lock ${p.name} inning ${i + 1}`}
-                            title={isLocked ? "Locked — Shuffle will keep this" : "Lock this cell"}
+                            title={isLocked ? "Locked. Shuffle will keep this" : "Lock this cell"}
                             onClick={() => toggleLock(p.id, i)}
                             disabled={isAbsent || p.injured || !slot}
                             className={`text-[10px] leading-none px-0.5 ${isLocked ? "text-emerald-600" : "text-slate-300 hover:text-slate-500"} disabled:opacity-30`}
@@ -707,7 +806,7 @@ export function FieldBoard({
         </table>
       </div>
       <p className="text-xs text-slate-500">
-        ★ preferred · dot ok · blank unrated · &ldquo;avoid&rdquo; positions are disabled. Absent players are dimmed. Lock cells with 🔒, then click <strong>Shuffle</strong> to reroll the rest. Hover any cell for the parent-facing rationale.
+        ★ preferred · dot ok · blank unrated · &ldquo;avoid&rdquo; positions are disabled. Absent players are dimmed. Tap <strong>Out tonight</strong> on a player to drop them and auto-fill their spot from the bench without disturbing the rest of the lineup. Lock cells with 🔒, then click <strong>Shuffle</strong> to reroll the rest. Hover any cell for the parent-facing rationale.
       </p>
 
       <div className="no-print rounded-2xl border border-slate-200 bg-white p-3 text-xs">
@@ -757,7 +856,7 @@ export function FieldBoard({
         {familyView ? (
           <ul className="divide-y divide-slate-100 text-sm">
             {roster
-              .filter((p) => present.includes(p.id) && !p.injured)
+              .filter((p) => effectivePresent.includes(p.id) && !p.injured)
               .map((p) => {
                 const sum = summarizeForParents(lineup, p);
                 return (

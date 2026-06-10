@@ -127,10 +127,10 @@ export default async function FieldsPage({
                   >
                     <div className="card h-full transition hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-hard">
                       <LocationEyebrow city={f.city} state={f.state} />
-                      <h3 className="mt-1">{f.name}</h3>
+                      <h2 className="mt-1 text-xl">{f.name}</h2>
                       <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
                         {rs.count > 0 ? (
-                          <span className="quote text-ink">{stars(rs.avg)} <span className="text-dirt-300">{rs.avg.toFixed(1)} · {rs.count}</span></span>
+                          <span className="quote text-ink">{stars(rs.avg)} <span className="text-dirt-700">{rs.avg.toFixed(1)} · {rs.count}</span></span>
                         ) : (
                           <span className="quote">No reviews yet</span>
                         )}

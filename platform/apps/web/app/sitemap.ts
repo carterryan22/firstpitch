@@ -20,6 +20,7 @@ const STATIC_PATHS = [
   "/policy",
   "/policy/ai-boundaries",
   "/policy/privacy",
+  "/policy/cookies",
   "/policy/terms",
   "/login",
 ] as const;

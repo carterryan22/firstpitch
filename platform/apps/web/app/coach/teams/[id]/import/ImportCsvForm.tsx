@@ -80,7 +80,7 @@ export function ImportCsvForm({ roster }: { roster: RosterPlayer[] }) {
             {busy ? "Parsing…" : "Parse CSV"}
           </button>
           <span className="text-xs text-slate-500">
-            Preview only — nothing is saved yet. {roster.length} roster players available for matching.
+            Preview only. Nothing is saved yet. {roster.length} roster players available for matching.
           </span>
         </div>
       </form>

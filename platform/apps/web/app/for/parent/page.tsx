@@ -3,9 +3,9 @@ import { Hero, FeatureGrid, RoleTile } from "../../components/ui";
 
 export const dynamic = "force-dynamic";
 export const metadata = {
-  title: "For parents — Know what's happening, support your kid",
+  title: "For parents: Know what's happening, support your kid",
   description:
-    "Game and practice schedules, RSVPs, short home missions tailored to your kid's positions, and honest coach notes — all in one family dashboard.",
+    "Game and practice schedules, RSVPs, short home missions tailored to your kid's positions, and honest coach notes, all in one family dashboard.",
 };
 
 export default async function ForParent() {
@@ -63,7 +63,7 @@ export default async function ForParent() {
       <section className="space-y-4">
         <header className="flex items-end justify-between">
           <h2 className="m-0">What you can do as a parent</h2>
-          <span className="quote text-sm">All real routes — explore now</span>
+          <span className="quote text-sm">All real routes. Explore now</span>
         </header>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <RoleTile
@@ -99,7 +99,7 @@ export default async function ForParent() {
           <RoleTile
             href="/favorites"
             title="★ Saved fields"
-            description="Your shortlist of diamonds — pull it up before the carpool conversation starts."
+            description="Your shortlist of diamonds. Pull it up before the carpool conversation starts."
             cta="Open shortlist"
           />
         </div>

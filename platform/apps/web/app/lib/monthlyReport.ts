@@ -132,9 +132,9 @@ function tallyAttendance(input: MonthlyReportInput): AttendanceTally {
 }
 
 function attendanceLine(tally: AttendanceTally): string {
-  if (tally.total === 0) return "Attendance isn't tracked yet this month — we'll show it here once it is.";
+  if (tally.total === 0) return "Attendance isn't tracked yet this month. We'll show it here once it is.";
   if (tally.present === tally.total) {
-    return `Perfect attendance — made all ${tally.total} team event${tally.total === 1 ? "" : "s"}.`;
+    return `Perfect attendance, made all ${tally.total} team event${tally.total === 1 ? "" : "s"}.`;
   }
   return `Made ${tally.present} of ${tally.total} team events.`;
 }
@@ -219,7 +219,7 @@ function homeMissionLine(input: MonthlyReportInput, now: Date): string {
   if (!mission) {
     return "Home mission: 10 minutes of catch with a target, three times this week.";
   }
-  return `Home mission: ${mission.title} — ${mission.description}`;
+  return `Home mission: ${mission.title}. ${mission.description}`;
 }
 
 function effortLine(competeNote: string | undefined, tally: AttendanceTally): string {
@@ -227,7 +227,7 @@ function effortLine(competeNote: string | undefined, tally: AttendanceTally): st
   if (tally.total > 0 && tally.present / tally.total >= 0.8) {
     return "Brings consistent energy and competes.";
   }
-  return "Effort shows up best in person — every practice counts.";
+  return "Effort shows up best in person. Every practice counts.";
 }
 
 /**
@@ -270,7 +270,7 @@ export function buildMonthlyReport(input: MonthlyReportInput): ParentReportConte
 
   const improvement = improvementLine(input);
   const summary = improvement
-    ? `${first} kept building this month — real, visible progress.`
+    ? `${first} kept building this month. Real, visible progress.`
     : `${first} put in good work this month.`;
 
   return {

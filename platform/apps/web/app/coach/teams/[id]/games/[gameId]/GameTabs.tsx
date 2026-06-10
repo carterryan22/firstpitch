@@ -256,7 +256,7 @@ export function GameTabs({
             </button>
           ) : (
             <>
-              <span className="badge-ok">Read-only — game completed</span>
+              <span className="badge-ok">Read-only, game completed</span>
               <button
                 className="btn-ghost"
                 disabled={busy}

@@ -26,7 +26,7 @@ export default async function DrillDetail({ params }: { params: Promise<{ id: st
     .filter((r): r is NonNullable<typeof r> => Boolean(r));
 
   return (
-    <main className="mx-auto max-w-3xl space-y-8">
+    <div className="mx-auto max-w-3xl space-y-8">
       <p className="text-sm">
         <Link href="/drills">← All drills</Link>
       </p>
@@ -231,7 +231,7 @@ export default async function DrillDetail({ params }: { params: Promise<{ id: st
             <ul className="space-y-2">
               {referencedRules.map((r) => (
                 <li key={r.rule_id}>
-                  <strong>{r.rule_id}</strong> — {r.rule_text}
+                  <strong>{r.rule_id}</strong>: {r.rule_text}
                 </li>
               ))}
             </ul>
@@ -258,7 +258,7 @@ export default async function DrillDetail({ params }: { params: Promise<{ id: st
           </ul>
         ) : null}
       </section>
-    </main>
+    </div>
   );
 }
 

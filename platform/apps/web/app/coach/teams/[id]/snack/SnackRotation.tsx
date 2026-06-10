@@ -134,7 +134,7 @@ export function SnackRotation({
                     disabled={busyGameId === g.id}
                     onChange={(e) => setGameDuty(g.id, e.target.value)}
                   >
-                    <option value="">— Unassigned —</option>
+                    <option value="">Unassigned</option>
                     {volunteers.map((v) => (
                       <option key={v.id} value={v.id}>
                         {v.name}

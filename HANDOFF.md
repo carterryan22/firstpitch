@@ -142,7 +142,7 @@ Next.js 15 App Router, React 18, Tailwind. Routes by persona:
   (verdict pills + per-position heatmap), `baselines/[playerId]/` (+ `diagnose/`,
   `transfer/`), `goals/`, `calendar/`, `import/`, `stats/`, `snack/`, `digest/`,
   `missions/`, `settings/` (rule presets), `ask/` (grounded AI), `more/`. Nav via
-  `TeamTabs` (5-tab bottom bar on mobile, WoS parity).
+  `TeamTabs` (5-tab bottom bar on mobile, game-day-competitor parity).
 - **Parent:** [platform/apps/web/app/parent/](platform/apps/web/app/parent) —
   read-only child progress, today's mission, coach-assigned homework with one-tap
   done, RSVP, position/home-training plans. No comparison views, no negative notes.

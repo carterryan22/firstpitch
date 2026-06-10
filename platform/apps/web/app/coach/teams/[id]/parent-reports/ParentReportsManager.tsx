@@ -48,7 +48,7 @@ function statusChip(r: ReportVM): { label: string; cls: string } {
   if (r.status === "shared") return { label: "Shared", cls: "badge-ok" };
   if (r.status === "approved") {
     return r.editedSinceApproval
-      ? { label: "Edited — re-approve", cls: "badge-warn" }
+      ? { label: "Edited, re-approve", cls: "badge-warn" }
       : { label: "Approved", cls: "badge-info" };
   }
   return { label: "Draft", cls: "badge-warn" };
@@ -125,7 +125,7 @@ export function ParentReportsManager({
   async function saveEdit(r: ReportVM) {
     if (!draft) return;
     if (draft.coachNote.trim().length === 0) {
-      fail("Add a coach note before saving — it's required to share.");
+      fail("Add a coach note before saving. It's required to share.");
       return;
     }
     setBusy(`edit:${r.id}`);
@@ -140,7 +140,7 @@ export function ParentReportsManager({
         fail(data.error === "recall_first" ? "Recall the shared report before editing." : "Couldn't save edits.");
         return;
       }
-      flash(r.status === "approved" ? "Saved — needs re-approval before sharing." : "Saved.");
+      flash(r.status === "approved" ? "Saved. Needs re-approval before sharing." : "Saved.");
       cancelEdit();
       router.refresh();
     } finally {
@@ -174,7 +174,7 @@ export function ParentReportsManager({
         const data = await res.json().catch(() => ({}));
         const map: Record<string, string> = {
           not_approved: "Approve the report before sharing.",
-          needs_reapproval: "It changed since approval — re-approve first.",
+          needs_reapproval: "It changed since approval. Re-approve first.",
           coach_note_required: "Add a coach note first.",
         };
         fail(map[data.error as string] ?? "Couldn't share.");
@@ -195,7 +195,7 @@ export function ParentReportsManager({
         fail("Couldn't recall.");
         return;
       }
-      flash("Recalled — hidden from the family until you re-share.");
+      flash("Recalled. Hidden from the family until you re-share.");
       router.refresh();
     } finally {
       setBusy(null);

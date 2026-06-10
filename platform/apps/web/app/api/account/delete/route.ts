@@ -47,10 +47,10 @@ export async function POST(req: NextRequest) {
   // Notify the privacy desk to complete the cascade + any ownership handoff.
   await sendEmail({
     to: process.env.PRIVACY_INBOX || "privacy@firstpitch.app",
-    subject: `Account deletion request — ${session.user.email}`,
+    subject: `Account deletion request: ${session.user.email}`,
     text:
       `User ${session.user.id} (${session.user.email}, role ${session.user.role}) requested deletion.\n` +
-      `Reason: ${(body.reason ?? "—").slice(0, 500)}\n` +
+      `Reason: ${(body.reason ?? "-").slice(0, 500)}\n` +
       `Process within 30 days per policy. Dashboard: ${siteUrl()}/admin/audit`,
   });
 

@@ -183,9 +183,9 @@ const PILLAR_ACTION: Record<Exclude<Pillar, "durability">, string> = {
   athleticism:
     "Add two game-speed baserunning starts each practice; retest home-to-first in two weeks.",
   baseball_iq:
-    "Two situational-decision reps each practice (cutoffs, force plays, baserunning reads) — then tag them in games.",
+    "Two situational-decision reps each practice (cutoffs, force plays, baserunning reads), then tag them in games.",
   compete:
-    "Set one effort goal and celebrate attendance + finished home missions. Keep it fun — never a punishment.",
+    "Set one effort goal and celebrate attendance + finished home missions. Keep it fun, never a punishment.",
 };
 
 const BAND_LABEL: Record<PillarBand, string> = {
@@ -306,11 +306,11 @@ function scoreMeasurablePillar(
 function measurableNote(pillar: Pillar, band: PillarBand, count: number): string {
   const tested = `${count} measurable${count === 1 ? "" : "s"} on file`;
   if (band === "standout" || band === "strong")
-    return pillar === "athleticism" ? `Clear athletic edge — ${tested}.` : `Real strength — ${tested}.`;
-  if (band === "on_track") return `Right on track — ${tested}.`;
+    return pillar === "athleticism" ? `Clear athletic edge: ${tested}.` : `Real strength: ${tested}.`;
+  if (band === "on_track") return `Right on track: ${tested}.`;
   return pillar === "athleticism"
-    ? `Speed is the next step — ${tested}.`
-    : `Room to grow the skills — ${tested}.`;
+    ? `Speed is the next step: ${tested}.`
+    : `Room to grow the skills: ${tested}.`;
 }
 
 function scoreBaseballIq(
@@ -374,7 +374,7 @@ function scoreBaseballIq(
     drivers,
     note:
       conf === "low"
-        ? "Best measured with game-decision tags — add them to sharpen this."
+        ? "Best measured with game-decision tags. Add them to sharpen this."
         : band === "strong" || band === "standout"
           ? "Makes good decisions at game speed."
           : "Sharpen reads with situational reps.",
@@ -475,8 +475,8 @@ function scoreDurability(input: DevProfileInput, now: Date): PillarScore {
       readiness: "rest",
       drivers: ["Marked injured"],
       note: p.injuryNote
-        ? `Injured — ${p.injuryNote}. Follow return-to-play steps.`
-        : "Marked injured — follow return-to-play steps before activity.",
+        ? `Injured: ${p.injuryNote}. Follow return-to-play steps.`
+        : "Marked injured. Follow return-to-play steps before activity.",
     };
   }
 
@@ -527,7 +527,7 @@ function scoreDurability(input: DevProfileInput, now: Date): PillarScore {
       confidence: hasHistory ? "high" : "medium",
       readiness: "ready",
       drivers: hasHistory ? ["Pitch counts on file"] : ["No recent load flags"],
-      note: "Available — arm load looks managed.",
+      note: "Available. Arm load looks managed.",
     };
   }
 
@@ -539,8 +539,8 @@ function scoreDurability(input: DevProfileInput, now: Date): PillarScore {
       band: bandFromScore(78),
       confidence: "low",
       readiness: "ready",
-      drivers: ["Catcher — watch innings"],
-      note: "Available — keep an eye on catching innings and throwdowns.",
+      drivers: ["Catcher (watch innings)"],
+      note: "Available. Keep an eye on catching innings and throwdowns.",
     };
   }
 
@@ -588,7 +588,7 @@ function positionRep(player: DevProfileInput["player"], stretch: boolean): strin
       : "Give confidence reps at a comfortable position to build reads.";
   }
   return stretch
-    ? `Ready for more reps at ${pick} — raise the challenge.`
+    ? `Ready for more reps at ${pick}. Raise the challenge.`
     : `Confidence reps at ${pick} to build reps and reads.`;
 }
 
@@ -603,9 +603,9 @@ function buildRecommendation(
   // Safety always leads.
   let safetyNote: string | undefined;
   if (durability?.readiness === "rest") {
-    safetyNote = `Protect the arm first — ${durability.note} No pitching/throwing until cleared.`;
+    safetyNote = `Protect the arm first. ${durability.note} No pitching/throwing until cleared.`;
   } else if (durability?.readiness === "monitor") {
-    safetyNote = `Manage arm load this week — no extra bullpen, keep throws light, honor rest days. (${durability.note})`;
+    safetyNote = `Manage arm load this week: no extra bullpen, keep throws light, honor rest days. (${durability.note})`;
   }
 
   const known = pillars.filter(
@@ -630,7 +630,7 @@ function buildRecommendation(
   if (growth.length === 0) {
     headline = `Log a baseline for ${first} to unlock a tailored plan.`;
   } else if (allStrong) {
-    headline = `${first} is ready for more — stretch them.`;
+    headline = `${first} is ready for more. Stretch them.`;
   } else if (weakest) {
     headline = `Biggest growth lever: ${weakest.label}.`;
   } else {
@@ -685,7 +685,7 @@ export function buildDevProfile(input: DevProfileInput): DevProfile {
 
   const knownCount = known.length;
   const overall = knownCount >= 4 ? "solid" : knownCount >= 2 ? "building" : "early";
-  const confidenceNote = `Profile confidence is ${overall} — based on ${knownCount} of 5 areas. Add baseline tests and game tags to sharpen it. This is a development profile, not a ranking.`;
+  const confidenceNote = `Profile confidence is ${overall}, based on ${knownCount} of 5 areas. Add baseline tests and game tags to sharpen it. This is a development profile, not a ranking.`;
 
   return {
     player: `${input.player.firstName} ${input.player.lastName}`.trim(),

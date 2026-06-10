@@ -85,7 +85,7 @@ function ManualForm({
 
   return (
     <div className="rounded border border-sky-200 bg-sky-50/40 p-3 space-y-3">
-      <div className="text-sm font-semibold text-slate-700">Edit stats — {playerName}</div>
+      <div className="text-sm font-semibold text-slate-700">Edit stats: {playerName}</div>
 
       <div>
         <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">Batting</div>
@@ -275,7 +275,7 @@ export function GameStatsImporter({
           <header className="flex items-baseline justify-between gap-3">
             <h2 className="m-0">Import box-score (GameChanger)</h2>
             <span className="text-xs text-slate-500">
-              Paste any GC CSV — Batting / Pitching / Fielding blocks auto-detected.
+              Paste any GC CSV: Batting / Pitching / Fielding blocks auto-detected.
             </span>
           </header>
           <textarea
@@ -416,7 +416,7 @@ export function GameStatsImporter({
                 value={addPlayerId}
                 onChange={(e) => setAddPlayerId(e.target.value)}
               >
-                <option value="">— pick a player —</option>
+                <option value="">pick a player</option>
                 {missingRoster.map((r) => (
                   <option key={r.id} value={r.id}>
                     {r.jerseyNumber ? `#${r.jerseyNumber} ` : ""}{r.name}

@@ -3,7 +3,7 @@ import Link from "next/link";
 export const metadata = {
   title: "Terms of Service",
   description:
-    "The agreement for using First Pitch — youth-baseball practice planning, lineups, fields, and player development. Safety-first, no guarantees of outcomes.",
+    "The agreement for using First Pitch: youth-baseball practice planning, lineups, fields, and player development. Safety-first, no guarantees of outcomes.",
 };
 
 const LAST_UPDATED = "2026-06-03";
@@ -38,7 +38,7 @@ export default function TermsPage() {
           Little League International, the NSCA, the CDC, and other sources. These tools reduce risk
           but <strong>do not guarantee</strong> any health, safety, performance, or recruiting
           outcome. You remain responsible for the supervision and well-being of every athlete. In an
-          emergency, contact local emergency services — First Pitch is a planning tool, not an
+          emergency, contact local emergency services. First Pitch is a planning tool, not an
           emergency or medical service.
         </p>
       </section>

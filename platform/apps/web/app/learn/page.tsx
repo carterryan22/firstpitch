@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { TriplePlayFrame } from "./TriplePlayFrame";
 
 export const metadata: Metadata = {
-  title: "Triple Play — Think Fast, Play Smart",
+  title: "Triple Play: Think Fast, Play Smart",
   description:
     "Interactive baseball-IQ scenarios for Little League players and parents. Pick a position, choose a difficulty, and learn what to do before the ball is hit.",
 };
@@ -13,7 +13,7 @@ export default function LearnPage() {
       <header className="flex flex-wrap items-end justify-between gap-2">
         <div>
           <p className="eyebrow">Learning game</p>
-          <h1 className="m-0">Triple Play — Think Fast, Play Smart</h1>
+          <h1 className="m-0">Triple Play: Think Fast, Play Smart</h1>
           <p className="mt-1 max-w-2xl text-sm text-ink/80">
             Position-aware baseball-IQ scenarios. Pick what you play, answer
             what you&apos;d do, and review why each answer is right. Great

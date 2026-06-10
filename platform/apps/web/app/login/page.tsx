@@ -48,7 +48,7 @@ const ROLES: RoleInfo[] = [
 const ERROR_COPY: Record<string, string> = {
   missing_token: "That magic link is missing its token. Request a new one.",
   invalid_or_expired:
-    "That magic link is expired or already used. Request a new one — they're good for 15 minutes.",
+    "That magic link is expired or already used. Request a new one. They're good for 15 minutes.",
 };
 
 export default function LoginPage() {
@@ -115,8 +115,8 @@ function LoginForm() {
         </header>
         <div className="card space-y-3">
           <p className="m-0 text-sm">
-            Open it on the device you want to stay signed in on. We don&apos;t use passwords —
-            opening the link signs you in and sets a 7-day cookie.
+            Open it on the device you want to stay signed in on. We don&apos;t use passwords.
+            Opening the link signs you in and sets a 7-day cookie.
           </p>
           {sent.devLink ? (
             <div className="rounded-md border-2 border-warn/40 bg-warn-soft/30 p-3 text-sm">
@@ -175,7 +175,6 @@ function LoginForm() {
                     ? "border-brand-700 bg-brand-50/60 ring-2 ring-brand-500/40"
                     : "border-slate-200 bg-white hover:border-brand-500/40"
                 }`}
-                aria-pressed={active}
               >
                 <div className="flex items-center justify-between">
                   <span className="font-medium text-slate-900">{r.title}</span>
@@ -233,7 +232,7 @@ function LoginForm() {
         <button type="submit" disabled={busy || !email} className="btn-primary w-full">
           {busy ? "Sending link…" : "Email me a magic link"}
         </button>
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-slate-600">
           Links expire in 15 minutes. By signing in you agree to safety-first practice guidance. We
           don&apos;t store medical data and we never publish player data without consent.
         </p>

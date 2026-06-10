@@ -108,7 +108,7 @@ export default async function CoachMemoryPage({
         <p className="mt-1 text-sm text-slate-600">
           Never lose track of what each player needs. Synthesized from your last{" "}
           {memory.playedGames} game{memory.playedGames === 1 ? "" : "s"}, pitch counts, attendance
-          and the notes you tap. Coach-only — never shown to parents.
+          and the notes you tap. Coach-only, never shown to parents.
         </p>
       </header>
 
@@ -173,7 +173,7 @@ export default async function CoachMemoryPage({
                 </div>
               ) : (
                 <p className="m-0 text-sm text-slate-500">
-                  Nothing flagged — getting fair reps and staying healthy.
+                  Nothing flagged. Getting fair reps and staying healthy.
                 </p>
               )}
 
@@ -207,7 +207,7 @@ export default async function CoachMemoryPage({
         {cards.length === 0 ? (
           <Card>
             <p className="m-0 text-sm text-slate-500">
-              Add players to your roster and play a game or two — Coach Memory fills in from there.
+              Add players to your roster and play a game or two. Coach Memory fills in from there.
             </p>
           </Card>
         ) : null}

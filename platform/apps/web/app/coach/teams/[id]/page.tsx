@@ -245,7 +245,7 @@ function RosterGroup({
         <ul className="mt-2 space-y-1 text-sm">
           {rows.map(({ user, membership }) => (
             <li key={membership.id} className="flex justify-between gap-2">
-              <span className="text-slate-800">{user.name ?? "—"}</span>
+              <span className="text-slate-800">{user.name ?? "-"}</span>
               <span className="text-slate-500">{user.email}</span>
             </li>
           ))}

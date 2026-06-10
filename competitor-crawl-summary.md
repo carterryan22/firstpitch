@@ -1,43 +1,43 @@
 # Competitor Crawl Summary
 
-Source pages crawled on 2026-05-24.
+Anonymized market scan crawled on 2026-05-24. Company names, founders, URLs, addresses, and phone numbers have been removed; only category, positioning, and gap insights are retained.
 
 ---
 
-## 1. GoRout — https://gorout.com/
+## 1. Vendor 1 — Coach-to-player communication hardware
 
 **Category:** Coach-to-player communication hardware + software (football, baseball, softball).
 
-**Positioning:** "The leader in coach-to-player communication." Recognized by Fast Company as one of the Most Innovative Companies in sports for 2026. Built by coaches.
+**Positioning:** "The leader in coach-to-player communication." Recognized on a sports-innovation award list; built by coaches.
 
 **Core products:**
-- **Baseball / Softball Pitch Calling System** — one-button pitch calls, pick-offs, steals, signs delivered to on-field wearables in real time.
-- **Football Practice Solutions** — digital scout cards sent to players on-field; claim "2x your reps."
+- **Pitch Calling System** — one-button pitch calls, pick-offs, steals, signs delivered to on-field wearables in real time.
+- **Football Practice Solutions** — digital scout cards sent to players on-field; claim multiplied reps.
 - **In-Game Solutions** — visually communicate play calls instantly and securely.
-- **Analytics** — integration with AWRE Sports: pitch intent vs. result, AI analysis/insights, real-time pitch charting.
+- **Analytics** — third-party analytics integration: pitch intent vs. result, AI analysis/insights, real-time pitch charting.
 
 **Key differentiators:**
 - "No Set Up. No WiFi." hardware.
 - One-touch operation.
-- Trusted by Power-conference NCAA programs (Indiana, Wisconsin, Washington, Notre Dame, Tennessee, Utah, etc.).
+- Used by Power-conference college programs.
 
 **Audience:** High school + college coaching staffs (football, baseball, softball).
 
-**Pricing:** Not published — "Get a quote."
+**Pricing:** Not published — quote-gated.
 
 ---
 
-## 2. deCervo / uHIT Baseball — https://decervo.com/uhitbaseball/
+## 2. Vendor 2 — Vision / cognitive training app
 
 **Category:** Neuroscience-based hitter vision training app.
 
 **Positioning:** "See pitches faster and hit better with vision training." App-based pitch and zone recognition.
 
 **Core product:**
-- **uHIT Baseball app** — vision training for zone recognition and pitch recognition.
-- **uHIT Dashboard (coach view)** — tracks hitter progress, lets coaches assign zone/pitch recognition modules, message players, and review data.
+- **Vision-training app** — zone recognition and pitch recognition.
+- **Coach dashboard** — tracks hitter progress, lets coaches assign zone/pitch recognition modules, message players, and review data.
 - **1-on-1 coaching with app** offering.
-- **Team purchases** include comprehensive analysis from deCervo's uHIT Specialists.
+- **Team purchases** include comprehensive analysis from their specialists.
 
 **Claimed outcomes:** Increased OPS, walk-to-K ratio, and SLG via case studies (pro, college, HS hitters).
 
@@ -47,25 +47,25 @@ Source pages crawled on 2026-05-24.
 
 ---
 
-## 3. TopVelocity — https://www.topvelocity.pro/
+## 3. Vendor 3 — Velocity & mechanics development program
 
 **Category:** Pitching/throwing velocity development programs (online + in-person camps + e-commerce).
 
-**Positioning:** "Develop the 100mph fastball — the #1 pitching velocity program." Founded/led by Coach Brent Pourciau.
+**Positioning:** "Develop the 100mph fastball—a top pitching velocity program." Founder-led.
 
 **Core programs:**
-- **3X Pitching Velocity Program** — add 5–10+ mph; pitching-specific.
-- **2X Position Player Velocity Program** — throwing velocity for position players.
-- **2X Catchers Sub-2.0 Pop Time Program.**
-- **3X Fastpitch Softball Velocity Program.**
-- **3X Velocity Online Camp** and in-person **3X / 2X Velocity Camps**.
+- **Pitching velocity program** — add 5–10+ mph; pitching-specific.
+- **Position-player velocity program** — throwing velocity for position players.
+- **Catcher pop-time program** (sub-2.0).
+- **Fastpitch softball velocity program.**
+- **Online velocity camp** and in-person velocity camps.
 
 **Add-ons / products:**
-- **GFT Hitting Program** — $197 (2-phase hitting mechanics → advanced sequencing).
-- **Mobility Program** — $97.
-- **TopV Nutritional Program.**
-- **3X Pitching Grips with MLB Pitcher David Aardsma.**
-- **Video Analysis**, training equipment, apparel (TopV + Baseballs & Barbells lines).
+- **Hitting program** — ~$197 (2-phase hitting mechanics → advanced sequencing).
+- **Mobility program** — ~$97.
+- **Nutritional program.**
+- **Pitching-grips course** (with a former MLB pitcher).
+- **Video Analysis**, training equipment, apparel lines.
 
 **Methodology pillars:**
 - Proprietary throwing drills.
@@ -73,71 +73,71 @@ Source pages crawled on 2026-05-24.
 - Science-built kinetic-chain throwing/pitching mechanics.
 - Instructional video library.
 - Professional video analysis with pro-player comparison.
-- 5 phone coaching sessions w/ Brent Pourciau included in throwing programs.
+- Phone coaching sessions included in throwing programs.
 
 **Audience:** Amateur → pro pitchers, position players, catchers, fastpitch softball pitchers.
 
-**Location:** Covington, LA. Phone (415) 877-4850.
+**Location:** Regional US base + national online reach.
 
 ---
 
-## 4. Top Prospect Athletics (TPA) — https://topprospectathletics.com/
+## 4. Vendor 4 — Full-stack academy + recruiting (West Coast)
 
-**Category:** Full-service baseball academy + college recruiting service (Los Angeles / Encino, CA).
+**Category:** Full-service baseball academy + college recruiting service (West Coast metro).
 
-**Positioning:** "Elite full-spectrum baseball training & college recruiting" for the LA area.
+**Positioning:** "Elite full-spectrum baseball training & college recruiting" for a major metro.
 
 **Service pillars:**
 - **Strength & Conditioning** — plyometric & Olympic lifts, speed/agility, individualized nutrition.
 - **On-Field Practices** — live hitting/instruction, infield/outfield, pitching, catching.
 - **Showcase & Tournament Teams** — tournaments, showcases, college coach comms.
 - **Recruiting** — showcase prep, social media guidance, player profiles, skills videos.
-- **College Recruiting & Mentor Program** — player dashboard, showcase prep, coach contact strategy, proprietary recruiting software, top-20 college identification, skills video + player metrics, email campaign strategy/reporting.
+- **College Recruiting & Mentor Program** — player dashboard, showcase prep, coach contact strategy, proprietary recruiting software, college identification, skills video + player metrics, email campaign strategy/reporting.
 
 **Products / pricing:**
-- **Skills Video** — $375 standalone; $250 with College Recruiting Package; $175 annual refresh. Includes defensive position, hitting, 60-yd dash, pitching MPH, exit velocity.
-- **TPA App** (iOS + Android) — membership signup, class browsing, trainer list, gear store.
-- **Events (2026):** TPA Summer League, MAMA Madness 1-day tourney, Summer Slam, Summer Youth Skills Camp.
+- **Skills Video** — ~$375 standalone; ~$250 with recruiting package; ~$175 annual refresh. Includes defensive position, hitting, 60-yd dash, pitching MPH, exit velocity.
+- **Member app** (iOS + Android) — membership signup, class browsing, trainer list, gear store.
+- **Seasonal events:** summer league, one-day tourneys, skills camps.
 
-**Location:** 17301 W Oxnard St, Encino, CA 91316. Phone 818-262-7800.
+**Location:** West Coast metro.
 
 ---
 
-## 5. All-Star Sports Academy (ASSA) — https://allstarsportsacademy.com/
+## 5. Vendor 5 — Multi-location academy + travel/tournaments (Mid-Atlantic)
 
-**Category:** Mid-Atlantic multi-location baseball & softball academy + travel program ("Combat Baseball/Softball").
+**Category:** Multi-location baseball & softball academy + travel program (regional).
 
-**Positioning:** "The Mid-Atlantic's premier baseball & softball academy."
+**Positioning:** "A premier regional baseball & softball academy."
 
 **Service pillars:**
-- **Baseball:** private lessons, programs/camps/clinics, Combat Baseball travel teams, Combat Futures (younger pipeline), college recruiting events.
-- **Softball:** private lessons, programs/camps/clinics, Combat Softball travel teams, Summer Prospect Camp.
-- **All-Star Tournament Series** (separate play portal: play.allstarsportsacademy.com).
+- **Baseball:** private lessons, programs/camps/clinics, branded travel teams, a younger-player pipeline, college recruiting events.
+- **Softball:** private lessons, programs/camps/clinics, branded travel teams, summer prospect camp.
+- **Tournament series** (separate play portal).
 - **Strength & Conditioning.**
 - **Facility rentals.**
 - **Free baseball/softball evaluation** as a lead magnet.
 
-**Impact metrics highlighted:** NCAA alumni, MLB Draft picks, MLB alumni, current NCAA athletes (numbers shown on site).
+**Impact metrics highlighted:** college alumni, MLB Draft picks, MLB alumni, current college athletes (numbers shown on site).
 
-**Footprint (8 training centers):** Broomall PA, Cherry Hill NJ, Conshohocken PA, Downingtown PA, Havertown PA, Levittown PA, Warminster PA, West Chester PA.
+**Footprint:** ~8 regional training centers.
 
-**HQ:** Shared Service Office, 1475 Phoenixville Pike Ste 101, West Chester, PA 19380. Phone 484-770-8325.
+**HQ:** Regional (Mid-Atlantic).
 
 ---
 
 ## Quick Competitive Map
 
-| Company | Primary Layer | Delivery | Recruiting? | Hardware? | Software/App? | Geography |
+| Vendor | Primary Layer | Delivery | Recruiting? | Hardware? | Software/App? | Geography |
 |---|---|---|---|---|---|---|
-| GoRout | In-game / practice comms | Wearable + dashboard | No | Yes | Yes | National (NCAA, HS) |
-| deCervo (uHIT) | Cognitive / vision training | Mobile app + coach dashboard | No | No | Yes | National / remote |
-| TopVelocity | Velocity & mechanics dev | Online programs + camps + e-com | No | Sells training equipment | Online program portal | National + LA camps |
-| Top Prospect Athletics | Full-stack academy + recruiting | In-person + app | Yes (flagship) | No | Mobile app | Los Angeles |
-| All-Star Sports Academy | Full-stack academy + travel + tournaments | In-person, 8 facilities | Lightweight (events) | No | Tournament portal | Mid-Atlantic (PA/NJ) |
+| Vendor 1 | In-game / practice comms | Wearable + dashboard | No | Yes | Yes | National (college, HS) |
+| Vendor 2 | Cognitive / vision training | Mobile app + coach dashboard | No | No | Yes | National / remote |
+| Vendor 3 | Velocity & mechanics dev | Online programs + camps + e-com | No | Sells training equipment | Online program portal | National + regional camps |
+| Vendor 4 | Full-stack academy + recruiting | In-person + app | Yes (flagship) | No | Mobile app | West Coast metro |
+| Vendor 5 | Full-stack academy + travel + tournaments | In-person, multi-facility | Lightweight (events) | No | Tournament portal | Mid-Atlantic |
 
 ### Gaps / openings worth noting
-- None of the academies (TPA, ASSA) appear to offer integrated **objective player-development metrics** tied to a longitudinal athlete profile the way a platform product could.
-- GoRout owns in-game/practice comms but does not address player development metrics, recruiting, or training program delivery.
-- deCervo owns the cognitive/vision niche with a coach dashboard — closest analog to a "metric + coach assignment" SaaS model, but limited to vision.
-- TopVelocity owns velocity content/programs but is course/commerce-driven, not a coach platform.
-- Regional academies (TPA, ASSA) compete on facilities + travel teams + recruiting services; pricing transparency is low across the board (mostly quote/contact gated).
+- None of the academies (Vendors 4–5) appear to offer integrated **objective player-development metrics** tied to a longitudinal athlete profile the way a platform product could.
+- The comms-hardware vendor (1) owns in-game/practice comms but does not address player development metrics, recruiting, or training program delivery.
+- The vision-training vendor (2) owns the cognitive/vision niche with a coach dashboard — closest analog to a "metric + coach assignment" SaaS model, but limited to vision.
+- The velocity vendor (3) owns velocity content/programs but is course/commerce-driven, not a coach platform.
+- Regional academies (Vendors 4–5) compete on facilities + travel teams + recruiting services; pricing transparency is low across the board (mostly quote/contact gated).

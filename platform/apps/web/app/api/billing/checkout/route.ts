@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
 
   if (!isBillingEnabled()) {
     return NextResponse.json(
-      { error: "billing_disabled", message: "Billing isn't enabled yet — every team is on us." },
+      { error: "billing_disabled", message: "Billing isn't enabled yet. Every team is on us." },
       { status: 503 }
     );
   }

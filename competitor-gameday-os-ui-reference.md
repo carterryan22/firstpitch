@@ -1,6 +1,6 @@
-# Who's on Second!? — UI / UX Reference
+# Game-Day OS Competitor — UI / UX Reference
 
-Structured reference compiled from a full authenticated crawl of `whosonsecond.com` (Coast Diamondbacks team, Coach Plan account) on **May 26, 2026**, plus the public `/demo` and marketing surfaces. Purpose: inform the Coach Platform product spec by mapping every surface to a **Borrow / Improve / Ignore** judgment. All real names, emails, and IDs from the source account have been redacted in the discussion sections; raw values appear only where structural (e.g., URL slugs).
+Structured reference compiled from a full authenticated crawl of a game-day lineup/roster competitor (a sample youth team, Coach-tier account) in **May 2026**, plus its public demo and marketing surfaces. Purpose: inform the Coach Platform product spec by mapping every surface to a **Borrow / Improve / Ignore** judgment. Brand name, domain, URLs, account data, and stack fingerprints have been removed; only generic structure and our own takeaways are retained.
 
 ---
 
@@ -8,59 +8,32 @@ Structured reference compiled from a full authenticated crawl of `whosonsecond.c
 
 | Signal | Value |
 |---|---|
-| Framework | Next.js App Router (RSC payloads observable in `?_rsc=` requests) |
-| Hosting / CDN | Cloudflare (RUM beacon `/cdn-cgi/rum`; Cloudflare Turnstile on login) |
+| Framework | Modern React SSR framework (server-component payloads observable) |
+| Hosting / CDN | Mainstream CDN with a bot-challenge on login |
 | Auth methods | Google · Apple · Passkey · Email magic link · Email + password (with optional 2FA) |
 | Billing | Stripe Customer Portal (payment method, invoices, cancellation) |
-| Mobile | Native iOS app v1.4.0 (web is system of record; iOS is a thin client that gains features asynchronously) |
-| Error reporting | Sentry (minified React errors surfaced in console; `browser.sentry-cdn.com` allowlisted in CSP) |
-| CSP | `script-src 'self' 'nonce-…' 'strict-dynamic' https://browser.sentry-cdn.com` — Cloudflare email-decode script is *blocked* by their own CSP, leaving a recurring console error |
+| Mobile | Native iOS app (web is system of record; iOS is a thin client that gains features asynchronously) |
+| Error reporting | Third-party error-reporting SDK |
 | Bottom tab nav | Web shell mirrors iOS tab bar — same 5 tabs on desktop and mobile (Home · Games · Roster · Pitching · More) |
-| Internal APIs visible from network failures | `/api/tours`, `/api/announcements` (in-app onboarding tours + product announcement system) |
+| Internal APIs | A server-backed onboarding-tour + product-announcement system (inferred from network calls) |
 
 ### 1.1 Notable build artifacts
 
-- All client JS in one bundle (`/_next/static/chunks/<hash>.js`), minified, sourcemaps not exposed.
-- React production build (Minified Error #418 — hydration mismatch — surfaces on Press Box & Profile, suggesting some server/client time-dependent rendering).
+- All client JS in one minified bundle, sourcemaps not exposed.
+- React production build (a hydration-mismatch error surfaces on the changelog & profile screens, suggesting some server/client time-dependent rendering).
 - Service worker not detected.
 
 ---
 
 ## 2. Information Architecture Map
 
-### 2.1 URL grammar (verified May 26, 2026)
+### 2.1 URL grammar (generalized)
 
-```
-/                                                  marketing home
-/demo                                              public sandbox (2h, no signup)
-/login  /signup  /forgot-password                  auth
-/dashboard                                         post-auth landing (redirects to last-active team)
-/profile                                           account profile (subscription, security, prefs)
-/pricing                                           upgrade / switch plans
-/help                                              help center (single page; 21 accordion sections + ticket form)
-/more                                              ⚡ GLOBAL More menu (was team-scoped in prior crawl)
-/press-box                                         ⚡ GLOBAL changelog feed (was team-scoped)
-/ref/{code}                                        referral landing
-
-/teams/{slug}                                      team home dashboard (calendar + Next Up + Recent + To-Do)
-/teams/{slug}/roster                               roster (Positions | Stats tabs)
-/teams/{slug}/roster/new                           add player form
-/teams/{slug}/roster/{playerId}                    player detail
-/teams/{slug}/games                                games list (Upcoming / Needs Attention / Completed)
-/teams/{slug}/games/new                            new game form
-/teams/{slug}/games/{gameId}                       game (Field | Roster | Summary tabs)
-/teams/{slug}/games/{gameId}/stats                 post-game review + pitch entry
-/teams/{slug}/games/{gameId}/print                 printable lineup card
-/teams/{slug}/games/{gameId}/edit                  ❌ 404 — edit lives in Tools dropdown
-/teams/{slug}/pitching                             pitching availability board
-/teams/{slug}/fairness                             season-long fairness table
-/teams/{slug}/settings                             team settings (accordion of rule categories)
-/teams/{slug}/apply-rule-set?returnTo=…           rule-set wizard (full page, not modal)
-```
+They use conventional, team-scoped REST-style routes: a marketing home, a public demo sandbox, standard auth pages, a post-auth dashboard, and a profile/pricing/help cluster at the root. Team workspaces are namespaced per team, with nested routes for roster, games (and per-game field/roster/summary/stats/print views), a pitching availability board, a season fairness table, and team settings + a rule-set wizard. Cross-cutting menus (changelog, settings entry, help, profile) are hoisted to the root rather than team-scoped.
 
 ### 2.2 Global vs team scope (recent IA shift)
 
-Prior crawl had `/teams/{slug}/more` and `/teams/{slug}/press-box`. As of this crawl those are **hoisted to root** (`/more`, `/press-box`). The active-team chip stays in the header, but cross-cutting menus (changelog, settings entry, help, profile, signout) no longer require a team in scope. Breadcrumbs on Fairness / Settings / Press Box / Help / Profile all say **"Back to More"** linking to `/more`.
+A prior crawl had the More menu and changelog team-scoped. As of this crawl those are **hoisted to root**. The active-team chip stays in the header, but cross-cutting menus (changelog, settings entry, help, profile, signout) no longer require a team in scope. Breadcrumbs on Fairness / Settings / changelog / Help / Profile all link back to the global More menu.
 
 **Implication:** they're treating the user (not the team) as the navigation root for everything except game/roster/lineup workflows. This matters if/when they ever support cross-team views or league admin roles.
 
@@ -68,11 +41,11 @@ Prior crawl had `/teams/{slug}/more` and `/teams/{slug}/press-box`. As of this c
 
 | Tab | Target | Notes |
 |---|---|---|
-| Home | `/teams/{slug}` | Team dashboard |
-| Games | `/teams/{slug}/games` | Schedule + status buckets |
-| Roster | `/teams/{slug}/roster` | Player table |
-| Pitching | `/teams/{slug}/pitching` | Availability board |
-| More | `/more` | Catch-all |
+| Home | Team dashboard | Team dashboard |
+| Games | Games list | Schedule + status buckets |
+| Roster | Roster | Player table |
+| Pitching | Pitching board | Availability board |
+| More | Global More menu | Catch-all |
 
 The Pitching tab being top-level (not buried under More) is the single strongest signal that **pitch-count compliance is their #1 use case after the lineup itself**.
 
@@ -80,24 +53,24 @@ The Pitching tab being top-level (not buried under More) is the single strongest
 
 ## 3. Auth
 
-- **Login URL:** `/login?callbackUrl=…` (Next-Auth style return-URL). Page hero: "Welcome Back — Your lineups, pitch counts, and fairness data are waiting."
+- **Login:** Next-Auth–style return-URL flow. Page hero: "Welcome Back — Your lineups, pitch counts, and fairness data are waiting."
 - **Sign-in options (in order):** Continue with Google · Continue with Apple · Sign in with Passkey · then email + password form, with secondary buttons "Resend email verification" / "Send magic email link instead."
-- **Below the fold:** "Don't have an account? Create an account" + "Want to see how it works? Try the interactive demo" → `/demo`.
-- **Cloudflare Turnstile** preloaded but invisible until challenge needed.
+- **Below the fold:** "Don't have an account? Create an account" + "Want to see how it works? Try the interactive demo".
+- **Bot-challenge widget** preloaded but invisible until challenge needed.
 
 **Borrow:** the "Try the interactive demo" CTA on the login screen — a try-before-buy escape hatch that costs them nothing because the demo is just a seeded sandbox. We should mirror this for the Coach Platform with a 15-minute coach-mode sandbox seeded with a "U10 Spring" team.
 
 ---
 
-## 4. Team Home (`/teams/{slug}`)
+## 4. Team Home
 
 ### 4.1 Layout
 
 ```
 ┌───────────────────────────────────────────────────────────┐
-│ [TeamChip ▼]                                  [User: RC] │  ← header (banner)
-├───────────────────────────────────────────────────────────┤
-│ Coast Diamondbacks         [↺ Replay dashboard tour]      │  ← h1 + tour replay
+│ [TeamChip ▼]                                  [User]    │  ← header (banner)
+├──────────────────────────────────────────────────┤
+│ Sample Youth Team          [↺ Replay dashboard tour]      │  ← h1 + tour replay
 │                                                           │
 │ ┌──────────── Calendar (current month) ─────────────────┐ │
 │ │ ◀ May 2026 ▶                                  [Today] │ │
@@ -106,20 +79,20 @@ The Pitching tab being top-level (not buried under More) is the single strongest
 │ └──────────────────────────────────────────────────────┘ │
 │                                                           │
 │ ┌── Next Up ──────────────────┐  ┌── To-Do ───────────┐  │
-│ │ vs Marlins · Wed May 27     │  │ [+ Add reminder...] │  │
+│ │ vs Opponent · Wed May 27    │  │ [+ Add reminder...] │  │
 │ │   6:00 PM · Field address    │  │ No reminders yet    │  │
 │ │   [Imported] [Ready]         │  └────────────────────┘  │
 │ │   View details · Edit lineup │                          │
 │ │   [edit][delete]             │                          │
 │ ├── Recent Results ──────────┤                          │
-│ │ vs Reds · Wed May 20 ✓     │                          │
-│ │ vs Reds · Sat May 16 ✓     │                          │
-│ │ vs Phillies · Mon May 11 ✓ │                          │
-│ │ vs Red Sox · Sat May 9  ✓  │                          │
-│ │ vs Cubs · Mon May 4 ✓      │                          │
+│ │ vs Opponent · Wed May 20 ✓ │                          │
+│ │ vs Opponent · Sat May 16 ✓ │                          │
+│ │ vs Opponent · Mon May 11 ✓ │                          │
+│ │ vs Opponent · Sat May 9  ✓ │                          │
+│ │ vs Opponent · Mon May 4 ✓  │                          │
 │ └────────────────────────────┘                          │
 │                                                           │
-│ Team ID: cmmjhbvm…01mf10thj860 📋                        │
+│ Team ID: {opaque-id} 📋                                  │
 └───────────────────────────────────────────────────────────┘
 │  Home   Games   Roster   Pitching   More  │  ← bottom tab nav
 ```
@@ -139,7 +112,7 @@ The Pitching tab being top-level (not buried under More) is the single strongest
 
 ---
 
-## 5. Roster (`/teams/{slug}/roster`)
+## 5. Roster
 
 ### 5.1 Tabs: **Positions** | **Stats**
 
@@ -160,13 +133,13 @@ The default *Positions* tab is a sortable table; each column header is a button 
 **Row decorations:**
 - Avatar = initials chip (e.g., `MM`).
 - Inline badges on the player name: `Can pitch` (baseball icon), `Can catch` (mask icon), `Injured` (text label, not icon — visually weaker than the other two).
-- Each row links to `/teams/{slug}/roster/{playerId}`.
+- Each row links to the player detail page.
 
 ### 5.2 Header actions
 
 - `[↺ Replay roster tour]`
 - `[Import CSV]` — modal upload
-- `[+ Add Player]` → `/teams/{slug}/roster/new`
+- `[+ Add Player]` → add-player form
 
 ### 5.3 Below the player table — **Staff** and **Parents** panels
 
@@ -186,11 +159,11 @@ Each staff entry shows avatar initials, role label, and email. Parents section i
 
 **Borrow:** the OPSEN scale (Only / Primary / Secondary / Emergency / Never) is dense and immediately readable across a wide table. We're proposing a similar scale in the coach-platform builder.
 
-**Improve:** their `Injured` flag is just a string; no expected-return date and no impact on suggestion algorithms is visible from the table (the algo *does* honor it — see Press Box May 6 entry).
+**Improve:** their `Injured` flag is just a string; no expected-return date and no impact on suggestion algorithms is visible from the table (the algo *does* honor it — see the changelog's May 6 entry).
 
 ---
 
-## 6. Pitching Availability (`/teams/{slug}/pitching`)
+## 6. Pitching Availability
 
 ### 6.1 Layout
 
@@ -231,7 +204,7 @@ Footer note: *"Using team-configured thresholds"* — meaning these are pulled f
 
 ## 7. Games
 
-### 7.1 List view (`/teams/{slug}/games`)
+### 7.1 List view
 
 Three buckets, always present even when empty:
 
@@ -241,16 +214,16 @@ Three buckets, always present even when empty:
 
 Every row: date · time · address · innings count · status pills + inline `[edit game]` icon.
 
-Header has `[+ New Game]` linking to `/teams/{slug}/games/new`.
+Header has `[+ New Game]` linking to the new-game form.
 
 **Borrow:** the *Needs Attention* bucket is the right metaphor for nudges. A coach who opens this list immediately sees what's blocking them, which is the closest thing to a "what do I owe" screen on the site.
 
-### 7.2 Game detail (`/teams/{slug}/games/{gameId}`)
+### 7.2 Game detail
 
 #### 7.2.1 Header bar
 
 ```
-vs Marlins (Coast)                                 [Game Stats →]
+vs Opponent                                        [Game Stats →]
 Wednesday, May 27 · 6:00 PM · {address} · 6 innings
 ```
 
@@ -281,11 +254,11 @@ The **Field** sub-tab is the lineup builder:
 | Version History | full per-edit timeline |
 | **Revert to Draft** | back-out a `Ready` lineup to editable state |
 | **Complete Game** | mark game completed, unlocking stats entry |
-| Game Stats | jump to `/games/{id}/stats` |
-| Edit Game Details | opens game-edit modal (this is the answer to "where's `/games/{id}/edit`") |
+| Game Stats | jump to the game-stats page |
+| Edit Game Details | opens game-edit modal (this is the answer to "where game edit lives") |
 | Mark as Scrimmage | excludes from official fairness/stats |
 | Share Lineup | generate read-only share link |
-| Print | open `/games/{id}/print` |
+| Print | open the printable lineup card |
 
 #### 7.2.5 Rules & Compliance panel
 
@@ -329,14 +302,14 @@ Delete-game icon + `Game ID: {8-char id}` copy chip.
 
 ---
 
-## 8. Settings (`/teams/{slug}/settings`)
+## 8. Settings
 
 Breadcrumb: `More › Settings`. Top H1 "Team Settings" + `[↺ Replay team-rules tour]`. Sub "Configure rules and preferences for *{Team Name}*."
 
 ### 8.1 Section list (top-to-bottom, all collapsible accordions except where noted)
 
 1. **Team Information** — name · sport · league · season summary in the row.
-2. **Rule Set badge (non-collapsible)** — current rule set chip, e.g., `Little League Baseball: Minors (Ages 9-10)` · `Applied Mar 21, 2026 · 2026 rules · 9 from Little League · littleleague.org` link. `[Change Rule Set]` button → `/apply-rule-set?returnTo=…`.
+2. **Rule Set badge (non-collapsible)** — current rule set chip, e.g., `Little League Baseball: Minors (Ages 9-10)` · `Applied Mar 21, 2026 · 2026 rules · 9 from Little League · littleleague.org` link. `[Change Rule Set]` button → rule-set wizard.
 3. **Calendar Import** — connector to import games from an external calendar (sub-options not explored here; likely ICS subscription).
 4. **Defensive Play & Minimum Play** (open by default in our crawl) — see §8.2.
 5. **Batting** — `3 rules · 2 Little League · 1 custom`.
@@ -384,7 +357,7 @@ Each rule = a row with name + plain-English description + toggle switch. Origin 
 
 ---
 
-## 9. Fairness (`/teams/{slug}/fairness`)
+## 9. Fairness
 
 Breadcrumb: `More › Fairness`. H1 "Fairness Summary" · sub "Season stats across N completed games".
 
@@ -410,9 +383,9 @@ All columns are sortable (clickable headers with sort icons). No filter UI; coac
 
 ---
 
-## 10. Press Box (`/press-box`)
+## 10. Changelog Feed
 
-A **public-style changelog** but actually gated behind login (hits the same shell + banner). Breadcrumb back to `/more`.
+A **public-style changelog** but actually gated behind login (hits the same shell + banner). Breadcrumb back to the global More menu.
 
 ### 10.1 Layout
 
@@ -424,9 +397,9 @@ A **public-style changelog** but actually gated behind login (hits the same shel
 
 | Date | Type | Title | Substance |
 |---|---|---|---|
-| May 14, 2026 | Feature | Import games from your phone's calendar (iOS 1.4.0) | Pulls title/time/location from iCal events; filterable by calendar source |
-| May 6, 2026 | Improvement | Save edits without leaving Ready (iOS 1.3.2) | `Save Changes` button preserves Ready status when last-minute edits happen |
-| May 6, 2026 | Feature | Press Box on iPhone (iOS 1.3.2) | In-app changelog with red-dot + "N new" pill, cross-device read state |
+| May 14, 2026 | Feature | Import games from your phone's calendar (iOS) | Pulls title/time/location from iCal events; filterable by calendar source |
+| May 6, 2026 | Improvement | Save edits without leaving Ready (iOS) | `Save Changes` button preserves Ready status when last-minute edits happen |
+| May 6, 2026 | Feature | Changelog feed on iPhone (iOS) | In-app changelog with red-dot + "N new" pill, cross-device read state |
 | May 6, 2026 | Improvement | Smarter batting order suggestions | Suggest Order + Auto-Generate now honor Absent + Injured |
 | May 4, 2026 | Improvement | Print Lineup polish | Blank box score, larger inning headings, missing game-ball list |
 | May 3, 2026 | Feature | Bench upcoming pitcher for warmup | |
@@ -452,32 +425,32 @@ A **public-style changelog** but actually gated behind login (hits the same shel
 - The product wedge has moved from *baseball lineup builder* → *baseball lineup + pitch counts + fairness + import + scorebook + softball*. They're consolidating the youth-coach toolbelt.
 - Notable **lack** of: practice planning, drill library, player development, parent/player-facing communication, AI coaching. **This is exactly our wedge** — they've left the field of "what happens between games" wide open.
 
-**Borrow:** *the Press Box concept itself*. A coach-facing changelog with red-dot notification + cross-device read state turns release notes into a retention mechanic. Cheap to build, big trust payoff.
+**Borrow:** *the in-app changelog concept itself*. A coach-facing changelog with red-dot notification + cross-device read state turns release notes into a retention mechanic. Cheap to build, big trust payoff.
 
 ---
 
 ## 11. In-app onboarding tours (new since prior crawl)
 
-`[↺ Replay {area} tour]` buttons appear on:
+The `[↺ Replay {area} tour]` buttons appear on:
 
 - Dashboard (`Replay dashboard tour`)
 - Roster (`Replay roster tour`)
 - Game detail / lineup builder (`Replay lineup-builder tour`)
 - Settings (`Replay team-rules tour`)
 
-The `/api/tours` endpoint visible in network failures confirms a server-backed tour engine (probably tracks seen/unseen state per user). This means new tours can ship without a release.
+A server-backed tour endpoint (visible in network calls) confirms a tour engine (probably tracks seen/unseen state per user). This means new tours can ship without a release.
 
-**Borrow strongly:** named, replayable, per-surface tours. Implementation hint: keep tour definitions in a JSON resource served by an `/api/tours` endpoint so we can iterate copy without a deploy.
+**Borrow strongly:** named, replayable, per-surface tours. Implementation hint: keep tour definitions in a JSON resource served by a tours endpoint so we can iterate copy without a deploy.
 
 ---
 
-## 12. Profile (`/profile`)
+## 12. Profile
 
-Breadcrumb: `More › Profile`. The page has its own simplified header (`WoS | Profile` + `Back`) — only screen besides Press Box / Help that does this.
+Breadcrumb: `More › Profile`. The page has its own simplified header (a compact `Profile` wordmark + `Back`) — only screen besides the changelog / Help that does this.
 
 ### 12.1 Sections
 
-1. **Header** — H1 "Your Profile" + plan chip (`Coach Plan`).
+1. **Header** — H1 "Your Profile" + plan chip (`Coach` tier).
 2. **Identity card** — avatar (initials) + Upload Photo (JPEG/PNG/WebP, ≤5MB) · Member since · Last login · ID (opaque 32-char string).
 3. **Account Info** — Email · Name · Display Name · Phone (`Edit` opens a modal).
 4. **Password** — `Change Password` (sends reset email; "Last set via email + password").
@@ -485,7 +458,7 @@ Breadcrumb: `More › Profile`. The page has its own simplified header (`WoS | P
    - Plan chip · Billing cadence (Monthly) · Next renewal · Team slots (`1 / 1 slot used`).
    - Four buttons: Update payment method · View invoices · Switch to season billing · Cancel subscription. All open the **Stripe Customer Portal**.
    - Slot-upsell card when slots are full ("Add a team slot — Sign Up to Subscribe").
-6. **Referrals** — copyable link `/ref/{code}`; reward = free month for both parties once referee adds 3 players. Counter `0 / 10 used` (10-referral cap).
+6. **Referrals** — copyable referral link; reward = free month for both parties once referee adds 3 players. Counter `0 / 10 used` (10-referral cap).
 7. **Email Preferences** — seven toggles + a master "Unsubscribe from all":
    - Setup Reminders · Trial Updates · Tips & Features · Updates & News · Snack Duty Reminders · Post-Game Reminders.
    - Disclaimer: transactional emails (password reset, magic links, team invitations) cannot be turned off.
@@ -498,7 +471,7 @@ Breadcrumb: `More › Profile`. The page has its own simplified header (`WoS | P
 
 ---
 
-## 13. Help (`/help`)
+## 13. Help
 
 Breadcrumb: `More › Help`. Single page, 20+ collapsible sections + a Contact Support form + Your Tickets list at the bottom + a `[Sections]` jump button.
 
@@ -530,31 +503,31 @@ Getting Started · Interactive Demo · Roster Management · Building Lineups · 
 
 ---
 
-## 14. iOS app signals (inferred from Press Box + UI parity)
+## 14. iOS app signals (inferred from changelog + UI parity)
 
-- Web is the system of record; iOS gains features asynchronously (visible from version-gated changelog entries: `iOS 1.3.2`, `iOS 1.4.0`).
+- Web is the system of record; iOS gains features asynchronously (visible from version-gated changelog entries).
 - Bottom-tab parity is intentional — iOS tab bar = web shell footer.
-- iOS-only features called out: Calendar event import, in-app Press Box with red-dot notifications, push reminders.
+- iOS-only features called out: Calendar event import, in-app changelog with red-dot notifications, push reminders.
 - Native parity gap: lineup builder UI on iOS is presumed touch-optimized but otherwise mirrors web. The web Field tab already uses touch-friendly chip targets.
 
 ---
 
 ## 15. What's missing (the gap = our wedge)
 
-After a full sweep, **none of the following exist** on Who's on Second:
+After a full sweep, **none of the following exist** on the game-day OS competitor:
 
-- **Practice planning** — no `/practice`, no calendar event type for practices, no drill library.
-- **Drill library / curriculum** — Press Box never mentions drills, plans, or skill development.
+- **Practice planning** — no practice routes, no calendar event type for practices, no drill library.
+- **Drill library / curriculum** — the changelog never mentions drills, plans, or skill development.
 - **Player development tracking** — fairness is about *playing time equity*, not skill growth. No skill rubric, no checkpoint, no trend line per player.
-- **Parent-facing app** — Parents can be invited but there's no `/parent` route and the Press Box mentions no parent features.
-- **AI / coach assistant** — no `/ai`, no chat surface, no LLM-touched copy anywhere in the product.
-- **League / org admin** — League Management is a *Help section* but no shipped `/leagues` or `/org` routes were observed.
+- **Parent-facing app** — Parents can be invited but there's no parent route and the changelog mentions no parent features.
+- **AI / coach assistant** — no AI route, no chat surface, no LLM-touched copy anywhere in the product.
+- **League / org admin** — League Management is a *Help section* but no shipped league/org routes were observed.
 - **Multi-team views for assistants** — assistants accept invites per-team; no cross-team dashboard.
 - **Safety / overuse alerting beyond pitch counts** — no heat-illness rules, no concussion protocol, no rest-day reasoning beyond pitch totals.
 
 **Implication for Coach Platform positioning:**
 
-> Who's on Second is a **Game-Day OS** for youth coaches. The Coach Platform should position as the **Practice-and-Development OS** — covers everything between games (drills, plans, skill growth, parent comms, AI assistant, safety) and either integrates with WoS (import roster + games) or absorbs lineup-builder as a v2 feature.
+> The competitor is a **Game-Day OS** for youth coaches. The Coach Platform should position as the **Practice-and-Development OS** — covers everything between games (drills, plans, skill growth, parent comms, AI assistant, safety) and either integrates with it (import roster + games) or absorbs lineup-builder as a v2 feature.
 
 ---
 
@@ -564,7 +537,7 @@ After a full sweep, **none of the following exist** on Who's on Second:
 |---|---|---|
 | Login screen: "Try the interactive demo" CTA | **Borrow** | Add a "Coach Demo Sandbox" link below login |
 | 5-tab bottom nav (Home/Games/Roster/Pitching/More) | **Adapt** | Ours: Home / Practice / Roster / Players / More (Games moves down a tier) |
-| Global `/more` + `/press-box` + `/help` | **Borrow** | Decouples cross-cutting menus from team scope |
+| Global More + changelog + Help menus | **Borrow** | Decouples cross-cutting menus from team scope |
 | Calendar + Next Up + Recent + To-Do dashboard triad | **Borrow** | Replace To-Do with auto-generated nudge cards |
 | OPSEN position-rating scale | **Borrow** | Same 5-tier scale for our position table |
 | `Can pitch` / `Can catch` / `Injured` chips on roster | **Borrow + Extend** | Add `Lefty`, `Switch`, `Returning from injury` |
@@ -576,25 +549,25 @@ After a full sweep, **none of the following exist** on Who's on Second:
 | Rule origin badges (`Little League` / `Custom`) | **Borrow** | Same pattern for our presets and house rules |
 | Compound Minimum Play (one switch controls scaled requirements) | **Borrow** | Adopt the pattern for our "Safety Mode" toggle |
 | Fairness table with per-position innings + verdict pill | **Borrow + Improve** | Add "Why" + one-click rotation suggestion |
-| Press Box changelog with red-dot + read-state | **Borrow** | Cheap retention loop |
-| Replayable named onboarding tours | **Borrow** | Use `/api/tours` JSON pattern so copy changes don't require deploys |
+| In-app changelog with red-dot + read-state | **Borrow** | Cheap retention loop |
+| Replayable named onboarding tours | **Borrow** | Use a tours JSON endpoint pattern so copy changes don't require deploys |
 | Granular email preference toggles | **Borrow** | One toggle per email category, not a single marketing toggle |
 | Stripe Customer Portal for all billing actions | **Borrow** | Same pattern, zero billing UI of our own |
 | Referrals: free month for both after 3 players added | **Borrow + Tune** | Use "3 practice plans completed" as the activation gate for the referee |
 | Single-page Help + in-product ticket form + paste-image attachments | **Borrow** | Add embedded video per section |
 | Transfer Head Coach / Leave Team | **Ignore for v1** | Build when we have multi-coach teams |
 | Snack Duty | **Ignore** | Out of scope for our wedge |
-| Press Box gold-pill "X new" | **Borrow** | Use same UX for unread practice-plan templates |
+| In-app changelog gold-pill "X new" | **Borrow** | Use same UX for unread practice-plan templates |
 
 ---
 
 ## 17. Open questions / things not crawled
 
-- `/teams/{slug}/games/{gameId}/stats` — post-game pitch entry + box-score UI not captured in this pass.
-- `/teams/{slug}/games/new` — the new-game form fields and Calendar Import variant on web.
-- `/teams/{slug}/apply-rule-set` — the rule-set wizard (a clear "Borrow" candidate but not re-verified here).
-- `/teams/{slug}/roster/{playerId}` — player detail page (pitch history, batting stats per recent Press Box entries).
-- `/teams/{slug}/roster/new` — add-player form fields.
+- Game stats page — post-game pitch entry + box-score UI not captured in this pass.
+- New-game form — the form fields and Calendar Import variant on web.
+- Rule-set wizard — a clear "Borrow" candidate but not re-verified here.
+- Player detail page — pitch history, batting stats per recent changelog entries.
+- Add-player form — field details.
 - Mobile-specific UI on the web (sub-768 breakpoint).
 - The Snack Duty + Game Day setting subsections (collapsed in our crawl).
 
