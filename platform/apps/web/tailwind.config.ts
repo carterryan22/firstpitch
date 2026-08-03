@@ -36,8 +36,8 @@ const config: Config = {
           700: "#4A6318",
           900: "#2E4010",
         },
-        danger: { DEFAULT: "#B23A1F", soft: "#F6D9CE" },
-        warn: { DEFAULT: "#B07A1F", soft: "#F1E1B3" },
+        danger: { DEFAULT: "#A4351D", soft: "#F6D9CE" },
+        warn: { DEFAULT: "#8A5A0F", soft: "#F1E1B3" },
         ok: { DEFAULT: "#4A6318", soft: "#DDE7BE" },
       },
       fontFamily: {

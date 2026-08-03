@@ -109,7 +109,7 @@ export default async function PlayerBaselinePage({
               <div key={m.key} className="card">
                 <div className="flex items-baseline justify-between">
                   <div className="text-xs uppercase tracking-wide text-slate-500">{m.label}</div>
-                  <div className="text-xs text-slate-400">{series.length} entries</div>
+                  <div className="text-xs text-dirt-700">{series.length} entries</div>
                 </div>
                 <div className="mt-1 flex items-baseline gap-2">
                   <span className="text-xl font-bold text-slate-800">
@@ -118,7 +118,7 @@ export default async function PlayerBaselinePage({
                   <span
                     className={
                       delta === 0
-                        ? "text-xs text-slate-400"
+                        ? "text-xs text-dirt-700"
                         : improved
                         ? "text-xs font-semibold text-emerald-700"
                         : "text-xs font-semibold text-amber-700"
@@ -162,7 +162,7 @@ export default async function PlayerBaselinePage({
                     </div>
                   </>
                 ) : (
-                  <div className="mt-1 text-sm text-slate-400">No data</div>
+                  <div className="mt-1 text-sm text-dirt-700">No data</div>
                 )}
               </div>
             );
@@ -203,7 +203,7 @@ export default async function PlayerBaselinePage({
                   </div>
                   <div className="mt-1 text-sm text-slate-700">
                     <span className="font-mono">{p.goal.baseline}</span>
-                    <span className="text-slate-400"> → </span>
+                    <span className="text-dirt-700"> → </span>
                     <span className="font-mono font-semibold">{p.targetValue}</span>
                     <span className="text-slate-500"> {def?.unit}</span>
                   </div>

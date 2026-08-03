@@ -234,7 +234,7 @@ export default async function PitchingBoardPage({ params }: { params: Promise<{ 
                       ) : (
                         <span className="tabular-nums">
                           {shortDay(nextAvailable.date)}
-                          <span className="text-slate-400"> · in {nextAvailable.inDays}d</span>
+                          <span className="text-dirt-700"> · in {nextAvailable.inDays}d</span>
                         </span>
                       )}
                     </td>

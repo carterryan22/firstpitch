@@ -156,7 +156,7 @@ export function CreateTeamFromCsvForm() {
           <ul className="mt-2 flex flex-wrap gap-2">
             {preview.map((r, i) => (
               <li key={i} className="rounded bg-slate-100 px-2 py-1 text-xs text-slate-700">
-                {r.jersey ? <span className="text-slate-400">#{r.jersey} </span> : null}
+                {r.jersey ? <span className="text-dirt-700">#{r.jersey} </span> : null}
                 {r.rawName}
               </li>
             ))}

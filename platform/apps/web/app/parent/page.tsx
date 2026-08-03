@@ -348,7 +348,7 @@ export default async function ParentDashboard() {
                     <div className="mt-3">
                       <h4 className="m-0 text-xs uppercase tracking-wide text-slate-500">
                         Home training plan
-                        <span className="ml-1 text-slate-400">
+                        <span className="ml-1 text-dirt-700">
                           (~{homework.totalMinutes} min · targets {homework.targetCategories.join(", ")})
                         </span>
                       </h4>

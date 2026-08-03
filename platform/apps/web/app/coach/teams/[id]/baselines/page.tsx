@@ -75,7 +75,7 @@ export default async function BaselinesPage({ params }: { params: Promise<{ id: 
               {cols.map((m) => (
                 <th key={m.key} className="px-2 py-3 text-center">
                   {m.short ?? m.label}
-                  <div className="text-[10px] font-normal text-slate-400">{m.unit}</div>
+                  <div className="text-[10px] font-normal text-dirt-700">{m.unit}</div>
                 </th>
               ))}
             </tr>

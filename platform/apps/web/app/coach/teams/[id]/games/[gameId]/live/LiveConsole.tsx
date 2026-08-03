@@ -151,7 +151,7 @@ export function LiveConsole({
           </div>
           <div className="flex items-center gap-6">
             <ScoreColumn label="Us" value={score.us} disabled={busy} onChange={(d) => bumpScore("us", d)} />
-            <div className="text-2xl text-slate-400">–</div>
+            <div className="text-2xl text-dirt-700">–</div>
             <ScoreColumn label="Them" value={score.them} disabled={busy} onChange={(d) => bumpScore("them", d)} />
           </div>
         </div>

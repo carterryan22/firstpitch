@@ -171,14 +171,14 @@ export default async function TransferPage({
                 <tr key={m.key} className="border-t border-slate-100">
                   <td className="py-1">
                     {m.label}{" "}
-                    <span className="text-xs text-slate-400">
+                    <span className="text-xs text-dirt-700">
                       ({m.better === "up" ? "higher better" : "lower better"})
                     </span>
                   </td>
                   <td className="py-1">{fmtVal(m.format, m.pre)}</td>
                   <td className="py-1">{fmtVal(m.format, m.post)}</td>
                   <td className="py-1">
-                    <span className={m.delta === 0 ? "text-slate-400" : m.improved ? "text-field-700" : "text-rose-600"}>
+                    <span className={m.delta === 0 ? "text-dirt-700" : m.improved ? "text-field-700" : "text-rose-600"}>
                       {m.delta > 0 ? "+" : ""}
                       {fmtVal(m.format, m.delta)}
                       {m.delta !== 0 ? (m.improved ? " ✓" : " ✗") : " -"}

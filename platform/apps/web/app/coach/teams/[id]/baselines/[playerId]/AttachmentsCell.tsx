@@ -91,7 +91,7 @@ export function AttachmentsCell({
   return (
     <div className="space-y-1">
       {items.length === 0 ? (
-        <span className="text-xs text-slate-400">None</span>
+        <span className="text-xs text-dirt-700">None</span>
       ) : (
         <ul className="space-y-1">
           {items.map((a, i) => (
@@ -108,7 +108,7 @@ export function AttachmentsCell({
               </a>
               <button
                 type="button"
-                className="text-[10px] text-slate-400 hover:text-red-600"
+                className="text-[10px] text-dirt-700 hover:text-red-600"
                 disabled={busy}
                 onClick={() => remove(i)}
                 aria-label="Remove attachment"

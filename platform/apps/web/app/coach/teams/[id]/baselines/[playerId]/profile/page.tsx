@@ -41,7 +41,7 @@ function PillarCard({ p }: { p: PillarScore }) {
         <div className="text-xs font-semibold uppercase tracking-wide text-slate-600">
           {p.label}
         </div>
-        <div className="text-[10px] uppercase tracking-wide text-slate-400">{weightPct}%</div>
+        <div className="text-[10px] uppercase tracking-wide text-dirt-700">{weightPct}%</div>
       </div>
 
       <div className="mt-2 flex flex-wrap items-center gap-1.5">
@@ -65,7 +65,7 @@ function PillarCard({ p }: { p: PillarScore }) {
 
       <p className="mt-2 text-xs text-slate-600">{p.note}</p>
       {p.drivers.length > 0 ? (
-        <p className="mt-1 text-[11px] text-slate-400">{p.drivers.join(" · ")}</p>
+        <p className="mt-1 text-[11px] text-dirt-700">{p.drivers.join(" · ")}</p>
       ) : null}
     </div>
   );
@@ -168,7 +168,7 @@ export default async function PlayerProfilePage({
             <PillarCard key={p.pillar} p={p} />
           ))}
         </div>
-        <p className="mt-3 text-xs text-slate-400">
+        <p className="mt-3 text-xs text-dirt-700">
           A development profile, not a ranking. Bands describe where a player is today against
           age-appropriate expectations. They are private coaching tools, never a leaderboard.
         </p>

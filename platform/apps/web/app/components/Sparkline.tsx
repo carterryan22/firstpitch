@@ -19,7 +19,7 @@ export function Sparkline({
 }) {
   if (points.length < 2) {
     return (
-      <div className="text-xs text-slate-400" style={{ width, height }}>
+      <div className="text-xs text-dirt-700" style={{ width, height }}>
         Not enough data
       </div>
     );

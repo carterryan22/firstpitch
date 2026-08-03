@@ -92,7 +92,7 @@ export function FixLastGameSymptoms({
                   disabled={busy === c.id}
                   onClick={() => remove(c.id)}
                   aria-label={`Remove ${c.label}`}
-                  className="min-h-[24px] px-1 text-slate-400 hover:text-red-600 disabled:opacity-40"
+                  className="min-h-[24px] px-1 text-dirt-700 hover:text-red-600 disabled:opacity-40"
                 >
                   ✕
                 </button>

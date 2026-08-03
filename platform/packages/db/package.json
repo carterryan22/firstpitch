@@ -5,8 +5,7 @@
   "scripts": {
     "generate": "prisma generate",
     "migrate": "prisma migrate dev",
-    "studio": "prisma studio",
-    "typecheck": "tsc --noEmit"
+    "studio": "prisma studio"
   },
   "dependencies": {
     "@prisma/client": "^5.10.0"

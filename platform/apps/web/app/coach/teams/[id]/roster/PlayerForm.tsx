@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { POSITIONS, type Position, type PositionRating, type Bats, type Throws } from "@platform/storage/types";
 
 const RATINGS: Array<{ value: PositionRating | ""; label: string; color: string }> = [
-  { value: "", label: "-", color: "bg-slate-50 text-slate-400" },
+  { value: "", label: "-", color: "bg-slate-50 text-dirt-700" },
   { value: "preferred", label: "Pref", color: "bg-teal-600 text-white" },
   { value: "ok", label: "OK", color: "bg-amber-100 text-amber-900" },
   { value: "avoid", label: "Avoid", color: "bg-slate-200 text-slate-600" },
@@ -303,7 +303,7 @@ export function PlayerForm({
                         <button
                           type="button"
                           onClick={() => setRating(pos, r.value)}
-                          className={`rounded px-2 py-1 ${active ? r.color : "border border-slate-200 text-slate-400 hover:border-slate-400"}`}
+                          className={`rounded px-2 py-1 ${active ? r.color : "border border-slate-200 text-dirt-700 hover:border-slate-400"}`}
                         >
                           {r.label}
                         </button>

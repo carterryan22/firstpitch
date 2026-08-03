@@ -119,7 +119,7 @@ export function AskPanel({ teamId }: { teamId: string }) {
                 </p>
               ) : null}
               {t.role === "assistant" && t.ctx ? (
-                <p className="mt-1 text-[10px] uppercase tracking-wide text-slate-400">
+                <p className="mt-1 text-[10px] uppercase tracking-wide text-dirt-700">
                   context: {t.ctx.players}p · {t.ctx.recentGames}g · {t.ctx.activeGoals}goals ·{" "}
                   {t.ctx.recentBaselines}base
                 </p>

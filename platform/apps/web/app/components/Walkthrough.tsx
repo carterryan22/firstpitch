@@ -178,7 +178,7 @@ export function Walkthrough({ tour, autoStart = true }: { tour: Tour; autoStart?
           <button
             type="button"
             onClick={close}
-            className="text-xs text-slate-400 hover:text-slate-700"
+            className="text-xs text-dirt-700 hover:text-slate-700"
             aria-label="Close walkthrough"
           >
             Skip ✕
@@ -199,7 +199,7 @@ export function Walkthrough({ tour, autoStart = true }: { tour: Tour; autoStart?
             ))}
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-slate-400">
+            <span className="text-xs text-dirt-700">
               {stepIndex + 1} / {stepCount}
             </span>
             {!isFirst ? (

@@ -32,6 +32,12 @@ describe("compiler extensions", () => {
         { blockId: "B2_SKILL_X", type: "skill" as const, durationMin: 10, drill: null, notes: [] },
       ],
       warnings: [], blocked: [], totalThrowingLoad: 0, qualityScore: 0,
+      timeBudget: {
+        targetMin: 60, warmupMin: 0, skillMin: 10, restMin: 0,
+        transitionMin: 0, cooldownMin: 0, usedMin: 10, slackMin: 50,
+      },
+      theme: "Test theme",
+      talkingPoints: [],
     };
     const r = antiLineCheck(fakePlan, { players: 16, coaches: 1 });
     expect(r.ok).toBe(false);

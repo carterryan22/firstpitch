@@ -224,10 +224,10 @@ export function RulesSettingsForm({
                     value={typeof raw === "number" ? raw : ""}
                     disabled={!on}
                     onChange={(e) => setNum(key, e.target.value === "" ? undefined : Number(e.target.value))}
-                    className="w-16 rounded border border-slate-300 bg-white px-2 py-1 text-sm disabled:bg-slate-100 disabled:text-slate-400"
+                    className="w-16 rounded border border-slate-300 bg-white px-2 py-1 text-sm disabled:bg-slate-100 disabled:text-dirt-700"
                     aria-label={`${meta.label} value`}
                   />
-                  <span className="w-16 text-xs text-slate-400">{numeric.unit}</span>
+                  <span className="w-16 text-xs text-dirt-700">{numeric.unit}</span>
                 </div>
               ) : BOOL_RULES.includes(key) ? (
                 <label className="flex items-center gap-2">

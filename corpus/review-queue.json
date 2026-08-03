@@ -1,1 +1,223 @@
-[]
+[
+  {
+    "id": "youtube:https://www.youtube.com/user/anonymized-pitching-lab",
+    "discovered_at": "2026-06-12T20:21:01.342Z",
+    "status": "pending_review",
+    "platform": "youtube",
+    "source_name": "Pitching-Lab",
+    "source_url": "https://www.youtube.com/user/anonymized-pitching-lab",
+    "content_title": "Manual check: review Pitching-Lab for new content",
+    "content_url": "https://www.youtube.com/user/anonymized-pitching-lab",
+    "needs_manual_check": true,
+    "suggested_topic": "throwing",
+    "suggested_age_band": "13-15 | 16+",
+    "suggested_tags": [
+      "pitching-lab",
+      "needs-review"
+    ],
+    "note": "Could not auto-read this channel (YouTube feed/scrape unavailable). Open it and skim recent uploads."
+  },
+  {
+    "id": "instagram:https://www.instagram.com/coachrac/",
+    "discovered_at": "2026-06-12T20:21:01.342Z",
+    "status": "pending_review",
+    "platform": "instagram",
+    "source_name": "Coach RAC",
+    "source_url": "https://www.instagram.com/coachrac/",
+    "content_title": "Manual check: review Coach RAC for new content",
+    "content_url": "https://www.instagram.com/coachrac/",
+    "needs_manual_check": true,
+    "suggested_topic": "culture",
+    "suggested_age_band": "6-8 | 9-12",
+    "suggested_tags": [
+      "coach-rac",
+      "voice-reference",
+      "fun-first",
+      "culture",
+      "needs-review"
+    ],
+    "note": "instagram can't be auto-polled. Open the profile, skim recent posts, and add any worth keeping."
+  },
+  {
+    "id": "instagram:https://www.instagram.com/chipsperformance/",
+    "discovered_at": "2026-06-12T20:21:01.342Z",
+    "status": "pending_review",
+    "platform": "instagram",
+    "source_name": "CHIPS Performance",
+    "source_url": "https://www.instagram.com/chipsperformance/",
+    "content_title": "Manual check: review CHIPS Performance for new content",
+    "content_url": "https://www.instagram.com/chipsperformance/",
+    "needs_manual_check": true,
+    "suggested_topic": "baseball",
+    "suggested_age_band": "13-15 | 16+",
+    "suggested_tags": [
+      "chips",
+      "alex-hale",
+      "voice-reference",
+      "culture",
+      "needs-review"
+    ],
+    "note": "instagram can't be auto-polled. Open the profile, skim recent posts, and add any worth keeping."
+  },
+  {
+    "id": "instagram:https://www.instagram.com/coachballgame/",
+    "discovered_at": "2026-06-12T20:21:01.342Z",
+    "status": "pending_review",
+    "platform": "instagram",
+    "source_name": "Coach Ballgame",
+    "source_url": "https://www.instagram.com/coachballgame/",
+    "content_title": "Manual check: review Coach Ballgame for new content",
+    "content_url": "https://www.instagram.com/coachballgame/",
+    "needs_manual_check": true,
+    "suggested_topic": "culture",
+    "suggested_age_band": "6-8 | 9-12",
+    "suggested_tags": [
+      "coach-ballgame",
+      "voice-reference",
+      "fun-first",
+      "culture",
+      "needs-review"
+    ],
+    "note": "instagram can't be auto-polled. Open the profile, skim recent posts, and add any worth keeping."
+  },
+  {
+    "id": "instagram:https://www.instagram.com/anonymized-youth-coaching/",
+    "discovered_at": "2026-06-12T20:21:01.342Z",
+    "status": "pending_review",
+    "platform": "instagram",
+    "source_name": "Youth Coaching Program",
+    "source_url": "https://www.instagram.com/anonymized-youth-coaching/",
+    "content_title": "Manual check: review Youth Coaching Program for new content",
+    "content_url": "https://www.instagram.com/anonymized-youth-coaching/",
+    "needs_manual_check": true,
+    "suggested_topic": "baseball",
+    "suggested_age_band": "6-8 | 9-12",
+    "suggested_tags": [
+      "youth-coaching",
+      "youth-coaching",
+      "practice-plans",
+      "needs-review"
+    ],
+    "note": "instagram can't be auto-polled. Open the profile, skim recent posts, and add any worth keeping."
+  },
+  {
+    "id": "instagram:https://www.instagram.com/coach_lisle/",
+    "discovered_at": "2026-06-12T20:21:01.342Z",
+    "status": "pending_review",
+    "platform": "instagram",
+    "source_name": "Coach Lisle",
+    "source_url": "https://www.instagram.com/coach_lisle/",
+    "content_title": "Manual check: review Coach Lisle for new content",
+    "content_url": "https://www.instagram.com/coach_lisle/",
+    "needs_manual_check": true,
+    "suggested_topic": "baseball",
+    "suggested_age_band": "9-12 | 13-15 | 16+",
+    "suggested_tags": [
+      "coach-lisle",
+      "hitting",
+      "needs-review"
+    ],
+    "note": "instagram can't be auto-polled. Open the profile, skim recent posts, and add any worth keeping."
+  },
+  {
+    "id": "instagram:https://www.instagram.com/yougoprobaseball/",
+    "discovered_at": "2026-06-12T20:21:01.342Z",
+    "status": "pending_review",
+    "platform": "instagram",
+    "source_name": "YouGoProBaseball",
+    "source_url": "https://www.instagram.com/yougoprobaseball/",
+    "content_title": "Manual check: review YouGoProBaseball for new content",
+    "content_url": "https://www.instagram.com/yougoprobaseball/",
+    "needs_manual_check": true,
+    "suggested_topic": "baseball",
+    "suggested_age_band": "9-12 | 13-15 | 16+",
+    "suggested_tags": [
+      "yougoprobaseball",
+      "infield",
+      "throwing",
+      "needs-review"
+    ],
+    "note": "instagram can't be auto-polled. Open the profile, skim recent posts, and add any worth keeping."
+  },
+  {
+    "id": "instagram:https://www.instagram.com/d.r.hitting/",
+    "discovered_at": "2026-06-12T20:21:01.342Z",
+    "status": "pending_review",
+    "platform": "instagram",
+    "source_name": "D.R. Hitting",
+    "source_url": "https://www.instagram.com/d.r.hitting/",
+    "content_title": "Manual check: review D.R. Hitting for new content",
+    "content_url": "https://www.instagram.com/d.r.hitting/",
+    "needs_manual_check": true,
+    "suggested_topic": "baseball",
+    "suggested_age_band": "9-12 | 13-15 | 16+",
+    "suggested_tags": [
+      "dr-hitting",
+      "hitting",
+      "needs-review"
+    ],
+    "note": "instagram can't be auto-polled. Open the profile, skim recent posts, and add any worth keeping."
+  },
+  {
+    "id": "instagram:https://www.instagram.com/icoachbaseball/",
+    "discovered_at": "2026-06-12T20:21:01.342Z",
+    "status": "pending_review",
+    "platform": "instagram",
+    "source_name": "iCoachBaseball",
+    "source_url": "https://www.instagram.com/icoachbaseball/",
+    "content_title": "Manual check: review iCoachBaseball for new content",
+    "content_url": "https://www.instagram.com/icoachbaseball/",
+    "needs_manual_check": true,
+    "suggested_topic": "baseball",
+    "suggested_age_band": "6-8 | 9-12",
+    "suggested_tags": [
+      "icoachbaseball",
+      "coach-murph",
+      "youth",
+      "needs-review"
+    ],
+    "note": "instagram can't be auto-polled. Open the profile, skim recent posts, and add any worth keeping."
+  },
+  {
+    "id": "instagram:https://www.instagram.com/hitting_done_right_hdr/",
+    "discovered_at": "2026-06-30T15:12:49.681Z",
+    "status": "pending_review",
+    "platform": "instagram",
+    "source_name": "Hitting Done Right (Josh Cathcart)",
+    "source_url": "https://www.instagram.com/hitting_done_right_hdr/",
+    "content_title": "Manual check: review Hitting Done Right (Josh Cathcart) for new content",
+    "content_url": "https://www.instagram.com/hitting_done_right_hdr/",
+    "needs_manual_check": true,
+    "suggested_topic": "hitting",
+    "suggested_age_band": "9-12 | 13-15",
+    "suggested_tags": [
+      "hitting-done-right",
+      "cathcart",
+      "hitting",
+      "simplify-for-youth",
+      "needs-review"
+    ],
+    "note": "instagram can't be auto-polled. Open the profile, skim recent posts, and add any worth keeping."
+  },
+  {
+    "id": "instagram:https://www.instagram.com/cc20rake/",
+    "discovered_at": "2026-06-30T15:12:49.681Z",
+    "status": "pending_review",
+    "platform": "instagram",
+    "source_name": "Pelotero (Chris Colabello)",
+    "source_url": "https://www.instagram.com/cc20rake/",
+    "content_title": "Manual check: review Pelotero (Chris Colabello) for new content",
+    "content_url": "https://www.instagram.com/cc20rake/",
+    "needs_manual_check": true,
+    "suggested_topic": "hitting",
+    "suggested_age_band": "13-15 | 16+",
+    "suggested_tags": [
+      "pelotero",
+      "colabello",
+      "hitting",
+      "advanced-only",
+      "needs-review"
+    ],
+    "note": "instagram can't be auto-polled. Open the profile, skim recent posts, and add any worth keeping."
+  }
+]

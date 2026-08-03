@@ -215,7 +215,7 @@ function PlansSection({
                 <Link href={`/plans/${p.id}`} className="no-underline hover:underline">
                   {p.name}
                 </Link>
-                <span className="ml-2 text-xs text-slate-400">
+                <span className="ml-2 text-xs text-dirt-700">
                   {new Date(p.scheduledAt!).toLocaleDateString()}
                 </span>
               </li>
@@ -240,7 +240,7 @@ function RosterGroup({
         {title} ({rows.length})
       </h3>
       {rows.length === 0 ? (
-        <p className="mt-2 text-sm text-slate-400">None yet.</p>
+        <p className="mt-2 text-sm text-dirt-700">None yet.</p>
       ) : (
         <ul className="mt-2 space-y-1 text-sm">
           {rows.map(({ user, membership }) => (

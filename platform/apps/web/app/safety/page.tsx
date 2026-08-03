@@ -128,7 +128,7 @@ export default function SafetyPage() {
                   <EnforcementBadge kind={r.enforcement} />
                 </header>
                 <footer className="mt-3 flex items-center justify-between text-xs text-slate-500">
-                  <details className="text-[11px] text-slate-400">
+                  <details className="text-[11px] text-dirt-700">
                     <summary className="cursor-pointer select-none">Technical details</summary>
                     <code className="mt-1 inline-block bg-slate-100 px-1.5 py-0.5">{r.rule_id}</code>
                   </details>

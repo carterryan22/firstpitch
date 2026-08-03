@@ -147,7 +147,7 @@ export default async function GameReportPage({
         </section>
       ) : null}
 
-      <p className="text-xs text-slate-400 print:hidden">
+      <p className="text-xs text-dirt-700 print:hidden">
         Tip: use your browser&apos;s print menu to save as PDF and share with families.
       </p>
     </div>

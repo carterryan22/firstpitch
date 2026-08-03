@@ -55,7 +55,7 @@ export default async function TeamSettingsPage({
               <span className="text-base font-semibold text-slate-800">Team information</span>
               <span className="badge text-[10px]">{team.ageBand}</span>
             </span>
-            <span className="text-slate-400 transition group-open:rotate-180">▾</span>
+            <span className="text-dirt-700 transition group-open:rotate-180">▾</span>
           </summary>
           <div className="border-t border-slate-100 px-5 py-4">
             <dl className="grid gap-x-6 gap-y-3 sm:grid-cols-2">
@@ -90,7 +90,7 @@ export default async function TeamSettingsPage({
               <span className="text-base font-semibold text-slate-800">Lineup &amp; minimum play</span>
               <span className="badge-ok text-[10px]">{activeRuleCount(initial)} on</span>
             </span>
-            <span className="text-slate-400 transition group-open:rotate-180">▾</span>
+            <span className="text-dirt-700 transition group-open:rotate-180">▾</span>
           </summary>
           <div className="space-y-4 border-t border-slate-100 px-5 py-4">
             <p className="m-0 text-xs text-slate-500">
@@ -110,7 +110,7 @@ export default async function TeamSettingsPage({
               <span className="text-base font-semibold text-slate-800">Members</span>
               <span className="badge text-[10px]">{memberCount}</span>
             </span>
-            <span className="text-slate-400 transition group-open:rotate-180">▾</span>
+            <span className="text-dirt-700 transition group-open:rotate-180">▾</span>
           </summary>
           <div className="space-y-4 border-t border-slate-100 px-5 py-4">
             {memberCount === 0 ? (
@@ -149,7 +149,7 @@ function MemberGroup({
           <li key={user.id} className="flex items-center gap-2 text-sm text-slate-700">
             <span className={`${badge} text-[10px]`}>{title.slice(0, -1)}</span>
             <span className="font-medium">{user.name ?? "-"}</span>
-            {user.email ? <span className="text-slate-400">· {user.email}</span> : null}
+            {user.email ? <span className="text-dirt-700">· {user.email}</span> : null}
           </li>
         ))}
       </ul>

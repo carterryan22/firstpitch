@@ -150,8 +150,8 @@ export default async function GroupsPage({
                   <li key={p.id} className="flex items-center gap-2">
                     <span>{p.name}</span>
                     {p.highThrowingLoad ? <span className="badge-warn">arm rest</span> : null}
-                    {p.canCatch ? <span className="text-xs text-slate-400">C</span> : null}
-                    {p.canPitch ? <span className="text-xs text-slate-400">P</span> : null}
+                    {p.canCatch ? <span className="text-xs text-dirt-700">C</span> : null}
+                    {p.canPitch ? <span className="text-xs text-dirt-700">P</span> : null}
                   </li>
                 ))}
               </ul>

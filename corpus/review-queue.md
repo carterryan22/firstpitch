@@ -6,6 +6,18 @@
 > they appear below as manual checks. To pause auto-promotion and gate it behind
 > human approval, set `CORPUS_PROMOTE_REQUIRE_APPROVAL=1` and approve with `npm run approve`.
 
-Last scan: 2026-06-10T03:13:30.365Z · 0 pending · 0 approved (awaiting promote)
+Last scan: 2026-07-15T16:52:12.198Z · 11 pending · 0 approved (awaiting promote)
 
-_Nothing pending. Queue is clear._
+## Manual checks (Instagram / TikTok — not auto-pollable)
+
+- [ ] Pitching-Lab — [https://www.youtube.com/user/anonymized-pitching-lab](https://www.youtube.com/user/anonymized-pitching-lab)
+- [ ] Coach RAC — [https://www.instagram.com/coachrac/](https://www.instagram.com/coachrac/)
+- [ ] CHIPS Performance — [https://www.instagram.com/chipsperformance/](https://www.instagram.com/chipsperformance/)
+- [ ] Coach Ballgame — [https://www.instagram.com/coachballgame/](https://www.instagram.com/coachballgame/)
+- [ ] Youth Coaching Program — [https://www.instagram.com/anonymized-youth-coaching/](https://www.instagram.com/anonymized-youth-coaching/)
+- [ ] Coach Lisle — [https://www.instagram.com/coach_lisle/](https://www.instagram.com/coach_lisle/)
+- [ ] YouGoProBaseball — [https://www.instagram.com/yougoprobaseball/](https://www.instagram.com/yougoprobaseball/)
+- [ ] D.R. Hitting — [https://www.instagram.com/d.r.hitting/](https://www.instagram.com/d.r.hitting/)
+- [ ] iCoachBaseball — [https://www.instagram.com/icoachbaseball/](https://www.instagram.com/icoachbaseball/)
+- [ ] Hitting Done Right (Josh Cathcart) — [https://www.instagram.com/hitting_done_right_hdr/](https://www.instagram.com/hitting_done_right_hdr/)
+- [ ] Pelotero (Chris Colabello) — [https://www.instagram.com/cc20rake/](https://www.instagram.com/cc20rake/)

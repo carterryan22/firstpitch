@@ -198,7 +198,7 @@ export function ScheduleImport({ teamId }: { teamId: string }) {
                 <li key={u.existingId} className="text-sm text-slate-700">
                   <span className="font-medium">{side(u.after)}</span>
                   <span className="text-slate-500"> · {when(u.after.startsAt)}</span>
-                  <span className="block text-xs text-slate-400 line-through">
+                  <span className="block text-xs text-dirt-700 line-through">
                     was {side(u.before)} · {when(u.before.startsAt)}
                   </span>
                 </li>

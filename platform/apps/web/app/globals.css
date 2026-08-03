@@ -70,7 +70,7 @@ input, select, textarea {
 
 @layer components {
   .btn { @apply inline-flex items-center justify-center rounded-none px-4 py-2 text-sm uppercase transition; font-family: var(--font-display), Impact, system-ui, sans-serif; font-weight: 400; letter-spacing: 0.06em; }
-  .btn-primary { @apply btn border-[3px] border-field-500 bg-field-500 text-cream hover:bg-field-700 hover:border-field-700 disabled:opacity-50; }
+    .btn-primary { @apply btn border-[3px] border-field-700 bg-field-700 text-cream hover:bg-field-900 hover:border-field-900 disabled:opacity-50; }
   .btn-ghost { @apply btn border-[3px] border-dirt-700 bg-dirt-100 text-ink hover:bg-dirt-200; }
   .btn-dark { @apply btn border-[3px] border-ink bg-ink text-cream hover:bg-dirt-900; }
 

@@ -98,7 +98,7 @@ export function BattingOrder({
           const role = battingRoleFor(i + 1);
           return (
             <li key={pid} className="flex items-center gap-3 py-2 text-sm">
-              <span className="w-6 text-right font-mono text-xs text-slate-400">{i + 1}.</span>
+              <span className="w-6 text-right font-mono text-xs text-dirt-700">{i + 1}.</span>
               {role ? (
                 <span
                   className="hidden sm:inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-700"
@@ -110,7 +110,7 @@ export function BattingOrder({
               ) : null}
               <span className="flex-1 text-slate-800">
                 {p.name}
-                {p.jerseyNumber ? <span className="ml-2 font-mono text-xs text-slate-400">#{p.jerseyNumber}</span> : null}
+                {p.jerseyNumber ? <span className="ml-2 font-mono text-xs text-dirt-700">#{p.jerseyNumber}</span> : null}
               </span>
               <div className="flex gap-1">
                 <button

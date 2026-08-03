@@ -257,7 +257,7 @@ export function StatsImportForm({ roster }: { roster: RosterEntry[] }) {
                                 {resolved ? " (you)" : ""}
                               </span>
                             ) : (
-                              <span className="text-slate-400">-</span>
+                              <span className="text-dirt-700">-</span>
                             )}
                           </td>
                           <td className="px-2 py-1 tabular-nums">{r.pa ?? ""}</td>

@@ -13,20 +13,20 @@ describe("missionAssignments repo", () => {
       { teamId: "t1", playerId: "p2", missionId: "M_X", assignedByUserId: "u1" },
     ]);
     expect(created).toHaveLength(2);
-    expect(created[0].id).not.toEqual(created[1].id);
-    expect(created[0].assignedAt).toBeDefined();
+    expect(created[0]!.id).not.toEqual(created[1]!.id);
+    expect(created[0]!.assignedAt).toBeDefined();
 
     const open = await repos.missionAssignments.list({ teamId: "t1", open: true });
     expect(open).toHaveLength(2);
 
-    await repos.missionAssignments.complete(created[0].id);
+    await repos.missionAssignments.complete(created[0]!.id);
     const open2 = await repos.missionAssignments.list({ teamId: "t1", open: true });
     expect(open2).toHaveLength(1);
-    expect(open2[0].playerId).toBe("p2");
+    expect(open2[0]!.playerId).toBe("p2");
 
     const byPlayerIds = await repos.missionAssignments.list({ playerIds: ["p1"] });
     expect(byPlayerIds).toHaveLength(1);
-    expect(byPlayerIds[0].completedAt).toBeDefined();
+    expect(byPlayerIds[0]!.completedAt).toBeDefined();
   });
 
   it("complete is idempotent-friendly (sets completedAt only once unless called again)", async () => {

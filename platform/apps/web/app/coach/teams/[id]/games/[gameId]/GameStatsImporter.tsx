@@ -169,7 +169,7 @@ function Stars({ score }: { score: number }) {
     <span aria-label={`${score} of 5`} className="font-semibold tabular-nums">
       {"★".repeat(full)}
       {half ? "½" : ""}
-      <span className="text-slate-400">{"☆".repeat(5 - full - (half ? 1 : 0))}</span>
+      <span className="text-dirt-700">{"☆".repeat(5 - full - (half ? 1 : 0))}</span>
     </span>
   );
 }
@@ -343,7 +343,7 @@ export function GameStatsImporter({
                             {s.ratingLabel}
                           </span>
                           {s.source === "manual" ? (
-                            <span className="text-[10px] uppercase tracking-wide text-slate-400">manual</span>
+                            <span className="text-[10px] uppercase tracking-wide text-dirt-700">manual</span>
                           ) : null}
                         </div>
                         <div className="mt-1 flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-slate-600 tabular-nums">
