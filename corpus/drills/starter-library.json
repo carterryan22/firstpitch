@@ -2175,5 +2175,660 @@
       "goal": "Hard line drives — not pop-ups. Reset your stance every toss.",
       "why": "Soft toss gives you tons of swings fast. More good reps is how your swing becomes automatic in games."
     }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-03",
+    "last_reviewed_at": "2026-08-03",
+    "review_status": "draft",
+    "drill_id": "PITCHING_9BOX_COMMAND",
+    "name": "9-Box Command Grid",
+    "short_description": "Call a box, throw to it. 18 charted pitches scoring command, not velo.",
+    "long_description": "The strike zone is split into a 3x3 grid. Before each pitch the catcher or coach calls a box; the pitcher tries to hit it. Score 2 for the called box, 1 for a bordering box, 0 elsewhere. Eighteen charted pitches after a full arm warm-up. Every pitch counts toward the daily Pitch Smart limit.",
+    "topic": "pitching",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "preseason",
+      "in-season"
+    ],
+    "intensity": "normal",
+    "primary_metric": {
+      "metric_id": "9BOX_SCORE",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [
+      {
+        "metric_id": "STRIKE_PCT",
+        "expected_movement": "increase"
+      }
+    ],
+    "non_metric": false,
+    "environment_tier": "T1_field",
+    "equipment_required": [
+      "mound",
+      "catcher_gear",
+      "5_baseballs",
+      "9box_target"
+    ],
+    "equipment_substitutions": [
+      {
+        "missing": "9box_target",
+        "swap_to": "athletic tape grid on a fence or net",
+        "tier_change": "T1_field"
+      },
+      {
+        "missing": "mound",
+        "swap_to": "flat ground (9-12 only)",
+        "tier_change": "T1_field"
+      }
+    ],
+    "space_required": "60ft lane",
+    "player_count_min": 2,
+    "player_count_max": 3,
+    "coaches_min": 1,
+    "coaches_max": 1,
+    "duration_minutes": 15,
+    "reps_or_rounds": "18 charted pitches",
+    "rest_seconds_between_sets": 30,
+    "setup_steps": [
+      "Complete the full throwing warm-up before any charted pitch",
+      "Hang or tape a 3x3 grid over the strike zone",
+      "Catcher in full gear; coach charts with the 9-box card"
+    ],
+    "execution_steps": [
+      "Coach or catcher calls a box out loud before the pitch",
+      "Pitcher delivers to that box",
+      "Chart 2 (called box), 1 (bordering box), 0 (anywhere else)",
+      "Log the pitch count in the team's pitching board when the block ends"
+    ],
+    "coaching_cues": [
+      "Pick the box, then commit",
+      "Same delivery every pitch",
+      "Miss down, never up and in"
+    ],
+    "common_mistakes": [
+      "Aiming and slowing the arm down instead of pitching",
+      "Chasing a perfect score by shrinking the delivery",
+      "Forgetting to log the pitches against the daily limit"
+    ],
+    "scoring": {
+      "type": "percent",
+      "unit": "% to the called box",
+      "success_threshold": 45
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Call the box only after the pitcher comes set"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Call thirds (up / middle / down) instead of nine boxes"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Count context",
+        "change": "Coach names a count first, then a box that fits it"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 18,
+    "loaded_strength_movement": false,
+    "supervision_required": true,
+    "safety_flags": [
+      "throw_count_logged",
+      "arm_warmup_required"
+    ],
+    "safety_rule_refs": [
+      "PITCH_SMART_GENERAL",
+      "STOP_ON_PAIN"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "video_attached",
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://www.mlb.com/pitch-smart/pitching-guidelines/ages-9-12",
+        "relationship": "rule_source"
+      },
+      {
+        "source_id": "https://usabdevelops.com/page/3399/pitchsmart",
+        "relationship": "aligns_with"
+      }
+    ],
+    "tags": [
+      "pitching",
+      "command",
+      "9-box",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "The zone is a tic-tac-toe board. Someone calls a square, you try to hit it. Nine squares, eighteen pitches.",
+      "goal": "Hit the called square on about 4 of every 10 pitches, and keep your delivery exactly the same on all of them.",
+      "why": "Anyone can throw it near the plate. Pitchers who can put it where they want are the ones who stay on the mound."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-03",
+    "last_reviewed_at": "2026-08-03",
+    "review_status": "draft",
+    "drill_id": "PITCHING_TOWEL_FINISH",
+    "name": "Towel Finish - Dry Mechanics",
+    "short_description": "No-ball delivery reps with a towel. Zero throws against the daily count.",
+    "long_description": "The pitcher holds a small towel like a ball and works the full delivery, snapping the towel at a partner's glove held out front at release depth. Because nothing is thrown, this adds no volume to the Pitch Smart daily count, which makes it usable on rest days and between outings.",
+    "topic": "pitching",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "preseason",
+      "in-season",
+      "offseason"
+    ],
+    "intensity": "light",
+    "primary_metric": {
+      "metric_id": "THROW_FORM_CHECKPOINTS",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [],
+    "non_metric": false,
+    "environment_tier": "T3_backyard",
+    "equipment_required": [
+      "hand_towel"
+    ],
+    "equipment_substitutions": [
+      {
+        "missing": "hand_towel",
+        "swap_to": "a sock or light rag",
+        "tier_change": "T4_living_room"
+      }
+    ],
+    "space_required": "10x10ft",
+    "player_count_min": 1,
+    "player_count_max": 2,
+    "coaches_min": 0,
+    "coaches_max": 1,
+    "duration_minutes": 8,
+    "reps_or_rounds": "3 rounds x 8 dry reps",
+    "rest_seconds_between_sets": 30,
+    "setup_steps": [
+      "Do the normal arm warm-up first, even though nothing is thrown",
+      "Partner holds a glove or target at the pitcher's release point out front"
+    ],
+    "execution_steps": [
+      "Work the full delivery holding the towel",
+      "Brush or snap the towel against the target at release",
+      "Reset fully between reps"
+    ],
+    "coaching_cues": [
+      "Reach the target out front",
+      "Chest over the front knee",
+      "Same tempo as a real pitch"
+    ],
+    "common_mistakes": [
+      "Lunging to reach the target",
+      "Rushing reps together with no reset",
+      "Turning it into a max-effort throw"
+    ],
+    "scoring": {
+      "type": "rubric",
+      "unit": "checkpoints hit",
+      "success_threshold": null
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Move the target 6 inches further out front"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Start from the stretch with no leg lift"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Mirror version",
+        "change": "Face a mirror or film it instead of using a partner target"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 0,
+    "loaded_strength_movement": false,
+    "supervision_required": false,
+    "safety_flags": [
+      "arm_warmup_required"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "video_attached",
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://usabdevelops.com/",
+        "relationship": "aligns_with"
+      }
+    ],
+    "tags": [
+      "pitching",
+      "arm-action",
+      "T4",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Same delivery, but you hold a towel instead of a ball and snap it at a target out in front.",
+      "goal": "Reach the target out front every single rep without lunging at it.",
+      "why": "It is free work. Nothing is thrown, so it never counts against your pitch limit and you can do it on rest days."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-03",
+    "last_reviewed_at": "2026-08-03",
+    "review_status": "draft",
+    "drill_id": "PITCHING_FIRST_PITCH_STRIKE",
+    "name": "First-Pitch Strike Game",
+    "short_description": "Twelve simulated hitters, one pitch each. Tracks first-pitch strike rate.",
+    "long_description": "The pitcher faces twelve imaginary hitters and throws exactly one pitch to each, resetting fully between them. Only the first pitch matters, which is the pitch that decides most at-bats. Teen bands only, and every pitch is logged against the daily limit.",
+    "topic": "pitching",
+    "age_band": [
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "preseason",
+      "in-season"
+    ],
+    "intensity": "normal",
+    "primary_metric": {
+      "metric_id": "FIRST_PITCH_STRIKE_PCT",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [
+      {
+        "metric_id": "STRIKE_PCT",
+        "expected_movement": "increase"
+      }
+    ],
+    "non_metric": false,
+    "environment_tier": "T1_field",
+    "equipment_required": [
+      "mound",
+      "catcher_gear",
+      "5_baseballs"
+    ],
+    "equipment_substitutions": [
+      {
+        "missing": "catcher_gear",
+        "swap_to": "coach behind a net with a target",
+        "tier_change": "T1_field"
+      }
+    ],
+    "space_required": "60ft lane",
+    "player_count_min": 2,
+    "player_count_max": 2,
+    "coaches_min": 1,
+    "coaches_max": 1,
+    "duration_minutes": 12,
+    "reps_or_rounds": "12 pitches, one per simulated hitter",
+    "rest_seconds_between_sets": 25,
+    "setup_steps": [
+      "Full throwing warm-up first",
+      "Coach announces a batter handedness before each pitch"
+    ],
+    "execution_steps": [
+      "Pitcher comes set as if a hitter is in the box",
+      "Throw one pitch, then step off and reset completely",
+      "Coach charts strike or ball",
+      "Log all 12 pitches to the pitching board"
+    ],
+    "coaching_cues": [
+      "Strike one is the whole job",
+      "Middle of the zone beats the corner",
+      "Reset your breath between hitters"
+    ],
+    "common_mistakes": [
+      "Nibbling at corners on 0-0",
+      "Skipping the reset and falling into a bullpen rhythm",
+      "Adding extra pitches beyond the twelve"
+    ],
+    "scoring": {
+      "type": "percent",
+      "unit": "% first-pitch strikes",
+      "success_threshold": 60
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Alternate lefty and righty targets each hitter"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Eight hitters instead of twelve"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Pressure round",
+        "change": "The team runs a lap of the bases if the pitcher clears 8 of 12"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 12,
+    "loaded_strength_movement": false,
+    "supervision_required": true,
+    "safety_flags": [
+      "throw_count_logged",
+      "arm_warmup_required"
+    ],
+    "safety_rule_refs": [
+      "PITCH_SMART_GENERAL",
+      "STOP_ON_PAIN"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "video_attached",
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://www.mlb.com/pitch-smart/pitching-guidelines/ages-9-12",
+        "relationship": "rule_source"
+      },
+      {
+        "source_id": "https://www.littleleague.org/playing-rules/pitch-count/",
+        "relationship": "rule_source"
+      }
+    ],
+    "tags": [
+      "pitching",
+      "command",
+      "situational",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Twelve pretend hitters. You get exactly one pitch each, then you step off and start over.",
+      "goal": "Throw strike one to at least 8 of the 12.",
+      "why": "Hitters are much easier to get out after strike one. Winning the first pitch is the cheapest advantage in the game."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-03",
+    "last_reviewed_at": "2026-08-03",
+    "review_status": "draft",
+    "drill_id": "PITCHING_CHANGEUP_FEEL",
+    "name": "Changeup Feel - Fastball and Changeup Only",
+    "short_description": "Twenty pitches alternating fastball and changeup. No breaking balls.",
+    "long_description": "The pitcher alternates fastballs and changeups for twenty charted pitches, keeping identical arm speed on both. The changeup is deliberately the only off-speed pitch in this drill: it is the secondary pitch youth arms can develop without the elbow stress associated with early breaking-ball use.",
+    "topic": "pitching",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "preseason",
+      "in-season"
+    ],
+    "intensity": "normal",
+    "primary_metric": {
+      "metric_id": "STRIKE_PCT",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [
+      {
+        "metric_id": "THROW_FORM_CHECKPOINTS",
+        "expected_movement": "maintain"
+      }
+    ],
+    "non_metric": false,
+    "environment_tier": "T1_field",
+    "equipment_required": [
+      "mound",
+      "catcher_gear",
+      "5_baseballs"
+    ],
+    "equipment_substitutions": [
+      {
+        "missing": "mound",
+        "swap_to": "flat ground (9-12 only)",
+        "tier_change": "T1_field"
+      }
+    ],
+    "space_required": "60ft lane",
+    "player_count_min": 2,
+    "player_count_max": 2,
+    "coaches_min": 1,
+    "coaches_max": 1,
+    "duration_minutes": 15,
+    "reps_or_rounds": "20 pitches, alternating FB and CH",
+    "rest_seconds_between_sets": 30,
+    "setup_steps": [
+      "Full throwing warm-up first",
+      "Set the changeup grip before the block starts so no time is lost mid-drill"
+    ],
+    "execution_steps": [
+      "Alternate one fastball, one changeup",
+      "Catcher calls out whether the arm speed looked the same on both",
+      "Chart strike or ball for each",
+      "Log all 20 pitches to the pitching board"
+    ],
+    "coaching_cues": [
+      "Same arm speed, softer grip",
+      "Let the grip take the speed off",
+      "Finish out front on both pitches"
+    ],
+    "common_mistakes": [
+      "Slowing the arm down to take speed off",
+      "Slipping in a curveball or slider because the changeup is not working yet",
+      "Squeezing the grip so tight the pitch sails"
+    ],
+    "scoring": {
+      "type": "percent",
+      "unit": "% changeups for strikes",
+      "success_threshold": 50
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Throw the changeup in fastball counts"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Ten pitches, changeup from the stretch only"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Blind catcher",
+        "change": "Catcher does not know which pitch is coming and guesses after release"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 20,
+    "loaded_strength_movement": false,
+    "supervision_required": true,
+    "safety_flags": [
+      "throw_count_logged",
+      "arm_warmup_required"
+    ],
+    "safety_rule_refs": [
+      "PITCH_SMART_GENERAL",
+      "STOP_ON_PAIN"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "video_attached",
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://www.mlb.com/pitch-smart/pitching-guidelines/ages-9-12",
+        "relationship": "rule_source"
+      },
+      {
+        "source_id": "https://usabdevelops.com/page/3399/pitchsmart",
+        "relationship": "aligns_with"
+      }
+    ],
+    "tags": [
+      "pitching",
+      "grip",
+      "command",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "One fastball, one changeup, back and forth for twenty pitches. No curveballs in this drill.",
+      "goal": "Land half your changeups for strikes while your arm moves exactly as fast as it does on the fastball.",
+      "why": "A changeup that looks like your fastball is the hardest pitch in youth baseball to hit, and it is a lot kinder to your elbow than a breaking ball."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-03",
+    "last_reviewed_at": "2026-08-03",
+    "review_status": "draft",
+    "drill_id": "PITCHING_STRIDE_DIRECTION_LINE",
+    "name": "Stride Direction Line",
+    "short_description": "Dry delivery reps along a chalk line to square up stride direction. No throws.",
+    "long_description": "A line is drawn from the rubber to the plate. The pitcher works the delivery dry and checks where the front foot lands relative to that line each rep. Nothing is thrown, so it adds no volume to the daily count and can be run on rest days or as part of a warm-up.",
+    "topic": "pitching",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "preseason",
+      "in-season",
+      "offseason"
+    ],
+    "intensity": "light",
+    "primary_metric": {
+      "metric_id": "THROW_FORM_CHECKPOINTS",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [],
+    "non_metric": false,
+    "environment_tier": "T3_backyard",
+    "equipment_required": [
+      "field_chalk"
+    ],
+    "equipment_substitutions": [
+      {
+        "missing": "field_chalk",
+        "swap_to": "a rope, a bat, or a seam in the floor",
+        "tier_change": "T4_living_room"
+      }
+    ],
+    "space_required": "20x10ft",
+    "player_count_min": 1,
+    "player_count_max": 4,
+    "coaches_min": 0,
+    "coaches_max": 1,
+    "duration_minutes": 8,
+    "reps_or_rounds": "3 rounds x 6 dry deliveries",
+    "rest_seconds_between_sets": 30,
+    "setup_steps": [
+      "Draw a straight line from the rubber toward the plate",
+      "Pitcher sets the back foot on the rubber"
+    ],
+    "execution_steps": [
+      "Work the delivery dry with no ball",
+      "Freeze at landing and look at where the front foot is relative to the line",
+      "Reset and repeat"
+    ],
+    "coaching_cues": [
+      "Land on or just inside the line",
+      "Front toe closed, not flying open",
+      "Same landing spot every rep"
+    ],
+    "common_mistakes": [
+      "Striding across the body",
+      "Flying open early with the front shoulder",
+      "Peeking at the foot before landing"
+    ],
+    "scoring": {
+      "type": "rubric",
+      "unit": "checkpoints hit",
+      "success_threshold": null
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Close the eyes and land, then check the foot"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Start from the stretch with a short stride"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Film it",
+        "change": "Record from behind so the athlete can see the landing themselves"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 0,
+    "loaded_strength_movement": false,
+    "supervision_required": false,
+    "safety_flags": [
+      "arm_warmup_required"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "video_attached",
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://usabdevelops.com/",
+        "relationship": "aligns_with"
+      }
+    ],
+    "tags": [
+      "pitching",
+      "footwork",
+      "fundamentals",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Draw a line to the plate, then run your delivery with no ball and see where your front foot lands.",
+      "goal": "Land on or just inside the line six times in a row.",
+      "why": "If your stride goes sideways, your arm has to fix it. Landing straight is the cheapest way to throw more strikes."
+    }
   }
 ]
