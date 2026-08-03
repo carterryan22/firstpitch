@@ -1,0 +1,20 @@
+# Docker build context is the REPO ROOT (see platform/Dockerfile), so the
+# ignore rules must live here — platform/.dockerignore no longer applies.
+# NOTE: corpus/ is deliberately NOT ignored; @platform/corpus static-imports it.
+**/node_modules
+**/.next
+**/dist
+**/coverage
+.git
+.gitignore
+.github
+.vscode
+**/*.log
+**/.env
+**/.env.local
+**/.env.*.local
+platform/data
+platform/reports
+**/qa-report
+**/ux-report
+Baseball.worktrees

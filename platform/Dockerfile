@@ -1,22 +1,30 @@
 # Multi-stage Dockerfile for the Player Development Platform (apps/web).
 # Bakes the Next.js app + all workspace packages into a slim runtime image.
+#
+# BUILD CONTEXT IS THE REPO ROOT, not platform/:
+#   docker build -f platform/Dockerfile .
+# @platform/corpus static-imports `../../../../corpus/*.json`, which resolves to
+# the repo-root corpus/ directory — outside platform/. The image mirrors the
+# repo layout (/app/platform + /app/corpus) so that relative import resolves
+# exactly as it does in the checkout.
 
 FROM node:24-alpine AS deps
-WORKDIR /app
-COPY package.json package-lock.json* ./
-COPY packages ./packages
-COPY apps ./apps
+WORKDIR /app/platform
+COPY platform/package.json platform/package-lock.json* ./
+COPY platform/packages ./packages
+COPY platform/apps ./apps
 RUN npm install --no-audit --no-fund
 
 FROM node:24-alpine AS build
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+WORKDIR /app/platform
+COPY --from=deps /app/platform/node_modules ./node_modules
+COPY platform/ ./
+COPY corpus /app/corpus
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build:web
 
 FROM node:24-alpine AS runtime
-WORKDIR /app
+WORKDIR /app/platform
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3030
