@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { loadDrills } from "@platform/corpus";
-import { TIER_ORDER, tierLabel, topicLabel, normalizeTier, TIER_LABELS } from "./drillLabels";
+import { TIER_ORDER, tierLabel, topicLabel, normalizeTier, TIER_LABELS, isPubliclyListable } from "./drillLabels";
 
 
 export default async function DrillsPage({ searchParams }: { searchParams: Promise<Record<string, string>> }) {
   const sp = await searchParams;
-  const allDrills = loadDrills();
+  const allDrills = loadDrills().filter((d) => isPubliclyListable(d.review_status));
   const topics = Array.from(new Set(allDrills.map((d) => d.topic))).sort();
 
   const rawTopic = sp.topic;

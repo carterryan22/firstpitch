@@ -58,3 +58,13 @@ export function reviewStatusLabel(status: string | undefined | null): string {
   if (!status) return "";
   return REVIEW_STATUS_LABELS[status] ?? status.replace(/_/g, " ");
 }
+
+/**
+ * Mirrors `pickDrills` in @platform/compiler: a drill the compiler refuses to
+ * prescribe must not be listed as vetted content either. Drafts stay reachable
+ * by direct URL (where the detail page shows a Draft badge) so they can be
+ * reviewed, but they are kept out of the library and the public API.
+ */
+export function isPubliclyListable(status: string | undefined | null): boolean {
+  return status !== "draft" && status !== "retired";
+}

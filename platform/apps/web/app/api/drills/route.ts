@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { loadDrills } from "@platform/corpus";
-import { normalizeTier } from "../../drills/drillLabels";
+import { normalizeTier, isPubliclyListable } from "../../drills/drillLabels";
 
 export const dynamic = "force-dynamic";
 
@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
   const rawTier = sp.get("tier") ?? undefined;
   const sport = sp.get("sport") ?? undefined;
 
-  const allDrills = loadDrills();
+  const allDrills = loadDrills().filter((d) => isPubliclyListable(d.review_status));
   const knownTopics = new Set(allDrills.map((d) => d.topic));
   const topic = rawTopic && knownTopics.has(rawTopic) ? rawTopic : undefined;
   const tier = normalizeTier(rawTier);
