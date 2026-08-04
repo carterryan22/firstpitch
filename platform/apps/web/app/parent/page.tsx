@@ -246,7 +246,7 @@ export default async function ParentDashboard() {
                         </span>{" "}
                         <Link
                           href={it.href}
-                          className="font-medium text-slate-900 no-underline hover:underline"
+                          className="tap-target font-medium text-slate-900 no-underline hover:underline"
                         >
                           {it.label}
                         </Link>

@@ -52,6 +52,10 @@ async function runJourney(browser: Browser, j: Journey): Promise<JourneyResult> 
   const context = await browser.newContext({
     baseURL: BASE_URL,
     viewport: j.viewport,
+    // Touch emulation makes `@media (pointer: coarse)` match, which is what real
+    // iOS/Android users get. Without it the mobile journeys measure a
+    // desktop-pointer layout and report tap-target sizes nobody actually sees.
+    hasTouch: j.viewport.width < 600,
     userAgent: j.viewport.width < 600
       ? "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1 UX-Agent"
       : undefined,

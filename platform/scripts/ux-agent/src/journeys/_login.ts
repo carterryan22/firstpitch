@@ -6,6 +6,22 @@ const LANDING: Record<"coach" | "parent" | "player", string> = {
   player: "/missions",
 };
 
+const PERSONA_ENV: Record<"coach" | "parent" | "player", string> = {
+  coach: "PERSONA_COACH_EMAIL",
+  parent: "PERSONA_PARENT_EMAIL",
+  player: "PERSONA_PLAYER_EMAIL",
+};
+
+/**
+ * Optional binding to a seeded account (see scripts/seed-test-accounts). Unset,
+ * journeys sign in as a throwaway user and therefore only ever score EMPTY
+ * states — a parent with no child, a coach with no roster. Set, they score the
+ * populated screens real users actually see.
+ */
+export function personaEmail(role: "coach" | "parent" | "player"): string | undefined {
+  return process.env[PERSONA_ENV[role]]?.trim() || undefined;
+}
+
 /**
  * Reliable sign-in for journeys that want to evaluate the *destination*
  * workflow, not the login form itself. Posts to the auth API directly so the
@@ -15,7 +31,7 @@ const LANDING: Record<"coach" | "parent" | "player", string> = {
  */
 export async function loginAs(ctx: JourneyContext, role: "coach" | "parent" | "player", email: string, name: string): Promise<void> {
   const res = await ctx.page.request.post("/api/auth/login", {
-    data: { email, role, name },
+    data: { email: personaEmail(role) ?? email, role, name },
     headers: { "content-type": "application/json" },
   });
   if (!res.ok()) {
@@ -42,7 +58,7 @@ export async function signInWithForm(ctx: JourneyContext, role: "coach" | "paren
     const cs = (ctx as unknown as { __currentStep?: { clicks: number } }).__currentStep;
     if (cs) cs.clicks++;
   }
-  await ctx.type("input#email", email);
+  await ctx.type("input#email", personaEmail(role) ?? email);
   await ctx.type("input#name", name);
   await ctx.page.locator("form button[type=submit]:not([disabled])").waitFor({ timeout: 10_000 });
   await ctx.click("form button[type=submit]:not([disabled])");

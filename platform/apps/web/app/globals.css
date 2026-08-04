@@ -41,6 +41,14 @@ input, select, textarea {
     min-height: 44px;
     min-width: 44px;
   }
+  /* Opt-in for CONTENT links that are primary tap targets (schedule rows, card
+     titles). The rule above only covers buttons and `.btn` anchors, so a bare
+     inline <a> renders ~20px tall — below even the 24px WCAG 2.5.8 AA floor. */
+  .tap-target {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
   /* Tighten typography for the smaller viewport but keep form fonts at 16px
      so iOS doesn't auto-zoom. */
   body { font-size: 15px; line-height: 1.45; }
