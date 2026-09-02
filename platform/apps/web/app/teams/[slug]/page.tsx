@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getRepos } from "@platform/storage";
 import { formatGameWhen, statusLabel } from "../../lib/games";
 import { pressBoxPath } from "../../lib/pressBox";
+import { isPublicTeamPageEnabled } from "../../lib/sharing";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -14,7 +15,7 @@ export async function generateMetadata({
 }) {
   const { slug } = await params;
   const team = await getRepos().teams.bySlug(slug);
-  if (!team) return { title: "Team not found" };
+  if (!team || !isPublicTeamPageEnabled(team)) return { title: "Team not found" };
   return {
     title: `${team.name}`,
     description: `${team.name} · ${team.ageBand} · public team page on First Pitch.`,
@@ -29,7 +30,7 @@ export default async function PublicTeamPage({
   const { slug } = await params;
   const repos = getRepos();
   const team = await repos.teams.bySlug(slug);
-  if (!team) notFound();
+  if (!team || !isPublicTeamPageEnabled(team)) notFound();
 
   // Pull a few public-safe signals. We never expose roster names or contact info here.
   const [allGames, players] = await Promise.all([

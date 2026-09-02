@@ -1,7 +1,9 @@
 /**
- * Tiny email-sender shim. Uses Resend's HTTP API if `RESEND_API_KEY` is set,
- * otherwise logs to stdout (dev). No npm dependency required.
+ * Tiny email-sender shim. Uses Resend's HTTP API when fully configured.
+ * Console delivery is an explicit, local-development-only mode.
  */
+
+import { emailMode } from "./runtimeConfig";
 
 export interface SendEmailInput {
   to: string;
@@ -15,20 +17,28 @@ export interface SendEmailInput {
 
 export interface SendEmailResult {
   ok: boolean;
-  provider: "resend" | "console";
+  provider: "resend" | "console" | "unconfigured";
   id?: string;
   error?: string;
 }
 
 export async function sendEmail(input: SendEmailInput): Promise<SendEmailResult> {
   const apiKey = process.env.RESEND_API_KEY;
-  const from = input.from ?? process.env.EMAIL_FROM ?? "First Pitch <noreply@firstpitch.app>";
+  const from = input.from ?? process.env.EMAIL_FROM;
+  const mode = emailMode({ ...process.env, EMAIL_FROM: from });
 
-  if (!apiKey) {
-    // Dev / preview mode — log so the link is visible in server logs.
+  if (mode === "unconfigured") {
+    return {
+      ok: false,
+      provider: "unconfigured",
+      error: "Email delivery is not configured",
+    };
+  }
+
+  if (mode === "console") {
     // eslint-disable-next-line no-console
-    console.log(
-      `[email:console] to=${input.to} from=${from} subject=${JSON.stringify(input.subject)}\n${input.text}`,
+    console.info(
+      `[email:console] to=${input.to} from=${from ?? "First Pitch <local>"} subject=${JSON.stringify(input.subject)}\n${input.text}`,
     );
     return { ok: true, provider: "console" };
   }
@@ -69,5 +79,5 @@ function escapeHtml(s: string): string {
 
 /** True when emails will only be logged (no provider configured). */
 export function isEmailInDevMode(): boolean {
-  return !process.env.RESEND_API_KEY;
+  return emailMode() === "console";
 }

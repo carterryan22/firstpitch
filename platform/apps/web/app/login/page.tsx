@@ -122,8 +122,8 @@ function LoginForm() {
             <div className="rounded-md border-2 border-warn/40 bg-warn-soft/30 p-3 text-sm">
               <p className="m-0 font-semibold text-warn">Dev mode (no email provider configured)</p>
               <p className="mt-1 text-xs text-ink/80">
-                No <code>RESEND_API_KEY</code> set, so we&apos;re showing the link inline. In
-                production this only goes to the inbox.
+                Local email console mode is enabled, so we&apos;re showing the link inline. This mode
+                is unavailable in production.
               </p>
               <p className="mt-2">
                 <a className="btn-primary no-underline hover:no-underline" href={sent.devLink}>

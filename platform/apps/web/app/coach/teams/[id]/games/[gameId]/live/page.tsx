@@ -4,6 +4,7 @@ import { getRepos } from "@platform/storage";
 import { getSession } from "../../../../../../lib/session";
 import { userCanManageTeam } from "../../../../../../lib/teams";
 import { fullName } from "../../../../../../lib/players";
+import { livePitchSafety } from "../../../../../../lib/pitchSafety";
 import { LiveConsole } from "./LiveConsole";
 
 export const metadata = { title: "Live game" };
@@ -19,10 +20,12 @@ export default async function LiveGamePage({
   if (!session) redirect("/login");
   if (!(await userCanManageTeam(session.user.id, id))) redirect("/coach");
   const repos = getRepos();
-  const [team, game, roster] = await Promise.all([
+  const [team, game, roster, games, logs] = await Promise.all([
     repos.teams.byId(id),
     repos.games.byId(gameId),
     repos.players.byTeam(id),
+    repos.games.list({ teamId: id }),
+    repos.throwingLogs.list({ teamId: id }),
   ]);
   if (!team || !game || game.teamId !== id) notFound();
 
@@ -39,6 +42,7 @@ export default async function LiveGamePage({
       <LiveConsole
         gameId={game.id}
         initial={game}
+        initialPitchSafety={livePitchSafety(roster, games, logs, new Date(game.startsAt))}
         roster={roster
           .filter((p) => !p.archivedAt)
           .map((p) => ({ id: p.id, name: fullName(p), canPitch: p.canPitch ?? false }))}

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getRepos } from "@platform/storage";
+import { emailMode, productionConfigurationIssues } from "../../lib/runtimeConfig";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -23,19 +24,17 @@ function persistenceBackend(): "kv" | "file" | "memory" {
 export async function GET() {
   const time = new Date().toISOString();
   const backend = persistenceBackend();
-  const isProd = process.env.NODE_ENV === "production";
-
   const config = {
     auth: !!process.env.PLATFORM_AUTH_SECRET,
-    email: process.env.RESEND_API_KEY ? ("resend" as const) : ("console" as const),
+    email: emailMode(),
     persistence: backend,
     cron: !!process.env.CRON_SECRET,
   };
 
-  // In production, an in-memory store loses data between invocations and a
-  // missing auth secret means auth can't boot — surface these as not-ready.
-  const misconfigured =
-    isProd && (backend === "memory" || !config.auth);
+  // Production auth, email, and durable persistence are all required for the
+  // application to be ready to serve sign-in traffic.
+  const configurationIssues = productionConfigurationIssues(backend);
+  const misconfigured = configurationIssues.length > 0;
 
   let storeReachable = false;
   try {
@@ -51,7 +50,13 @@ export async function GET() {
   const status = !storeReachable ? "error" : misconfigured ? "degraded" : "ok";
 
   return NextResponse.json(
-    { status, time, store: { backend, reachable: storeReachable }, config },
+    {
+      status,
+      time,
+      store: { backend, reachable: storeReachable },
+      config,
+      ...(misconfigured ? { missing: configurationIssues } : {}),
+    },
     { status: ok ? 200 : 503 },
   );
 }

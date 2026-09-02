@@ -71,7 +71,9 @@ export function collectSources(root: string): SourceFile[] {
       content,
       lines: content.split(/\r?\n/),
       isTest: /\.(test|spec)\.[cm]?[jt]sx?$/.test(rel),
-      isScript: rel.startsWith("scripts/"),
+      isScript:
+        rel.startsWith("scripts/") ||
+        /\/(cli|seed)\.[cm]?[jt]s$/.test(rel),
       isApiRoute: rel.includes("apps/web/app/api/"),
     });
   }

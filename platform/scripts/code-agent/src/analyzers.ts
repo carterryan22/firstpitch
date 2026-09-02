@@ -92,6 +92,11 @@ const typeSafety: Analyzer = (file) => {
 // ── 4. Security (OWASP) ──────────────────────────────────────────────────
 const security: Analyzer = (file) => {
   const out: Finding[] = [];
+  // Test fixtures and developer tooling are not shipped request surfaces.
+  // Keep secret scanning below enabled everywhere, but restrict runtime-code
+  // heuristics so their own pattern definitions and randomized fixtures do not
+  // become security findings.
+  const runtimeSurface = !file.isTest && !file.isScript;
 
   // Hardcoded secrets / credentials.
   eachMatch(
@@ -111,7 +116,7 @@ const security: Analyzer = (file) => {
   );
 
   // eval / Function constructor.
-  eachMatch(file, /\beval\s*\(|new\s+Function\s*\(/, (_m, line, raw) => {
+  if (runtimeSurface) eachMatch(file, /\beval\s*\(|new\s+Function\s*\(/, (_m, line, raw) => {
     if (isCommentLine(raw)) return;
     out.push({
       analyzer: "security", rule: "dynamic-eval", severity: "major",
@@ -123,7 +128,7 @@ const security: Analyzer = (file) => {
   });
 
   // dangerouslySetInnerHTML.
-  eachMatch(file, /dangerouslySetInnerHTML/, (_m, line, raw) => {
+  if (runtimeSurface) eachMatch(file, /dangerouslySetInnerHTML/, (_m, line, raw) => {
     out.push({
       analyzer: "security", rule: "dangerous-html", severity: "major",
       file: file.rel, line, snippet: snip(raw),
@@ -134,7 +139,7 @@ const security: Analyzer = (file) => {
   });
 
   // Weak randomness for security material.
-  eachMatch(file, /Math\.random\s*\(\s*\)/, (_m, line, raw) => {
+  if (runtimeSurface) eachMatch(file, /Math\.random\s*\(\s*\)/, (_m, line, raw) => {
     if (!/token|secret|password|id|salt|nonce|key|otp|code/i.test(raw)) return;
     out.push({
       analyzer: "security", rule: "weak-random", severity: "major",
@@ -146,7 +151,7 @@ const security: Analyzer = (file) => {
   });
 
   // Shell exec with interpolation (command injection).
-  eachMatch(file, /\b(execSync|exec|spawnSync|spawn)\s*\(\s*[`"'][^`"')]*\$\{/, (_m, line, raw) => {
+  if (runtimeSurface) eachMatch(file, /\b(execSync|exec|spawnSync|spawn)\s*\(\s*[`"'][^`"')]*\$\{/, (_m, line, raw) => {
     out.push({
       analyzer: "security", rule: "command-injection", severity: "major",
       file: file.rel, line, snippet: snip(raw),

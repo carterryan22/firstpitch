@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { GameRecord } from "@platform/storage";
+import type { LivePitchSafety } from "../../../../../../lib/pitchSafety";
 
 type Roster = Array<{ id: string; name: string; canPitch: boolean }>;
 type Score = { us: number; them: number };
@@ -9,13 +10,16 @@ type Score = { us: number; them: number };
 export function LiveConsole({
   gameId,
   initial,
+  initialPitchSafety,
   roster,
 }: {
   gameId: string;
   initial: GameRecord;
+  initialPitchSafety: Record<string, LivePitchSafety>;
   roster: Roster;
 }) {
   const [game, setGame] = useState<GameRecord>(initial);
+  const [pitchSafety, setPitchSafety] = useState(initialPitchSafety);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [activePitcherId, setActivePitcherId] = useState<string>(() => {
@@ -27,8 +31,9 @@ export function LiveConsole({
   const refresh = useCallback(async () => {
     const res = await fetch(`/api/games/${gameId}`, { cache: "no-store" });
     if (!res.ok) return;
-    const j = (await res.json()) as { game: GameRecord };
+    const j = (await res.json()) as { game: GameRecord; pitchSafety?: Record<string, LivePitchSafety> };
     setGame(j.game);
+    if (j.pitchSafety) setPitchSafety(j.pitchSafety);
   }, [gameId]);
 
   useEffect(() => {
@@ -54,12 +59,14 @@ export function LiveConsole({
     setBusy(false);
     if (!res.ok) {
       if (previous) setGame(previous);
-      const j = (await res.json().catch(() => ({}))) as { error?: string };
+      const j = (await res.json().catch(() => ({}))) as { error?: string; pitchSafety?: Record<string, LivePitchSafety> };
+      if (j.pitchSafety) setPitchSafety(j.pitchSafety);
       setErr(j.error ?? "Failed");
       return;
     }
-    const j = (await res.json()) as { game: GameRecord };
+    const j = (await res.json()) as { game: GameRecord; pitchSafety?: Record<string, LivePitchSafety> };
     setGame(j.game);
+    if (j.pitchSafety) setPitchSafety(j.pitchSafety);
   }
 
   const score: Score = game.finalScore ?? { us: 0, them: 0 };
@@ -67,6 +74,7 @@ export function LiveConsole({
   const counts = game.pitchCounts ?? {};
   const pitchersEligible = roster.filter((p) => p.canPitch);
   const pitchersOnList = pitchersEligible.length > 0 ? pitchersEligible : roster;
+  const activeSafety = pitchSafety[activePitcherId];
 
   function addPitches(n: number) {
     if (!activePitcherId) return;
@@ -188,11 +196,23 @@ export function LiveConsole({
             <span className="ml-1 text-base font-normal text-slate-500">pitches</span>
           </div>
           <div className="flex flex-wrap gap-2">
-            <button className="btn-primary" disabled={busy || !activePitcherId} onClick={() => addPitches(1)}>+1</button>
-            <button className="btn-primary" disabled={busy || !activePitcherId} onClick={() => addPitches(5)}>+5</button>
+            <button className="btn-primary" disabled={busy || !activePitcherId || !activeSafety?.allowed || activeSafety.remainingPitches < 1} onClick={() => addPitches(1)}>+1</button>
+            <button className="btn-primary" disabled={busy || !activePitcherId || !activeSafety?.allowed || activeSafety.remainingPitches < 5} onClick={() => addPitches(5)}>+5</button>
             <button className="btn-ghost" disabled={busy || !activePitcherId} onClick={() => addPitches(-1)}>−1</button>
           </div>
         </div>
+
+        {activeSafety ? (
+          <div className={`mt-3 rounded border px-3 py-2 text-sm ${activeSafety.allowed ? "border-emerald-200 bg-emerald-50 text-emerald-800" : "border-red-200 bg-red-50 text-red-800"}`}>
+            <strong>{activeSafety.allowed ? `${activeSafety.remainingPitches} pitches remaining today` : "Pitching blocked"}</strong>
+            <span className="ml-2 text-xs">Pitch Smart daily max: {activeSafety.dailyMax}</span>
+            {!activeSafety.allowed && activeSafety.reasons.length > 0 ? (
+              <p className="mt-1">{activeSafety.reasons.join(" ")}</p>
+            ) : activeSafety.warnings.length > 0 ? (
+              <p className="mt-1">{activeSafety.warnings.join(" ")}</p>
+            ) : null}
+          </div>
+        ) : null}
 
         {Object.keys(counts).length > 0 ? (
           <table className="mt-4 w-full text-sm">

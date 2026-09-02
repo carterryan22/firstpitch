@@ -1,8 +1,6 @@
 "use client";
 
-// Surfaces the real server error message + digest in the browser during
-// debugging. Safe to leave in — Next.js only renders this when an error
-// bubbles up out of a route segment.
+// Keep production details in monitoring, never in the user-facing boundary.
 
 import { useEffect } from "react";
 
@@ -14,18 +12,20 @@ export default function GlobalError({
   reset: () => void;
 }) {
   useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.error("[global-error]", error);
+    if (process.env.NODE_ENV !== "production") {
+      // eslint-disable-next-line no-console
+      console.error("[global-error]", error);
+    }
     // Best-effort report to our monitoring endpoint. Never blocks render.
     void fetch("/api/monitoring/report", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
-        name: error.name,
-        message: error.message,
-        stack: error.stack,
         digest: error.digest,
         source: "global-error",
+        ...(process.env.NODE_ENV !== "production"
+          ? { name: error.name, message: error.message, stack: error.stack }
+          : {}),
       }),
       keepalive: true,
     }).catch(() => {});
@@ -35,25 +35,7 @@ export default function GlobalError({
     <html>
       <body style={{ fontFamily: "system-ui", padding: "2rem", maxWidth: 800 }}>
         <h1 style={{ color: "#b91c1c" }}>Server error</h1>
-        <p>
-          <strong>Message:</strong> {error.message || "(no message)"}
-        </p>
-        {error.digest ? (
-          <p>
-            <strong>Digest:</strong> <code>{error.digest}</code>
-          </p>
-        ) : null}
-        <pre
-          style={{
-            whiteSpace: "pre-wrap",
-            background: "#f1f5f9",
-            padding: "1rem",
-            borderRadius: 8,
-            fontSize: 12,
-          }}
-        >
-          {error.stack ?? "(no stack)"}
-        </pre>
+        <p>Something went wrong. Your data is still safe; try the request again.</p>
         <button
           onClick={() => reset()}
           style={{

@@ -55,6 +55,16 @@ export interface AuthSession {
   cookieValue: string;
 }
 
+async function authenticationUser(
+  repos: Repos,
+  input: { email: string; role: Role; name?: string },
+): Promise<UserRecord> {
+  const email = input.email.toLowerCase().trim();
+  const existing = await repos.users.byEmail(email);
+  if (existing) return existing;
+  return repos.users.upsert({ email, role: input.role, name: input.name?.trim() || undefined });
+}
+
 /** Create or find a user by email + role and mint a session. Dev/local auth. */
 export async function loginOrRegister(
   repos: Repos,
@@ -63,7 +73,7 @@ export async function loginOrRegister(
   if (!input.email.includes("@")) {
     throw new Error("Invalid email");
   }
-  const user = await repos.users.upsert({ email: input.email, role: input.role, name: input.name });
+  const user = await authenticationUser(repos, input);
   const session = await repos.sessions.create(user.id, SESSION_TTL_MS);
   await repos.audit.log({ userId: user.id, action: "login", resource: `session:${session.id}` });
   return { user, sessionId: session.id, cookieValue: encodeCookie(session.id) };
@@ -97,13 +107,16 @@ export async function issueLoginToken(
   if (!validRoles.includes(input.role)) {
     throw new AuthError("Invalid role", 400);
   }
+  const normalizedEmail = input.email.toLowerCase().trim();
+  const existing = await repos.users.byEmail(normalizedEmail);
   const token = crypto.randomBytes(LOGIN_TOKEN_BYTES).toString("base64url");
   const expiresAt = new Date(Date.now() + LOGIN_TOKEN_TTL_MS).toISOString();
   const rec = await repos.loginTokens.create({
     tokenHash: hashToken(token),
-    email: input.email.toLowerCase().trim(),
-    role: input.role,
-    name: input.name?.trim() || undefined,
+    email: normalizedEmail,
+    // Authentication must never mutate an existing account's authorization.
+    role: existing?.role ?? input.role,
+    name: existing?.name ?? (input.name?.trim() || undefined),
     redirectTo: input.redirectTo,
     expiresAt,
   });
@@ -123,7 +136,11 @@ export async function consumeLoginToken(
   if (!token || typeof token !== "string") return null;
   const rec = await repos.loginTokens.consume(hashToken(token));
   if (!rec) return null;
-  const user = await repos.users.upsert({ email: rec.email, role: rec.role, name: rec.name });
+  const user = await authenticationUser(repos, {
+    email: rec.email,
+    role: rec.role,
+    name: rec.name,
+  });
   const session = await repos.sessions.create(user.id, SESSION_TTL_MS);
   await repos.audit.log({
     userId: user.id,

@@ -2,9 +2,15 @@ import { describe, it, expect } from "vitest";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import { InMemoryStore, JsonFileStore, makeRepos } from "./index";
+import { InMemoryStore, JsonFileStore, KvJsonStore, makeRepos } from "./index";
 
 describe("InMemoryStore + repos", () => {
+  it("isolates default state between store instances", async () => {
+    const first = makeRepos(new InMemoryStore());
+    const second = makeRepos(new InMemoryStore());
+    await first.users.upsert({ email: "isolated@example.com", role: "coach" });
+    expect(await second.users.list()).toEqual([]);
+  });
   it("creates and lists users", async () => {
     const repos = makeRepos(new InMemoryStore());
     const u = await repos.users.upsert({ email: "a@b.com", role: "coach" });
@@ -88,5 +94,52 @@ describe("JsonFileStore", () => {
     const a = makeRepos(new JsonFileStore(file));
     await a.users.upsert({ email: "z@z.com", role: "coach" });
     expect(fs.existsSync(file + ".tmp")).toBe(false);
+  });
+});
+
+describe("KvJsonStore", () => {
+  it("retries concurrent mutations instead of losing an update", async () => {
+    let value: string | null = null;
+    const originalFetch = globalThis.fetch;
+    globalThis.fetch = async (input, init) => {
+      const url = String(input);
+      if (url.includes("/get/")) {
+        return Response.json({ result: value });
+      }
+      const command = JSON.parse(String(init?.body)) as Array<string | number>;
+      expect(command[0]).toBe("EVAL");
+      const expected = String(command[4]);
+      const next = String(command[5]);
+      if ((value ?? "") !== expected) return Response.json({ result: 0 });
+      value = next;
+      return Response.json({ result: 1 });
+    };
+
+    try {
+      const store = new KvJsonStore({ url: "https://kv.test", token: "test" });
+      const a = makeRepos(store);
+      const b = makeRepos(store);
+      await Promise.all([
+        a.users.upsert({ email: "first@example.com", role: "coach" }),
+        b.users.upsert({ email: "second@example.com", role: "parent" }),
+      ]);
+      expect((await store.read()).users.map((user) => user.email).sort()).toEqual([
+        "first@example.com",
+        "second@example.com",
+      ]);
+    } finally {
+      globalThis.fetch = originalFetch;
+    }
+  });
+
+  it("fails closed when the stored database is corrupt", async () => {
+    const originalFetch = globalThis.fetch;
+    globalThis.fetch = async () => Response.json({ result: "not-json" });
+    try {
+      const store = new KvJsonStore({ url: "https://kv.test", token: "test" });
+      await expect(store.read()).rejects.toThrow("invalid JSON");
+    } finally {
+      globalThis.fetch = originalFetch;
+    }
   });
 });

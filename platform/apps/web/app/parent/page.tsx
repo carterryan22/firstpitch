@@ -31,7 +31,7 @@ type UpcomingItem = {
   when: string;
   teamName: string;
   label: string;
-  href: string;
+  href?: string;
   id: string;
   teamId: string;
   rsvp?: Record<string, "yes" | "no" | "maybe">;
@@ -73,7 +73,6 @@ export default async function ParentDashboard() {
       when: g.startsAt,
       teamName: t.name,
       label: `${g.homeAway === "home" ? "vs" : "@"} ${g.opponent}`,
-      href: `/coach/teams/${g.teamId}/games/${g.id}`,
       id: g.id,
       teamId: g.teamId,
       rsvp: g.rsvp,
@@ -244,12 +243,16 @@ export default async function ParentDashboard() {
                         <span className={it.kind === "game" ? "badge-info" : "badge-warn"}>
                           {it.kind === "game" ? "Game" : "Practice"}
                         </span>{" "}
-                        <Link
-                          href={it.href}
-                          className="tap-target font-medium text-slate-900 no-underline hover:underline"
-                        >
-                          {it.label}
-                        </Link>
+                        {it.href ? (
+                          <Link
+                            href={it.href}
+                            className="tap-target font-medium text-slate-900 no-underline hover:underline"
+                          >
+                            {it.label}
+                          </Link>
+                        ) : (
+                          <span className="font-medium text-slate-900">{it.label}</span>
+                        )}
                         <span className="ml-2 text-xs text-slate-500">{it.teamName}</span>
                       </div>
                       <span className="text-xs text-slate-500">

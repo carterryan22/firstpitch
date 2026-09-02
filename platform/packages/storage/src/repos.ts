@@ -35,6 +35,12 @@ import type {
 export interface Store {
   read(): Promise<DbShape>;
   write(db: DbShape): Promise<void>;
+  /**
+   * Atomically apply a synchronous mutation when the backend supports it.
+   * Distributed stores use compare-and-set so concurrent requests cannot
+   * silently overwrite one another.
+   */
+  mutate?<T>(fn: (db: DbShape) => T): Promise<T>;
 }
 
 let counter = 0;
@@ -200,6 +206,7 @@ export interface Repos {
 
 export function makeRepos(store: Store): Repos {
   const mutate = async <T>(fn: (db: DbShape) => T): Promise<T> => {
+    if (store.mutate) return store.mutate(fn);
     const db = await store.read();
     const result = fn(db);
     await store.write(db);

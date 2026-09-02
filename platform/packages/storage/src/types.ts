@@ -70,6 +70,16 @@ export interface PlanRecord {
   warnings?: string[];
   blocked?: string[];
   totalThrowingLoad?: number;
+  timeBudget?: {
+    targetMin: number;
+    warmupMin: number;
+    skillMin: number;
+    restMin: number;
+    transitionMin: number;
+    cooldownMin: number;
+    usedMin: number;
+    slackMin: number;
+  };
   focus?: string[];
   createdByUserId: string;
   teamId?: string;
@@ -90,6 +100,11 @@ export interface TeamRecord {
   slug: string;
   ageBand: "6-8" | "9-12" | "13-15" | "16+";
   ownerCoachUserId: string;
+  /**
+   * Explicit opt-in for the unauthenticated `/teams/:slug` page. Missing and
+   * false both mean private so legacy teams cannot become public by accident.
+   */
+  publicPageEnabled?: boolean;
   /**
    * Team-level lineup rule set (governing-body + house rules) used as the
    * default when building a game lineup. Mirrors the game-day competitor's

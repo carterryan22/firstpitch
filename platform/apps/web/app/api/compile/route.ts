@@ -94,6 +94,7 @@ export async function POST(req: Request) {
       warnings: result.warnings,
       blocked: result.blocked,
       totalThrowingLoad: result.totalThrowingLoad,
+      timeBudget: result.timeBudget,
       focus: input.focus,
       createdByUserId: session.user.id,
       teamId: body.teamId,

@@ -348,6 +348,18 @@ export function compile(input: CompileInput): CompileResult {
   const transitionMinTotal = blocks.filter((b) => b.type === "transition").reduce((s, b) => s + b.durationMin, 0);
   const cooldownMin = blocks.filter((b) => b.type === "cooldown").reduce((s, b) => s + b.durationMin, 0);
 
+  if (skillMin === 0) {
+    blocked.push(
+      "No eligible skill block fit this session. Check the selected focus, player count, equipment, and available coaches.",
+    );
+  }
+  const slackMin = Math.max(0, targetDuration - usedMin);
+  if (slackMin > 10) {
+    warnings.push(
+      `Plan uses ${usedMin} of ${targetDuration} requested minutes; ${slackMin} minutes remain unfilled.`,
+    );
+  }
+
   return {
     ageBand: ageKey,
     blocks,
@@ -363,7 +375,7 @@ export function compile(input: CompileInput): CompileResult {
       transitionMin: transitionMinTotal,
       cooldownMin,
       usedMin,
-      slackMin: Math.max(0, targetDuration - usedMin),
+      slackMin,
     },
     theme: deriveTheme(blocks, input.focus),
     talkingPoints: deriveTalkingPoints(blocks),

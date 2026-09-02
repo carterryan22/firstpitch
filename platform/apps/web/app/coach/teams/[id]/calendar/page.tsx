@@ -152,7 +152,7 @@ export default async function CalendarPage({
               href={`/api/teams/${id}/calendar.ics`}
               className="btn-ghost no-underline hover:no-underline"
             >
-              Subscribe (.ics)
+              Download (.ics)
             </a>
           </div>
         </div>

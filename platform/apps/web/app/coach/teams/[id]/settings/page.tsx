@@ -5,6 +5,7 @@ import { getSession } from "../../../../lib/session";
 import { userCanManageTeam, getTeamRoster } from "../../../../lib/teams";
 import { Card } from "../../../../components/ui";
 import { RulesSettingsForm } from "./RulesSettingsForm";
+import { PublicSharingSettings } from "./PublicSharingSettings";
 
 export const metadata = { title: "Team settings" };
 
@@ -68,8 +69,10 @@ export default async function TeamSettingsPage({
                 <dd className="m-0 text-sm font-medium text-slate-800">{team.ageBand}</dd>
               </div>
               <div>
-                <dt className="text-xs uppercase tracking-wide text-slate-500">Share link</dt>
-                <dd className="m-0 text-sm font-mono text-slate-600">/t/{team.slug}</dd>
+                <dt className="text-xs uppercase tracking-wide text-slate-500">Public page</dt>
+                <dd className="m-0 text-sm font-mono text-slate-600">
+                  {team.publicPageEnabled ? `/teams/${team.slug}` : "Private"}
+                </dd>
               </div>
               <div>
                 <dt className="text-xs uppercase tracking-wide text-slate-500">Created</dt>
@@ -78,6 +81,9 @@ export default async function TeamSettingsPage({
                 </dd>
               </div>
             </dl>
+            <div className="mt-4 border-t border-slate-100 pt-4">
+              <PublicSharingSettings teamId={id} initialEnabled={team.publicPageEnabled === true} />
+            </div>
           </div>
         </details>
       </Card>
