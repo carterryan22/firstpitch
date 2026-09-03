@@ -107,8 +107,8 @@ export const PLAN_TEMPLATES: PlanTemplate[] = [
   },
   {
     id: "blueprint_60_full",
-    name: "Pro Velocity — All Star Blueprint 60",
-    blurb: "The full Blueprint session: bat speed, swing mechanics, and hand-eye in one cage night.",
+    name: "Bat Speed + Vision 60",
+    blurb: "Bat speed, swing mechanics, and hand-eye in one cage night.",
     durationMin: 60,
     ageBands: ["13-15", "16+"],
     environmentTier: "T2_cage_gym",
@@ -121,8 +121,8 @@ export const PLAN_TEMPLATES: PlanTemplate[] = [
   },
   {
     id: "blueprint_45_batspeed",
-    name: "Pro Velocity — Bat Speed 45",
-    blurb: "Blueprint power day: on-plane path grooming into overload/underload bat-speed contrast.",
+    name: "Bat Speed Contrast 45",
+    blurb: "On-plane path work into supervised overload/underload bat-speed contrast.",
     durationMin: 45,
     ageBands: ["13-15", "16+"],
     environmentTier: "T2_cage_gym",
@@ -131,8 +131,8 @@ export const PLAN_TEMPLATES: PlanTemplate[] = [
   },
   {
     id: "blueprint_45_handeye",
-    name: "Pro Velocity — Hand-Eye 45",
-    blurb: "Blueprint vision day: numbered-ball tracking into on-plane path checks.",
+    name: "Hand-Eye + Path 45",
+    blurb: "Numbered-ball tracking into on-plane path checks.",
     durationMin: 45,
     ageBands: ["9-12", "13-15", "16+"],
     environmentTier: "T2_cage_gym",
@@ -253,6 +253,140 @@ export const PLAN_TEMPLATES: PlanTemplate[] = [
       "FLY_BALL_COMMUNICATION",
     ],
   },
+  // Position-specific and at-home presets. Each pairs already-published drills
+  // with newer ones still in review, so the preset compiles to a usable plan
+  // today and fills out further as drills are promoted.
+  {
+    id: "field_45_corner_infield",
+    name: "Corner Infield 45",
+    blurb: "First and third base day: receiving throws, slow rollers, sweep tags, bunt coverage.",
+    durationMin: 45,
+    ageBands: ["13-15", "16+"],
+    environmentTier: "T1_field",
+    focus: ["fielding", "throwing"],
+    drillIds: [
+      "ALLIGATOR_GROUNDBALLS",
+      "IF_FIRST_BASE_RECEIVING",
+      "IF_SLOW_ROLLER_DO_OR_DIE",
+      "IF_TAG_PLAY_SWEEP",
+      "PITCHING_PFP_COVER_1ST",
+    ],
+  },
+  {
+    id: "field_60_middle_infield",
+    name: "Middle Infield 60",
+    blurb: "Up-the-middle day: ready hop, range both ways, flips and feeds, double-play turns.",
+    durationMin: 60,
+    ageBands: ["9-12", "13-15", "16+"],
+    environmentTier: "T1_field",
+    focus: ["fielding", "throwing"],
+    drillIds: [
+      "IF_READY_HOP_FIRST_STEP",
+      "SOFT_HANDS_SHORT_HOP",
+      "IF_BACKHAND_FOREHAND_RANGE",
+      "IF_FLIP_FEED_FOOTWORK",
+      "IF_DP_TURN_4_6_3",
+    ],
+  },
+  {
+    id: "field_75_team_defense",
+    name: "Team Defense Situations 75",
+    blurb: "Whole-defense day: pop-up calls, rundowns, relays, and first-and-third reads.",
+    durationMin: 75,
+    ageBands: ["9-12", "13-15", "16+"],
+    environmentTier: "T1_field",
+    focus: ["fielding", "baserunning", "throwing"],
+    drillIds: [
+      "IF_POPUP_PRIORITY",
+      "CUTOFF_RELAY_3MAN",
+      "DEF_RUNDOWN_PICKLE",
+      "BR_FIRST_THIRD_READS",
+      "CBG_TEAM_FIRST_RELAY_RACE",
+      "DEF_BASES_LOADED_LIVE",
+    ],
+  },
+  {
+    id: "field_60_outfield",
+    name: "Outfield Arm + Reads 60",
+    blurb: "Outfield day: fly-ball technique, drop steps, do-or-die grounders through the cutoff.",
+    durationMin: 60,
+    ageBands: ["9-12", "13-15", "16+"],
+    environmentTier: "T1_field",
+    focus: ["fielding", "throwing"],
+    drillIds: [
+      "OF_FLY_BALL_CATCH_TECHNIQUE",
+      "OF_DROP_STEP_OVER_SHOULDER",
+      "OF_LINE_DRIVE_READS",
+      "OF_DO_OR_DIE_GROUNDER",
+      "CUTOFF_RELAY_3MAN",
+    ],
+  },
+  {
+    id: "field_45_throwing_transfers",
+    name: "Throwing & Transfers 45",
+    blurb: "Arm-care first, then four-seam catch, four corners, and quick-transfer work.",
+    durationMin: 45,
+    ageBands: ["9-12", "13-15", "16+"],
+    environmentTier: "T1_field",
+    focus: ["throwing"],
+    drillIds: [
+      "THROW_ARM_CARE_WARMUP",
+      "SHOW_THE_DOG_THROW",
+      "PARTNER_CATCH_FOUR_SEAM",
+      "THROWING_QUICK_TRANSFER",
+      "FOUR_CORNERS_THROWING",
+      "RELAY_THROW_RACE",
+    ],
+  },
+  {
+    id: "field_45_command",
+    name: "Command Day 45",
+    blurb: "Pitchers: arm care, 9-box command, first-pitch strikes, changeup feel. No breaking balls.",
+    durationMin: 45,
+    ageBands: ["13-15", "16+"],
+    environmentTier: "T1_field",
+    focus: ["pitching", "throwing"],
+    drillIds: [
+      "THROW_ARM_CARE_WARMUP",
+      "PITCHING_9BOX_COMMAND",
+      "PITCHING_FIRST_PITCH_STRIKE",
+      "PITCHING_CHANGEUP_FEEL",
+      "PITCHING_BULLPEN_15PITCH",
+      "PITCHING_PFP_COVER_1ST",
+    ],
+  },
+  {
+    id: "field_45_catcher",
+    name: "Catcher Day 45",
+    blurb: "Behind the plate: framing, blocking, block-recover-throw, and the dirt-ball save game.",
+    durationMin: 45,
+    ageBands: ["9-12", "13-15", "16+"],
+    environmentTier: "T1_field",
+    focus: ["catching", "throwing"],
+    drillIds: [
+      "C_FRAMING_LOW_STRIKE",
+      "C_BLOCKING_3BALL",
+      "C_BLOCK_RECOVER_THROW",
+      "C_DIRT_BALL_SAVE_GAME",
+      "C_RECEIVE_TRANSFER_FOOTWORK",
+    ],
+  },
+  {
+    id: "home_20_solo",
+    name: "At-Home Solo 20",
+    blurb: "Twenty minutes alone in a driveway: wall hands, grounder circuit, dry swings, reset.",
+    durationMin: 20,
+    ageBands: ["9-12", "13-15", "16+"],
+    environmentTier: "T3_backyard",
+    focus: ["fielding", "hitting", "mental"],
+    drillIds: [
+      "YGP_SHORT_HOP_WALL_HANDS",
+      "YGP_AT_HOME_GROUNDER_CIRCUIT",
+      "SOFT_HANDS_SHORT_HOP",
+      "LIVING_ROOM_DRY_SWINGS",
+      "MENTAL_PREPITCH_ROUTINE",
+    ],
+  },
 ];
 
 /**
@@ -273,10 +407,13 @@ export function suggestTemplates(args: {
   }).sort((a, b) => Math.abs(a.durationMin - args.durationMin) - Math.abs(b.durationMin - args.durationMin));
 }
 
-/** Resolve a template's drill IDs to full Drill objects (filtering missing). */
+/** Resolve a template's drill IDs to currently reviewable Drill objects. */
 export function templateDrills(template: PlanTemplate): Drill[] {
   const all = loadDrills();
   return template.drillIds
     .map((id) => all.find((d) => d.drill_id === id))
-    .filter((d): d is Drill => Boolean(d));
+    .filter(
+      (d): d is Drill =>
+        Boolean(d) && d!.review_status !== "draft" && d!.review_status !== "retired",
+    );
 }

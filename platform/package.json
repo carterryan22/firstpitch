@@ -23,6 +23,9 @@
     "security-review": "npm --prefix scripts/security-review run security",
     "verify": "npm run test && npm run eval && npm run build:web"
   },
+  "engines": {
+    "node": "24.x"
+  },
   "devDependencies": {
     "@types/node": "^20.11.0",
     "tsx": "^4.7.0",
@@ -30,6 +33,7 @@
     "vitest": "^3.2.6"
   },
   "overrides": {
-    "postcss": "^8.5.25"
+    "postcss": "^8.5.25",
+    "esbuild": "^0.28.1"
   }
 }

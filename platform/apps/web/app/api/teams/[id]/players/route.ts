@@ -121,7 +121,7 @@ export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string
   // COPPA: a child under 13 needs verifiable parental consent before the
   // profile is treated as active. If we have a parent email, kick off the
   // verification flow now; otherwise mark the profile as needing consent.
-  let consent: { devLink?: string; pending: boolean } | undefined;
+  let consent: { devLink?: string; pending: boolean; emailSent?: boolean } | undefined;
   if (requiresParentalConsent(player)) {
     if (parentUserId && body.parentEmail) {
       const result = await requestParentalConsent({
@@ -131,7 +131,7 @@ export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string
         parentUserId,
         requestedByUserId: session.user.id,
       });
-      consent = { devLink: result.devLink, pending: true };
+      consent = { devLink: result.devLink, pending: true, emailSent: result.delivery.ok };
     } else {
       await repos.players.update(player.id, { consentStatus: "pending" });
       consent = { pending: true };

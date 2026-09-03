@@ -11,6 +11,7 @@ import {
   issueLoginToken,
   consumeLoginToken,
   hashToken,
+  LOGIN_TOKEN_RATE_LIMIT,
   LOGIN_TOKEN_TTL_MS,
 } from "./index";
 
@@ -133,5 +134,19 @@ describe("magic-link tokens", () => {
     });
     const out = await consumeLoginToken(repos, issued.token);
     expect(out?.redirectTo).toBe("/parent?team=t1");
+  });
+
+  it("atomically rate-limits magic links per normalized email", async () => {
+    const repos = fresh();
+    const attempts = await Promise.allSettled(
+      Array.from({ length: LOGIN_TOKEN_RATE_LIMIT + 2 }, () =>
+        issueLoginToken(repos, { email: "RateLimit@Example.com ", role: "coach" }),
+      ),
+    );
+
+    expect(attempts.filter((result) => result.status === "fulfilled")).toHaveLength(LOGIN_TOKEN_RATE_LIMIT);
+    const rejected = attempts.filter((result) => result.status === "rejected");
+    expect(rejected).toHaveLength(2);
+    expect(rejected.every((result) => result.reason instanceof AuthError && result.reason.status === 429)).toBe(true);
   });
 });

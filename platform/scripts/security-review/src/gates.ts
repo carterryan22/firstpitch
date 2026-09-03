@@ -63,7 +63,7 @@ const ACCEPTED_ADVISORIES: Record<string, string> = {
   // pipeline; an npm `overrides` entry cannot move it (the app's own postcss —
   // via tailwindcss/autoprefixer — is already 8.5.25 and patched). That nested
   // copy only ever processes FIRST-PARTY CSS (globals.css + Tailwind output) at
-  // build time. All three advisories require attacker-controlled CSS input:
+  // build time. All four advisories require attacker-controlled CSS input:
   // stringifying hostile `</style>` content, or auto-loading a sourcemap from a
   // hostile `sourceMappingURL` comment. Neither is reachable — no user-supplied
   // CSS is ever compiled, and postcss never runs at request time. Remove these
@@ -72,19 +72,10 @@ const ACCEPTED_ADVISORIES: Record<string, string> = {
     "postcss XSS via unescaped </style> — build-time only, first-party CSS only; Next pins nested postcss@8.4.31.",
   "GHSA-6g55-p6wh-862q":
     "postcss arbitrary file read via sourceMappingURL — build-time only, first-party CSS only; Next pins nested postcss@8.4.31.",
+  "GHSA-fxqj-rqcc-2cmp":
+    "postcss incomplete sourceMappingURL fix — build-time only, first-party CSS only; Next pins nested postcss@8.4.31.",
   "GHSA-r28c-9q8g-f849":
     "postcss path traversal via sourceMappingURL — build-time only, first-party CSS only; Next pins nested postcss@8.4.31.",
-
-  // sharp is a transitive OPTIONAL dependency of next, used solely by the
-  // built-in Image Optimization API. next.config.mjs declares NO
-  // `images.remotePatterns`/`images.domains`, so the optimizer only ever
-  // processes first-party images shipped in the bundle — there is no path for
-  // an attacker to submit a hostile image to libvips. In production on Vercel
-  // image optimization runs on Vercel's managed infrastructure, not this copy.
-  // Next 15.5 declares sharp `^0.34`, so forcing >=0.35 risks breaking image
-  // optimization outright. Revisit when Next widens the range.
-  "GHSA-f88m-g3jw-g9cj":
-    "sharp/libvips CVEs — transitive optional dep of next; no images.remotePatterns configured (first-party images only), and Vercel supplies its own optimizer. Next 15.5 pins sharp ^0.34.",
 };
 
 function acceptedGhsa(url: string | undefined): string | null {

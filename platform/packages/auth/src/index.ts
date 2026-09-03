@@ -82,6 +82,9 @@ export interface IssuedLoginToken {
   recordId: string;
 }
 
+export const LOGIN_TOKEN_RATE_LIMIT = 6;
+export const LOGIN_TOKEN_RATE_WINDOW_MS = 60 * 60 * 1000;
+
 /**
  * Create a one-time magic-link login token. Caller is responsible for sending
  * the email containing `${baseUrl}/api/auth/verify?token=${token}`.
@@ -99,14 +102,23 @@ export async function issueLoginToken(
   }
   const token = crypto.randomBytes(LOGIN_TOKEN_BYTES).toString("base64url");
   const expiresAt = new Date(Date.now() + LOGIN_TOKEN_TTL_MS).toISOString();
-  const rec = await repos.loginTokens.create({
-    tokenHash: hashToken(token),
-    email: input.email.toLowerCase().trim(),
-    role: input.role,
-    name: input.name?.trim() || undefined,
-    redirectTo: input.redirectTo,
-    expiresAt,
-  });
+  const rec = await repos.loginTokens.createWithinLimit(
+    {
+      tokenHash: hashToken(token),
+      email: input.email.toLowerCase().trim(),
+      role: input.role,
+      name: input.name?.trim() || undefined,
+      redirectTo: input.redirectTo,
+      expiresAt,
+    },
+    {
+      max: LOGIN_TOKEN_RATE_LIMIT,
+      windowStart: new Date(Date.now() - LOGIN_TOKEN_RATE_WINDOW_MS).toISOString(),
+    },
+  );
+  if (!rec) {
+    throw new AuthError("Too many link requests. Try again in an hour.", 429);
+  }
   await repos.audit.log({ action: "login_token_issued", resource: `email:${rec.email}` });
   return { token, expiresAt, recordId: rec.id };
 }

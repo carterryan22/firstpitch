@@ -94,10 +94,14 @@ export function PlayerForm({
       setErr(j.error ?? "Save failed");
       return;
     }
-    const data = (await res.json()) as { player?: { id: string; teamId?: string } };
+    const data = (await res.json()) as {
+      player?: { id: string; teamId?: string };
+      consent?: { emailSent?: boolean };
+    };
     const tid = data.player?.teamId ?? teamId;
     if (data.player?.id && tid) {
-      router.push(`/coach/teams/${tid}/roster/${data.player.id}`);
+      const query = data.consent?.emailSent === false ? "?consentEmail=failed" : "";
+      router.push(`/coach/teams/${tid}/roster/${data.player.id}${query}`);
       router.refresh();
     } else {
       router.refresh();

@@ -1,5 +1,7 @@
 import { a11yScenario } from "./a11y-scan.ts";
+import { adminFlowScenario } from "./admin-flow.ts";
 import { anonymousScenario } from "./anonymous.ts";
+import { athleteFlowScenario } from "./athlete-flow.ts";
 import { authzIsolationScenario } from "./authz-isolation.ts";
 import { brokenLinksScenario } from "./broken-links.ts";
 import { coachFlowScenario } from "./coach-flow.ts";
@@ -16,7 +18,9 @@ export const scenarios: Scenario[] = [
   coachFlowScenario,
   e25SurfacesScenario,
   parentFlowScenario,
+  athleteFlowScenario,
   safetyScenario,
   authzIsolationScenario,
+  adminFlowScenario,
   a11yScenario,
 ];

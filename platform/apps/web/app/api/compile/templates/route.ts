@@ -22,15 +22,19 @@ export async function GET(req: Request) {
       })
     : PLAN_TEMPLATES;
 
-  const enriched = list.map((t) => ({
-    ...t,
-    drills: templateDrills(t).map((d) => ({
-      drill_id: d.drill_id,
-      name: d.name,
-      duration_minutes: d.duration_minutes,
-      topic: d.topic,
-    })),
-  }));
+  const enriched = list.map((template) => {
+    const drills = templateDrills(template);
+    return {
+      ...template,
+      drillIds: drills.map((drill) => drill.drill_id),
+      drills: drills.map((drill) => ({
+        drill_id: drill.drill_id,
+        name: drill.name,
+        duration_minutes: drill.duration_minutes,
+        topic: drill.topic,
+      })),
+    };
+  });
 
   return NextResponse.json({ templates: enriched });
 }

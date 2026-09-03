@@ -648,7 +648,7 @@
     "safety_flags": ["throw_count_logged"],
     "safety_rule_refs": ["PITCH_SMART_GENERAL", "STOP_ON_PAIN"],
     "verification_levels_supported": ["self_entered", "video_attached", "coach_verified"],
-    "evidence_links": [{ "source_id": "https://www.mlb.com/pitch-smart", "relationship": "aligns_with" }],
+    "evidence_links": [{ "source_id": "https://www.mlb.com/pitch-smart/pitching-guidelines/ages-9-12", "relationship": "aligns_with" }],
     "tags": ["pitching", "bullpen", "command"],
     "author": "platform", "created_at": "2026-05-26", "last_reviewed_at": "2026-05-26", "review_status": "published",
     "kid_friendly": {
@@ -1430,7 +1430,7 @@
     "safety_flags": ["throw_count_logged"],
     "safety_rule_refs": ["PITCH_SMART_GENERAL", "STOP_ON_PAIN"],
     "verification_levels_supported": ["self_entered", "coach_verified"],
-    "evidence_links": [{ "source_id": "https://www.mlb.com/pitch-smart", "relationship": "aligns_with" }],
+    "evidence_links": [{ "source_id": "https://www.mlb.com/pitch-smart/pitching-guidelines/ages-9-12", "relationship": "aligns_with" }],
     "tags": ["throwing", "long-toss", "arm-care"],
     "author": "platform", "created_at": "2026-05-26", "last_reviewed_at": "2026-05-26", "review_status": "published",
     "kid_friendly": {
@@ -1484,8 +1484,8 @@
     "safety_flags": ["overuse_monitor", "dynamic_warmup_required"],
     "safety_rule_refs": ["STOP_ON_PAIN", "TEEN_STRENGTH_FREQUENCY"],
     "verification_levels_supported": ["self_entered", "video_attached", "device_captured", "coach_verified", "facility_verified"],
-    "evidence_links": [{ "source_id": "https://provelocitybat.com/all-star-blueprint", "relationship": "inspired_by" }],
-    "tags": ["hitting", "bat-speed", "overload-underload", "all-star-blueprint"],
+    "evidence_links": [{ "source_id": "https://ultimatebaseballtraining.com/wp-content/uploads/2017/01/Ultimate-Bat-Speed-Workout.pdf", "relationship": "aligns_with" }],
+    "tags": ["hitting", "bat-speed", "overload-underload", "contrast-training"],
     "author": "platform", "created_at": "2026-06-03", "last_reviewed_at": "2026-06-03", "review_status": "reviewed",
     "kid_friendly": {
       "explain": "Five swings with the heavy bat, five with the light bat, then five with your real bat off the tee. We measure how hard you hit.",
@@ -1537,8 +1537,8 @@
     "safety_flags": [],
     "safety_rule_refs": ["STOP_ON_PAIN"],
     "verification_levels_supported": ["self_entered", "video_attached", "coach_verified", "facility_verified"],
-    "evidence_links": [{ "source_id": "https://provelocitybat.com/all-star-blueprint", "relationship": "inspired_by" }],
-    "tags": ["hitting", "swing-mechanics", "bat-path", "tee", "all-star-blueprint"],
+    "evidence_links": [{ "source_id": "https://camwoodbats.com/products/camwood-hands-speed-trainer", "relationship": "aligns_with" }],
+    "tags": ["hitting", "swing-mechanics", "bat-path", "tee"],
     "author": "platform", "created_at": "2026-06-03", "last_reviewed_at": "2026-06-03", "review_status": "reviewed",
     "kid_friendly": {
       "explain": "We move the tee low, middle, then high. Your barrel has to match each height with the same smooth path.",
@@ -1590,8 +1590,8 @@
     "safety_flags": [],
     "safety_rule_refs": ["STOP_ON_PAIN"],
     "verification_levels_supported": ["self_entered", "video_attached", "coach_verified", "facility_verified"],
-    "evidence_links": [{ "source_id": "https://provelocitybat.com/all-star-blueprint", "relationship": "inspired_by" }],
-    "tags": ["hitting", "hand-eye", "tracking", "vision", "all-star-blueprint"],
+    "evidence_links": [{ "source_id": "https://probaseballinsider.com/best-hand-eye-coordination-drills-for-baseball-players-and-softball/", "relationship": "aligns_with" }],
+    "tags": ["hitting", "hand-eye", "tracking", "vision"],
     "author": "platform", "created_at": "2026-06-03", "last_reviewed_at": "2026-06-03", "review_status": "reviewed",
     "kid_friendly": {
       "explain": "I’ll toss balls with numbers or colors on them. Shout what you see, then only swing if it’s a strike.",
@@ -4276,6 +4276,5118 @@
       "explain": "Make a little card with three steps for shaking off a mistake. Keep it in your bag.",
       "goal": "Write your own three steps, then practise them five times.",
       "why": "Everybody makes errors. The players who bounce back fastest are the ones who decided how, before it happened."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "drill_id": "PARTNER_CATCH_FOUR_SEAM",
+    "name": "Partner Catch - Four-Seam Grip",
+    "short_description": "Structured catch play on a four-seam grip. 20 throws, logged.",
+    "long_description": "Catch play with intent: every throw is taken with a four-seam grip and aimed at the partner's chest. Partners start close and step back only after a clean set. This replaces aimless warm-up throwing, and the throws are logged because catch play is real arm volume.",
+    "topic": "throwing",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "preseason",
+      "in-season"
+    ],
+    "intensity": "normal",
+    "primary_metric": {
+      "metric_id": "THROW_ACCURACY_PCT",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [
+      {
+        "metric_id": "THROW_FORM_CHECKPOINTS",
+        "expected_movement": "increase"
+      }
+    ],
+    "non_metric": false,
+    "environment_tier": "T1_field",
+    "equipment_required": [
+      "5_baseballs",
+      "glove"
+    ],
+    "equipment_substitutions": [
+      {
+        "missing": "5_baseballs",
+        "swap_to": "wiffle_balls for 9-12 in tight space",
+        "tier_change": "T3_backyard"
+      }
+    ],
+    "space_required": "30x30ft",
+    "player_count_min": 2,
+    "player_count_max": 20,
+    "coaches_min": 0,
+    "coaches_max": 2,
+    "duration_minutes": 10,
+    "reps_or_rounds": "20 throws",
+    "rest_seconds_between_sets": 20,
+    "setup_steps": [
+      "Complete the arm-care warm-up first",
+      "Partners face off 30 feet apart"
+    ],
+    "execution_steps": [
+      "Find the four-seam grip without looking at the ball",
+      "Throw chest-high to your partner",
+      "Step back 5 feet after 5 clean throws each",
+      "Stop at 20 and log them"
+    ],
+    "coaching_cues": [
+      "Four seams every time",
+      "Chest, not feet",
+      "Feet point where you throw"
+    ],
+    "common_mistakes": [
+      "Grabbing whatever grip comes up",
+      "Backing up before the throws are clean",
+      "Turning catch play into a long-toss contest"
+    ],
+    "scoring": {
+      "type": "percent",
+      "unit": "% chest-high",
+      "success_threshold": 75
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Add a shuffle before release at each distance"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Stay at one distance for all 20"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Grip check",
+        "change": "Partner calls out the grip they saw on release"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 20,
+    "loaded_strength_movement": false,
+    "supervision_required": false,
+    "safety_flags": [
+      "arm_warmup_required",
+      "counts_toward_throw_volume"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN",
+      "PITCH_SMART_GENERAL"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "video_attached",
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://usabdevelops.com/",
+        "relationship": "aligns_with"
+      },
+      {
+        "source_id": "https://img.mlbstatic.com/mlb-images/image/upload/mlb/ftaser92d1loqdb38t4i.pdf",
+        "relationship": "aligns_with"
+      }
+    ],
+    "tags": [
+      "throwing",
+      "grip",
+      "warmup",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Catch play, but every throw is a four-seam grip aimed at your partner's chest.",
+      "goal": "15 of 20 chest-high. Back up only when they are clean.",
+      "why": "A four-seam ball flies straight. Any other grip and it runs away from whoever is catching it."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "drill_id": "FOUR_CORNERS_THROWING",
+    "name": "Four Corners Throwing",
+    "short_description": "Team throwing around four bases. Accuracy and transfer under mild pressure.",
+    "long_description": "Players split across four corners and throw around the square, following their throw to the next corner. Adds mild pace to catch play without turning it into a max-effort contest. Sixteen throws each, logged.",
+    "topic": "throwing",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "preseason",
+      "in-season"
+    ],
+    "intensity": "normal",
+    "primary_metric": {
+      "metric_id": "THROW_ACCURACY_PCT",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [
+      {
+        "metric_id": "TRANSFER_SPEED",
+        "expected_movement": "increase"
+      }
+    ],
+    "non_metric": false,
+    "environment_tier": "T1_field",
+    "equipment_required": [
+      "5_baseballs",
+      "glove",
+      "4_cones"
+    ],
+    "equipment_substitutions": [
+      {
+        "missing": "4_cones",
+        "swap_to": "bases or gloves as corners",
+        "tier_change": "T1_field"
+      }
+    ],
+    "space_required": "infield",
+    "player_count_min": 4,
+    "player_count_max": 16,
+    "coaches_min": 1,
+    "coaches_max": 2,
+    "duration_minutes": 12,
+    "reps_or_rounds": "16 throws each",
+    "rest_seconds_between_sets": 30,
+    "setup_steps": [
+      "Arm-care warm-up first",
+      "Four corners about 60 feet apart",
+      "Split the group evenly"
+    ],
+    "execution_steps": [
+      "Throw to the next corner, then follow your throw",
+      "Receive, transfer, throw",
+      "Reverse direction halfway through",
+      "Log the throws when the round ends"
+    ],
+    "coaching_cues": [
+      "Catch it moving toward your target",
+      "Chest-high",
+      "Controlled pace, not a race"
+    ],
+    "common_mistakes": [
+      "Speeding up until throws sail",
+      "Standing flat-footed to receive",
+      "Throwing to the player instead of the glove"
+    ],
+    "scoring": {
+      "type": "percent",
+      "unit": "% clean receive + accurate throw",
+      "success_threshold": 70
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Add a second ball to the square"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Shorten to 45 feet and drop the follow-your-throw rule"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Reverse on the whistle",
+        "change": "Coach flips the direction mid-round"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 16,
+    "loaded_strength_movement": false,
+    "supervision_required": false,
+    "safety_flags": [
+      "arm_warmup_required",
+      "counts_toward_throw_volume"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN",
+      "PITCH_SMART_GENERAL"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://usabdevelops.com/page/1524/practice-plans",
+        "relationship": "aligns_with"
+      },
+      {
+        "source_id": "https://www.littleleague.org/university/coaches/",
+        "relationship": "aligns_with"
+      }
+    ],
+    "tags": [
+      "throwing",
+      "team",
+      "transfer",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Throw around the square and follow your throw to the next corner.",
+      "goal": "Clean catch and accurate throw 7 out of 10 times.",
+      "why": "Games are full of catch-and-throw. This is that, over and over, with somewhere to be afterwards."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "drill_id": "IF_READY_HOP_FIRST_STEP",
+    "name": "Ready Hop and First Step",
+    "short_description": "Time the ready hop to the pitch and take a correct first step. No throws.",
+    "long_description": "Infielders work the small ready hop that lands as the ball reaches the hitting zone, then take one explosive first step in the direction the coach points. Pure movement work - nothing is fielded or thrown, so it adds no arm volume.",
+    "topic": "fielding",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "preseason",
+      "in-season"
+    ],
+    "intensity": "normal",
+    "primary_metric": {
+      "metric_id": "FIELDING_FIRST_STEP",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [],
+    "non_metric": false,
+    "environment_tier": "T1_field",
+    "equipment_required": [
+      "glove"
+    ],
+    "equipment_substitutions": [],
+    "space_required": "infield",
+    "player_count_min": 1,
+    "player_count_max": 12,
+    "coaches_min": 1,
+    "coaches_max": 2,
+    "duration_minutes": 8,
+    "reps_or_rounds": "3 rounds x 6 hops",
+    "rest_seconds_between_sets": 30,
+    "setup_steps": [
+      "Dynamic warm-up first",
+      "Infielders spread out in athletic position"
+    ],
+    "execution_steps": [
+      "Coach simulates the pitch",
+      "Land the ready hop as the ball would reach the plate",
+      "Coach points left, right or straight",
+      "Explode one step that way, then reset"
+    ],
+    "coaching_cues": [
+      "Small hop, not a jump",
+      "Land as the ball gets there",
+      "First step crosses, it does not shuffle"
+    ],
+    "common_mistakes": [
+      "Hopping too early and landing flat",
+      "A big jump that costs time",
+      "Standing upright between reps"
+    ],
+    "scoring": {
+      "type": "rubric",
+      "unit": "checkpoints hit",
+      "success_threshold": null
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Coach hits a live ball right after the point"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Walk through the hop with no direction call"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Mirror",
+        "change": "Partners face each other and mirror the first step"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 0,
+    "loaded_strength_movement": false,
+    "supervision_required": false,
+    "safety_flags": [
+      "dynamic_warmup_required"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "video_attached",
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://usabdevelops.com/",
+        "relationship": "aligns_with"
+      },
+      {
+        "source_id": "https://img.mlbstatic.com/mlb-images/image/upload/mlb/ftaser92d1loqdb38t4i.pdf",
+        "relationship": "aligns_with"
+      }
+    ],
+    "tags": [
+      "fielding",
+      "infield",
+      "first-step",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Little hop right as the pitch gets to the plate, then one hard step wherever coach points.",
+      "goal": "Land the hop on time every rep and make the first step a real one.",
+      "why": "Range is mostly the first step. Land on time and the ball comes to you."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "drill_id": "IF_BACKHAND_FOREHAND_RANGE",
+    "name": "Backhand and Forehand Range",
+    "short_description": "Field to both sides and throw to first. 12 throws, logged.",
+    "long_description": "Coach rolls or hits balls alternately to the backhand and forehand side. The infielder works to the ball, fields it in the correct glove position and throws to first. Both directions every round so neither side gets neglected.",
+    "topic": "fielding",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "preseason",
+      "in-season"
+    ],
+    "intensity": "normal",
+    "primary_metric": {
+      "metric_id": "FIELDING_CLEAN_PCT",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [
+      {
+        "metric_id": "THROW_ACCURACY_PCT",
+        "expected_movement": "increase"
+      }
+    ],
+    "non_metric": false,
+    "environment_tier": "T1_field",
+    "equipment_required": [
+      "5_baseballs",
+      "glove",
+      "fungo_bat"
+    ],
+    "equipment_substitutions": [
+      {
+        "missing": "fungo_bat",
+        "swap_to": "coach rolls by hand",
+        "tier_change": "T1_field"
+      }
+    ],
+    "space_required": "infield",
+    "player_count_min": 2,
+    "player_count_max": 12,
+    "coaches_min": 1,
+    "coaches_max": 2,
+    "duration_minutes": 15,
+    "reps_or_rounds": "2 rounds x 6 (3 backhand, 3 forehand)",
+    "rest_seconds_between_sets": 45,
+    "setup_steps": [
+      "Arm-care warm-up first",
+      "Fielder at their position, a partner at first"
+    ],
+    "execution_steps": [
+      "Coach sends the ball to one side",
+      "Work to the ball, field it, set the feet",
+      "Throw to first",
+      "Alternate sides; log the 12 throws"
+    ],
+    "coaching_cues": [
+      "Thumb down on the backhand",
+      "Get around the ball on the forehand",
+      "Field it out front, not under you"
+    ],
+    "common_mistakes": [
+      "Reaching instead of moving the feet",
+      "Backhanding balls that could be fielded in front",
+      "Throwing before the feet are set"
+    ],
+    "scoring": {
+      "type": "percent",
+      "unit": "% clean field + accurate throw",
+      "success_threshold": 70
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Live fungo at game pace"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Rolled balls, no throw - field and hold"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Deep in the hole",
+        "change": "Start the fielder two steps further from the ball"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 12,
+    "loaded_strength_movement": false,
+    "supervision_required": false,
+    "safety_flags": [
+      "arm_warmup_required",
+      "counts_toward_throw_volume"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN",
+      "PITCH_SMART_GENERAL"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "video_attached",
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://usabdevelops.com/",
+        "relationship": "aligns_with"
+      },
+      {
+        "source_id": "https://www.littleleague.org/university/coaches/",
+        "relationship": "aligns_with"
+      }
+    ],
+    "tags": [
+      "fielding",
+      "infield",
+      "ground-balls",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Balls to your backhand and forehand, alternating. Field it, set your feet, throw to first.",
+      "goal": "7 of 10 clean, both sides.",
+      "why": "Everybody practises the ball hit right at them. Games do not work that way."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "drill_id": "IF_SLOW_ROLLER_DO_OR_DIE",
+    "name": "Slow Roller Do-or-Die",
+    "short_description": "Charge the slow roller and throw on the run. 10 throws, logged.",
+    "long_description": "Coach rolls a slow ball toward the infielder, who must charge, field it moving forward - often barehanded on the last step - and throw on the run. This is the play that beats fast runners, and it only works if the feet never stop.",
+    "topic": "fielding",
+    "age_band": [
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "preseason",
+      "in-season"
+    ],
+    "intensity": "hard",
+    "primary_metric": {
+      "metric_id": "FIELDING_CLEAN_PCT",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [
+      {
+        "metric_id": "THROW_ACCURACY_PCT",
+        "expected_movement": "increase"
+      }
+    ],
+    "non_metric": false,
+    "environment_tier": "T1_field",
+    "equipment_required": [
+      "5_baseballs",
+      "glove"
+    ],
+    "equipment_substitutions": [],
+    "space_required": "infield",
+    "player_count_min": 2,
+    "player_count_max": 12,
+    "coaches_min": 1,
+    "coaches_max": 2,
+    "duration_minutes": 12,
+    "reps_or_rounds": "2 rounds x 5",
+    "rest_seconds_between_sets": 45,
+    "setup_steps": [
+      "Arm-care warm-up first",
+      "Partner or coach at first base",
+      "Teen bands only - this is a throw on the run"
+    ],
+    "execution_steps": [
+      "Coach rolls a slow ball",
+      "Charge, field moving forward",
+      "Throw on the run to first",
+      "Log the throws"
+    ],
+    "coaching_cues": [
+      "Never stop your feet",
+      "Field it off the front foot",
+      "Short arm action, get rid of it"
+    ],
+    "common_mistakes": [
+      "Waiting for the ball to arrive",
+      "Stopping to set up before throwing",
+      "Barehanding a ball that is still moving fast"
+    ],
+    "scoring": {
+      "type": "percent",
+      "unit": "% clean + accurate",
+      "success_threshold": 60
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Add a live runner so the throw has a real clock"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Charge and field only, no throw"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Bunt coverage",
+        "change": "Run it as a bunt play with the corner charging"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 10,
+    "loaded_strength_movement": false,
+    "supervision_required": true,
+    "safety_flags": [
+      "arm_warmup_required",
+      "counts_toward_throw_volume",
+      "max_effort_throws"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN",
+      "PITCH_SMART_GENERAL"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "video_attached",
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://usabdevelops.com/",
+        "relationship": "aligns_with"
+      },
+      {
+        "source_id": "https://img.mlbstatic.com/mlb-images/image/upload/mlb/ftaser92d1loqdb38t4i.pdf",
+        "relationship": "aligns_with"
+      }
+    ],
+    "tags": [
+      "fielding",
+      "infield",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Slow dribbler. You have to run at it, scoop it moving and throw while you are still going.",
+      "goal": "6 of 10 clean. Feet never stop.",
+      "why": "This is the play that decides infield hits. Standing and waiting loses it every time."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "drill_id": "OF_FLY_BALL_CATCH_TECHNIQUE",
+    "name": "Fly Ball Catch Technique",
+    "short_description": "Get behind the ball and catch it moving forward. No throws.",
+    "long_description": "Outfielders work the basic fly-ball catch: read, get behind the ball, and catch it moving through toward the target with two hands above the throwing shoulder. Catch only - nothing is thrown, so it adds no arm volume and can sit anywhere in a practice.",
+    "topic": "fielding",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "preseason",
+      "in-season"
+    ],
+    "intensity": "normal",
+    "primary_metric": {
+      "metric_id": "FIELDING_CLEAN_PCT",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [],
+    "non_metric": false,
+    "environment_tier": "T1_field",
+    "equipment_required": [
+      "5_baseballs",
+      "glove"
+    ],
+    "equipment_substitutions": [
+      {
+        "missing": "5_baseballs",
+        "swap_to": "wiffle_balls or tennis balls for 9-12",
+        "tier_change": "T1_field"
+      }
+    ],
+    "space_required": "outfield",
+    "player_count_min": 2,
+    "player_count_max": 12,
+    "coaches_min": 1,
+    "coaches_max": 2,
+    "duration_minutes": 12,
+    "reps_or_rounds": "2 rounds x 5 catches",
+    "rest_seconds_between_sets": 40,
+    "setup_steps": [
+      "Dynamic warm-up first",
+      "Coach with a bucket, outfielders in a line"
+    ],
+    "execution_steps": [
+      "Coach throws or hits a catchable fly ball",
+      "Read it, get behind it",
+      "Catch moving forward, two hands, above the throwing shoulder",
+      "Return the ball by rolling it, not throwing it"
+    ],
+    "coaching_cues": [
+      "Get behind it, then come through it",
+      "Two hands above your throwing shoulder",
+      "Catch it moving, not standing"
+    ],
+    "common_mistakes": [
+      "Drifting sideways and catching flat-footed",
+      "One-hand catches on routine balls",
+      "Backing up on a ball that is in front"
+    ],
+    "scoring": {
+      "type": "percent",
+      "unit": "% clean catches",
+      "success_threshold": 80
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Add a crow hop and a throw to a cutoff (logs throws)"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Short, soft tosses from 20 feet"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Sun / lights",
+        "change": "Practise shielding with the glove hand"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 0,
+    "loaded_strength_movement": false,
+    "supervision_required": false,
+    "safety_flags": [
+      "dynamic_warmup_required",
+      "collision_risk_use_calls"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "video_attached",
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://usabdevelops.com/",
+        "relationship": "aligns_with"
+      },
+      {
+        "source_id": "https://www.littleleague.org/university/coaches/",
+        "relationship": "aligns_with"
+      }
+    ],
+    "tags": [
+      "fielding",
+      "outfield",
+      "fly-balls",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Get all the way behind the ball, then catch it walking through it with two hands.",
+      "goal": "8 out of 10 clean, always two hands.",
+      "why": "Catching it moving forward means you are already going the way you have to throw."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "drill_id": "OF_DROP_STEP_OVER_SHOULDER",
+    "name": "Drop Step and Over-the-Shoulder",
+    "short_description": "Turn and run to a ball hit over your head. No throws.",
+    "long_description": "Outfielders drop step on the coach's call and run to a spot, catching over the shoulder without backpedalling. Backpedalling is slow and unstable; turning and running is the only way to cover real ground on a ball hit over your head.",
+    "topic": "fielding",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "preseason",
+      "in-season"
+    ],
+    "intensity": "normal",
+    "primary_metric": {
+      "metric_id": "FIELDING_FIRST_STEP",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [
+      {
+        "metric_id": "READ_ACCURACY",
+        "expected_movement": "increase"
+      }
+    ],
+    "non_metric": false,
+    "environment_tier": "T1_field",
+    "equipment_required": [
+      "5_baseballs",
+      "glove"
+    ],
+    "equipment_substitutions": [
+      {
+        "missing": "5_baseballs",
+        "swap_to": "tennis balls, easier to track for 9-12",
+        "tier_change": "T1_field"
+      }
+    ],
+    "space_required": "full_outfield",
+    "player_count_min": 2,
+    "player_count_max": 12,
+    "coaches_min": 1,
+    "coaches_max": 2,
+    "duration_minutes": 12,
+    "reps_or_rounds": "2 rounds x 4 each side",
+    "rest_seconds_between_sets": 45,
+    "setup_steps": [
+      "Dynamic warm-up - this is near-sprint work",
+      "Clear space behind each outfielder"
+    ],
+    "execution_steps": [
+      "Coach calls or points a side",
+      "Drop step that way and turn and run",
+      "Track the ball over the shoulder and catch on the run",
+      "Jog back and reset"
+    ],
+    "coaching_cues": [
+      "Turn and run, never backpedal",
+      "Find the ball once, then run to the spot",
+      "Glove up late"
+    ],
+    "common_mistakes": [
+      "Backpedalling and stumbling",
+      "Watching the ball the whole way and slowing down",
+      "Drop stepping to the wrong side"
+    ],
+    "scoring": {
+      "type": "percent",
+      "unit": "% correct drop step",
+      "success_threshold": 75
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Coach hits live balls at the wall"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Footwork only, no ball"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Both shoulders",
+        "change": "Alternate glove-side and arm-side catches"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 0,
+    "loaded_strength_movement": false,
+    "supervision_required": false,
+    "safety_flags": [
+      "dynamic_warmup_required",
+      "collision_risk_use_calls"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "video_attached",
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://usabdevelops.com/",
+        "relationship": "aligns_with"
+      },
+      {
+        "source_id": "https://img.mlbstatic.com/mlb-images/image/upload/mlb/ftaser92d1loqdb38t4i.pdf",
+        "relationship": "aligns_with"
+      }
+    ],
+    "tags": [
+      "fielding",
+      "outfield",
+      "first-step",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Ball over your head. Drop step, turn, and run to where it is going.",
+      "goal": "Right drop step 3 out of 4, and no backpedalling.",
+      "why": "Backpedalling is slow and you fall over. Turning and running is how you get to balls nobody expects."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "drill_id": "IF_POPUP_PRIORITY",
+    "name": "Pop-Up Priority and Calls",
+    "short_description": "Who calls it, who gets out of the way. Loud calls, no collisions.",
+    "long_description": "Coach lofts pop-ups into the gaps between infielders. Players work the priority order and, above all, the call: the player taking it calls it three times, and everyone else calls off and peels away. This is as much a safety drill as a fielding one.",
+    "topic": "fielding",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "preseason",
+      "in-season"
+    ],
+    "intensity": "normal",
+    "primary_metric": {
+      "metric_id": "COMMUNICATION_PCT",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [
+      {
+        "metric_id": "FIELDING_CLEAN_PCT",
+        "expected_movement": "increase"
+      }
+    ],
+    "non_metric": false,
+    "environment_tier": "T1_field",
+    "equipment_required": [
+      "5_baseballs",
+      "glove"
+    ],
+    "equipment_substitutions": [
+      {
+        "missing": "5_baseballs",
+        "swap_to": "safety baseballs for 9-12",
+        "tier_change": "T1_field"
+      }
+    ],
+    "space_required": "infield",
+    "player_count_min": 3,
+    "player_count_max": 12,
+    "coaches_min": 1,
+    "coaches_max": 2,
+    "duration_minutes": 12,
+    "reps_or_rounds": "2 rounds x 5 pop-ups",
+    "rest_seconds_between_sets": 40,
+    "setup_steps": [
+      "Dynamic warm-up first",
+      "Teach the priority order before the first ball goes up",
+      "Everyone must be able to hear the coach"
+    ],
+    "execution_steps": [
+      "Coach lofts a ball between two players",
+      "The player taking it calls it three times, loud",
+      "Everyone else calls off and peels away",
+      "Reset and rotate"
+    ],
+    "coaching_cues": [
+      "Three loud calls, not one",
+      "If you hear a call, peel away",
+      "Eyes on the ball, ears open"
+    ],
+    "common_mistakes": [
+      "Calling once and quietly",
+      "Two players converging with neither calling off",
+      "Waving an arm instead of using a voice"
+    ],
+    "scoring": {
+      "type": "percent",
+      "unit": "% clean called catches",
+      "success_threshold": 80
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Add the catcher and pitcher to the priority order"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Two players only, ball clearly between them"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Wind ball",
+        "change": "High pop-ups that drift, so the call has to change"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 0,
+    "loaded_strength_movement": false,
+    "supervision_required": true,
+    "safety_flags": [
+      "collision_risk_use_calls",
+      "dynamic_warmup_required"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://www.littleleague.org/university/coaches/",
+        "relationship": "aligns_with"
+      },
+      {
+        "source_id": "https://usabdevelops.com/",
+        "relationship": "aligns_with"
+      }
+    ],
+    "tags": [
+      "fielding",
+      "infield",
+      "communication",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Pop-up between two players. Whoever takes it yells three times; everybody else gets out of the way.",
+      "goal": "Every ball called loud, three times, and nobody runs into anybody.",
+      "why": "Two players staring at the sky and nobody talking is how people get hurt. The call matters more than the catch."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "drill_id": "IF_FIRST_BASE_RECEIVING",
+    "name": "First Base Receiving",
+    "short_description": "Find the bag, stretch to the throw, keep the foot on. No throws made.",
+    "long_description": "The first baseman finds the bag without looking, presents a target, and stretches toward the throw only after seeing where it is going. Includes picking short hops and coming off the bag on a wild throw. The fielder receives throughout - they do not throw - so this adds no arm volume.",
+    "topic": "fielding",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "preseason",
+      "in-season"
+    ],
+    "intensity": "normal",
+    "primary_metric": {
+      "metric_id": "CLEAN_RECEIVE_PCT",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [],
+    "non_metric": false,
+    "environment_tier": "T1_field",
+    "equipment_required": [
+      "5_baseballs",
+      "glove",
+      "1B_bag"
+    ],
+    "equipment_substitutions": [
+      {
+        "missing": "1B_bag",
+        "swap_to": "a base or a flat cone",
+        "tier_change": "T1_field"
+      }
+    ],
+    "space_required": "infield",
+    "player_count_min": 2,
+    "player_count_max": 8,
+    "coaches_min": 1,
+    "coaches_max": 1,
+    "duration_minutes": 12,
+    "reps_or_rounds": "3 rounds x 5 receives",
+    "rest_seconds_between_sets": 40,
+    "setup_steps": [
+      "Dynamic warm-up first",
+      "Coach throws from the shortstop position"
+    ],
+    "execution_steps": [
+      "Find the bag with the foot, not the eyes",
+      "Present a target with both hands",
+      "See the throw, then stretch toward it",
+      "Include two deliberate short hops and one wild throw per round"
+    ],
+    "coaching_cues": [
+      "Feet find the bag, eyes find the ball",
+      "Stretch after you see it, not before",
+      "A run beats a hurt ankle - come off for the wild one"
+    ],
+    "common_mistakes": [
+      "Stretching before the throw is released",
+      "Looking down to find the bag",
+      "Staying on the bag for a throw that is not catchable"
+    ],
+    "scoring": {
+      "type": "percent",
+      "unit": "% clean receives",
+      "success_threshold": 80
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Throws from all four infield positions at game pace"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Accurate throws only, no short hops"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Pick practice",
+        "change": "Every throw is a short hop"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 0,
+    "loaded_strength_movement": false,
+    "supervision_required": false,
+    "safety_flags": [
+      "dynamic_warmup_required"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "video_attached",
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://usabdevelops.com/",
+        "relationship": "aligns_with"
+      },
+      {
+        "source_id": "https://www.littleleague.org/university/coaches/",
+        "relationship": "aligns_with"
+      }
+    ],
+    "tags": [
+      "fielding",
+      "infield",
+      "soft-hands",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Find the bag with your foot, give a target, and stretch once you see where the throw is going.",
+      "goal": "8 of 10 clean, including the short hops.",
+      "why": "A first baseman who picks throws makes the whole infield braver about letting it go."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "drill_id": "IF_FLIP_FEED_FOOTWORK",
+    "name": "Flip and Feed Footwork",
+    "short_description": "Underhand flips and short feeds to the bag. No overhand throws.",
+    "long_description": "Middle infielders work the short exchange: underhand flip when close, backhand flip when moving away, firm short feed when a little further. Deliberately all short-range feeds - no overhand throwing - so it can run on a rest day.",
+    "topic": "fielding",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "preseason",
+      "in-season"
+    ],
+    "intensity": "normal",
+    "primary_metric": {
+      "metric_id": "TRANSFER_SPEED",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [
+      {
+        "metric_id": "DP_TURN_TIME",
+        "expected_movement": "decrease"
+      }
+    ],
+    "non_metric": false,
+    "environment_tier": "T1_field",
+    "equipment_required": [
+      "5_baseballs",
+      "glove",
+      "infield_bases"
+    ],
+    "equipment_substitutions": [
+      {
+        "missing": "infield_bases",
+        "swap_to": "cones as bags",
+        "tier_change": "T1_field"
+      }
+    ],
+    "space_required": "infield",
+    "player_count_min": 2,
+    "player_count_max": 8,
+    "coaches_min": 1,
+    "coaches_max": 1,
+    "duration_minutes": 12,
+    "reps_or_rounds": "3 rounds x 6 feeds",
+    "rest_seconds_between_sets": 40,
+    "setup_steps": [
+      "Dynamic warm-up first",
+      "Partner covering second"
+    ],
+    "execution_steps": [
+      "Coach rolls a ball near the bag",
+      "Field it and choose: underhand flip, backhand flip or short feed",
+      "Show the ball to the receiver before releasing",
+      "Rotate feeder and receiver"
+    ],
+    "coaching_cues": [
+      "Show the ball early",
+      "Firm flips - a soft one hangs",
+      "Feet toward the bag"
+    ],
+    "common_mistakes": [
+      "Hiding the ball in the glove until the last second",
+      "Lobbing a soft flip",
+      "Flipping from too far away - that is a throw"
+    ],
+    "scoring": {
+      "type": "percent",
+      "unit": "% catchable feeds",
+      "success_threshold": 80
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Add the pivot and complete the double play"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Stationary flips from a set position"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Both bags",
+        "change": "Feed to second and to third"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 0,
+    "loaded_strength_movement": false,
+    "supervision_required": false,
+    "safety_flags": [
+      "dynamic_warmup_required"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "video_attached",
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://usabdevelops.com/",
+        "relationship": "aligns_with"
+      },
+      {
+        "source_id": "https://img.mlbstatic.com/mlb-images/image/upload/mlb/ftaser92d1loqdb38t4i.pdf",
+        "relationship": "aligns_with"
+      }
+    ],
+    "tags": [
+      "fielding",
+      "infield",
+      "double-play",
+      "footwork",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Short feeds around the bag - underhand, backhand or a firm little throw. No long ones.",
+      "goal": "8 of 10 catchable, and show the ball every time.",
+      "why": "Your partner can only catch what they can see. Hiding it in your glove is how feeds get dropped."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "drill_id": "IF_TAG_PLAY_SWEEP",
+    "name": "Tag Play Sweep",
+    "short_description": "Catch the throw, sweep the tag, show the ball. No throws made.",
+    "long_description": "Infielders receive a throw at the bag and apply a sweeping tag in one motion, straddling rather than blocking the base. The fielder only receives, so no arm volume. Blocking the bag is explicitly discouraged - it is where most youth baserunning collisions come from.",
+    "topic": "fielding",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "preseason",
+      "in-season"
+    ],
+    "intensity": "normal",
+    "primary_metric": {
+      "metric_id": "CLEAN_RECEIVE_PCT",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [],
+    "non_metric": false,
+    "environment_tier": "T1_field",
+    "equipment_required": [
+      "5_baseballs",
+      "glove",
+      "infield_bases"
+    ],
+    "equipment_substitutions": [
+      {
+        "missing": "infield_bases",
+        "swap_to": "a base or flat cone",
+        "tier_change": "T1_field"
+      }
+    ],
+    "space_required": "infield",
+    "player_count_min": 2,
+    "player_count_max": 8,
+    "coaches_min": 1,
+    "coaches_max": 1,
+    "duration_minutes": 10,
+    "reps_or_rounds": "3 rounds x 5 tags",
+    "rest_seconds_between_sets": 40,
+    "setup_steps": [
+      "Dynamic warm-up first",
+      "Straddle the bag - never block it with a leg",
+      "No live sliding runners in this drill"
+    ],
+    "execution_steps": [
+      "Coach throws to the bag",
+      "Catch it and sweep the tag down in one motion",
+      "Show the ball to the umpire",
+      "Reset"
+    ],
+    "coaching_cues": [
+      "Catch, then sweep - one motion",
+      "Straddle, do not block",
+      "Show the ball so the call goes your way"
+    ],
+    "common_mistakes": [
+      "Blocking the bag with a shin",
+      "Reaching out to tag early",
+      "Losing the ball in the sweep"
+    ],
+    "scoring": {
+      "type": "percent",
+      "unit": "% clean catch + tag",
+      "success_threshold": 80
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Add a runner sliding at half speed with a coach watching"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Hand the ball to the fielder, tag motion only"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Pickoff",
+        "change": "Same tag off a pickoff throw from the catcher"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 0,
+    "loaded_strength_movement": false,
+    "supervision_required": true,
+    "safety_flags": [
+      "collision_risk_use_calls",
+      "dynamic_warmup_required"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "video_attached",
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://www.littleleague.org/university/coaches/",
+        "relationship": "aligns_with"
+      },
+      {
+        "source_id": "https://usabdevelops.com/",
+        "relationship": "aligns_with"
+      }
+    ],
+    "tags": [
+      "fielding",
+      "infield",
+      "situational",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Catch the throw and sweep the tag straight down. Straddle the bag - never stand in front of it.",
+      "goal": "8 of 10 clean catch-and-tag.",
+      "why": "Blocking the base is how ankles get broken. Straddle it, sweep it, show the ball."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "drill_id": "DEF_RUNDOWN_PICKLE",
+    "name": "Rundown - Run Them Back",
+    "short_description": "Two fielders, one runner, as few throws as possible. 10 throws, logged.",
+    "long_description": "Classic rundown worked properly: run the runner hard back toward the base they came from, and make one throw, not five. Fielders learn to close the gap and to get out of the running lane after releasing. Throws are logged because they are real.",
+    "topic": "fielding",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "preseason",
+      "in-season"
+    ],
+    "intensity": "normal",
+    "primary_metric": {
+      "metric_id": "DECISION_ACCURACY",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [
+      {
+        "metric_id": "THROW_ACCURACY_PCT",
+        "expected_movement": "increase"
+      }
+    ],
+    "non_metric": false,
+    "environment_tier": "T1_field",
+    "equipment_required": [
+      "5_baseballs",
+      "glove",
+      "infield_bases"
+    ],
+    "equipment_substitutions": [
+      {
+        "missing": "infield_bases",
+        "swap_to": "cones as bags",
+        "tier_change": "T1_field"
+      }
+    ],
+    "space_required": "infield",
+    "player_count_min": 3,
+    "player_count_max": 12,
+    "coaches_min": 1,
+    "coaches_max": 2,
+    "duration_minutes": 12,
+    "reps_or_rounds": "10 rundowns",
+    "rest_seconds_between_sets": 45,
+    "setup_steps": [
+      "Arm-care warm-up first",
+      "Runners go at three-quarter speed - no diving",
+      "Fielders clear the lane after every throw"
+    ],
+    "execution_steps": [
+      "Runner caught between bags",
+      "Fielder with the ball runs hard at them, ball up",
+      "One throw when the runner commits",
+      "Tag, then clear the lane"
+    ],
+    "coaching_cues": [
+      "Run them back to where they came from",
+      "Ball up so your partner can see it",
+      "One throw, not five"
+    ],
+    "common_mistakes": [
+      "Pump faking until everyone is confused",
+      "Throwing across the runner's line of sight",
+      "Standing in the lane after releasing"
+    ],
+    "scoring": {
+      "type": "percent",
+      "unit": "% outs in one throw or fewer",
+      "success_threshold": 60
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Add a second runner so there is a decision about which to chase"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Walk-through pace, coach narrating"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Between third and home",
+        "change": "Same play with the catcher involved"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 10,
+    "loaded_strength_movement": false,
+    "supervision_required": true,
+    "safety_flags": [
+      "arm_warmup_required",
+      "counts_toward_throw_volume",
+      "collision_risk_use_calls"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN",
+      "PITCH_SMART_GENERAL"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://www.littleleague.org/university/coaches/",
+        "relationship": "aligns_with"
+      },
+      {
+        "source_id": "https://usabdevelops.com/page/1524/practice-plans",
+        "relationship": "aligns_with"
+      }
+    ],
+    "tags": [
+      "fielding",
+      "team-defense",
+      "situational",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Runner stuck between bases. Run at them hard and make ONE throw.",
+      "goal": "Get the out in one throw or fewer, 6 times out of 10.",
+      "why": "Every extra throw is another chance to drop it. Run them back and end it."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "drill_id": "OF_DO_OR_DIE_GROUNDER",
+    "name": "Outfield Do-or-Die Grounder",
+    "short_description": "Charge a ground ball in the outfield and throw home. 10 throws, logged.",
+    "long_description": "With a run trying to score, the outfielder charges a ground ball, fields it on the glove side while still moving, and throws through a cutoff toward home. Max-effort throws from the outfield, so warm-up is required and the throws are logged.",
+    "topic": "fielding",
+    "age_band": [
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "preseason",
+      "in-season"
+    ],
+    "intensity": "hard",
+    "primary_metric": {
+      "metric_id": "FIELDING_CLEAN_PCT",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [
+      {
+        "metric_id": "THROW_VELO_OF",
+        "expected_movement": "maintain"
+      }
+    ],
+    "non_metric": false,
+    "environment_tier": "T1_field",
+    "equipment_required": [
+      "5_baseballs",
+      "glove"
+    ],
+    "equipment_substitutions": [],
+    "space_required": "full_outfield",
+    "player_count_min": 2,
+    "player_count_max": 12,
+    "coaches_min": 1,
+    "coaches_max": 2,
+    "duration_minutes": 12,
+    "reps_or_rounds": "2 rounds x 5",
+    "rest_seconds_between_sets": 60,
+    "setup_steps": [
+      "Full arm warm-up - these are max-effort throws",
+      "Cutoff man in place",
+      "Teen bands only"
+    ],
+    "execution_steps": [
+      "Coach rolls or hits a ground ball to the outfield",
+      "Charge and field it on the glove side, still moving",
+      "Crow hop and throw through the cutoff",
+      "Log the throws"
+    ],
+    "coaching_cues": [
+      "Field it on the glove side, do not centre it",
+      "Low, long throw through the cutoff",
+      "One hop to the target beats a rainbow"
+    ],
+    "common_mistakes": [
+      "Getting square and losing time",
+      "Airmailing the cutoff",
+      "Throwing max effort cold"
+    ],
+    "scoring": {
+      "type": "percent",
+      "unit": "% clean field + on-line throw",
+      "success_threshold": 60
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Live runner tagging from third"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Field and throw at 70% to the cutoff only"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Down the line",
+        "change": "Ball into the corner, throw to third"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 10,
+    "loaded_strength_movement": false,
+    "supervision_required": true,
+    "safety_flags": [
+      "max_effort_throws",
+      "arm_warmup_required",
+      "counts_toward_throw_volume",
+      "overuse_monitor"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN",
+      "PITCH_SMART_GENERAL"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "video_attached",
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://usabdevelops.com/",
+        "relationship": "aligns_with"
+      },
+      {
+        "source_id": "https://img.mlbstatic.com/mlb-images/image/upload/mlb/ftaser92d1loqdb38t4i.pdf",
+        "relationship": "aligns_with"
+      }
+    ],
+    "tags": [
+      "fielding",
+      "outfield",
+      "throws",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Ground ball to the outfield with a runner going home. Charge it, scoop it moving, throw through the cutoff.",
+      "goal": "6 of 10 clean and on line. Low throws, not rainbows.",
+      "why": "A low throw the cutoff can grab stops two runs. A moonball stops none."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "drill_id": "THROWING_QUICK_TRANSFER",
+    "name": "Quick Transfer Ladder",
+    "short_description": "Glove-to-hand exchange against the clock. 15 throws, logged.",
+    "long_description": "Partners work purely on the exchange: catch, transfer, release, timed from catch to release. Distance stays short so the drill trains the hands rather than the arm, but the throws still count toward volume.",
+    "topic": "throwing",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "preseason",
+      "in-season"
+    ],
+    "intensity": "normal",
+    "primary_metric": {
+      "metric_id": "TRANSFER_SPEED",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [
+      {
+        "metric_id": "THROW_ACCURACY_PCT",
+        "expected_movement": "maintain"
+      }
+    ],
+    "non_metric": false,
+    "environment_tier": "T1_field",
+    "equipment_required": [
+      "5_baseballs",
+      "glove"
+    ],
+    "equipment_substitutions": [
+      {
+        "missing": "5_baseballs",
+        "swap_to": "wiffle_balls indoors",
+        "tier_change": "T3_backyard"
+      }
+    ],
+    "space_required": "30x30ft",
+    "player_count_min": 2,
+    "player_count_max": 16,
+    "coaches_min": 0,
+    "coaches_max": 2,
+    "duration_minutes": 10,
+    "reps_or_rounds": "3 rounds x 5 throws",
+    "rest_seconds_between_sets": 30,
+    "setup_steps": [
+      "Arm-care warm-up first",
+      "Partners 45 feet apart - short on purpose"
+    ],
+    "execution_steps": [
+      "Catch the ball out front",
+      "Transfer to a four-seam grip on the way to the ear",
+      "Release without a wind-up",
+      "Time catch-to-release; log the throws"
+    ],
+    "coaching_cues": [
+      "Catch it out front, not at your chest",
+      "Find the seams on the way, not after",
+      "Short circle, quick out"
+    ],
+    "common_mistakes": [
+      "Catching close to the body then reaching in",
+      "Fumbling for a grip after the transfer",
+      "Stretching the distance until it becomes long toss"
+    ],
+    "scoring": {
+      "type": "time",
+      "unit": "seconds catch-to-release",
+      "success_threshold": null
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Receive on the move and transfer while stepping"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Transfer only, hand the ball back instead of throwing"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Bad feeds",
+        "change": "Partner deliberately throws slightly off-target"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 15,
+    "loaded_strength_movement": false,
+    "supervision_required": false,
+    "safety_flags": [
+      "arm_warmup_required",
+      "counts_toward_throw_volume"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN",
+      "PITCH_SMART_GENERAL"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "video_attached",
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://usabdevelops.com/",
+        "relationship": "aligns_with"
+      },
+      {
+        "source_id": "https://img.mlbstatic.com/mlb-images/image/upload/mlb/ftaser92d1loqdb38t4i.pdf",
+        "relationship": "aligns_with"
+      }
+    ],
+    "tags": [
+      "throwing",
+      "transfer",
+      "footwork",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Catch, switch it to your hand, throw. Short distance, quick hands.",
+      "goal": "Cut your catch-to-throw time down over the round.",
+      "why": "Most runners are safe by a step. That step is usually in your hands, not your arm."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "topic": "hitting",
+    "season_state": [
+      "preseason",
+      "in-season",
+      "offseason"
+    ],
+    "intensity": "normal",
+    "non_metric": false,
+    "environment_tier": "T2_cage_gym",
+    "space_required": "cage",
+    "coaches_min": 0,
+    "coaches_max": 1,
+    "player_count_min": 1,
+    "player_count_max": 4,
+    "rest_seconds_between_sets": 45,
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 0,
+    "loaded_strength_movement": false,
+    "supervision_required": false,
+    "safety_flags": [
+      "bat_safety_zone"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "video_attached",
+      "coach_verified"
+    ],
+    "drill_id": "CW_KNOB_TO_KNEE_TEE",
+    "name": "Knob to Knee - Tee Round",
+    "short_description": "Lead the swing with the knob toward the back knee. 10 tee swings.",
+    "long_description": "Hitter takes tee swings focused on leading with the bat knob toward the back knee before the barrel releases. A hands-first feel drill using a speed-trainer style bat or a normal bat choked up.",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "primary_metric": {
+      "metric_id": "HARD_HIT_RATE_TEE",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [
+      {
+        "metric_id": "CONTACT_PCT_TEE",
+        "expected_movement": "increase"
+      }
+    ],
+    "equipment_required": [
+      "tee",
+      "bat",
+      "10_baseballs"
+    ],
+    "equipment_substitutions": [
+      {
+        "missing": "bat",
+        "swap_to": "a hands speed-trainer bat if you have one, otherwise choke up",
+        "tier_change": "T2_cage_gym"
+      }
+    ],
+    "duration_minutes": 10,
+    "reps_or_rounds": "2 rounds x 5 swings",
+    "setup_steps": [
+      "Tee at the front hip",
+      "Clear the swing zone"
+    ],
+    "execution_steps": [
+      "Load",
+      "Lead the knob toward the back knee",
+      "Let the barrel release late",
+      "Partner logs hard-hit, soft or miss"
+    ],
+    "coaching_cues": [
+      "Knob first, barrel last",
+      "Hands inside the ball",
+      "Let it whip, do not push"
+    ],
+    "common_mistakes": [
+      "Throwing the barrel first and casting",
+      "Pushing the bat with the top hand",
+      "Swinging so hard the feel disappears"
+    ],
+    "scoring": {
+      "type": "percent",
+      "unit": "% hard-hit",
+      "success_threshold": 60
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Same feel off front toss"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Dry swings, no ball"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Inside pitch",
+        "change": "Move the tee in to exaggerate the knob path"
+      }
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://camwoodbats.com/products/camwood-hands-speed-trainer",
+        "relationship": "inspired_by"
+      }
+    ],
+    "tags": [
+      "hitting",
+      "tee",
+      "bat-path",
+      "practitioner",
+      "camwood",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Lead with the knob of the bat toward your back knee, then let the barrel go.",
+      "goal": "6 of 10 hard-hit with the knob leading.",
+      "why": "Barrel first is the long way to the ball. Knob first keeps your hands inside it."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "topic": "hitting",
+    "season_state": [
+      "preseason",
+      "in-season",
+      "offseason"
+    ],
+    "intensity": "normal",
+    "non_metric": false,
+    "environment_tier": "T2_cage_gym",
+    "space_required": "cage",
+    "coaches_min": 0,
+    "coaches_max": 1,
+    "player_count_min": 1,
+    "player_count_max": 4,
+    "rest_seconds_between_sets": 45,
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 0,
+    "loaded_strength_movement": false,
+    "supervision_required": false,
+    "safety_flags": [
+      "bat_safety_zone"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "video_attached",
+      "coach_verified"
+    ],
+    "drill_id": "CW_THREE_ZONE_TEE_MAP",
+    "name": "Three-Zone Tee Map",
+    "short_description": "Tee moved inner, middle, outer. Same swing, three contact points.",
+    "long_description": "The tee is set at three positions across the plate. The hitter takes swings at each, learning that the contact point moves but the swing does not - inner is out front, outer is deeper.",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "primary_metric": {
+      "metric_id": "HARD_HIT_RATE_TEE",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [
+      {
+        "metric_id": "OPPO_PCT",
+        "expected_movement": "increase"
+      }
+    ],
+    "equipment_required": [
+      "tee",
+      "bat",
+      "10_baseballs"
+    ],
+    "equipment_substitutions": [
+      {
+        "missing": "10_baseballs",
+        "swap_to": "wiffle_balls",
+        "tier_change": "T3_backyard"
+      }
+    ],
+    "duration_minutes": 12,
+    "reps_or_rounds": "3 zones x 3 swings",
+    "setup_steps": [
+      "Mark three tee positions",
+      "Clear the swing zone"
+    ],
+    "execution_steps": [
+      "3 swings inner (contact out front)",
+      "3 swings middle",
+      "3 swings outer (contact deeper)",
+      "Log direction and quality"
+    ],
+    "coaching_cues": [
+      "Same swing, different meeting point",
+      "Inner goes out front",
+      "Outer stays deep and goes the other way"
+    ],
+    "common_mistakes": [
+      "Changing the swing for each zone",
+      "Trying to pull the outside pitch",
+      "Stepping toward the tee"
+    ],
+    "scoring": {
+      "type": "percent",
+      "unit": "% hard-hit across zones",
+      "success_threshold": 60
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Coach calls the zone just before the swing"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Two zones only, middle and outer"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Height map",
+        "change": "Also raise and lower the tee"
+      }
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://camwoodbats.com/products/camwood-hands-speed-trainer",
+        "relationship": "inspired_by"
+      },
+      {
+        "source_id": "https://www.drivelinebaseball.com/2022/06/baseball-hitting-drills/",
+        "relationship": "inspired_by"
+      }
+    ],
+    "tags": [
+      "hitting",
+      "tee",
+      "oppo",
+      "practitioner",
+      "camwood",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Tee moves inside, middle and outside. Your swing does not change - where you meet it does.",
+      "goal": "Hit all three zones hard, and let the outside one go the other way.",
+      "why": "Pitchers do not throw everything down the middle. Your swing has to work everywhere."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "topic": "hitting",
+    "season_state": [
+      "preseason",
+      "in-season",
+      "offseason"
+    ],
+    "intensity": "normal",
+    "non_metric": false,
+    "environment_tier": "T2_cage_gym",
+    "space_required": "cage",
+    "coaches_min": 0,
+    "coaches_max": 1,
+    "player_count_min": 1,
+    "player_count_max": 4,
+    "rest_seconds_between_sets": 45,
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 0,
+    "loaded_strength_movement": false,
+    "supervision_required": false,
+    "safety_flags": [
+      "bat_safety_zone"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "video_attached",
+      "coach_verified"
+    ],
+    "drill_id": "CW_OPPO_LINE_DRIVE_ROUND",
+    "name": "Oppo Line-Drive Round",
+    "short_description": "Everything to the opposite field, line drives only.",
+    "long_description": "The hitter takes a full round with a single rule: everything goes to the opposite field on a line. Forces the hitter to stay on the ball and keep the front side closed rather than spinning off.",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "primary_metric": {
+      "metric_id": "OPPO_PCT",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [
+      {
+        "metric_id": "HARD_HIT_RATE_TEE",
+        "expected_movement": "maintain"
+      }
+    ],
+    "equipment_required": [
+      "tee",
+      "bat",
+      "10_baseballs"
+    ],
+    "equipment_substitutions": [
+      {
+        "missing": "tee",
+        "swap_to": "front toss from the side",
+        "tier_change": "T2_cage_gym"
+      }
+    ],
+    "duration_minutes": 10,
+    "reps_or_rounds": "2 rounds x 5 swings",
+    "setup_steps": [
+      "Tee set slightly deeper than usual",
+      "Aim marker in the opposite-field gap"
+    ],
+    "execution_steps": [
+      "Let the ball travel",
+      "Stay closed and drive it the other way",
+      "Log direction and launch"
+    ],
+    "coaching_cues": [
+      "Let it get deep",
+      "Front shoulder stays in",
+      "Hit it where it is pitched"
+    ],
+    "common_mistakes": [
+      "Spinning off to pull it",
+      "Rolling over the top",
+      "Slapping at it with no intent"
+    ],
+    "scoring": {
+      "type": "percent",
+      "unit": "% to opposite field on a line",
+      "success_threshold": 60
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Live front toss on the outer third"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Any hard contact counts, direction is a bonus"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Two-strike round",
+        "change": "Add a two-strike approach and shorten up"
+      }
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://camwoodbats.com/products/camwood-hands-speed-trainer",
+        "relationship": "inspired_by"
+      },
+      {
+        "source_id": "https://www.baseballrebellion.com/hitting-training",
+        "relationship": "inspired_by"
+      }
+    ],
+    "tags": [
+      "hitting",
+      "oppo",
+      "practitioner",
+      "camwood",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Whole round to the opposite field, on a line.",
+      "goal": "6 of 10 the other way, hard.",
+      "why": "Hitters who can go the other way stop getting pitched away all game."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "topic": "hitting",
+    "season_state": [
+      "preseason",
+      "in-season",
+      "offseason"
+    ],
+    "intensity": "normal",
+    "non_metric": false,
+    "environment_tier": "T2_cage_gym",
+    "space_required": "cage",
+    "coaches_min": 1,
+    "coaches_max": 1,
+    "player_count_min": 1,
+    "player_count_max": 4,
+    "rest_seconds_between_sets": 45,
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 0,
+    "loaded_strength_movement": false,
+    "supervision_required": false,
+    "safety_flags": [
+      "bat_safety_zone"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "video_attached",
+      "coach_verified"
+    ],
+    "drill_id": "ANT_SLOW_PITCH_TIMING",
+    "name": "Slow Pitch Timing",
+    "short_description": "Deliberately slow front toss so timing has to stretch.",
+    "long_description": "Coach front-tosses noticeably slower than game speed. The hitter must wait, stay balanced and not lunge - the hardest thing in youth hitting. Great for hitters who are early on everything.",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "primary_metric": {
+      "metric_id": "HARD_HIT_RATE_FRONT_TOSS",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [
+      {
+        "metric_id": "CONTACT_PCT_TEE",
+        "expected_movement": "maintain"
+      }
+    ],
+    "equipment_required": [
+      "bat",
+      "10_baseballs",
+      "L-screen"
+    ],
+    "equipment_substitutions": [
+      {
+        "missing": "L-screen",
+        "swap_to": "toss from the side behind a net",
+        "tier_change": "T2_cage_gym"
+      }
+    ],
+    "duration_minutes": 12,
+    "reps_or_rounds": "2 rounds x 6 swings",
+    "setup_steps": [
+      "Coach behind a screen",
+      "Agree the toss will be slower than game speed"
+    ],
+    "execution_steps": [
+      "Load early",
+      "Wait - let the ball get to you",
+      "Swing on time, not early",
+      "Log hard contact"
+    ],
+    "coaching_cues": [
+      "Be early to load, late to swing",
+      "Weight stays back",
+      "Let it come"
+    ],
+    "common_mistakes": [
+      "Lunging at the slow ball",
+      "Dropping the hands while waiting",
+      "Getting frustrated and swinging harder"
+    ],
+    "scoring": {
+      "type": "percent",
+      "unit": "% hard contact",
+      "success_threshold": 60
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Mix slow and normal speed unpredictably"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Tee work first to groove the balance point"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Count the beat",
+        "change": "Hitter says 'one-two' out loud to pace the load"
+      }
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://www.antonellibaseball.com/instructionalvideos",
+        "relationship": "inspired_by"
+      }
+    ],
+    "tags": [
+      "hitting",
+      "timing",
+      "front-toss",
+      "practitioner",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "The toss is slower than normal on purpose. Your job is to wait for it.",
+      "goal": "6 of 10 hit hard without lunging.",
+      "why": "Almost every young hitter is early. Learning to wait fixes more than any swing change."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "topic": "hitting",
+    "season_state": [
+      "preseason",
+      "in-season",
+      "offseason"
+    ],
+    "intensity": "normal",
+    "non_metric": false,
+    "environment_tier": "T2_cage_gym",
+    "space_required": "cage",
+    "coaches_min": 0,
+    "coaches_max": 1,
+    "player_count_min": 1,
+    "player_count_max": 4,
+    "rest_seconds_between_sets": 45,
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 0,
+    "loaded_strength_movement": false,
+    "supervision_required": false,
+    "safety_flags": [
+      "bat_safety_zone"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "video_attached",
+      "coach_verified"
+    ],
+    "drill_id": "BR_BASE_MOVEMENT_TEE",
+    "name": "Base Movement Tee Work",
+    "short_description": "Tee swings built on a repeatable lower-half move.",
+    "long_description": "Before the barrel matters, the base has to move the same way every time. The hitter rehearses the stride and hip turn, then takes tee swings that keep the base identical rep to rep.",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "primary_metric": {
+      "metric_id": "HARD_HIT_RATE_TEE",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [
+      {
+        "metric_id": "DRY_SWING_COUNT",
+        "expected_movement": "maintain"
+      }
+    ],
+    "equipment_required": [
+      "tee",
+      "bat",
+      "10_baseballs"
+    ],
+    "equipment_substitutions": [],
+    "duration_minutes": 12,
+    "reps_or_rounds": "3 dry + 5 swings x 2 rounds",
+    "setup_steps": [
+      "Tee at the front hip",
+      "Mark the stride landing spot"
+    ],
+    "execution_steps": [
+      "Three dry reps of the base move",
+      "Five tee swings keeping the same base",
+      "Check the stride lands on the mark every time"
+    ],
+    "coaching_cues": [
+      "Same landing spot every rep",
+      "Hips turn, head stays still",
+      "The base sets up the barrel"
+    ],
+    "common_mistakes": [
+      "A different stride every swing",
+      "Head drifting forward with the stride",
+      "Working the arms and ignoring the base"
+    ],
+    "scoring": {
+      "type": "percent",
+      "unit": "% hard-hit with consistent base",
+      "success_threshold": 60
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Same base move against front toss"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "No-stride swings from a wide base"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Film it",
+        "change": "Record from the side to compare stride landings"
+      }
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://www.baseballrebellion.com/hitting-training",
+        "relationship": "inspired_by"
+      }
+    ],
+    "tags": [
+      "hitting",
+      "tee",
+      "swing-mechanics",
+      "practitioner",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Get your legs and stride doing the same thing every swing, then hit off the tee.",
+      "goal": "Land on your mark every rep and still hit it hard.",
+      "why": "If your base moves differently every time, your barrel has to guess. Same base, same swing."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "topic": "hitting",
+    "season_state": [
+      "preseason",
+      "in-season",
+      "offseason"
+    ],
+    "intensity": "normal",
+    "non_metric": false,
+    "environment_tier": "T2_cage_gym",
+    "space_required": "cage",
+    "coaches_min": 1,
+    "coaches_max": 1,
+    "player_count_min": 1,
+    "player_count_max": 4,
+    "rest_seconds_between_sets": 45,
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 0,
+    "loaded_strength_movement": false,
+    "supervision_required": false,
+    "safety_flags": [
+      "bat_safety_zone"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "video_attached",
+      "coach_verified"
+    ],
+    "drill_id": "DL_DECISION_TOSS",
+    "name": "Decision Toss",
+    "short_description": "Two ball colours, one is a take. Trains swing decisions.",
+    "long_description": "Coach tosses two colours of ball. One colour is a swing, the other is a take. The hitter has to recognise and decide, not just swing. Scored on decisions, not contact.",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "primary_metric": {
+      "metric_id": "DECISION_ACCURACY",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [
+      {
+        "metric_id": "HARD_HIT_RATE_FRONT_TOSS",
+        "expected_movement": "maintain"
+      }
+    ],
+    "equipment_required": [
+      "bat",
+      "10_baseballs",
+      "marked_baseballs"
+    ],
+    "equipment_substitutions": [
+      {
+        "missing": "marked_baseballs",
+        "swap_to": "wiffle balls in two colours, or a dot drawn on half the balls",
+        "tier_change": "T2_cage_gym"
+      }
+    ],
+    "duration_minutes": 12,
+    "reps_or_rounds": "2 rounds x 8 tosses",
+    "setup_steps": [
+      "Agree which colour is the swing",
+      "Coach behind a screen"
+    ],
+    "execution_steps": [
+      "Toss a random colour",
+      "Hitter swings or takes",
+      "Score the decision, then the contact",
+      "Swap the colours halfway"
+    ],
+    "coaching_cues": [
+      "See it first, then decide",
+      "A good take is a win",
+      "Do not guess on colour before release"
+    ],
+    "common_mistakes": [
+      "Swinging at everything and hoping",
+      "Freezing on the swing colour",
+      "Peeking at the coach's hand"
+    ],
+    "scoring": {
+      "type": "percent",
+      "unit": "% correct decisions",
+      "success_threshold": 70
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Add a third colour that means bunt"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Coach calls the colour out loud on release"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Numbers",
+        "change": "Numbered balls, swing only at evens"
+      }
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://www.drivelinebaseball.com/2022/06/baseball-hitting-drills/",
+        "relationship": "inspired_by"
+      }
+    ],
+    "tags": [
+      "hitting",
+      "decision",
+      "front-toss",
+      "practitioner",
+      "driveline",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Two colours of ball. One you swing at, one you let go.",
+      "goal": "Get the decision right 7 times out of 10.",
+      "why": "Hitting is mostly deciding. The best hitters swing at fewer bad pitches, not more good ones."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "topic": "hitting",
+    "season_state": [
+      "preseason",
+      "in-season",
+      "offseason"
+    ],
+    "intensity": "normal",
+    "non_metric": false,
+    "environment_tier": "T2_cage_gym",
+    "space_required": "cage",
+    "coaches_min": 0,
+    "coaches_max": 1,
+    "player_count_min": 1,
+    "player_count_max": 4,
+    "rest_seconds_between_sets": 45,
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 0,
+    "loaded_strength_movement": false,
+    "supervision_required": false,
+    "safety_flags": [
+      "bat_safety_zone"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "video_attached",
+      "coach_verified"
+    ],
+    "drill_id": "DL_SMALL_TARGET_TEE",
+    "name": "Small Target Tee",
+    "short_description": "Hit a marked spot on the ball, not just the ball.",
+    "long_description": "A dot or stripe is drawn on the ball and set facing the hitter. The hitter tries to strike that exact spot, sharpening precision far beyond 'hit it hard'.",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "primary_metric": {
+      "metric_id": "CONTACT_PCT_TEE",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [
+      {
+        "metric_id": "HARD_HIT_RATE_TEE",
+        "expected_movement": "increase"
+      }
+    ],
+    "equipment_required": [
+      "tee",
+      "bat",
+      "marked_baseballs"
+    ],
+    "equipment_substitutions": [
+      {
+        "missing": "marked_baseballs",
+        "swap_to": "draw a dot on regular balls with a marker",
+        "tier_change": "T2_cage_gym"
+      }
+    ],
+    "duration_minutes": 10,
+    "reps_or_rounds": "2 rounds x 5 swings",
+    "setup_steps": [
+      "Mark a dot on each ball",
+      "Set the dot facing the hitter"
+    ],
+    "execution_steps": [
+      "Focus on the dot, not the whole ball",
+      "Swing to strike that spot",
+      "Check the bat mark against the dot"
+    ],
+    "coaching_cues": [
+      "Small target, small miss",
+      "Eyes on the dot through contact",
+      "Precision before power"
+    ],
+    "common_mistakes": [
+      "Looking at the whole ball",
+      "Swinging harder to compensate",
+      "Head pulling off at contact"
+    ],
+    "scoring": {
+      "type": "percent",
+      "unit": "% on the marked spot",
+      "success_threshold": 50
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Smaller dot, or dot on the bottom half only"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Large stripe instead of a dot"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Top/bottom",
+        "change": "Alternate hitting the top and bottom half"
+      }
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://www.drivelinebaseball.com/2022/06/baseball-hitting-drills/",
+        "relationship": "inspired_by"
+      }
+    ],
+    "tags": [
+      "hitting",
+      "tee",
+      "vision",
+      "practitioner",
+      "driveline",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "There is a dot on the ball. Hit the dot, not just the ball.",
+      "goal": "Hit the spot on half your swings.",
+      "why": "Aim small, miss small. It is the fastest way to clean up sloppy contact."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "topic": "throwing",
+    "season_state": [
+      "preseason",
+      "in-season",
+      "offseason",
+      "tournament"
+    ],
+    "intensity": "light",
+    "primary_metric": {
+      "metric_id": "WARMUP_COMPLETION",
+      "expected_movement": "maintain"
+    },
+    "secondary_metrics": [],
+    "non_metric": true,
+    "environment_tier": "T3_backyard",
+    "equipment_required": [],
+    "space_required": "10x10ft",
+    "player_count_min": 1,
+    "player_count_max": 20,
+    "coaches_min": 0,
+    "coaches_max": 2,
+    "rest_seconds_between_sets": 0,
+    "scoring": {
+      "type": "none",
+      "unit": "",
+      "success_threshold": null
+    },
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 0,
+    "loaded_strength_movement": false,
+    "supervision_required": false,
+    "safety_flags": [
+      "arm_warmup_required"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN",
+      "PITCH_SMART_GENERAL"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "coach_verified"
+    ],
+    "drill_id": "AC_HABIT_CIRCUIT",
+    "name": "Arm-Care Habit Circuit",
+    "short_description": "Short band and bodyweight circuit built to become a daily habit.",
+    "long_description": "A repeatable circuit of band and bodyweight shoulder work, designed to be short enough that athletes actually do it every day. Consistency beats intensity for young arms.",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "duration_minutes": 8,
+    "reps_or_rounds": "1 circuit, 5 movements x 10",
+    "equipment_substitutions": [
+      {
+        "missing": "resistance band",
+        "swap_to": "a towel, or bodyweight only",
+        "tier_change": "T4_living_room"
+      }
+    ],
+    "setup_steps": [
+      "Enough room to extend both arms",
+      "Band if available"
+    ],
+    "execution_steps": [
+      "External rotation x10",
+      "Internal rotation x10",
+      "Scap retraction x10",
+      "Y-T-W raises x10",
+      "Wrist and forearm x10"
+    ],
+    "coaching_cues": [
+      "Every day beats hard days",
+      "Slow and controlled",
+      "Stop if anything pinches"
+    ],
+    "common_mistakes": [
+      "Doing it only before games",
+      "Using a band that is far too heavy",
+      "Rushing the reps"
+    ],
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Add a second set for in-season pitchers"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Bodyweight only, 6 reps each"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Post-throw version",
+        "change": "Same circuit at half volume after throwing"
+      }
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://www.chipsperformance.com/post/the-truth-about-arm-care-why-bands-plyo-balls-matter-more-than-ever-for-developing-players",
+        "relationship": "inspired_by"
+      },
+      {
+        "source_id": "https://mikereinold.com/youth-baseball/",
+        "relationship": "aligns_with"
+      }
+    ],
+    "tags": [
+      "throwing",
+      "arm-care",
+      "circuit",
+      "practitioner",
+      "chips",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Five quick shoulder exercises. The whole point is doing it every day.",
+      "goal": "Finish all five, every day you throw.",
+      "why": "Arms break down from what you skip, not from what you do slowly."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "topic": "throwing",
+    "season_state": [
+      "preseason",
+      "in-season",
+      "offseason",
+      "tournament"
+    ],
+    "intensity": "light",
+    "primary_metric": {
+      "metric_id": "WARMUP_COMPLETION",
+      "expected_movement": "maintain"
+    },
+    "secondary_metrics": [],
+    "non_metric": true,
+    "environment_tier": "T3_backyard",
+    "equipment_required": [],
+    "space_required": "10x10ft",
+    "player_count_min": 1,
+    "player_count_max": 20,
+    "coaches_min": 0,
+    "coaches_max": 2,
+    "rest_seconds_between_sets": 0,
+    "scoring": {
+      "type": "none",
+      "unit": "",
+      "success_threshold": null
+    },
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 0,
+    "loaded_strength_movement": false,
+    "supervision_required": false,
+    "safety_flags": [
+      "arm_warmup_required"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN",
+      "PITCH_SMART_GENERAL"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "coach_verified"
+    ],
+    "drill_id": "REINOLD_THREE_MIN_THROW_PREP",
+    "name": "Three-Minute Throwing Prep",
+    "short_description": "The minimum viable warm-up when time is short.",
+    "long_description": "A deliberately tiny prep sequence for the days when there is no time: three minutes of movement that still gets blood into the shoulder and elbow before throwing. Designed so 'we were rushed' stops being a reason to skip it.",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "duration_minutes": 3,
+    "reps_or_rounds": "1 round, 4 movements",
+    "equipment_substitutions": [],
+    "setup_steps": [
+      "Anywhere with space to swing both arms"
+    ],
+    "execution_steps": [
+      "Arm circles x10 each way",
+      "Cross-body swings x10",
+      "Trunk rotations x10",
+      "Two minutes of easy progressive catch"
+    ],
+    "coaching_cues": [
+      "Three minutes is the floor, not the target",
+      "Easy catch counts as part of it",
+      "Never throw hard off a cold arm"
+    ],
+    "common_mistakes": [
+      "Skipping it because the team is late",
+      "Going straight to full-distance catch",
+      "Treating it as a substitute for the full routine"
+    ],
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Extend to the full arm-care circuit when time allows"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Arm circles and easy catch only"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Dugout version",
+        "change": "Run it in the dugout before a late-inning entry"
+      }
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://mikereinold.com/youth-baseball/",
+        "relationship": "aligns_with"
+      },
+      {
+        "source_id": "https://www.mlb.com/pitch-smart/pitching-guidelines/ages-9-12",
+        "relationship": "rule_source"
+      }
+    ],
+    "tags": [
+      "throwing",
+      "arm-care",
+      "warmup",
+      "practitioner",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "The three-minute version for when you are running late.",
+      "goal": "Never throw hard without at least doing this.",
+      "why": "Three minutes is not much. It is a lot more than nothing, which is the usual alternative."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "topic": "throwing",
+    "season_state": [
+      "preseason",
+      "in-season",
+      "offseason",
+      "tournament"
+    ],
+    "intensity": "light",
+    "primary_metric": {
+      "metric_id": "WARMUP_COMPLETION",
+      "expected_movement": "maintain"
+    },
+    "secondary_metrics": [],
+    "non_metric": true,
+    "environment_tier": "T3_backyard",
+    "equipment_required": [],
+    "space_required": "10x10ft",
+    "player_count_min": 1,
+    "player_count_max": 20,
+    "coaches_min": 0,
+    "coaches_max": 2,
+    "rest_seconds_between_sets": 0,
+    "scoring": {
+      "type": "none",
+      "unit": "",
+      "success_threshold": null
+    },
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 0,
+    "loaded_strength_movement": false,
+    "supervision_required": false,
+    "safety_flags": [
+      "arm_warmup_required"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN",
+      "PITCH_SMART_GENERAL"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "coach_verified"
+    ],
+    "drill_id": "JAEGER_ARM_CIRCLE_FLOW",
+    "name": "Arm Circle Flow",
+    "short_description": "Continuous band and arm-circle flow to open the shoulder.",
+    "long_description": "A flowing sequence of arm circles and band patterns performed continuously rather than as separate sets, keeping the shoulder moving through full ranges before throwing.",
+    "age_band": [
+      "13-15",
+      "16+"
+    ],
+    "duration_minutes": 10,
+    "reps_or_rounds": "1 flow, ~10 patterns",
+    "equipment_substitutions": [
+      {
+        "missing": "resistance band",
+        "swap_to": "bodyweight arm circles only",
+        "tier_change": "T4_living_room"
+      }
+    ],
+    "setup_steps": [
+      "Space to swing both arms fully",
+      "Band anchored at chest height if available"
+    ],
+    "execution_steps": [
+      "Small to large forward circles",
+      "Small to large backward circles",
+      "Band patterns through full range",
+      "Finish with easy catch"
+    ],
+    "coaching_cues": [
+      "Keep moving, do not stop between patterns",
+      "Full range, light resistance",
+      "Nothing should pinch"
+    ],
+    "common_mistakes": [
+      "Heavy bands turning it into a workout",
+      "Stopping and starting",
+      "Skipping straight to throwing"
+    ],
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Add a longer flow on bullpen days"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Half the patterns, no band"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Recovery day",
+        "change": "Run the flow on a no-throw day to keep the shoulder moving"
+      }
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://jaegersports.com/training-programs/",
+        "relationship": "inspired_by"
+      },
+      {
+        "source_id": "https://mikereinold.com/youth-baseball/",
+        "relationship": "aligns_with"
+      }
+    ],
+    "tags": [
+      "throwing",
+      "arm-care",
+      "practitioner",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Keep your arms moving through a full set of circles and band patterns without stopping.",
+      "goal": "Finish the whole flow before you throw.",
+      "why": "A shoulder that has moved through its full range is a shoulder that is ready."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "drill_id": "JAEGER_LISTEN_TO_ARM_CATCH",
+    "name": "Listen-to-Your-Arm Catch",
+    "short_description": "Short catch where distance is set by feel, not by a number. 4 throws.",
+    "long_description": "Very short, low-volume catch where the athlete extends distance only while the arm feels good and pulls back in the moment it does not. The point is teaching athletes to read their own arm - the skill behind every arm-care rule.",
+    "topic": "throwing",
+    "age_band": [
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "preseason",
+      "in-season",
+      "offseason"
+    ],
+    "intensity": "light",
+    "primary_metric": {
+      "metric_id": "WARMUP_COMPLETION",
+      "expected_movement": "maintain"
+    },
+    "secondary_metrics": [],
+    "non_metric": true,
+    "environment_tier": "T1_field",
+    "equipment_required": [
+      "5_baseballs",
+      "glove"
+    ],
+    "equipment_substitutions": [],
+    "space_required": "30x30ft",
+    "player_count_min": 2,
+    "player_count_max": 20,
+    "coaches_min": 0,
+    "coaches_max": 2,
+    "duration_minutes": 8,
+    "reps_or_rounds": "4 throws, distance by feel",
+    "rest_seconds_between_sets": 30,
+    "setup_steps": [
+      "Arm-care warm-up first",
+      "Partners start close"
+    ],
+    "execution_steps": [
+      "Throw easy at short distance",
+      "Step back only if the arm feels good",
+      "Step back in the moment it does not",
+      "Stop at four throws and say out loud how the arm felt"
+    ],
+    "coaching_cues": [
+      "Your arm talks - listen to it",
+      "Backing up is optional, stopping is not",
+      "Soreness is information, not weakness"
+    ],
+    "common_mistakes": [
+      "Backing up because a teammate did",
+      "Hiding soreness to look tough",
+      "Turning it into long toss"
+    ],
+    "scoring": {
+      "type": "none",
+      "unit": "",
+      "success_threshold": null
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Athlete logs how the arm felt over a week and looks for patterns"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Two throws at one distance"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Coach check-in",
+        "change": "Coach asks each athlete to rate the arm 1-5 afterwards"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 4,
+    "loaded_strength_movement": false,
+    "supervision_required": false,
+    "safety_flags": [
+      "arm_warmup_required",
+      "counts_toward_throw_volume"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN",
+      "PITCH_SMART_GENERAL"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://jaegersports.com/jaeger-sports-off-season-throwing-program/",
+        "relationship": "inspired_by"
+      },
+      {
+        "source_id": "https://mikereinold.com/youth-baseball/",
+        "relationship": "aligns_with"
+      }
+    ],
+    "tags": [
+      "throwing",
+      "arm-care",
+      "practitioner",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Four easy throws. Back up only while your arm feels good, and stop the second it does not.",
+      "goal": "Say out loud how your arm felt afterwards.",
+      "why": "Nobody knows your arm but you. Learning to read it is the skill that keeps you playing."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "drill_id": "DL_CONSTRAINT_STEP_BEHIND",
+    "name": "Step-Behind Constraint Throw",
+    "short_description": "Step-behind footwork to sequence the whole body. 12 throws, logged.",
+    "long_description": "The athlete uses a step-behind (crow hop) approach before each throw, a constraint that forces the lower half to lead and the arm to follow. Twelve throws at moderate effort, logged.",
+    "topic": "throwing",
+    "age_band": [
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "preseason",
+      "in-season"
+    ],
+    "intensity": "normal",
+    "primary_metric": {
+      "metric_id": "THROW_FORM_CHECKPOINTS",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [
+      {
+        "metric_id": "THROW_ACCURACY_PCT",
+        "expected_movement": "maintain"
+      }
+    ],
+    "non_metric": false,
+    "environment_tier": "T1_field",
+    "equipment_required": [
+      "5_baseballs",
+      "glove"
+    ],
+    "equipment_substitutions": [],
+    "space_required": "30x30ft",
+    "player_count_min": 2,
+    "player_count_max": 16,
+    "coaches_min": 0,
+    "coaches_max": 2,
+    "duration_minutes": 12,
+    "reps_or_rounds": "12 throws",
+    "rest_seconds_between_sets": 30,
+    "setup_steps": [
+      "Full arm-care warm-up first",
+      "Partners at a comfortable distance - not max"
+    ],
+    "execution_steps": [
+      "Step behind with the back foot",
+      "Land closed",
+      "Let the hips open and the arm follow",
+      "Log the throws"
+    ],
+    "coaching_cues": [
+      "Legs first, arm last",
+      "Land closed, then open",
+      "Moderate effort - this is a pattern drill"
+    ],
+    "common_mistakes": [
+      "Arming it and ignoring the footwork",
+      "Landing open and losing the sequence",
+      "Cranking it to max effort"
+    ],
+    "scoring": {
+      "type": "rubric",
+      "unit": "checkpoints hit",
+      "success_threshold": null
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Add a longer approach for outfielders"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Walk through the footwork with no ball"
+      }
+    ],
+    "variations": [
+      {
+        "name": "From a crouch",
+        "change": "Catchers run the same sequence from the crouch"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 12,
+    "loaded_strength_movement": false,
+    "supervision_required": true,
+    "safety_flags": [
+      "arm_warmup_required",
+      "counts_toward_throw_volume"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN",
+      "PITCH_SMART_GENERAL"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "video_attached",
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://www.drivelinebaseball.com/free-youth-daily-arm-care-throwing-drills/",
+        "relationship": "inspired_by"
+      }
+    ],
+    "tags": [
+      "throwing",
+      "arm-action",
+      "practitioner",
+      "driveline",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Step behind with your back foot before you throw, so your legs start the throw instead of your arm.",
+      "goal": "Same footwork all 12 throws, moderate effort.",
+      "why": "Arms that do all the work wear out. Legs are bigger and do not get sore."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "topic": "throwing",
+    "season_state": [
+      "preseason",
+      "in-season",
+      "offseason",
+      "tournament"
+    ],
+    "intensity": "light",
+    "primary_metric": {
+      "metric_id": "WARMUP_COMPLETION",
+      "expected_movement": "maintain"
+    },
+    "secondary_metrics": [],
+    "non_metric": true,
+    "environment_tier": "T3_backyard",
+    "equipment_required": [],
+    "space_required": "10x10ft",
+    "player_count_min": 1,
+    "player_count_max": 20,
+    "coaches_min": 0,
+    "coaches_max": 2,
+    "rest_seconds_between_sets": 0,
+    "scoring": {
+      "type": "none",
+      "unit": "",
+      "success_threshold": null
+    },
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 0,
+    "loaded_strength_movement": false,
+    "supervision_required": false,
+    "safety_flags": [
+      "arm_warmup_required"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN",
+      "PITCH_SMART_GENERAL"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "coach_verified"
+    ],
+    "drill_id": "DTD_BODY_TO_THROW_WARMUP",
+    "name": "Body-to-Throw Warm-Up",
+    "short_description": "Whole-body warm-up that ends at the arm, not one that starts there.",
+    "long_description": "A warm-up that works legs, trunk and then shoulder in that order, on the principle that throwing is a whole-body action. The arm work comes last, once everything upstream is moving.",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "duration_minutes": 10,
+    "reps_or_rounds": "1 round, 6 movements",
+    "equipment_substitutions": [],
+    "setup_steps": [
+      "Clear space to move",
+      "Enough room for a short jog"
+    ],
+    "execution_steps": [
+      "Light jog or skips",
+      "Leg swings x10 each",
+      "Trunk rotations x10",
+      "Scap work x10",
+      "Arm circles x10",
+      "Easy progressive catch"
+    ],
+    "coaching_cues": [
+      "Ground up, arm last",
+      "Everything moves before the arm does",
+      "Nothing here should be hard"
+    ],
+    "common_mistakes": [
+      "Starting with the arm",
+      "Skipping the legs because throwing is 'an arm thing'",
+      "Going straight to full-effort catch"
+    ],
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Add a short dynamic mobility block for teens"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Halve the reps for 9-12"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Cold weather",
+        "change": "Add two extra minutes of jogging first"
+      }
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://www.dominatethediamond.com/blog/youth-arm-care",
+        "relationship": "inspired_by"
+      }
+    ],
+    "tags": [
+      "throwing",
+      "arm-care",
+      "warmup",
+      "practitioner",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Warm up your legs and middle first, then your arm last.",
+      "goal": "Get through all six before you throw properly.",
+      "why": "Throwing uses your whole body. Warming up only your arm is warming up the last part."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "drill_id": "TREAD_WEIGHTED_BALL_DECISION_GATE",
+    "name": "Weighted Balls - Decision Gate",
+    "short_description": "A coach-and-athlete huddle deciding IF weighted balls are appropriate. No throwing.",
+    "long_description": "This is deliberately NOT a throwing session. It is a short screening conversation, run before any weighted-ball programme is considered, that walks through the criteria: age and maturity, training history, current arm health, whether qualified supervision is available, and whether the athlete's season workload leaves room. If any answer is no, the decision is no. Weighted implements increase elbow and shoulder stress, and youth arms are the least equipped to absorb it.",
+    "topic": "throwing",
+    "age_band": [
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "preseason",
+      "offseason"
+    ],
+    "intensity": "recovery",
+    "primary_metric": {
+      "metric_id": "WARMUP_COMPLETION",
+      "expected_movement": "maintain"
+    },
+    "secondary_metrics": [],
+    "non_metric": true,
+    "environment_tier": "T4_living_room",
+    "equipment_required": [],
+    "equipment_substitutions": [],
+    "space_required": "6x6ft clear",
+    "player_count_min": 1,
+    "player_count_max": 12,
+    "coaches_min": 1,
+    "coaches_max": 2,
+    "duration_minutes": 10,
+    "reps_or_rounds": "1 screening conversation",
+    "rest_seconds_between_sets": 0,
+    "setup_steps": [
+      "Coach and athlete together - and a parent for under-16s",
+      "Nothing is thrown in this drill",
+      "Have the athlete's recent throwing volume to hand"
+    ],
+    "execution_steps": [
+      "Is the athlete 13 or older with a consistent throwing history? If no, stop here.",
+      "Is the arm currently symptom-free, with no soreness in the last two weeks? If no, stop here.",
+      "Is qualified supervision available for every session? If no, stop here.",
+      "Does the season workload leave genuine room for added stress? If no, stop here.",
+      "If every answer is yes, document the decision and revisit it monthly."
+    ],
+    "coaching_cues": [
+      "The default answer is no",
+      "Any single no ends the conversation",
+      "This decision gets revisited, not made once"
+    ],
+    "common_mistakes": [
+      "Starting a programme because a teammate is on one",
+      "Running it unsupervised from a video",
+      "Adding it on top of an already full in-season workload"
+    ],
+    "scoring": {
+      "type": "none",
+      "unit": "",
+      "success_threshold": null
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "If cleared, the first block is supervised and volume-capped"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Skip entirely - no youth athlete needs weighted balls to develop"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Parent version",
+        "change": "Walk a parent through the same five questions"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 0,
+    "loaded_strength_movement": false,
+    "supervision_required": true,
+    "safety_flags": [
+      "supervised_only",
+      "max_effort_throws",
+      "overuse_monitor"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN",
+      "PITCH_SMART_GENERAL"
+    ],
+    "verification_levels_supported": [
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://treadathletics.com/downloads/",
+        "relationship": "aligns_with"
+      },
+      {
+        "source_id": "https://www.mlb.com/pitch-smart/pitching-guidelines/ages-9-12",
+        "relationship": "rule_source"
+      }
+    ],
+    "tags": [
+      "throwing",
+      "arm-care",
+      "safety",
+      "gate",
+      "education-only",
+      "practitioner",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "A talk with your coach about whether weighted balls are even a good idea for you. Nothing gets thrown.",
+      "goal": "Answer all five questions honestly. One 'no' means not yet.",
+      "why": "Weighted balls put extra stress on a growing elbow. 'Not yet' is a completely normal answer."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "drill_id": "CRESSEY_THROWING_REST_HUDDLE",
+    "name": "Throwing Rest - Team Huddle",
+    "short_description": "Education huddle on why arms need months off throwing each year.",
+    "long_description": "A short team conversation, not a physical drill, covering why every throwing athlete needs an extended period each year with no competitive throwing, how year-round play drives youth arm injuries, and what athletes can do in that window instead. Deliberately non-metric - nothing is scored.",
+    "topic": "recovery",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "in-season",
+      "offseason"
+    ],
+    "intensity": "recovery",
+    "primary_metric": {
+      "metric_id": "WARMUP_COMPLETION",
+      "expected_movement": "maintain"
+    },
+    "secondary_metrics": [],
+    "non_metric": true,
+    "environment_tier": "T4_living_room",
+    "equipment_required": [],
+    "equipment_substitutions": [],
+    "space_required": "6x6ft clear",
+    "player_count_min": 1,
+    "player_count_max": 20,
+    "coaches_min": 1,
+    "coaches_max": 2,
+    "duration_minutes": 10,
+    "reps_or_rounds": "1 huddle",
+    "rest_seconds_between_sets": 0,
+    "setup_steps": [
+      "Whole group together",
+      "Nothing is thrown"
+    ],
+    "execution_steps": [
+      "Ask how many months a year each athlete throws competitively",
+      "Explain why an extended no-throwing window matters for a growing arm",
+      "Agree when this team's window will be",
+      "Talk about what to do instead - other sports, strength, rest"
+    ],
+    "coaching_cues": [
+      "Playing a second sport is a feature, not a distraction",
+      "Rest is training, not lost time",
+      "Year-round throwing is the single biggest overuse driver"
+    ],
+    "common_mistakes": [
+      "Assuming the off-season handles it automatically",
+      "Athletes rolling straight from one team into another",
+      "Treating time off as falling behind"
+    ],
+    "scoring": {
+      "type": "none",
+      "unit": "",
+      "success_threshold": null
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Athletes map their own 12-month calendar and find the window"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Coach states the team's window and why"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Parent night",
+        "change": "Run the same huddle with parents, who often book the extra teams"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 0,
+    "loaded_strength_movement": false,
+    "supervision_required": false,
+    "safety_flags": [],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN",
+      "PITCH_SMART_GENERAL"
+    ],
+    "verification_levels_supported": [
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://ericcressey.com/baseball-pitchers-year-round-throwing-programs-1/",
+        "relationship": "aligns_with"
+      },
+      {
+        "source_id": "https://www.mlb.com/pitch-smart/pitching-guidelines/ages-9-12",
+        "relationship": "rule_source"
+      }
+    ],
+    "tags": [
+      "recovery",
+      "arm-care",
+      "education-only",
+      "practitioner",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "A team talk about why arms need a few months off throwing every year.",
+      "goal": "Know when your no-throwing window is this year.",
+      "why": "Arms that never get a break are the ones that end up hurt. Time off is part of getting better."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "drill_id": "C_CAGE_SERVICE_SEQUENCE",
+    "name": "Cage Service Sequence",
+    "short_description": "Receive, block, throw in one repeatable sequence. 6 throws, logged.",
+    "long_description": "A compact catcher circuit run in a cage or bullpen: two receives, two blocks, then two throws, in the same order every time. Builds the sequence a catcher actually repeats all game.",
+    "topic": "catching",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "preseason",
+      "in-season"
+    ],
+    "intensity": "normal",
+    "primary_metric": {
+      "metric_id": "CLEAN_RECEIVE_PCT",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [
+      {
+        "metric_id": "BLOCK_CONTAINMENT_PCT",
+        "expected_movement": "increase"
+      }
+    ],
+    "non_metric": false,
+    "environment_tier": "T2_cage_gym",
+    "equipment_required": [
+      "catcher_gear",
+      "10_baseballs"
+    ],
+    "equipment_substitutions": [
+      {
+        "missing": "10_baseballs",
+        "swap_to": "9_safety_baseballs for 9-12",
+        "tier_change": "T2_cage_gym"
+      }
+    ],
+    "space_required": "cage",
+    "player_count_min": 2,
+    "player_count_max": 4,
+    "coaches_min": 1,
+    "coaches_max": 1,
+    "duration_minutes": 15,
+    "reps_or_rounds": "3 rounds x (2 receive, 2 block, 2 throw)",
+    "rest_seconds_between_sets": 45,
+    "setup_steps": [
+      "Full gear",
+      "Arm-care warm-up before the throwing portion"
+    ],
+    "execution_steps": [
+      "Two receives on the corners",
+      "Two blocks in the dirt",
+      "Two throws to a target",
+      "Repeat the same order"
+    ],
+    "coaching_cues": [
+      "Same order every round",
+      "Receive quiet, block loud",
+      "Do not rush the throw"
+    ],
+    "common_mistakes": [
+      "Changing the order each round",
+      "Skipping the blocks",
+      "Throwing before the arm is warm"
+    ],
+    "scoring": {
+      "type": "percent",
+      "unit": "% clean across the sequence",
+      "success_threshold": 70
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Add a runner clock to the throws"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Receives and blocks only"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Fatigue round",
+        "change": "Run a final round after conditioning to mimic late innings"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 6,
+    "loaded_strength_movement": false,
+    "supervision_required": true,
+    "safety_flags": [
+      "arm_warmup_required",
+      "counts_toward_throw_volume",
+      "use_safety_baseballs_under_12"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN",
+      "PITCH_SMART_GENERAL"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "video_attached",
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://www.chipsperformance.com/coaches",
+        "relationship": "inspired_by"
+      }
+    ],
+    "tags": [
+      "catching",
+      "practitioner",
+      "chips",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Two catches, two blocks, two throws. Same order, three times.",
+      "goal": "Clean on 7 of 10 across the whole sequence.",
+      "why": "That is the exact order you do it in a game. Practise it the way it happens."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "drill_id": "C_DIRT_BALL_SAVE_GAME",
+    "name": "Dirt Ball Save Game",
+    "short_description": "Scored blocking game. Keep it in front, earn points.",
+    "long_description": "A competitive blocking game where catchers earn points for balls kept inside a marked area and lose them for balls that escape. Makes the least glamorous catching skill something athletes want to win at.",
+    "topic": "catching",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "preseason",
+      "in-season"
+    ],
+    "intensity": "normal",
+    "primary_metric": {
+      "metric_id": "BLOCK_CONTAINMENT_PCT",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [
+      {
+        "metric_id": "FUN_RATING",
+        "expected_movement": "increase"
+      }
+    ],
+    "non_metric": false,
+    "environment_tier": "T1_field",
+    "equipment_required": [
+      "catcher_gear",
+      "10_baseballs",
+      "4_cones"
+    ],
+    "equipment_substitutions": [
+      {
+        "missing": "10_baseballs",
+        "swap_to": "9_safety_baseballs for 9-12",
+        "tier_change": "T1_field"
+      }
+    ],
+    "space_required": "infield",
+    "player_count_min": 2,
+    "player_count_max": 6,
+    "coaches_min": 1,
+    "coaches_max": 1,
+    "duration_minutes": 12,
+    "reps_or_rounds": "2 rounds x 10 balls",
+    "rest_seconds_between_sets": 45,
+    "setup_steps": [
+      "Full gear",
+      "Cone off a save area around the catcher",
+      "Under 12: safety baseballs"
+    ],
+    "execution_steps": [
+      "Coach throws balls into the dirt",
+      "Ball inside the cones is 1 point",
+      "Ball past the cones is minus 1",
+      "Highest score after 10 wins"
+    ],
+    "coaching_cues": [
+      "Chest over it",
+      "Angle it back to the middle",
+      "Chin down"
+    ],
+    "common_mistakes": [
+      "Diving sideways to look impressive",
+      "Catching at it with the glove",
+      "Turning the head away"
+    ],
+    "scoring": {
+      "type": "percent",
+      "unit": "% kept in the save area",
+      "success_threshold": 70
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Shrink the save area"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Balls straight at the catcher, bigger area"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Team version",
+        "change": "Catchers compete as a group against a target score"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 0,
+    "loaded_strength_movement": false,
+    "supervision_required": true,
+    "safety_flags": [
+      "use_safety_baseballs_under_12"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://www.chipsperformance.com/coaches",
+        "relationship": "inspired_by"
+      }
+    ],
+    "tags": [
+      "catching",
+      "blocking",
+      "game",
+      "fun",
+      "practitioner",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Blocking, but it is a game. Ball stays in the box you get a point, ball escapes you lose one.",
+      "goal": "Finish positive over 10 balls.",
+      "why": "Blocking is the least fun thing catchers do and the most valuable. Might as well make it a competition."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "drill_id": "C_SAVES_THREE_RUNS",
+    "name": "Saves Three Runs",
+    "short_description": "Frame it, block it, hold the runner. Scored as runs saved.",
+    "long_description": "A scenario circuit where each catcher rep is scored by the runs it would have saved: a stolen strike, a blocked ball with a runner on third, a runner held. Reframes catching contribution in the currency that matters.",
+    "topic": "catching",
+    "age_band": [
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "in-season"
+    ],
+    "intensity": "normal",
+    "primary_metric": {
+      "metric_id": "FRAMING_STRIKE_PCT",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [
+      {
+        "metric_id": "BLOCK_CONTAINMENT_PCT",
+        "expected_movement": "increase"
+      }
+    ],
+    "non_metric": false,
+    "environment_tier": "T1_field",
+    "equipment_required": [
+      "catcher_gear",
+      "10_baseballs"
+    ],
+    "equipment_substitutions": [],
+    "space_required": "infield",
+    "player_count_min": 2,
+    "player_count_max": 4,
+    "coaches_min": 1,
+    "coaches_max": 1,
+    "duration_minutes": 15,
+    "reps_or_rounds": "3 scenarios x 3 reps",
+    "rest_seconds_between_sets": 45,
+    "setup_steps": [
+      "Full gear",
+      "Arm-care warm-up",
+      "Coach announces the scenario before each rep"
+    ],
+    "execution_steps": [
+      "Scenario 1: borderline pitch, runner on second - steal the strike",
+      "Scenario 2: ball in the dirt, runner on third - keep it in front",
+      "Scenario 3: runner on first taking a big lead - hold them",
+      "Score each rep as runs saved"
+    ],
+    "coaching_cues": [
+      "Quiet glove, quiet body",
+      "With a runner on third, blocking beats everything",
+      "A held runner is a saved run too"
+    ],
+    "common_mistakes": [
+      "Chasing a strike call and losing the block",
+      "Yanking pitches back into the zone",
+      "Ignoring the runner entirely"
+    ],
+    "scoring": {
+      "type": "count",
+      "unit": "runs saved",
+      "success_threshold": null
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Live pitcher and live runners"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "One scenario at a time, no scoring"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Late innings",
+        "change": "Run it after conditioning to mimic a tired seventh"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 6,
+    "loaded_strength_movement": false,
+    "supervision_required": true,
+    "safety_flags": [
+      "arm_warmup_required",
+      "counts_toward_throw_volume"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN",
+      "PITCH_SMART_GENERAL"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://www.chipsperformance.com/coaches",
+        "relationship": "inspired_by"
+      }
+    ],
+    "tags": [
+      "catching",
+      "situational",
+      "practitioner",
+      "chips",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Three catching situations, each scored by how many runs you just saved.",
+      "goal": "Save more runs than you give up across nine reps.",
+      "why": "Catchers do not get stats for this stuff, but it decides more games than hitting does."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "drill_id": "YGP_SHORT_HOP_WALL_HANDS",
+    "name": "Short Hop Wall Hands",
+    "short_description": "Solo short hops off a wall. Hands only, no glove needed.",
+    "long_description": "The athlete throws a ball into a wall to create short hops and fields them barehanded or with a glove. Fully solo, needs almost no space, and is the fastest way to build soft hands at home.",
+    "topic": "fielding",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "preseason",
+      "in-season",
+      "offseason"
+    ],
+    "intensity": "light",
+    "primary_metric": {
+      "metric_id": "FIELDING_CLEAN_PCT",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [],
+    "non_metric": false,
+    "environment_tier": "T3_backyard",
+    "equipment_required": [
+      "2_baseballs"
+    ],
+    "equipment_substitutions": [
+      {
+        "missing": "2_baseballs",
+        "swap_to": "a tennis ball or a rolled sock indoors",
+        "tier_change": "T4_living_room"
+      }
+    ],
+    "space_required": "10x10ft",
+    "player_count_min": 1,
+    "player_count_max": 6,
+    "coaches_min": 0,
+    "coaches_max": 1,
+    "duration_minutes": 10,
+    "reps_or_rounds": "3 rounds x 10 hops",
+    "rest_seconds_between_sets": 30,
+    "setup_steps": [
+      "Find a solid wall and a safe throwing surface",
+      "Start close so the hops are gentle"
+    ],
+    "execution_steps": [
+      "Throw the ball low into the wall",
+      "Field the short hop out front",
+      "Alternate glove side, backhand and middle",
+      "Give with the hands, do not stab"
+    ],
+    "coaching_cues": [
+      "Field it out front where you can see it",
+      "Give with it",
+      "Soft hands, not fast hands"
+    ],
+    "common_mistakes": [
+      "Standing too far back so the hop is easy",
+      "Stabbing at the ball",
+      "Fielding it under the body"
+    ],
+    "scoring": {
+      "type": "percent",
+      "unit": "% clean short hops",
+      "success_threshold": 70
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Move closer for faster hops, barehanded"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Tennis ball, further from the wall"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Partner version",
+        "change": "Partner throws the short hops instead of a wall"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 0,
+    "loaded_strength_movement": false,
+    "supervision_required": false,
+    "safety_flags": [],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "video_attached",
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://yougoprobaseball.com/",
+        "relationship": "inspired_by"
+      }
+    ],
+    "tags": [
+      "fielding",
+      "soft-hands",
+      "home",
+      "practitioner",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Throw a ball at a wall so it comes back on a short hop, and field it.",
+      "goal": "7 of 10 clean, fielded out in front.",
+      "why": "Short hops are the hardest ball in baseball. Ten minutes at a wall beats a whole practice of easy grounders."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "drill_id": "YGP_AT_HOME_GROUNDER_CIRCUIT",
+    "name": "At-Home Grounder Circuit",
+    "short_description": "Solo ground-ball circuit for a driveway or yard. No partner needed.",
+    "long_description": "A self-run circuit of rolled grounders, lateral shuffles and barehand pickups that an athlete can complete alone in a driveway. Built so home practice does not depend on a parent being available to hit.",
+    "topic": "fielding",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "preseason",
+      "in-season",
+      "offseason"
+    ],
+    "intensity": "normal",
+    "primary_metric": {
+      "metric_id": "FIELDING_CLEAN_PCT",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [
+      {
+        "metric_id": "FIELDING_FIRST_STEP",
+        "expected_movement": "increase"
+      }
+    ],
+    "non_metric": false,
+    "environment_tier": "T3_backyard",
+    "equipment_required": [
+      "2_baseballs",
+      "glove",
+      "4_cones"
+    ],
+    "equipment_substitutions": [
+      {
+        "missing": "4_cones",
+        "swap_to": "shoes or water bottles as markers",
+        "tier_change": "T3_backyard"
+      }
+    ],
+    "space_required": "20x20ft",
+    "player_count_min": 1,
+    "player_count_max": 6,
+    "coaches_min": 0,
+    "coaches_max": 1,
+    "duration_minutes": 12,
+    "reps_or_rounds": "3 stations x 8 reps",
+    "rest_seconds_between_sets": 30,
+    "setup_steps": [
+      "Dynamic warm-up first",
+      "Set two cones about 10 feet apart"
+    ],
+    "execution_steps": [
+      "Station 1: roll the ball out, charge and field it",
+      "Station 2: shuffle cone to cone, field a rolled ball each way",
+      "Station 3: barehand pickups of a stationary ball on the move",
+      "Reset and repeat"
+    ],
+    "coaching_cues": [
+      "Field it out front",
+      "Feet keep moving between reps",
+      "Funnel it to the middle"
+    ],
+    "common_mistakes": [
+      "Standing still and reaching",
+      "Fielding beside the body",
+      "Rushing so the reps get sloppy"
+    ],
+    "scoring": {
+      "type": "percent",
+      "unit": "% clean fields",
+      "success_threshold": 75
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Add a throw to a net at the end of each rep"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Two stations, slower rolls"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Timed",
+        "change": "Count clean reps in 90 seconds"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 0,
+    "loaded_strength_movement": false,
+    "supervision_required": false,
+    "safety_flags": [
+      "dynamic_warmup_required"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "video_attached",
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://yougoprobaseball.com/",
+        "relationship": "inspired_by"
+      }
+    ],
+    "tags": [
+      "fielding",
+      "home",
+      "circuit",
+      "practitioner",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Three ground-ball stations you can run by yourself in a driveway.",
+      "goal": "75% clean across all three stations.",
+      "why": "You do not need anyone to hit you grounders. You just need ten minutes and a ball."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "drill_id": "ANT_GROUND_BALL_BEGINNERS",
+    "name": "Ground Balls for Beginners",
+    "short_description": "First ground balls, taught in three slow positions.",
+    "long_description": "An entry-level ground-ball progression: get in position, funnel the ball to the middle, then step and throw - each taught statically before anything moves. Aimed squarely at players fielding their first grounders.",
+    "topic": "fielding",
+    "age_band": [
+      "6-8",
+      "9-12"
+    ],
+    "season_state": [
+      "preseason",
+      "in-season"
+    ],
+    "intensity": "light",
+    "primary_metric": {
+      "metric_id": "FIELDING_CLEAN_PCT",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [],
+    "non_metric": false,
+    "environment_tier": "T1_field",
+    "equipment_required": [
+      "glove",
+      "6_baseballs"
+    ],
+    "equipment_substitutions": [
+      {
+        "missing": "6_baseballs",
+        "swap_to": "9_safety_baseballs or wiffle_balls",
+        "tier_change": "T1_field"
+      }
+    ],
+    "space_required": "30x30ft",
+    "player_count_min": 1,
+    "player_count_max": 12,
+    "coaches_min": 1,
+    "coaches_max": 2,
+    "duration_minutes": 12,
+    "reps_or_rounds": "3 positions x 5 rolls",
+    "rest_seconds_between_sets": 30,
+    "setup_steps": [
+      "Use safety baseballs for first-timers",
+      "Coach rolls gently from 15 feet"
+    ],
+    "execution_steps": [
+      "Position 1: freeze in the fielding position, coach checks it",
+      "Position 2: funnel a rolled ball to the belly button",
+      "Position 3: field it, step, and throw",
+      "Slow rolls only until all three are clean"
+    ],
+    "coaching_cues": [
+      "Butt down, glove out front",
+      "Two hands, funnel to your middle",
+      "Look the ball into the glove"
+    ],
+    "common_mistakes": [
+      "Bending at the waist instead of the knees",
+      "Glove between the legs",
+      "Turning the head away from the ball"
+    ],
+    "scoring": {
+      "type": "percent",
+      "unit": "% clean fields",
+      "success_threshold": 70
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Faster rolls, then short hops"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Roll a tennis ball from 10 feet"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Partner rolls",
+        "change": "Players pair up and roll to each other"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 0,
+    "loaded_strength_movement": false,
+    "supervision_required": false,
+    "safety_flags": [
+      "use_safety_baseballs_under_12"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://www.antonellibaseball.com/instructionalvideos",
+        "relationship": "inspired_by"
+      }
+    ],
+    "tags": [
+      "fielding",
+      "ground-balls",
+      "fundamentals",
+      "practitioner",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Learn ground balls in three slow steps: get set, funnel it in, then throw.",
+      "goal": "Clean on 7 of 10 slow rolls before speeding anything up.",
+      "why": "Everybody who is good at ground balls started exactly here, slowly."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "drill_id": "DTD_HOTBOX_RUNDOWN_GAME",
+    "name": "Hot Box Rundown Game",
+    "short_description": "Competitive rundown game. Runners try to survive, fielders to be efficient.",
+    "long_description": "Two fielders, one runner, two bases and a scoreboard. Runners score a point for reaching a base safely, fielders score for an out in one throw or fewer. Turns rundown reps into something players ask to do again.",
+    "topic": "fielding",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "preseason",
+      "in-season"
+    ],
+    "intensity": "normal",
+    "primary_metric": {
+      "metric_id": "DECISION_ACCURACY",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [
+      {
+        "metric_id": "FUN_RATING",
+        "expected_movement": "increase"
+      }
+    ],
+    "non_metric": false,
+    "environment_tier": "T1_field",
+    "equipment_required": [
+      "5_baseballs",
+      "glove",
+      "infield_bases"
+    ],
+    "equipment_substitutions": [
+      {
+        "missing": "infield_bases",
+        "swap_to": "cones as bases",
+        "tier_change": "T1_field"
+      }
+    ],
+    "space_required": "infield",
+    "player_count_min": 3,
+    "player_count_max": 12,
+    "coaches_min": 1,
+    "coaches_max": 2,
+    "duration_minutes": 12,
+    "reps_or_rounds": "10 rounds",
+    "rest_seconds_between_sets": 40,
+    "setup_steps": [
+      "Arm-care warm-up first",
+      "Three-quarter speed runners, no diving",
+      "Fielders clear the lane after every throw"
+    ],
+    "execution_steps": [
+      "Runner starts between the bases",
+      "Fielders run them back and make one throw",
+      "Fielders score for an out in one throw or fewer",
+      "Runner scores for reaching a base"
+    ],
+    "coaching_cues": [
+      "Run them back hard",
+      "One throw",
+      "Clear the lane after you release"
+    ],
+    "common_mistakes": [
+      "Pump faking repeatedly",
+      "Throwing through the runner's eyeline",
+      "Diving at three-quarter speed"
+    ],
+    "scoring": {
+      "type": "percent",
+      "unit": "% outs in one throw or fewer",
+      "success_threshold": 60
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Two runners at once"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Walk-through pace with narration"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Catcher included",
+        "change": "Run it between third and home"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 10,
+    "loaded_strength_movement": false,
+    "supervision_required": true,
+    "safety_flags": [
+      "arm_warmup_required",
+      "counts_toward_throw_volume",
+      "collision_risk_use_calls"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN",
+      "PITCH_SMART_GENERAL"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://www.dominatethediamond.com/",
+        "relationship": "inspired_by"
+      }
+    ],
+    "tags": [
+      "fielding",
+      "team-defense",
+      "game",
+      "fun",
+      "practitioner",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Rundown, but it is a game. Fielders score for quick outs, runners score for escaping.",
+      "goal": "Fielders: out in one throw, 6 times out of 10.",
+      "why": "Rundowns are chaos until you have done a hundred of them. This makes the hundred fun."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "drill_id": "CBG_TEAM_FIRST_RELAY_RACE",
+    "name": "Team-First Relay Race",
+    "short_description": "Relay race scored on the team's worst throw, not its best.",
+    "long_description": "Teams race relay throws, but the score is set by the weakest link - one bad throw costs the whole team. Builds the habit of throwing to help the next player rather than showing off an arm.",
+    "topic": "fielding",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "preseason",
+      "in-season"
+    ],
+    "intensity": "normal",
+    "primary_metric": {
+      "metric_id": "RELAY_ACCURACY_PCT",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [
+      {
+        "metric_id": "COMMUNICATION_PCT",
+        "expected_movement": "increase"
+      }
+    ],
+    "non_metric": false,
+    "environment_tier": "T1_field",
+    "equipment_required": [
+      "5_baseballs",
+      "glove",
+      "4_cones"
+    ],
+    "equipment_substitutions": [
+      {
+        "missing": "4_cones",
+        "swap_to": "gloves or hats as markers",
+        "tier_change": "T1_field"
+      }
+    ],
+    "space_required": "full_field",
+    "player_count_min": 6,
+    "player_count_max": 20,
+    "coaches_min": 1,
+    "coaches_max": 2,
+    "duration_minutes": 12,
+    "reps_or_rounds": "3 races",
+    "rest_seconds_between_sets": 60,
+    "setup_steps": [
+      "Arm-care warm-up first",
+      "Two even lines about 60 feet apart per team"
+    ],
+    "execution_steps": [
+      "Relay the ball down the line and back",
+      "Any throw the next player has to leave their feet for costs 5 seconds",
+      "Fastest adjusted time wins",
+      "Rotate the order each race"
+    ],
+    "coaching_cues": [
+      "Throw to their chest, not near them",
+      "Call for it before it comes",
+      "Fast is useless if the next player cannot catch it"
+    ],
+    "common_mistakes": [
+      "Rushing and sailing throws",
+      "Silent relays",
+      "Blaming the last thrower"
+    ],
+    "scoring": {
+      "type": "percent",
+      "unit": "% chest-high relays",
+      "success_threshold": 75
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Add a cutoff man who must turn and relay"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Shorter distance, untimed"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Silent round",
+        "change": "No talking allowed, then discuss how much harder it was"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 12,
+    "loaded_strength_movement": false,
+    "supervision_required": false,
+    "safety_flags": [
+      "arm_warmup_required",
+      "counts_toward_throw_volume"
+    ],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN",
+      "PITCH_SMART_GENERAL"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://www.coachballgame.com/coachballgameuniversity",
+        "relationship": "inspired_by"
+      }
+    ],
+    "tags": [
+      "fielding",
+      "relay",
+      "team-game",
+      "fun",
+      "practitioner",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Relay race, but one bad throw costs your whole team five seconds.",
+      "goal": "Every throw chest-high. Speed comes second.",
+      "why": "A rocket your teammate cannot catch is slower than an easy one they can."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "drill_id": "DC_TWO_STATION_ROTATION",
+    "name": "Two-Station Rotation",
+    "short_description": "Two stations, half the team each, nobody standing in line.",
+    "long_description": "A practice-structure template rather than a skill drill: split the roster across two stations run by one coach each, rotate on a fixed clock, and keep active minutes high. The simplest fix for practices where most players are queuing.",
+    "topic": "team-practice",
+    "age_band": [
+      "6-8",
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "preseason",
+      "in-season"
+    ],
+    "intensity": "normal",
+    "primary_metric": {
+      "metric_id": "ACTIVE_MINUTES_PCT",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [],
+    "non_metric": true,
+    "environment_tier": "T1_field",
+    "equipment_required": [
+      "4_cones"
+    ],
+    "equipment_substitutions": [
+      {
+        "missing": "4_cones",
+        "swap_to": "bags or gloves to mark stations",
+        "tier_change": "T1_field"
+      }
+    ],
+    "space_required": "half_field",
+    "player_count_min": 6,
+    "player_count_max": 20,
+    "coaches_min": 2,
+    "coaches_max": 4,
+    "duration_minutes": 20,
+    "reps_or_rounds": "2 stations x 10 minutes",
+    "rest_seconds_between_sets": 60,
+    "setup_steps": [
+      "Set both stations before players arrive",
+      "One coach per station",
+      "Agree the rotation whistle"
+    ],
+    "execution_steps": [
+      "Split the roster in half",
+      "Run both stations simultaneously for 10 minutes",
+      "Rotate on the whistle",
+      "Count how many players are active at any moment"
+    ],
+    "coaching_cues": [
+      "No line longer than three players",
+      "Set up before they arrive, not during",
+      "If half the team is watching, split again"
+    ],
+    "common_mistakes": [
+      "One big group with everyone watching",
+      "Setting up equipment during practice time",
+      "Stations that need the same gear"
+    ],
+    "scoring": {
+      "type": "percent",
+      "unit": "% active minutes",
+      "success_threshold": 80
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Three or four stations with assistant coaches or parents"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Two stations, one coach floating between them"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Parent helpers",
+        "change": "Recruit two parents so you can run four stations"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 0,
+    "loaded_strength_movement": false,
+    "supervision_required": false,
+    "safety_flags": [],
+    "safety_rule_refs": [
+      "DAILY_ACTIVITY_FLOOR"
+    ],
+    "verification_levels_supported": [
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://www.dugoutcaptain.com/drill/what-is-practice-planning-101/",
+        "relationship": "inspired_by"
+      }
+    ],
+    "tags": [
+      "team-practice",
+      "stations",
+      "anti-line",
+      "practitioner",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Half the team at one station, half at the other. Swap on the whistle.",
+      "goal": "Nobody waits in a line longer than three people.",
+      "why": "Standing in line is not practice. Two stations doubles how many reps everybody gets."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "drill_id": "DC_ABSOLUTE_8_SKELETON",
+    "name": "Absolute 8 Practice Skeleton",
+    "short_description": "A reusable eight-block practice template a coach can fill in weekly.",
+    "long_description": "A practice skeleton with eight fixed blocks - warm-up, arm care, individual defence, team defence, hitting stations, baserunning, situational, closing huddle. The order stays the same every week; only the content inside changes, so planning takes minutes.",
+    "topic": "team-practice",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "preseason",
+      "in-season"
+    ],
+    "intensity": "normal",
+    "primary_metric": {
+      "metric_id": "ACTIVE_MINUTES_PCT",
+      "expected_movement": "increase"
+    },
+    "secondary_metrics": [],
+    "non_metric": true,
+    "environment_tier": "T1_field",
+    "equipment_required": [],
+    "equipment_substitutions": [],
+    "space_required": "full_field",
+    "player_count_min": 6,
+    "player_count_max": 20,
+    "coaches_min": 1,
+    "coaches_max": 4,
+    "duration_minutes": 90,
+    "reps_or_rounds": "8 blocks",
+    "rest_seconds_between_sets": 0,
+    "setup_steps": [
+      "Write the eight blocks on a card before practice",
+      "Assign a coach to each block"
+    ],
+    "execution_steps": [
+      "1 Dynamic warm-up  2 Arm care  3 Individual defence  4 Team defence",
+      "5 Hitting stations  6 Baserunning  7 Situational  8 Closing huddle",
+      "Keep the order fixed; change only what happens inside each block",
+      "Hold the clock - move on even if a block is not finished"
+    ],
+    "coaching_cues": [
+      "Same order every week so players self-organise",
+      "Hold the clock",
+      "Arm care is a block, not an afterthought"
+    ],
+    "common_mistakes": [
+      "Letting hitting eat the whole practice",
+      "Skipping the closing huddle",
+      "Rebuilding the plan from scratch each week"
+    ],
+    "scoring": {
+      "type": "percent",
+      "unit": "% blocks completed on time",
+      "success_threshold": 80
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Swap block 7 for a live scrimmage inning"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Six blocks for a 60-minute practice"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Rain plan",
+        "change": "Indoor version with blocks 3, 5 and 8 only"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 0,
+    "loaded_strength_movement": false,
+    "supervision_required": false,
+    "safety_flags": [],
+    "safety_rule_refs": [
+      "DAILY_ACTIVITY_FLOOR"
+    ],
+    "verification_levels_supported": [
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://www.dugoutcaptain.com/drill/what-is-practice-planning-101/",
+        "relationship": "inspired_by"
+      }
+    ],
+    "tags": [
+      "team-practice",
+      "stations",
+      "practitioner",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Practice has the same eight parts every week, so you always know what is next.",
+      "goal": "Get through all eight without running over.",
+      "why": "Knowing the order means less standing around wondering what is happening."
+    }
+  },
+  {
+    "sport": "baseball",
+    "author": "platform",
+    "created_at": "2026-08-05",
+    "last_reviewed_at": "2026-08-05",
+    "review_status": "draft",
+    "drill_id": "REINOLD_COOLDOWN_RESET",
+    "name": "Post-Throwing Cooldown Reset",
+    "short_description": "Short cooldown after throwing. Nothing is thrown.",
+    "long_description": "A brief post-throwing routine - light band work, gentle range of motion and a breathing reset - to end a throwing day deliberately rather than just stopping. Non-metric by design; the value is the habit.",
+    "topic": "recovery",
+    "age_band": [
+      "9-12",
+      "13-15",
+      "16+"
+    ],
+    "season_state": [
+      "preseason",
+      "in-season",
+      "offseason",
+      "tournament"
+    ],
+    "intensity": "recovery",
+    "primary_metric": {
+      "metric_id": "WARMUP_COMPLETION",
+      "expected_movement": "maintain"
+    },
+    "secondary_metrics": [],
+    "non_metric": true,
+    "environment_tier": "T4_living_room",
+    "equipment_required": [],
+    "equipment_substitutions": [
+      {
+        "missing": "resistance band",
+        "swap_to": "a towel, or bodyweight only",
+        "tier_change": "T4_living_room"
+      }
+    ],
+    "space_required": "6x6ft clear",
+    "player_count_min": 1,
+    "player_count_max": 20,
+    "coaches_min": 0,
+    "coaches_max": 2,
+    "duration_minutes": 6,
+    "reps_or_rounds": "1 round, 4 movements",
+    "rest_seconds_between_sets": 0,
+    "setup_steps": [
+      "Straight after throwing, before the bag is packed"
+    ],
+    "execution_steps": [
+      "Light band external rotation x10",
+      "Gentle cross-body stretch, 20 seconds each",
+      "Shoulder range of motion x10",
+      "Six slow breaths"
+    ],
+    "coaching_cues": [
+      "Light - this is not training",
+      "Do it before you leave, not at home",
+      "Finish the day on purpose"
+    ],
+    "common_mistakes": [
+      "Skipping it because the session is over",
+      "Stretching hard on a fatigued arm",
+      "Leaving it until bedtime"
+    ],
+    "scoring": {
+      "type": "none",
+      "unit": "",
+      "success_threshold": null
+    },
+    "progressions": [
+      {
+        "level": "advanced",
+        "change": "Add a short log of how the arm felt today"
+      }
+    ],
+    "regressions": [
+      {
+        "level": "easier",
+        "change": "Breathing and cross-body stretch only"
+      }
+    ],
+    "variations": [
+      {
+        "name": "Team version",
+        "change": "Whole team does it together in the post-game huddle"
+      }
+    ],
+    "pitch_smart_compliant": true,
+    "throw_count_contribution": 0,
+    "loaded_strength_movement": false,
+    "supervision_required": false,
+    "safety_flags": [],
+    "safety_rule_refs": [
+      "STOP_ON_PAIN"
+    ],
+    "verification_levels_supported": [
+      "self_entered",
+      "coach_verified"
+    ],
+    "evidence_links": [
+      {
+        "source_id": "https://mikereinold.com/youth-baseball/",
+        "relationship": "aligns_with"
+      }
+    ],
+    "tags": [
+      "recovery",
+      "arm-care",
+      "reset",
+      "practitioner",
+      "needs-review"
+    ],
+    "kid_friendly": {
+      "explain": "Six minutes of easy shoulder work and breathing right after you finish throwing.",
+      "goal": "Do it before you pack your bag, every throwing day.",
+      "why": "How you finish a throwing day affects how the next one feels."
     }
   }
 ]
