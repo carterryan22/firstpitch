@@ -51,6 +51,13 @@ const ERROR_COPY: Record<string, string> = {
     "That magic link is expired or already used. Request a new one. They're good for 15 minutes.",
 };
 
+const DEMO_MODE = process.env.NEXT_PUBLIC_DEMO_MODE === "1";
+const DEMO_ACCOUNTS = [
+  { role: "coach" as const, email: "coach1@firstpitch.test", label: "Coach Riley", destination: "/coach" },
+  { role: "parent" as const, email: "parent1@firstpitch.test", label: "Parent demo", destination: "/parent" },
+  { role: "player" as const, email: "athlete1@firstpitch.test", label: "Athlete demo", destination: "/missions" },
+];
+
 export default function LoginPage() {
   return (
     <Suspense fallback={<div className="card">Loading…</div>}>
@@ -96,6 +103,28 @@ function LoginForm() {
         return;
       }
       setSent({ email, devLink: j.devLink, delivery: j.delivery });
+    } catch {
+      setErr("Network error. Try again.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function demoSignIn(account: (typeof DEMO_ACCOUNTS)[number]) {
+    setBusy(true);
+    setErr(null);
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ email: account.email, role: account.role, name: account.label }),
+      });
+      const body = (await res.json().catch(() => ({}))) as { error?: string };
+      if (!res.ok) {
+        setErr(body.error ?? "Demo sign-in is unavailable.");
+        return;
+      }
+      window.location.assign(nextPath ?? account.destination);
     } catch {
       setErr("Network error. Try again.");
     } finally {
@@ -198,6 +227,30 @@ function LoginForm() {
           </div>
         ) : null}
       </fieldset>
+
+      {DEMO_MODE ? (
+        <section className="card space-y-3 border-brand-500/40 bg-brand-50/40" aria-labelledby="demo-sign-in-heading">
+          <div>
+            <h2 id="demo-sign-in-heading" className="m-0 text-lg">Preview demo accounts</h2>
+            <p className="mt-1 text-sm text-slate-600">
+              Jump into the seeded four-team workspace. These shortcuts are disabled in Production.
+            </p>
+          </div>
+          <div className="grid gap-2 sm:grid-cols-3">
+            {DEMO_ACCOUNTS.map((account) => (
+              <button
+                key={account.role}
+                type="button"
+                className="btn-ghost text-sm"
+                disabled={busy}
+                onClick={() => void demoSignIn(account)}
+              >
+                {account.label}
+              </button>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <form onSubmit={onSubmit} className="card space-y-4">
         <div>
