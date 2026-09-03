@@ -27,8 +27,10 @@ export class JsonFileStore implements Store {
   private cache: DbShape | null = null;
   constructor(public readonly filePath: string) {
     fs.mkdirSync(path.dirname(filePath), { recursive: true });
-    if (!fs.existsSync(filePath)) {
-      fs.writeFileSync(filePath, JSON.stringify(createEmptyDb(), null, 2));
+    try {
+      fs.writeFileSync(filePath, JSON.stringify(createEmptyDb(), null, 2), { flag: "wx" });
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "EEXIST") throw error;
     }
   }
   async read(): Promise<DbShape> {
