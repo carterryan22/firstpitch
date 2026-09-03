@@ -1,4 +1,5 @@
 import { a11yScenario } from "./a11y-scan.ts";
+import { adminFlowScenario } from "./admin-flow.ts";
 import { anonymousScenario } from "./anonymous.ts";
 import { athleteFlowScenario } from "./athlete-flow.ts";
 import { authzIsolationScenario } from "./authz-isolation.ts";
@@ -20,5 +21,6 @@ export const scenarios: Scenario[] = [
   athleteFlowScenario,
   safetyScenario,
   authzIsolationScenario,
+  adminFlowScenario,
   a11yScenario,
 ];
