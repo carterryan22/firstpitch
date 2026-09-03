@@ -43,6 +43,23 @@ describe("corpus loaders", () => {
     expect(loadSources().length).toBeGreaterThan(0);
   });
 
+  it("keeps drill ids unique and every reference resolvable", () => {
+    const drills = loadDrills();
+    const ids = drills.map((drill) => drill.drill_id);
+    const sourceUrls = new Set(loadSources().map((source) => source.url));
+    const ruleIds = new Set(loadSafetyRules().rules.map((rule) => rule.rule_id));
+
+    expect(new Set(ids).size).toBe(ids.length);
+    for (const drill of drills) {
+      for (const evidence of drill.evidence_links) {
+        expect(sourceUrls.has(evidence.source_id), `${drill.drill_id}: ${evidence.source_id}`).toBe(true);
+      }
+      for (const ruleId of drill.safety_rule_refs) {
+        expect(ruleIds.has(ruleId), `${drill.drill_id}: ${ruleId}`).toBe(true);
+      }
+    }
+  });
+
   it("returns the right age-band key for boundary ages", () => {
     expect(getAgeBandKeyForAge(6)).toBe("6-8");
     expect(getAgeBandKeyForAge(8)).toBe("6-8");
