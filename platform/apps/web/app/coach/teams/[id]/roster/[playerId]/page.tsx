@@ -12,10 +12,13 @@ export const metadata = { title: "Player" };
 
 export default async function PlayerDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string; playerId: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const { id, playerId } = await params;
+  const query = await searchParams;
   const session = await getSession();
   if (!session) redirect("/login");
   if (!(await userCanManageTeam(session.user.id, id))) redirect("/coach");
@@ -40,6 +43,11 @@ export default async function PlayerDetailPage({
 
   return (
     <div className="mx-auto max-w-2xl space-y-6">
+      {query.consentEmail === "failed" ? (
+        <div role="alert" className="border-2 border-warn bg-warn-soft p-4 text-sm text-ink">
+          Player saved, but the consent email could not be sent. Check email configuration, then resend consent from this player profile.
+        </div>
+      ) : null}
       <header>
         <p className="text-xs uppercase tracking-wide text-slate-500">
           <Link href={`/coach/teams/${id}/roster`} className="no-underline hover:underline">

@@ -1,31 +1,14 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getRepos } from "@platform/storage";
-import { issueLoginToken, type Role } from "@platform/auth";
+import { AuthError, issueLoginToken, type Role } from "@platform/auth";
 import { sendEmail, isEmailInDevMode } from "../../../lib/email";
+import { reportError } from "../../../lib/monitoring";
+import { sanitizeRedirect } from "../../../lib/safeRedirect";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const VALID_ROLES: Role[] = ["coach", "parent", "player", "admin"];
-
-// Rough in-process rate limit: max N requests per email per hour.
-// Memory-only; fine for a single-region MVP. Sessions still rotate, this just
-// stops "request 50 links" abuse.
-const RATE: Map<string, number[]> = new Map();
-const RATE_LIMIT_PER_HOUR = 6;
-const RATE_WINDOW_MS = 60 * 60 * 1000;
-
-function rateOk(key: string): boolean {
-  const now = Date.now();
-  const arr = (RATE.get(key) ?? []).filter((t) => now - t < RATE_WINDOW_MS);
-  if (arr.length >= RATE_LIMIT_PER_HOUR) {
-    RATE.set(key, arr);
-    return false;
-  }
-  arr.push(now);
-  RATE.set(key, arr);
-  return true;
-}
 
 export async function POST(req: NextRequest) {
   const body = (await req.json().catch(() => ({}))) as {
@@ -44,19 +27,21 @@ export async function POST(req: NextRequest) {
   // Whitelist redirect to same-app paths only — never accept arbitrary URLs.
   const redirectTo = sanitizeRedirect(body.redirectTo);
 
-  if (!rateOk(email)) {
-    return NextResponse.json(
-      { error: "Too many link requests. Try again in an hour." },
-      { status: 429 },
-    );
+  let issued;
+  try {
+    issued = await issueLoginToken(getRepos(), {
+      email,
+      role: body.role as Role,
+      name: body.name,
+      redirectTo,
+    });
+  } catch (error) {
+    if (error instanceof AuthError) {
+      return NextResponse.json({ error: error.message }, { status: error.status });
+    }
+    await reportError(error, { source: "api/auth/request-link" });
+    return NextResponse.json({ error: "Unable to create a sign-in link." }, { status: 500 });
   }
-
-  const issued = await issueLoginToken(getRepos(), {
-    email,
-    role: body.role as Role,
-    name: body.name,
-    redirectTo,
-  });
 
   const origin = req.nextUrl.origin;
   const magicLink = `${origin}/api/auth/verify?token=${encodeURIComponent(issued.token)}`;
@@ -80,6 +65,16 @@ export async function POST(req: NextRequest) {
     ].join("\n"),
   });
 
+  if (!result.ok) {
+    await reportError(new Error(result.error ?? "Email delivery failed"), {
+      source: "api/auth/request-link",
+    });
+    return NextResponse.json(
+      { error: "Email delivery is temporarily unavailable. Please try again later." },
+      { status: 503 },
+    );
+  }
+
   // In dev (no email provider configured) return the link so localhost flows
   // don't require a real inbox. NEVER do this when a real provider is wired.
   const includeDevLink = isEmailInDevMode();
@@ -90,11 +85,4 @@ export async function POST(req: NextRequest) {
     ...(includeDevLink ? { devLink: magicLink } : {}),
     ...(result.ok ? {} : { warning: result.error }),
   });
-}
-
-function sanitizeRedirect(raw?: string): string | undefined {
-  if (!raw) return undefined;
-  if (!raw.startsWith("/") || raw.startsWith("//")) return undefined;
-  if (raw.length > 256) return undefined;
-  return raw;
 }

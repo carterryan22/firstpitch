@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getRepos } from "@platform/storage";
+import { runtimeReadiness } from "../../lib/runtimeConfig";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -14,28 +15,9 @@ export const dynamic = "force-dynamic";
  * Returns 200 when the store is reachable, 503 otherwise. `/api/` is already
  * disallowed in robots.ts, so this is not indexable.
  */
-function persistenceBackend(): "kv" | "file" | "memory" {
-  if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) return "kv";
-  if (process.env.PLATFORM_DATA_DIR) return "file";
-  return "memory";
-}
-
 export async function GET() {
   const time = new Date().toISOString();
-  const backend = persistenceBackend();
-  const isProd = process.env.NODE_ENV === "production";
-
-  const config = {
-    auth: !!process.env.PLATFORM_AUTH_SECRET,
-    email: process.env.RESEND_API_KEY ? ("resend" as const) : ("console" as const),
-    persistence: backend,
-    cron: !!process.env.CRON_SECRET,
-  };
-
-  // In production, an in-memory store loses data between invocations and a
-  // missing auth secret means auth can't boot — surface these as not-ready.
-  const misconfigured =
-    isProd && (backend === "memory" || !config.auth);
+  const readiness = runtimeReadiness();
 
   let storeReachable = false;
   try {
@@ -47,11 +29,16 @@ export async function GET() {
     storeReachable = false;
   }
 
-  const ok = storeReachable && !misconfigured;
-  const status = !storeReachable ? "error" : misconfigured ? "degraded" : "ok";
+  const ok = storeReachable && readiness.ready;
+  const status = !storeReachable ? "error" : !readiness.ready ? "degraded" : "ok";
 
   return NextResponse.json(
-    { status, time, store: { backend, reachable: storeReachable }, config },
+    {
+      status,
+      time,
+      store: { backend: readiness.config.persistence, reachable: storeReachable },
+      config: readiness.config,
+    },
     { status: ok ? 200 : 503 },
   );
 }

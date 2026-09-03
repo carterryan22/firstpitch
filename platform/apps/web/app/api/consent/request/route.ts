@@ -58,5 +58,15 @@ export async function POST(req: NextRequest) {
     requestedByUserId: session.user.id,
   });
 
+  if (!result.delivery.ok) {
+    return NextResponse.json(
+      {
+        ok: false,
+        consentId: result.consent.id,
+        error: "Consent was saved, but the email could not be sent. Please retry later.",
+      },
+      { status: 503 },
+    );
+  }
   return NextResponse.json({ ok: true, consentId: result.consent.id, devLink: result.devLink });
 }

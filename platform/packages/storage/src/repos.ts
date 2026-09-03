@@ -35,6 +35,8 @@ import type {
 export interface Store {
   read(): Promise<DbShape>;
   write(db: DbShape): Promise<void>;
+  /** Optional atomic read-modify-write primitive for shared backends. */
+  mutate?<T>(fn: (db: DbShape) => T): Promise<T>;
 }
 
 let counter = 0;
@@ -161,6 +163,10 @@ export interface Repos {
   loginTokens: {
     byHash(tokenHash: string): Promise<LoginTokenRecord | undefined>;
     create(input: Omit<LoginTokenRecord, "id" | "createdAt">): Promise<LoginTokenRecord>;
+    createWithinLimit(
+      input: Omit<LoginTokenRecord, "id" | "createdAt">,
+      options: { max: number; windowStart: string },
+    ): Promise<LoginTokenRecord | undefined>;
     /** Marks a token consumed and returns the previous (pre-consumption) record. */
     consume(tokenHash: string, at?: string): Promise<LoginTokenRecord | undefined>;
     purgeExpired(): Promise<number>;
@@ -171,6 +177,7 @@ export interface Repos {
     byTokenHash(tokenHash: string): Promise<ConsentRecord | undefined>;
     byPlayer(playerId: string): Promise<ConsentRecord | undefined>;
     create(input: Omit<ConsentRecord, "id" | "createdAt">): Promise<ConsentRecord>;
+    createAndLinkPlayer(input: Omit<ConsentRecord, "id" | "createdAt">): Promise<ConsentRecord | undefined>;
     update(id: string, patch: Partial<ConsentRecord>): Promise<ConsentRecord | undefined>;
   };
   fields: {
@@ -200,6 +207,7 @@ export interface Repos {
 
 export function makeRepos(store: Store): Repos {
   const mutate = async <T>(fn: (db: DbShape) => T): Promise<T> => {
+    if (store.mutate) return store.mutate(fn);
     const db = await store.read();
     const result = fn(db);
     await store.write(db);
@@ -773,6 +781,23 @@ export function makeRepos(store: Store): Repos {
           db.loginTokens.push(rec);
           return rec;
         }),
+      createWithinLimit: (input, options) =>
+        mutate((db) => {
+          if (!db.loginTokens) db.loginTokens = [];
+          const email = input.email.toLowerCase().trim();
+          const recent = db.loginTokens.filter(
+            (token) => token.email === email && token.createdAt >= options.windowStart,
+          );
+          if (recent.length >= options.max) return undefined;
+          const rec: LoginTokenRecord = {
+            id: cid("ltok"),
+            createdAt: new Date().toISOString(),
+            ...input,
+            email,
+          };
+          db.loginTokens.push(rec);
+          return rec;
+        }),
       consume: (tokenHash, at) =>
         mutate((db) => {
           if (!db.loginTokens) db.loginTokens = [];
@@ -812,8 +837,10 @@ export function makeRepos(store: Store): Repos {
         );
       },
       byId: async (id) => ((await store.read()).consents ?? []).find((c) => c.id === id),
-      byTokenHash: async (tokenHash) =>
-        ((await store.read()).consents ?? []).find((c) => c.tokenHash === tokenHash),
+      byTokenHash: async (tokenHash) => {
+        if (!tokenHash) return undefined;
+        return ((await store.read()).consents ?? []).find((c) => c.tokenHash === tokenHash);
+      },
       async byPlayer(playerId) {
         const all = ((await store.read()).consents ?? []).filter((c) => c.playerId === playerId);
         // Prefer a granted record, else the most recent.
@@ -831,6 +858,33 @@ export function makeRepos(store: Store): Repos {
             ...input,
           };
           db.consents.push(rec);
+          return rec;
+        }),
+      createAndLinkPlayer: (input) =>
+        mutate((db) => {
+          if (!db.consents) db.consents = [];
+          const player = db.players.find((candidate) => candidate.id === input.playerId);
+          if (!player) return undefined;
+          const now = new Date().toISOString();
+          for (let index = 0; index < db.consents.length; index += 1) {
+            const previous = db.consents[index]!;
+            if (previous.playerId === input.playerId && previous.status === "pending") {
+              db.consents[index] = {
+                ...previous,
+                status: "revoked",
+                revokedAt: now,
+                tokenHash: undefined,
+              };
+            }
+          }
+          const rec: ConsentRecord = {
+            id: cid("consent"),
+            createdAt: now,
+            ...input,
+          };
+          db.consents.push(rec);
+          player.consentStatus = "pending";
+          player.consentId = rec.id;
           return rec;
         }),
       update: (id, patch) =>

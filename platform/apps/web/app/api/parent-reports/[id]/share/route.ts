@@ -67,6 +67,7 @@ export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string
   if (via.length === 0) via.push("dashboard");
 
   let emailDelivery: string | undefined;
+  let sharedVia = via.slice();
   if (via.includes("email")) {
     const player = await repos.players.byId(report.playerId);
     const parentUserId = player?.parentUserId;
@@ -82,19 +83,34 @@ export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string
     } else {
       emailDelivery = "no_parent_email";
     }
+    if (emailDelivery === "failed" || emailDelivery === "no_parent_email") {
+      sharedVia = sharedVia.filter((channel) => channel !== "email");
+      if (sharedVia.length === 0) {
+        return NextResponse.json(
+          {
+            error:
+              emailDelivery === "no_parent_email"
+                ? "No parent email is linked to this player."
+                : "Email delivery failed. The report was not marked as shared.",
+            emailDelivery,
+          },
+          { status: emailDelivery === "no_parent_email" ? 422 : 503 },
+        );
+      }
+    }
   }
 
   const updated = await repos.parentReports.update(id, {
     status: "shared",
     sharedAt: new Date().toISOString(),
-    sharedVia: via,
+    sharedVia,
     recalledAt: undefined,
   });
   await repos.audit.log({
     userId: session.user.id,
     action: "parent_report_shared",
     resource: `parent_report:${id}`,
-    metadata: { via, emailDelivery },
+    metadata: { via: sharedVia, emailDelivery },
   });
   return NextResponse.json({ report: updated, emailDelivery });
 }

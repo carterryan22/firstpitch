@@ -3,9 +3,7 @@ import { InMemoryStore, makeRepos, type ParentReportContent } from "@platform/st
 
 let repos: ReturnType<typeof makeRepos>;
 beforeEach(() => {
-  // Seed a fresh array — InMemoryStore shallow-copies EMPTY_DB, so its array
-  // refs are shared across instances unless explicitly overridden.
-  repos = makeRepos(new InMemoryStore({ parentReports: [] }));
+  repos = makeRepos(new InMemoryStore());
 });
 
 function content(over: Partial<ParentReportContent> = {}): ParentReportContent {

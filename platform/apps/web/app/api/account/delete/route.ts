@@ -3,6 +3,7 @@ import { getRepos } from "@platform/storage";
 import { getSession } from "../../../lib/session";
 import { sendEmail } from "../../../lib/email";
 import { siteUrl } from "../../../lib/site";
+import { reportError } from "../../../lib/monitoring";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -45,7 +46,7 @@ export async function POST(req: NextRequest) {
   }
 
   // Notify the privacy desk to complete the cascade + any ownership handoff.
-  await sendEmail({
+  const delivery = await sendEmail({
     to: process.env.PRIVACY_INBOX || "privacy@firstpitch.app",
     subject: `Account deletion request: ${session.user.email}`,
     text:
@@ -53,6 +54,13 @@ export async function POST(req: NextRequest) {
       `Reason: ${(body.reason ?? "-").slice(0, 500)}\n` +
       `Process within 30 days per policy. Dashboard: ${siteUrl()}/admin/audit`,
   });
+  if (!delivery.ok) {
+    await reportError(new Error(delivery.error ?? "Privacy inbox delivery failed"), {
+      source: "api/account/delete",
+      userId: session.user.id,
+      extra: { deletionRequestRecorded: true },
+    });
+  }
 
   return NextResponse.json({
     ok: true,

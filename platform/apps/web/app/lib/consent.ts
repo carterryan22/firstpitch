@@ -10,7 +10,7 @@
 import crypto from "node:crypto";
 import { getRepos, type ConsentRecord, type PlayerRecord } from "@platform/storage";
 import { hashToken } from "@platform/auth";
-import { sendEmail, isEmailInDevMode } from "./email";
+import { sendEmail, isEmailInDevMode, type SendEmailResult } from "./email";
 import { ageFromDob } from "./players";
 import { siteUrl } from "./site";
 
@@ -36,6 +36,7 @@ export interface RequestConsentInput {
 
 export interface RequestConsentResult {
   consent: ConsentRecord;
+  delivery: SendEmailResult;
   /** Present only in email dev mode so the link is testable locally. */
   devLink?: string;
 }
@@ -50,7 +51,7 @@ export async function requestParentalConsent(input: RequestConsentInput): Promis
   const token = crypto.randomBytes(32).toString("base64url");
   const tokenHash = hashToken(token);
 
-  const consent = await repos.consents.create({
+  const consent = await repos.consents.createAndLinkPlayer({
     playerId: input.playerId,
     teamId: input.teamId,
     parentEmail: email,
@@ -61,15 +62,10 @@ export async function requestParentalConsent(input: RequestConsentInput): Promis
     policyVersion: CONSENT_POLICY_VERSION,
     expiresAt: new Date(Date.now() + CONSENT_TTL_MS).toISOString(),
   });
-
-  // Link the profile to this pending consent.
-  await repos.players.update(input.playerId, {
-    consentStatus: "pending",
-    consentId: consent.id,
-  });
+  if (!consent) throw new Error("Player not found while requesting consent");
 
   const link = `${siteUrl()}/api/consent/verify?token=${token}`;
-  await sendEmail({
+  const delivery = await sendEmail({
     to: email,
     subject: "Please approve your child's First Pitch profile",
     text:
@@ -87,7 +83,7 @@ export async function requestParentalConsent(input: RequestConsentInput): Promis
     metadata: { consentId: consent.id, parentEmail: email },
   });
 
-  return { consent, devLink: isEmailInDevMode() ? link : undefined };
+  return { consent, delivery, devLink: isEmailInDevMode() ? link : undefined };
 }
 
 export type GrantConsentOutcome =

@@ -25,6 +25,9 @@ export async function sendEmail(input: SendEmailInput): Promise<SendEmailResult>
   const from = input.from ?? process.env.EMAIL_FROM ?? "First Pitch <noreply@firstpitch.app>";
 
   if (!apiKey) {
+    if (process.env.NODE_ENV === "production") {
+      return { ok: false, provider: "console", error: "Email provider is not configured" };
+    }
     // Dev / preview mode — log so the link is visible in server logs.
     // eslint-disable-next-line no-console
     console.log(
@@ -69,5 +72,5 @@ function escapeHtml(s: string): string {
 
 /** True when emails will only be logged (no provider configured). */
 export function isEmailInDevMode(): boolean {
-  return !process.env.RESEND_API_KEY;
+  return process.env.NODE_ENV !== "production" && !process.env.RESEND_API_KEY;
 }

@@ -419,31 +419,36 @@ export interface DbShape {
   favorites?: FavoriteRecord[];
 }
 
-export const EMPTY_DB: DbShape = {
-  users: [],
-  players: [],
-  teams: [],
-  teamMemberships: [],
-  plans: [],
-  games: [],
-  gameNotes: [],
-  playerGameStats: [],
-  throwingLogs: [],
-  metricEntries: [],
-  goals: [],
-  missionCompletions: [],
-  missionAssignments: [],
-  auditLogs: [],
-  sessions: [],
-  loginTokens: [],
-  consents: [],
-  quickTags: [],
-  parentReports: [],
-  fields: [],
-  fieldReviews: [],
-  fieldBookings: [],
-  favorites: [],
-};
+export function createEmptyDb(): DbShape {
+  return {
+    users: [],
+    players: [],
+    teams: [],
+    teamMemberships: [],
+    plans: [],
+    games: [],
+    gameNotes: [],
+    playerGameStats: [],
+    throwingLogs: [],
+    metricEntries: [],
+    goals: [],
+    missionCompletions: [],
+    missionAssignments: [],
+    auditLogs: [],
+    sessions: [],
+    loginTokens: [],
+    consents: [],
+    quickTags: [],
+    parentReports: [],
+    fields: [],
+    fieldReviews: [],
+    fieldBookings: [],
+    favorites: [],
+  };
+}
+
+/** Read-only compatibility export. Stores must use createEmptyDb(). */
+export const EMPTY_DB: DbShape = createEmptyDb();
 
 /**
  * In-game note authored by a coach about one player and (optionally) a
