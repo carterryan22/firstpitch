@@ -59,7 +59,10 @@ export async function POST(req: NextRequest) {
     });
   } catch (e) {
     if (e instanceof AuthError) {
-      return NextResponse.json({ error: e.message }, { status: e.status });
+      return NextResponse.json(
+        { error: e.status === 401 ? "Authentication required" : "Forbidden" },
+        { status: e.status },
+      );
     }
     await reportError(e, { source: "api/coach-chat" });
     return NextResponse.json({ error: "Something went wrong. Please try again." }, { status: 500 });

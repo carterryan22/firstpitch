@@ -42,16 +42,18 @@ export class InMemoryStore implements Store {
 }
 
 export class JsonFileStore implements Store {
-  private cache: DbShape | null = null;
   private mutationTail: Promise<void> = Promise.resolve();
   constructor(public readonly filePath: string) {
     fs.mkdirSync(path.dirname(filePath), { recursive: true });
-    if (!fs.existsSync(filePath)) {
-      fs.writeFileSync(filePath, JSON.stringify(EMPTY_DB, null, 2));
+    try {
+      const fd = fs.openSync(filePath, "wx");
+      fs.writeFileSync(fd, JSON.stringify(EMPTY_DB, null, 2));
+      fs.closeSync(fd);
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "EEXIST") throw error;
     }
   }
   async read(): Promise<DbShape> {
-    if (this.cache) return this.cache;
     const raw = fs.readFileSync(this.filePath, "utf-8");
     let parsed: Partial<DbShape> = {};
     try {
@@ -69,14 +71,45 @@ export class JsonFileStore implements Store {
         err,
       );
     }
-    this.cache = { ...structuredClone(EMPTY_DB), ...parsed };
-    return this.cache;
+    return { ...structuredClone(EMPTY_DB), ...parsed };
   }
   async write(db: DbShape): Promise<void> {
-    this.cache = db;
-    const tmp = `${this.filePath}.tmp`;
+    const releaseFileLock = await this.acquireFileLock();
+    try {
+      this.writeUnlocked(db);
+    } finally {
+      releaseFileLock();
+    }
+  }
+  private writeUnlocked(db: DbShape): void {
+    const tmp = `${this.filePath}.${process.pid}.${randomUUID()}.tmp`;
     fs.writeFileSync(tmp, JSON.stringify(db, null, 2));
     fs.renameSync(tmp, this.filePath);
+  }
+  private async acquireFileLock(): Promise<() => void> {
+    const lockPath = `${this.filePath}.lock`;
+    for (let attempt = 0; attempt < 200; attempt += 1) {
+      try {
+        const fd = fs.openSync(lockPath, "wx");
+        fs.writeFileSync(fd, `${process.pid}\n${Date.now()}\n`);
+        return () => {
+          try { fs.closeSync(fd); } catch { /* already closed */ }
+          try { fs.unlinkSync(lockPath); } catch { /* best-effort cleanup */ }
+        };
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code !== "EEXIST") throw error;
+        try {
+          if (Date.now() - fs.statSync(lockPath).mtimeMs > 60_000) {
+            fs.unlinkSync(lockPath);
+            continue;
+          }
+        } catch {
+          continue;
+        }
+        await new Promise((resolve) => setTimeout(resolve, Math.min(100, 10 + attempt)));
+      }
+    }
+    throw new Error(`Timed out waiting for JSON store lock: ${this.filePath}`);
   }
   async mutate<T>(fn: (db: DbShape) => T): Promise<T> {
     const previous = this.mutationTail;
@@ -85,12 +118,15 @@ export class JsonFileStore implements Store {
       release = resolve;
     });
     await previous;
+    let releaseFileLock: (() => void) | undefined;
     try {
+      releaseFileLock = await this.acquireFileLock();
       const db = await this.read();
       const result = fn(db);
-      await this.write(db);
+      this.writeUnlocked(db);
       return result;
     } finally {
+      releaseFileLock?.();
       release();
     }
   }

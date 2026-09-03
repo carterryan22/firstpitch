@@ -88,6 +88,23 @@ describe("JsonFileStore", () => {
     const b = makeRepos(new JsonFileStore(file));
     expect(await b.users.byEmail("x@y.com")).toBeDefined();
   });
+  it("refreshes existing instances and preserves concurrent mutations", async () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "plat-"));
+    const file = path.join(dir, "db.json");
+    const a = makeRepos(new JsonFileStore(file));
+    const b = makeRepos(new JsonFileStore(file));
+    await a.users.upsert({ email: "first@example.com", role: "coach" });
+    expect(await b.users.byEmail("first@example.com")).toBeDefined();
+    await Promise.all([
+      a.users.upsert({ email: "second@example.com", role: "parent" }),
+      b.users.upsert({ email: "third@example.com", role: "player" }),
+    ]);
+    expect((await a.users.list()).map((user) => user.email).sort()).toEqual([
+      "first@example.com",
+      "second@example.com",
+      "third@example.com",
+    ]);
+  });
   it("atomic write leaves no .tmp file", async () => {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), "plat-"));
     const file = path.join(dir, "db.json");

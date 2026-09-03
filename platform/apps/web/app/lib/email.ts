@@ -36,9 +36,14 @@ export async function sendEmail(input: SendEmailInput): Promise<SendEmailResult>
   }
 
   if (mode === "console") {
+    // Keep untrusted header-like values on one log line so a crafted address or
+    // subject cannot forge additional structured log entries.
+    const safeTo = input.to.replace(/[\r\n\u2028\u2029]/g, " ");
+    const safeFrom = (from ?? "First Pitch <local>").replace(/[\r\n\u2028\u2029]/g, " ");
+    const safeSubject = input.subject.replace(/[\r\n\u2028\u2029]/g, " ");
     // eslint-disable-next-line no-console
     console.info(
-      `[email:console] to=${input.to} from=${from ?? "First Pitch <local>"} subject=${JSON.stringify(input.subject)}\n${input.text}`,
+      `[email:console] to=${safeTo} from=${safeFrom} subject=${JSON.stringify(safeSubject)}`,
     );
     return { ok: true, provider: "console" };
   }

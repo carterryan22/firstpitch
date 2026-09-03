@@ -163,7 +163,7 @@ const authorization: Analyzer = (file) => {
     /\[[^\]]+\]/.test(file.rel) &&
     /\brepos\.\w+\.byId\b/.test(c) &&
     /getSession/.test(c) &&
-    !/userCanManageTeam|requireRole|parentUserId|assignedByUserId|ownerId|\.userId\b/.test(c)
+    !/userCanManageTeam|userCanReadTeam|requireRole|parentUserId|assignedByUserId|ownerId|\.userId\b/.test(c)
   ) {
     out.push({
       analyzer: "authz", rule: "object-read-no-ownership", severity: "P1", category: "authz",
