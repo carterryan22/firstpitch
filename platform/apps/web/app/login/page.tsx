@@ -110,28 +110,6 @@ function LoginForm() {
     }
   }
 
-  async function demoSignIn(account: (typeof DEMO_ACCOUNTS)[number]) {
-    setBusy(true);
-    setErr(null);
-    try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ email: account.email, role: account.role, name: account.label }),
-      });
-      const body = (await res.json().catch(() => ({}))) as { error?: string };
-      if (!res.ok) {
-        setErr(body.error ?? "Demo sign-in is unavailable.");
-        return;
-      }
-      window.location.assign(nextPath ?? account.destination);
-    } catch {
-      setErr("Network error. Try again.");
-    } finally {
-      setBusy(false);
-    }
-  }
-
   if (sent) {
     return (
       <div className="mx-auto max-w-xl space-y-6">
@@ -238,15 +216,15 @@ function LoginForm() {
           </div>
           <div className="grid gap-2 sm:grid-cols-3">
             {DEMO_ACCOUNTS.map((account) => (
-              <button
-                key={account.role}
-                type="button"
-                className="btn-ghost text-sm"
-                disabled={busy}
-                onClick={() => void demoSignIn(account)}
-              >
-                {account.label}
-              </button>
+              <form key={account.role} method="post" action="/api/auth/login">
+                <input type="hidden" name="email" value={account.email} />
+                <input type="hidden" name="role" value={account.role} />
+                <input type="hidden" name="name" value={account.label} />
+                <input type="hidden" name="redirectTo" value={nextPath ?? account.destination} />
+                <button type="submit" className="btn-ghost w-full text-sm">
+                  {account.label}
+                </button>
+              </form>
             ))}
           </div>
         </section>

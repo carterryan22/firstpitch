@@ -20,7 +20,19 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const body = (await req.json().catch(() => ({}))) as { email?: string; role?: string; name?: string };
+  const isForm = req.headers.get("content-type")?.includes("application/x-www-form-urlencoded") ?? false;
+  let body: { email?: string; role?: string; name?: string; redirectTo?: string };
+  if (isForm) {
+    const form = await req.formData();
+    body = {
+      email: String(form.get("email") ?? ""),
+      role: String(form.get("role") ?? ""),
+      name: String(form.get("name") ?? ""),
+      redirectTo: String(form.get("redirectTo") ?? ""),
+    };
+  } else {
+    body = (await req.json().catch(() => ({}))) as typeof body;
+  }
   if (!body.email || !body.role) {
     return NextResponse.json({ error: "email and role required" }, { status: 400 });
   }
@@ -34,10 +46,18 @@ export async function POST(req: NextRequest) {
       role: body.role as (typeof validRoles)[number],
       name: body.name,
     });
-    const res = NextResponse.json({
-      ok: true,
-      user: { id: session.user.id, email: session.user.email, role: session.user.role, name: session.user.name },
-    });
+    const fallback = session.user.role === "coach" || session.user.role === "admin"
+      ? "/coach"
+      : session.user.role === "parent" ? "/parent" : "/missions";
+    const redirectTo = body.redirectTo?.startsWith("/") && !body.redirectTo.startsWith("//")
+      ? body.redirectTo
+      : fallback;
+    const res = isForm
+      ? NextResponse.redirect(new URL(redirectTo, req.url), 303)
+      : NextResponse.json({
+          ok: true,
+          user: { id: session.user.id, email: session.user.email, role: session.user.role, name: session.user.name },
+        });
     res.cookies.set(SESSION_COOKIE, session.cookieValue, {
       httpOnly: true,
       sameSite: "lax",
