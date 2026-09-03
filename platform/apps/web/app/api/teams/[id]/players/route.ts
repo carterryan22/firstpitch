@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getRepos, POSITIONS, type Position, type Bats, type Throws, type PositionRating } from "@platform/storage";
 import { getSession } from "../../../../lib/session";
-import { userCanManageTeam } from "../../../../lib/teams";
+import { userCanManageTeam, userCanReadTeam } from "../../../../lib/teams";
 import { bandFromDob } from "../../../../lib/players";
 import { requestParentalConsent, requiresParentalConsent } from "../../../../lib/consent";
 
@@ -37,6 +37,17 @@ function cleanRatings(input?: CreateBody["positionRatings"]) {
   return Object.keys(out).length > 0 ? out : undefined;
 }
 
+export async function GET(_req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
+  const session = await getSession();
+  if (!session) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  const { id: teamId } = await ctx.params;
+  if (!(await userCanReadTeam(session.user.id, teamId))) {
+    return NextResponse.json({ error: "forbidden" }, { status: 403 });
+  }
+  const players = await getRepos().players.list({ teamId });
+  return NextResponse.json({ players });
+}
+
 export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
@@ -65,11 +76,6 @@ export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string
   if (body.parentEmail && body.parentEmail.includes("@")) {
     const parent = await repos.users.upsert({ email: body.parentEmail.trim(), role: "parent" });
     parentUserId = parent.id;
-    await repos.teamMemberships.upsert({
-      teamId,
-      userId: parent.id,
-      role: "parent",
-    });
   }
 
   const player = await repos.players.create({

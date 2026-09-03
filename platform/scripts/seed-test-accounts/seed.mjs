@@ -1,6 +1,7 @@
 #!/usr/bin/env node
-// Seeds a realistic test team so the QA/UX agents exercise POPULATED surfaces
-// instead of empty states. Idempotent: re-running reuses the existing team.
+// Seeds four realistic test teams so the QA/UX agents exercise POPULATED
+// surfaces instead of empty states. Idempotent: re-running reuses existing
+// teams and does not duplicate their rosters or seasons.
 //
 //   node scripts/seed-test-accounts/seed.mjs
 //
@@ -20,9 +21,15 @@ import { fileURLToPath } from "node:url";
 const BASE = (process.env.SEED_BASE_URL || "http://localhost:3000").replace(/\/$/, "");
 const WITH_SEASON = (process.env.SEED_SEASON ?? "1") !== "0";
 const DOMAIN = "firstpitch.test";
-const TEAM_NAME = "Test Squad";
-const TEAM_AGE_BAND = "13-15";
 const SESSION_COOKIE = "platform_session";
+
+const DIRECTOR = { email: `coach1@${DOMAIN}`, name: "Coach Riley Morgan" };
+const TEAM_SPECS = [
+  { key: "cascade", name: "Cascade Comets", ageBand: "13-15", coaches: ["Jordan Lee", "Taylor Brooks"] },
+  { key: "harbor", name: "Harbor Hawks", ageBand: "13-15", coaches: ["Casey Rivera", "Morgan Chen"] },
+  { key: "summit", name: "Summit Sparks", ageBand: "13-15", coaches: ["Avery Patel", "Quinn Foster"] },
+  { key: "valley", name: "Valley Vipers", ageBand: "13-15", coaches: ["Reese Thompson", "Cameron Davis"] },
+];
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPORT = resolve(HERE, "../../reports/test-accounts.md");
@@ -60,8 +67,9 @@ async function api(method, path, body) {
 
 const login = (email, role, name) => api("POST", "/api/auth/login", { email, role, name });
 
-// 12 players. dob years land the whole roster in the 13-15 band as of 2026.
-const ROSTER = [
+// Twelve roster templates. Names are rotated per team so all 48 demo players
+// are distinct; DOB years land every roster in the 13-15 band as of 2026.
+const ROSTER_TEMPLATES = [
   { firstName: "Mason", lastName: "Reyes", jerseyNumber: "2", dob: "2012-04-11", bats: "R", throws: "R", battingSkill: 4, canPitch: true, canCatch: false, positionRatings: { SS: "preferred", "2B": "ok", P: "ok" } },
   { firstName: "Eli", lastName: "Nakamura", jerseyNumber: "5", dob: "2011-09-02", bats: "L", throws: "R", battingSkill: 5, canPitch: true, canCatch: false, positionRatings: { CF: "preferred", P: "preferred", SS: "ok" } },
   { firstName: "Jonah", lastName: "Alvarez", jerseyNumber: "7", dob: "2012-01-23", bats: "R", throws: "R", battingSkill: 3, canPitch: false, canCatch: true, positionRatings: { C: "preferred", "1B": "ok", RF: "avoid" } },
@@ -75,6 +83,32 @@ const ROSTER = [
   { firstName: "Ari", lastName: "Lindqvist", jerseyNumber: "27", dob: "2012-12-01", bats: "R", throws: "R", battingSkill: 3, canPitch: true, canCatch: false, positionRatings: { P: "preferred", CF: "ok" } },
   { firstName: "Beau", lastName: "Castellanos", jerseyNumber: "33", dob: "2011-08-22", bats: "R", throws: "R", battingSkill: 5, canPitch: false, canCatch: true, positionRatings: { C: "preferred", "3B": "ok" } },
 ];
+
+const PLAYER_NAMES = [
+  "Mason Reyes", "Eli Nakamura", "Jonah Alvarez", "Theo Brennan", "Amara Okafor", "Diego Santos",
+  "Kai Whitfield", "Rowan Petrov", "Silas Dubois", "Nico Ferrante", "Ari Lindqvist", "Beau Castellanos",
+  "Liam Carter", "Noah Bennett", "Mia Robinson", "Lucas Martinez", "Zoe Campbell", "Ethan Nguyen",
+  "Sofia Ramirez", "Caleb Wilson", "Layla Anderson", "Owen Thomas", "Ivy Jackson", "Miles Harris",
+  "Jack Turner", "Aiden Parker", "Emma Lewis", "Henry Walker", "Nora Hall", "Leo Young",
+  "Ruby King", "Isaac Wright", "Lena Scott", "Wyatt Green", "Maya Baker", "Ezra Adams",
+  "Finn Nelson", "Jude Hill", "Chloe Rivera", "Cole Mitchell", "Sadie Roberts", "Max Phillips",
+  "Lucy Evans", "Sam Edwards", "Grace Collins", "Alex Stewart", "Piper Morris", "Ben Rogers",
+];
+
+function rosterForTeam(teamIndex) {
+  return ROSTER_TEMPLATES.map((template, playerIndex) => {
+    const [firstName, lastName] = PLAYER_NAMES[teamIndex * 12 + playerIndex].split(" ");
+    return { ...template, firstName, lastName };
+  });
+}
+
+function personaEmail(kind, teamIndex, playerIndex) {
+  if (teamIndex === 0 && playerIndex === 0) {
+    return `${kind === "parent" ? "parent" : "athlete"}1@${DOMAIN}`;
+  }
+  const key = TEAM_SPECS[teamIndex].key;
+  return `${kind}.${key}.${String(playerIndex + 1).padStart(2, "0")}@${DOMAIN}`;
+}
 
 const OPPONENTS = ["Northside Cardinals", "Riverbend Rays", "Oak Hill Owls", "Granite Falls Grizzlies", "Lakeshore Locos", "Cedar Park Pilots", "Fairview Foxes", "Millbrook Miners"];
 
@@ -130,146 +164,164 @@ function primaryPosition(p) {
   return ok ? ok[0] : "LF";
 }
 
+async function seedSeason(team, players, teamIndex) {
+  const results = [
+    { us: 7, them: 4 }, { us: 3, them: 5 }, { us: 8, them: 2 },
+    { us: 6, them: 6 }, { us: 2, them: 9 }, { us: 5, them: 1 },
+  ];
+  const pitchers = players.filter((p) => p.canPitch);
+  const now = Date.now();
+  const DAY = 86_400_000;
+
+  for (let g = 0; g < results.length; g++) {
+    const startsAt = new Date(now - (results.length - g) * 7 * DAY - teamIndex * DAY).toISOString();
+    const { game } = await api("POST", `/api/teams/${team.id}/games`, {
+      opponent: OPPONENTS[(g + teamIndex * 2) % OPPONENTS.length],
+      startsAt,
+      venue: g % 2 === 0 ? "Memorial Field" : "Away - Riverbend Park",
+      homeAway: g % 2 === 0 ? "home" : "away",
+      innings: 6,
+    });
+
+    const attendance = {};
+    const absent = new Set(g % 3 === 0 ? [players[(g + 4) % players.length].id] : []);
+    for (const p of players) attendance[p.id] = absent.has(p.id) ? "absent" : "present";
+    await api("PATCH", `/api/games/${game.id}`, { attendance });
+
+    const availablePitchers = pitchers.filter((p) => !absent.has(p.id));
+    const starter = availablePitchers[g % availablePitchers.length];
+    const entries = players
+      .filter((p) => !absent.has(p.id))
+      .map((p) => ({
+        playerId: p.id,
+        batting: battingLine(p.battingSkill ?? 3),
+        pitching: p.id === starter.id ? pitchingLine() : undefined,
+        fielding: [fieldingLine(primaryPosition(p), 6)],
+      }));
+    await api("POST", `/api/games/${game.id}/stats`, { format: "manual", entries });
+
+    const starterPitches = entries.find((e) => e.playerId === starter.id)?.pitching;
+    await api("PATCH", `/api/games/${game.id}`, {
+      finalScore: results[g],
+      battingOrder: players.filter((p) => !absent.has(p.id)).slice(0, 9).map((p) => p.id),
+      pitchCounts: {
+        [starter.id]: { pitches: starterPitches.pitches, innings: starterPitches.ip, recordedAt: startsAt },
+      },
+      markCompleted: true,
+    });
+  }
+
+  for (let u = 0; u < 2; u++) {
+    await api("POST", `/api/teams/${team.id}/games`, {
+      opponent: OPPONENTS[(6 + u + teamIndex * 2) % OPPONENTS.length],
+      startsAt: new Date(now + (u + 3 + teamIndex) * DAY).toISOString(),
+      venue: u === 0 ? "Memorial Field" : "Away - Fairview HS",
+      homeAway: u === 0 ? "home" : "away",
+      innings: 6,
+    });
+  }
+}
+
 async function main() {
   console.log(`[seed] target ${BASE}`);
   const health = await fetch(`${BASE}/api/health`).catch(() => null);
   if (!health || !health.ok) {
-    console.error(`[seed] cannot reach ${BASE}. Start the dev server first.`);
+    console.error(`[seed] cannot reach ${BASE}. Start the server first.`);
     process.exit(1);
   }
 
-  // 1. Owner coach.
-  const owner = await login(`coach1@${DOMAIN}`, "coach", "Coach Riley");
+  const owner = await login(DIRECTOR.email, "coach", DIRECTOR.name);
   console.log(`[seed] signed in as ${owner.user.email}`);
 
-  // 2. Team (idempotent).
-  const { teams = [] } = await api("GET", "/api/teams");
-  let team = teams.find((t) => t.name === TEAM_NAME);
-  const fresh = !team;
-  if (!team) {
-    ({ team } = await api("POST", "/api/teams", { name: TEAM_NAME, ageBand: TEAM_AGE_BAND }));
-    console.log(`[seed] created team ${team.name} (${team.id})`);
-  } else {
-    console.log(`[seed] reusing existing team ${team.name} (${team.id})`);
-  }
+  const { teams: existingTeams = [] } = await api("GET", "/api/teams");
+  const seededTeams = [];
+  const accountRows = [["coach", DIRECTOR.email, "director; access to all four teams"]];
 
-  // 3. Roster — only on fresh creation (there is no GET roster endpoint, so
-  // re-adding on an existing team would silently duplicate players).
-  let players = [];
-  if (fresh) {
-    for (let i = 0; i < ROSTER.length; i++) {
-      const spec = ROSTER[i];
-      const parentEmail = i < 5 ? `parent${i + 1}@${DOMAIN}` : undefined;
-      const { player } = await api("POST", `/api/teams/${team.id}/players`, { ...spec, parentEmail });
-      players.push(player);
+  for (let teamIndex = 0; teamIndex < TEAM_SPECS.length; teamIndex++) {
+    const spec = TEAM_SPECS[teamIndex];
+    let team = existingTeams.find((candidate) => candidate.name === spec.name);
+    const fresh = !team;
+    if (!team) {
+      ({ team } = await api("POST", "/api/teams", { name: spec.name, ageBand: spec.ageBand }));
+      console.log(`[seed] created ${team.name} (${team.id})`);
+    } else {
+      console.log(`[seed] reusing ${team.name} (${team.id})`);
     }
-    console.log(`[seed] created ${players.length} players (5 with linked parents)`);
 
-    // 4. Staff + athlete accounts. Athletes link to the first 5 roster players
-    // so a signed-in player sees their own assigned missions.
-    for (let i = 2; i <= 4; i++) {
-      await api("POST", `/api/teams/${team.id}/members`, { email: `coach${i}@${DOMAIN}`, role: "coach", name: `Assistant Coach ${i}` });
-    }
-    for (let i = 0; i < 5; i++) {
+    for (let coachIndex = 0; coachIndex < spec.coaches.length; coachIndex++) {
+      const email = `coach.${spec.key}.${coachIndex + 1}@${DOMAIN}`;
       await api("POST", `/api/teams/${team.id}/members`, {
-        email: `athlete${i + 1}@${DOMAIN}`,
+        email,
+        role: "coach",
+        name: spec.coaches[coachIndex],
+      });
+      accountRows.push(["coach", email, `${team.name} ${coachIndex === 0 ? "lead" : "assistant"}`]);
+    }
+
+    const { players: existingPlayers = [] } = await api("GET", `/api/teams/${team.id}/players`);
+    const byJersey = new Map(existingPlayers.map((player) => [player.jerseyNumber, player]));
+    const players = [];
+    const roster = rosterForTeam(teamIndex);
+    for (let playerIndex = 0; playerIndex < roster.length; playerIndex++) {
+      const rosterSpec = roster[playerIndex];
+      const parentEmail = personaEmail("parent", teamIndex, playerIndex);
+      const athleteEmail = personaEmail("athlete", teamIndex, playerIndex);
+      let player = byJersey.get(rosterSpec.jerseyNumber);
+      if (!player) {
+        ({ player } = await api("POST", `/api/teams/${team.id}/players`, { ...rosterSpec, parentEmail }));
+      }
+      players.push(player);
+      const fullName = `${player.firstName} ${player.lastName}`;
+      await api("POST", `/api/teams/${team.id}/members`, {
+        email: athleteEmail,
         role: "player",
-        name: `${players[i].firstName} ${players[i].lastName}`,
-        playerId: players[i].id,
+        name: fullName,
+        playerId: player.id,
       });
+      await api("POST", `/api/teams/${team.id}/members`, {
+        email: parentEmail,
+        role: "parent",
+        name: `${player.firstName}'s Parent`,
+        playerId: player.id,
+      });
+      accountRows.push(["player", athleteEmail, `${team.name} #${player.jerseyNumber} ${fullName}`]);
+      accountRows.push(["parent", parentEmail, `linked to ${fullName} on ${team.name}`]);
     }
-    console.log("[seed] linked 3 assistant coaches + 5 athlete accounts");
-  } else {
-    console.log("[seed] roster already present - skipping player/member creation");
-  }
+    console.log(`[seed] ${team.name}: ${players.length} players, 12 parents, 12 athlete accounts, 3 coaches`);
 
-  // 5. Sample season, fresh creation only.
-  if (fresh && WITH_SEASON && players.length) {
-    const results = [
-      { us: 7, them: 4 }, { us: 3, them: 5 }, { us: 8, them: 2 },
-      { us: 6, them: 6 }, { us: 2, them: 9 }, { us: 5, them: 1 },
-    ];
-    const pitchers = players.filter((p) => p.canPitch);
-    const now = Date.now();
-    const DAY = 86_400_000;
-
-    for (let g = 0; g < results.length; g++) {
-      const startsAt = new Date(now - (results.length - g) * 7 * DAY).toISOString();
-      const { game } = await api("POST", `/api/teams/${team.id}/games`, {
-        opponent: OPPONENTS[g],
-        startsAt,
-        venue: g % 2 === 0 ? "Memorial Field" : "Away - Riverbend Park",
-        homeAway: g % 2 === 0 ? "home" : "away",
-        innings: 6,
-      });
-
-      // Attendance MUST land before stats: the stats route reads it to compute
-      // each player's kind rating.
-      const attendance = {};
-      const absent = new Set(g % 3 === 0 ? [players[(g + 4) % players.length].id] : []);
-      for (const p of players) attendance[p.id] = absent.has(p.id) ? "absent" : "present";
-      await api("PATCH", `/api/games/${game.id}`, { attendance });
-
-      // Pitchers alternate so no arm carries back-to-back outings. Rotate over
-      // the pitchers actually present, or the starter could be the absentee.
-      const availablePitchers = pitchers.filter((p) => !absent.has(p.id));
-      const starter = availablePitchers[g % availablePitchers.length];
-      const entries = players
-        .filter((p) => !absent.has(p.id))
-        .map((p) => ({
-          playerId: p.id,
-          batting: battingLine(p.battingSkill ?? 3),
-          pitching: p.id === starter.id ? pitchingLine() : undefined,
-          fielding: [fieldingLine(primaryPosition(p), 6)],
-        }));
-      await api("POST", `/api/games/${game.id}/stats`, { format: "manual", entries });
-
-      const starterPitches = entries.find((e) => e.playerId === starter.id)?.pitching;
-      await api("PATCH", `/api/games/${game.id}`, {
-        finalScore: results[g],
-        battingOrder: players.filter((p) => !absent.has(p.id)).slice(0, 9).map((p) => p.id),
-        pitchCounts: {
-          [starter.id]: { pitches: starterPitches.pitches, innings: starterPitches.ip, recordedAt: startsAt },
-        },
-        markCompleted: true,
-      });
-      console.log(`[seed]   game ${g + 1}/6 vs ${OPPONENTS[g]} ${results[g].us}-${results[g].them}`);
+    if (fresh && WITH_SEASON) {
+      await seedSeason(team, players, teamIndex);
+      console.log(`[seed] ${team.name}: 6 completed games + 2 upcoming`);
+    } else if (!fresh) {
+      console.log(`[seed] ${team.name}: existing season preserved`);
     }
-
-    for (let u = 0; u < 2; u++) {
-      await api("POST", `/api/teams/${team.id}/games`, {
-        opponent: OPPONENTS[6 + u],
-        startsAt: new Date(now + (u + 3) * DAY).toISOString(),
-        venue: u === 0 ? "Memorial Field" : "Away - Fairview HS",
-        homeAway: u === 0 ? "home" : "away",
-        innings: 6,
-      });
-    }
-    console.log("[seed] season built: 6 completed (3-2-1) + 2 upcoming");
-  } else if (!fresh) {
-    console.log("[seed] season skipped (team already existed) - delete platform.json in PLATFORM_DATA_DIR to rebuild");
+    seededTeams.push(team);
   }
 
   const lines = [
     "# Test accounts",
     "",
-    "Generated by `node scripts/seed-test-accounts/seed.mjs`. All passwordless:",
-    "sign in at **/login** and use the inline dev magic link, or POST",
-    "`/api/auth/login` with `{email, role}` while `PLATFORM_ALLOW_DEV_LOGIN=1`.",
+    "Generated by `node scripts/seed-test-accounts/seed.mjs`. All accounts are passwordless.",
+    "Use the inline dev link or `POST /api/auth/login` only on a preview with",
+    "`PLATFORM_ALLOW_DEV_LOGIN=1`; production should use configured email magic links.",
     "",
-    `- Team: **${TEAM_NAME}** (${TEAM_AGE_BAND}) - id \`${team.id}\`, slug \`${team.slug}\``,
+    "## Seeded teams",
+    "",
+    ...seededTeams.map((team) => `- **${team.name}** (${team.ageBand}) — id \`${team.id}\`, slug \`${team.slug}\``),
+    "",
+    "Each team has 12 roster players, 12 linked athlete accounts, 12 linked parent accounts,",
+    "one shared director, two team coaches, six completed games, and two upcoming games.",
+    "",
+    "## Accounts",
     "",
     "| Role | Email | Notes |",
     "| --- | --- | --- |",
-    `| coach | coach1@${DOMAIN} | owner |`,
-    ...[2, 3, 4].map((i) => `| coach | coach${i}@${DOMAIN} | assistant |`),
-    ...[1, 2, 3, 4, 5].map((i) => `| player | athlete${i}@${DOMAIN} | linked to roster player ${i} |`),
-    ...[1, 2, 3, 4, 5].map((i) => `| parent | parent${i}@${DOMAIN} | linked to roster player ${i} |`),
+    ...accountRows.map(([role, email, notes]) => `| ${role} | ${email} | ${notes} |`),
     "",
-    "Bind the QA/UX agents to these personas so they exercise populated screens:",
+    "## Primary QA personas",
     "",
     "```powershell",
-    `$env:PERSONA_COACH_EMAIL="coach1@${DOMAIN}"`,
+    `$env:PERSONA_COACH_EMAIL="${DIRECTOR.email}"`,
     `$env:PERSONA_PARENT_EMAIL="parent1@${DOMAIN}"`,
     `$env:PERSONA_PLAYER_EMAIL="athlete1@${DOMAIN}"`,
     "```",
@@ -278,7 +330,7 @@ async function main() {
   mkdirSync(dirname(REPORT), { recursive: true });
   writeFileSync(REPORT, lines.join("\n"));
   console.log(`[seed] wrote ${REPORT}`);
-  console.log("[seed] done.");
+  console.log(`[seed] done: ${seededTeams.length} teams, 48 players, 48 parents, 48 athlete accounts, 9 coaches.`);
 }
 
 main().catch((e) => {
