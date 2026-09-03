@@ -100,18 +100,26 @@ describe("JsonFileStore", () => {
 describe("KvJsonStore", () => {
   it("retries concurrent mutations instead of losing an update", async () => {
     let value: string | null = null;
+    let lockToken: string | null = null;
     const originalFetch = globalThis.fetch;
     globalThis.fetch = async (input, init) => {
       const url = String(input);
       if (url.includes("/get/")) {
         return Response.json({ result: value });
       }
+      if (url.includes("/set/")) {
+        const body = JSON.parse(String(init?.body)) as { value: string };
+        value = body.value;
+        return Response.json({ result: "OK" });
+      }
       const command = JSON.parse(String(init?.body)) as Array<string | number>;
+      if (command[0] === "SET") {
+        if (lockToken) return Response.json({ result: null });
+        lockToken = String(command[2]);
+        return Response.json({ result: "OK" });
+      }
       expect(command[0]).toBe("EVAL");
-      const expected = String(command[4]);
-      const next = String(command[5]);
-      if ((value ?? "") !== expected) return Response.json({ result: 0 });
-      value = next;
+      if (lockToken === String(command[4])) lockToken = null;
       return Response.json({ result: 1 });
     };
 
@@ -127,6 +135,7 @@ describe("KvJsonStore", () => {
         "first@example.com",
         "second@example.com",
       ]);
+      expect(String(value).startsWith("gz:")).toBe(true);
     } finally {
       globalThis.fetch = originalFetch;
     }

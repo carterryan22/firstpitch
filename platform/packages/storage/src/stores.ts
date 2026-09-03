@@ -5,6 +5,8 @@
 
 import * as fs from "node:fs";
 import * as path from "node:path";
+import { randomUUID } from "node:crypto";
+import { gunzipSync, gzipSync } from "node:zlib";
 import type { DbShape } from "./types";
 import { EMPTY_DB } from "./types";
 import type { Store } from "./repos";
@@ -97,10 +99,11 @@ export class JsonFileStore implements Store {
 /**
  * KvJsonStore — stores the entire DB blob at a single Vercel KV key.
  *
- * Mutations use a Redis-side Lua compare-and-set. A conflicting writer causes
- * the mutation to reload and retry, preventing silent lost updates while this
- * MVP remains on a single JSON blob. Per-entity relational storage is still the
- * long-term scaling path.
+ * Values are gzip-compressed so the MVP's single document stays below provider
+ * request limits. Mutations use a short-lived Redis lock, preventing silent
+ * lost updates without sending the old and new database in the same request.
+ * Legacy plain-JSON values remain readable and migrate on their next write.
+ * Per-entity relational storage is still the long-term scaling path.
  */
 export class KvJsonStore implements Store {
   private readonly url: string;
@@ -138,13 +141,20 @@ export class KvJsonStore implements Store {
   private parse(raw: string | null): DbShape {
     if (!raw) return structuredClone(EMPTY_DB);
     try {
-      const parsed = JSON.parse(raw) as Partial<DbShape>;
+      const json = raw.startsWith("gz:")
+        ? gunzipSync(Buffer.from(raw.slice(3), "base64")).toString("utf8")
+        : raw;
+      const parsed = JSON.parse(json) as Partial<DbShape>;
       return { ...structuredClone(EMPTY_DB), ...parsed };
     } catch (error) {
       throw new Error("KV database contains invalid JSON; refusing to continue", {
         cause: error,
       });
     }
+  }
+
+  private encode(db: DbShape): string {
+    return `gz:${gzipSync(JSON.stringify(db)).toString("base64")}`;
   }
 
   async read(): Promise<DbShape> {
@@ -157,37 +167,39 @@ export class KvJsonStore implements Store {
   async write(db: DbShape): Promise<void> {
     await this.fetch(`/set/${encodeURIComponent(this.key)}`, {
       method: "POST",
-      body: JSON.stringify({ value: JSON.stringify(db) }),
+      body: JSON.stringify({ value: this.encode(db) }),
     });
   }
 
   async mutate<T>(fn: (db: DbShape) => T): Promise<T> {
-    const compareAndSet = [
-      "local current = redis.call('GET', KEYS[1])",
-      "if current == false then current = '' end",
-      "if current ~= ARGV[1] then return 0 end",
-      "redis.call('SET', KEYS[1], ARGV[2])",
-      "return 1",
+    const lockKey = `${this.key}:mutation-lock`;
+    const releaseLock = [
+      "if redis.call('GET', KEYS[1]) == ARGV[1] then",
+      "  return redis.call('DEL', KEYS[1])",
+      "end",
+      "return 0",
     ].join("\n");
 
-    for (let attempt = 0; attempt < 10; attempt += 1) {
-      const current = (await this.fetch(`/get/${encodeURIComponent(this.key)}`)) as {
-        result: string | null;
-      };
-      const db = this.parse(current.result);
-      const result = fn(db);
-      const next = JSON.stringify(db);
-      const response = (await this.command([
-        "EVAL",
-        compareAndSet,
-        1,
-        this.key,
-        current.result ?? "",
-        next,
-      ])) as { result: number };
-      if (response.result === 1) return result;
+    for (let attempt = 0; attempt < 20; attempt += 1) {
+      const token = randomUUID();
+      const acquired = (await this.command([
+        "SET", lockKey, token, "NX", "PX", 30_000,
+      ])) as { result: "OK" | null };
+      if (acquired.result !== "OK") {
+        await new Promise((resolve) => setTimeout(resolve, 25 * (attempt + 1)));
+        continue;
+      }
+
+      try {
+        const db = await this.read();
+        const result = fn(db);
+        await this.write(db);
+        return result;
+      } finally {
+        await this.command(["EVAL", releaseLock, 1, lockKey, token]).catch(() => undefined);
+      }
     }
 
-    throw new Error("KV mutation conflicted repeatedly; retry the request");
+    throw new Error("KV mutation lock remained busy; retry the request");
   }
 }

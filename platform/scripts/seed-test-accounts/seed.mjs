@@ -13,13 +13,18 @@
 //   SEED_SEASON    "1" (default) also builds a sample season on FRESH creation
 //                  only, because player ids are only known at that point. To
 //                  rebuild the season, delete platform.json in PLATFORM_DATA_DIR.
+//   SEED_VERCEL_CLI "1" sends requests through an authenticated, linked Vercel
+//                   CLI so protected preview deployments can remain protected.
 
-import { mkdirSync, writeFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
+import { execFileSync } from "node:child_process";
+import { mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
+import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 
 const BASE = (process.env.SEED_BASE_URL || "http://localhost:3000").replace(/\/$/, "");
 const WITH_SEASON = (process.env.SEED_SEASON ?? "1") !== "0";
+const USE_VERCEL_CLI = process.env.SEED_VERCEL_CLI === "1";
 const DOMAIN = "firstpitch.test";
 const SESSION_COOKIE = "platform_session";
 
@@ -33,6 +38,8 @@ const TEAM_SPECS = [
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPORT = resolve(HERE, "../../reports/test-accounts.md");
+const WEB_DIR = resolve(HERE, "../../apps/web");
+const COOKIE_JAR = join(tmpdir(), `firstpitch-seed-${process.pid}.cookies`);
 
 // Deterministic PRNG so re-seeding a fresh store yields the same season.
 let _seed = 20260803;
@@ -42,7 +49,45 @@ const int = (lo, hi) => lo + Math.floor(rnd() * (hi - lo + 1));
 
 let cookie = "";
 
+function vercelRequest(method, path, body) {
+  const args = [
+    "--yes", "vercel@latest", "curl", `${BASE}${path}`,
+    "-X", method,
+    "-H", "content-type: application/json",
+    "-c", COOKIE_JAR,
+    "-b", COOKIE_JAR,
+  ];
+  if (body !== undefined) args.push("-d", JSON.stringify(body));
+  const executable = process.platform === "win32" ? (process.env.ComSpec || "cmd.exe") : "npx";
+  const commandArgs = process.platform === "win32" ? ["/d", "/s", "/c", "npx", ...args] : args;
+  try {
+    const output = execFileSync(executable, commandArgs, {
+      cwd: WEB_DIR,
+      encoding: "utf8",
+      maxBuffer: 10 * 1024 * 1024,
+      stdio: ["ignore", "pipe", "pipe"],
+    });
+    return output;
+  } catch (error) {
+    const detail = String(error?.stdout || error?.stderr || error?.message || "request failed").trim();
+    throw new Error(`${method} ${path} failed through Vercel CLI: ${detail.slice(0, 500)}`);
+  }
+}
+
 async function api(method, path, body) {
+  if (USE_VERCEL_CLI) {
+    const text = vercelRequest(method, path, body);
+    let json;
+    try {
+      json = text ? JSON.parse(text) : {};
+    } catch {
+      throw new Error(`${method} ${path} returned invalid JSON: ${text.slice(0, 200)}`);
+    }
+    if (json && typeof json === "object" && "error" in json) {
+      throw new Error(`${method} ${path} -> ${json.error}`);
+    }
+    return json;
+  }
   const res = await fetch(`${BASE}${path}`, {
     method,
     headers: { "content-type": "application/json", ...(cookie ? { cookie } : {}) },
@@ -224,10 +269,13 @@ async function seedSeason(team, players, teamIndex) {
 
 async function main() {
   console.log(`[seed] target ${BASE}`);
-  const health = await fetch(`${BASE}/api/health`).catch(() => null);
-  if (!health || !health.ok) {
-    console.error(`[seed] cannot reach ${BASE}. Start the server first.`);
-    process.exit(1);
+  try {
+    if (USE_VERCEL_CLI) vercelRequest("GET", "/api/health");
+    else await api("GET", "/api/health");
+  } catch (error) {
+    throw new Error(
+      `cannot reach ${BASE}. Start the server or link the Vercel project first. (${error?.message || error})`,
+    );
   }
 
   const owner = await login(DIRECTOR.email, "coach", DIRECTOR.name);
@@ -335,5 +383,7 @@ async function main() {
 
 main().catch((e) => {
   console.error("[seed] FAILED:", e.message);
-  process.exit(1);
+  process.exitCode = 1;
+}).finally(() => {
+  if (USE_VERCEL_CLI) rmSync(COOKIE_JAR, { force: true });
 });
