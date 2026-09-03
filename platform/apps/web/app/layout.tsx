@@ -1,6 +1,6 @@
 import "./globals.css";
 import Link from "next/link";
-import { Bungee, Rye, Special_Elite, Roboto_Slab, Inter } from "next/font/google";
+import localFont from "next/font/local";
 import { Nav } from "./components/Nav";
 import { LogoutButton } from "./components/LogoutButton";
 import { MobileRefresh } from "./components/MobileRefresh";
@@ -13,11 +13,11 @@ import { siteUrl } from "./lib/site";
 
 // Adopted from dugout-dirt.com: Bungee (display), Rye (western emphasis),
 // Special Elite (typewriter meta), Roboto Slab (body).
-const display = Bungee({ subsets: ["latin"], weight: "400", variable: "--font-display", display: "swap" });
-const western = Rye({ subsets: ["latin"], weight: "400", variable: "--font-western", display: "swap" });
-const typeFace = Special_Elite({ subsets: ["latin"], weight: "400", variable: "--font-type", display: "swap" });
-const slab = Roboto_Slab({ subsets: ["latin"], variable: "--font-slab", display: "swap" });
-const body = Inter({ subsets: ["latin"], variable: "--font-body", display: "swap" });
+const display = localFont({ src: "./fonts/bungee-latin-400.woff2", weight: "400", variable: "--font-display", display: "swap" });
+const western = localFont({ src: "./fonts/rye-latin-400.woff2", weight: "400", variable: "--font-western", display: "swap" });
+const typeFace = localFont({ src: "./fonts/special-elite-latin-400.woff2", weight: "400", variable: "--font-type", display: "swap" });
+const slab = localFont({ src: "./fonts/roboto-slab-latin-variable.woff2", weight: "100 900", variable: "--font-slab", display: "swap" });
+const body = localFont({ src: "./fonts/inter-latin-variable.woff2", weight: "100 900", variable: "--font-body", display: "swap" });
 
 export const metadata = {
   metadataBase: new URL(siteUrl()),

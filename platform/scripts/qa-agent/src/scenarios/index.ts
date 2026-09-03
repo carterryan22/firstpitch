@@ -7,6 +7,7 @@ import { e25SurfacesScenario } from "./e25-surfaces.ts";
 import { parentFlowScenario } from "./parent-flow.ts";
 import { apiSmokeScenario } from "./api-smoke.ts";
 import { safetyScenario } from "./safety-gates.ts";
+import { athleteFlowScenario } from "./athlete-flow.ts";
 import type { Scenario } from "../types.ts";
 
 export const scenarios: Scenario[] = [
@@ -16,6 +17,7 @@ export const scenarios: Scenario[] = [
   coachFlowScenario,
   e25SurfacesScenario,
   parentFlowScenario,
+  athleteFlowScenario,
   safetyScenario,
   authzIsolationScenario,
   a11yScenario,

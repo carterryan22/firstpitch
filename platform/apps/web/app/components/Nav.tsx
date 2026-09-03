@@ -2,18 +2,20 @@ import Link from "next/link";
 
 export interface NavItem { href: string; label: string; roles?: string[]; flag?: keyof typeof FEATURE_FLAGS }
 
-// Menu items tagged with `flag` are temporarily hidden from the nav. The pages
-// stay reachable by direct URL; set the matching env var to "1" (or "true") to
-// show the item in the menu again.
+// Product surfaces are discoverable by default. An explicit "0" or "false"
+// remains available as an emergency kill switch for a deployment.
 const FEATURE_FLAGS = {
   gear: process.env.NEXT_PUBLIC_FEATURE_GEAR,
   fields: process.env.NEXT_PUBLIC_FEATURE_FIELDS,
   safety: process.env.NEXT_PUBLIC_FEATURE_SAFETY,
 } as const;
 
+export function featureFlagEnabled(value: string | undefined): boolean {
+  return value !== "0" && value !== "false";
+}
+
 function flagOn(flag: keyof typeof FEATURE_FLAGS): boolean {
-  const v = FEATURE_FLAGS[flag];
-  return v === "1" || v === "true";
+  return featureFlagEnabled(FEATURE_FLAGS[flag]);
 }
 
 export const NAV: NavItem[] = [
