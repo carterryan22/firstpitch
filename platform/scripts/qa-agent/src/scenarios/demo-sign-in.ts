@@ -1,5 +1,7 @@
 import type { Scenario } from "../types.ts";
 
+const DEMO_TEAMS = ["Cascade Comets", "Harbor Hawks", "Summit Sparks", "Valley Vipers"];
+
 /** Opt-in because demo shortcuts must not be available in normal production. */
 export const demoSignInScenario: Scenario = {
   name: "demo-persona-sign-in",
@@ -23,13 +25,19 @@ export const demoSignInScenario: Scenario = {
       ctx.expect(session.ok && session.json?.user?.email === account.email && session.json?.user?.role === account.role,
         `${account.role} form did not persist the expected session`, "blocker");
       const teams = await ctx.api<{ teams?: Array<{ id: string; name: string }> }>("/api/teams");
-      ctx.expect(teams.ok && teams.json?.teams?.length === account.teams,
-        `${account.role} does not see the expected seeded teams`, "blocker");
+      const visibleTeams = teams.json?.teams ?? [];
       if (account.role === "coach") {
-        for (const team of teams.json?.teams ?? []) {
+        // UX journeys may create additional legitimate teams for this coach.
+        // Require each named fixture exactly once without resetting their data.
+        ctx.expect(teams.ok && DEMO_TEAMS.every((name) => visibleTeams.filter((team) => team.name === name).length === 1),
+          "Coach does not see all four distinct seeded teams", "blocker");
+        for (const team of visibleTeams.filter((team) => DEMO_TEAMS.includes(team.name))) {
           const roster = await ctx.api<{ players?: unknown[] }>(`/api/teams/${team.id}/players`);
           ctx.expect(roster.ok && roster.json?.players?.length === 12, `${team.name} does not have 12 players`, "blocker");
         }
+      } else {
+        ctx.expect(teams.ok && visibleTeams.length === account.teams && visibleTeams[0]?.name === DEMO_TEAMS[0],
+          `${account.role} does not see only their linked seeded team`, "blocker");
       }
       if (account.role === "parent") {
         ctx.expect((await ctx.page.locator("body").innerText()).includes("Mason"), "Seeded parent cannot see their linked child", "blocker");
