@@ -10,7 +10,7 @@
     "build": "npm run --workspaces --if-present build",
     "build:web": "npm run build --workspace @platform/web",
     "test": "vitest run",
-    "test:seed": "node --test scripts/seed-test-accounts/season.test.mjs",
+    "test:seed": "node --test scripts/seed-test-accounts/season.test.mjs scripts/seed-test-accounts/preflight.test.mjs",
     "test:watch": "vitest",
     "dev": "npm run dev --workspace @platform/web",
     "start": "npm run start --workspace @platform/web",

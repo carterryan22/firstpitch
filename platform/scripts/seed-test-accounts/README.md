@@ -9,6 +9,10 @@ node scripts/seed-test-accounts/seed.mjs
 
 The target needs persistent storage and `PLATFORM_ALLOW_DEV_LOGIN=1`. Local development can use `PLATFORM_DATA_DIR` pointing to a local temporary directory outside cloud-synced folders. Do not enable passwordless demo login on a production database.
 
+For hosted Preview, set a branch-scoped `PLATFORM_KV_KEY`, for example `platform:demo:firstpitch-september`. All Preview KV runtimes and all KV runtimes with demo login enabled require an explicit `platform:demo:` or `platform:preview:` namespace and fail closed otherwise. Production keeps `platform:db`; Vercel Production rejects demo namespaces and never permits passwordless demo login. Namespaces separate application records, but share provider credentials and capacity; a separate database is preferable for stronger infrastructure isolation. Never seed the production key or move existing production records into the demo key.
+
+Seeding requires a configured auth secret and reachable durable storage. In an isolated demo using the sign-in shortcuts, `SEED_ALLOW_NO_EMAIL=1` permits the health endpoint to report email as its only missing service; it does not disable any runtime auth or storage safeguards. Production readiness still requires real email delivery. HTML protection pages and redirects stop seeding before sign-in or writes.
+
 The seed creates Cascade Comets, Harbor Hawks, Summit Sparks, and Valley Vipers. Each has 12 roster players, 12 linked parent accounts, 12 linked athlete accounts, and 3 coaches (one shared director plus two team coaches). Each sample season has 6 completed games and 2 upcoming games. All people and accounts are synthetic.
 
 Rerunning reuses rosters and memberships. Tagged sample games resume by slot after an interrupted run; completed games remain intact. Existing untagged seasons are preserved. New empty seasons start at the current date, while resumed seasons retain their schedule.

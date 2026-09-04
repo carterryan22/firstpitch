@@ -10,6 +10,7 @@ describe("authentication redirect routes", () => {
     vi.stubEnv("NODE_ENV", "development");
     vi.stubEnv("PLATFORM_AUTH_SECRET", "test-only-auth-secret");
     vi.stubEnv("PLATFORM_ALLOW_DEV_LOGIN", "1");
+    vi.stubEnv("VERCEL_ENV", "");
     vi.stubEnv("KV_REST_API_URL", "");
     vi.stubEnv("KV_REST_API_TOKEN", "");
     vi.stubEnv("PLATFORM_DATA_DIR", "");
@@ -41,5 +42,17 @@ describe("authentication redirect routes", () => {
     }));
     expect(response.status).toBe(410);
     expect(response.cookies.get(SESSION_COOKIE)).toBeUndefined();
+  });
+
+  it("never enables passwordless demo sign-in in Vercel Production", async () => {
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("VERCEL_ENV", "production");
+    vi.stubEnv("PLATFORM_ALLOW_DEV_LOGIN", "1");
+    const response = await POST(new NextRequest("https://app.example/api/auth/login", {
+      method: "POST", body: new URLSearchParams({ email: "coach@example.test", role: "coach" }),
+    }));
+    expect(response.status).toBe(410);
+    expect(response.cookies.get(SESSION_COOKIE)).toBeUndefined();
+    expect(await getRepos().users.list()).toEqual([]);
   });
 });

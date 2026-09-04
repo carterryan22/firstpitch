@@ -27,6 +27,11 @@ async function preflight(): Promise<void> {
   if (res.status !== 200 && res.status !== 401) {
     throw new Error(`Preflight got HTTP ${res.status} from ${BASE_URL}/api/auth/session`);
   }
+  const session = res.headers.get("content-type")?.includes("application/json")
+    ? await res.json().catch(() => null) : null;
+  if (!session || typeof session !== "object" || !("user" in session)) {
+    throw new Error("Preflight did not reach the First Pitch session API. Deployment protection or a redirect may require authorized access; no scenarios were run.");
+  }
 }
 
 async function runScenario(browser: Browser, scenario: Scenario): Promise<RunResult["scenarios"][number]> {

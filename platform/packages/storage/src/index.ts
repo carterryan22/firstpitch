@@ -1,9 +1,11 @@
 export * from "./types";
 export * from "./repos";
 export * from "./stores";
+export * from "./environment";
 
 import { InMemoryStore, JsonFileStore, KvJsonStore } from "./stores";
 import { makeRepos, type Repos } from "./repos";
+import { kvKeyForEnvironment } from "./environment";
 
 let singleton: Repos | null = null;
 
@@ -21,7 +23,7 @@ export function getRepos(): Repos {
 
   let store;
   if (kvUrl && kvToken) {
-    store = new KvJsonStore({ url: kvUrl, token: kvToken });
+    store = new KvJsonStore({ url: kvUrl, token: kvToken, key: kvKeyForEnvironment() });
   } else if (dir) {
     store = new JsonFileStore(`${dir.replace(/[\\/]+$/, "")}/platform.json`);
   } else {

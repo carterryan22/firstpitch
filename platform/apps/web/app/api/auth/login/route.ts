@@ -14,7 +14,7 @@ export const dynamic = "force-dynamic";
 export async function POST(req: NextRequest) {
   const isProd = process.env.NODE_ENV === "production";
   const devAllow = process.env.PLATFORM_ALLOW_DEV_LOGIN === "1";
-  if (isProd && !devAllow) {
+  if (process.env.VERCEL_ENV === "production" || (isProd && !devAllow)) {
     return NextResponse.json(
       { error: "Password-less login disabled. Request a magic link." },
       { status: 410 },

@@ -16,6 +16,11 @@ async function preflight(): Promise<void> {
   const res = await fetch(`${BASE_URL}/api/auth/session`).catch(() => null);
   if (!res) throw new Error(`Dev server not reachable at ${BASE_URL}. Start it with \`npm run dev\` from platform/ first.`);
   if (res.status !== 200 && res.status !== 401) throw new Error(`Preflight got HTTP ${res.status} from ${BASE_URL}`);
+  const session = res.headers.get("content-type")?.includes("application/json")
+    ? await res.json().catch(() => null) : null;
+  if (!session || typeof session !== "object" || !("user" in session)) {
+    throw new Error("Preflight did not reach the First Pitch session API. Deployment protection or a redirect may require authorized access; no journeys were run.");
+  }
   // Warm Next.js dev-compile for the pages every journey hits, so the first
   // journey doesn't pay the 30s cold-compile tax (which our heuristics would
   // mis-classify as a workflow chokepoint).
