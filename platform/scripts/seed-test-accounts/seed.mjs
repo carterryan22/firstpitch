@@ -10,12 +10,12 @@
 //
 // Env:
 //   SEED_BASE_URL  default http://localhost:3000
-//   SEED_SEASON    "1" (default) also builds a sample season on FRESH creation
-//                  only, because player ids are only known at that point. To
-//                  rebuild the season, delete platform.json in PLATFORM_DATA_DIR.
+//   SEED_SEASON    "1" (default) builds/resumes a tagged sample season. Existing
+//                  untagged seasons are preserved. No database deletion needed.
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { seasonAnchor } from "./season.mjs";
 
 const BASE = (process.env.SEED_BASE_URL || "http://localhost:3000").replace(/\/$/, "");
 const WITH_SEASON = (process.env.SEED_SEASON ?? "1") !== "0";
@@ -164,23 +164,34 @@ function primaryPosition(p) {
 }
 
 async function seedSeason(team, players, teamIndex) {
+  const marker = `[firstpitch-demo:${TEAM_SPECS[teamIndex].key}:`;
+  const { games: existingGames = [] } = await api("GET", `/api/teams/${team.id}/games`);
+  if (existingGames.length && !existingGames.some((game) => game.notes?.startsWith(marker))) {
+    console.log(`[seed] ${team.name}: existing season preserved`);
+    return;
+  }
   const results = [
     { us: 7, them: 4 }, { us: 3, them: 5 }, { us: 8, them: 2 },
     { us: 6, them: 6 }, { us: 2, them: 9 }, { us: 5, them: 1 },
   ];
   const pitchers = players.filter((p) => p.canPitch);
-  const now = Date.now();
+  const now = seasonAnchor(existingGames, marker, teamIndex, results.length);
   const DAY = 86_400_000;
 
   for (let g = 0; g < results.length; g++) {
-    const startsAt = new Date(now - (results.length - g) * 7 * DAY - teamIndex * DAY).toISOString();
-    const { game } = await api("POST", `/api/teams/${team.id}/games`, {
+    _seed = 20260803 + teamIndex * 100 + g;
+    const notes = `${marker}completed:${g}]`;
+    let game = existingGames.find((candidate) => candidate.notes === notes);
+    if (game?.status === "completed") continue;
+    const startsAt = game?.startsAt ?? new Date(now - (results.length - g) * 7 * DAY - teamIndex * DAY).toISOString();
+    if (!game) ({ game } = await api("POST", `/api/teams/${team.id}/games`, {
       opponent: OPPONENTS[(g + teamIndex * 2) % OPPONENTS.length],
       startsAt,
       venue: g % 2 === 0 ? "Memorial Field" : "Away - Riverbend Park",
       homeAway: g % 2 === 0 ? "home" : "away",
       innings: 6,
-    });
+      notes,
+    }));
 
     const attendance = {};
     const absent = new Set(g % 3 === 0 ? [players[(g + 4) % players.length].id] : []);
@@ -211,14 +222,18 @@ async function seedSeason(team, players, teamIndex) {
   }
 
   for (let u = 0; u < 2; u++) {
+    const notes = `${marker}upcoming:${u}]`;
+    if (existingGames.some((game) => game.notes === notes)) continue;
     await api("POST", `/api/teams/${team.id}/games`, {
       opponent: OPPONENTS[(6 + u + teamIndex * 2) % OPPONENTS.length],
       startsAt: new Date(now + (u + 3 + teamIndex) * DAY).toISOString(),
       venue: u === 0 ? "Memorial Field" : "Away - Fairview HS",
       homeAway: u === 0 ? "home" : "away",
       innings: 6,
+      notes,
     });
   }
+  console.log(`[seed] ${team.name}: 6 completed games + 2 upcoming`);
 }
 
 async function main() {
@@ -241,7 +256,6 @@ async function main() {
   for (let teamIndex = 0; teamIndex < TEAM_SPECS.length; teamIndex++) {
     const spec = TEAM_SPECS[teamIndex];
     let team = existingTeams.find((candidate) => candidate.name === spec.name);
-    const fresh = !team;
     if (!team) {
       ({ team } = await api("POST", "/api/teams", { name: spec.name, ageBand: spec.ageBand }));
       console.log(`[seed] created ${team.name} (${team.id})`);
@@ -290,11 +304,8 @@ async function main() {
     }
     console.log(`[seed] ${team.name}: ${players.length} players, 12 parents, 12 athlete accounts, 3 coaches`);
 
-    if (fresh && WITH_SEASON) {
+    if (WITH_SEASON) {
       await seedSeason(team, players, teamIndex);
-      console.log(`[seed] ${team.name}: 6 completed games + 2 upcoming`);
-    } else if (!fresh) {
-      console.log(`[seed] ${team.name}: existing season preserved`);
     }
     seededTeams.push(team);
   }

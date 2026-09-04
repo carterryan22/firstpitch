@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getRepos, POSITIONS, type Position, type Bats, type Throws, type PositionRating } from "@platform/storage";
 import { getSession } from "../../../../lib/session";
-import { userCanManageTeam, userCanReadTeam } from "../../../../lib/teams";
+import { userCanManageTeam } from "../../../../lib/teams";
 import { bandFromDob } from "../../../../lib/players";
 import { requestParentalConsent, requiresParentalConsent } from "../../../../lib/consent";
 
@@ -41,7 +41,7 @@ export async function GET(_req: NextRequest, ctx: { params: Promise<{ id: string
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   const { id: teamId } = await ctx.params;
-  if (!(await userCanReadTeam(session.user.id, teamId))) {
+  if (!(await userCanManageTeam(session.user.id, teamId))) {
     return NextResponse.json({ error: "forbidden" }, { status: 403 });
   }
   const players = await getRepos().players.list({ teamId });

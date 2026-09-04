@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { getRepos } from "@platform/storage";
 import { issueLoginToken } from "@platform/auth";
 import { sendEmail, isEmailInDevMode } from "../../../lib/email";
-import { publicLoginRole } from "../../../lib/authRequest";
+import { publicLoginRole, sanitizeRedirect } from "../../../lib/authRequest";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -96,11 +96,4 @@ export async function POST(req: NextRequest) {
     expiresAt: issued.expiresAt,
     ...(includeDevLink ? { devLink: magicLink } : {}),
   });
-}
-
-function sanitizeRedirect(raw?: string): string | undefined {
-  if (!raw) return undefined;
-  if (!raw.startsWith("/") || raw.startsWith("//")) return undefined;
-  if (raw.length > 256) return undefined;
-  return raw;
 }

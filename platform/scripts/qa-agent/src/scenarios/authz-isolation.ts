@@ -51,6 +51,7 @@ export const authzIsolationScenario: Scenario = {
 
     // The cross-tenant mutating endpoints under test, keyed off Team A's ids.
     const probes: Array<{ label: string; path: string; method: string; body?: unknown }> = [
+      { label: "read full Team A roster", path: `/api/teams/${teamA}/players`, method: "GET" },
       { label: "add player to Team A", path: `/api/teams/${teamA}/players`, method: "POST", body: { firstName: "Intruder", lastName: "X", jerseyNumber: "99" } },
       { label: "edit Team A's player", path: `/api/players/${playerA}`, method: "PATCH", body: { firstName: "HACKED" } },
       { label: "archive Team A's player", path: `/api/players/${playerA}`, method: "PATCH", body: { archive: true } },
@@ -78,19 +79,25 @@ export const authzIsolationScenario: Scenario = {
       await ctxAnon.close();
     }
 
-    // ── Parent role: authenticated but never a coach of Team A ──
-    const ctxParent = await newSession(ctx, "parent", `qa-authz-parent+${Date.now()}@test.local`);
-    if (ctxParent) {
-      ctx.step("Parent role attempts coach-only writes on Team A");
-      for (const p of probes) {
-        await expectBlocked(ctx, ctxParent, p, victimFirst, "Parent");
+    // Membership and linkage to a child must not grant coach-only access.
+    for (const role of ["parent", "player"] as const) {
+      const email = `qa-authz-${role}+${Date.now()}@test.local`;
+      const membership = await ctx.api(`/api/teams/${teamA}/members`, {
+        method: "POST", headers: { "content-type": "application/json" },
+        body: JSON.stringify({ email, role, playerId: playerA }),
+      });
+      if (!ctx.expect(membership.ok, `Could not link ${role} to Team A`, "blocker")) continue;
+      const family = await newSession(ctx, role, email);
+      if (!family) continue;
+      ctx.step(`Linked ${role} attempts full roster read and coach-only writes`);
+      for (const probe of probes) {
+        await expectBlocked(ctx, family, probe, victimFirst, `Linked ${role}`);
       }
-      await ctxParent.close();
+      await family.close();
     }
 
     // ── Confirm the victim player was never actually mutated ──
-    // There is no public GET-by-id player/roster API (the roster is server
-    // rendered), so re-read through Coach A's authenticated roster page: the
+    // Re-read through Coach A's authenticated roster page: the
     // victim's original name must still be present and the "HACKED" rewrite
     // attempted by the probes must be absent.
     ctx.step("Coach A re-reads roster page — victim unchanged");

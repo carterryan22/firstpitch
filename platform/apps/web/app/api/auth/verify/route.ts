@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getRepos } from "@platform/storage";
 import { consumeLoginToken, SESSION_COOKIE, SESSION_TTL_MS } from "@platform/auth";
+import { sanitizeRedirect } from "../../../lib/authRequest";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -22,7 +23,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(new URL("/login?error=invalid_or_expired", req.nextUrl.origin));
   }
   const redirectPath =
-    session.redirectTo ?? DEFAULT_REDIRECT_BY_ROLE[session.user.role] ?? "/";
+    sanitizeRedirect(session.redirectTo) ?? DEFAULT_REDIRECT_BY_ROLE[session.user.role] ?? "/";
   const res = NextResponse.redirect(new URL(redirectPath, req.nextUrl.origin));
   res.cookies.set(SESSION_COOKIE, session.cookieValue, {
     httpOnly: true,

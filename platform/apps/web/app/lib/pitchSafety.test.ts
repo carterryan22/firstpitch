@@ -12,6 +12,30 @@ function game(id: string, startsAt: string, pitches: number): GameRecord {
 }
 
 describe("livePitchSafety", () => {
+  it("blocks the full rest day after 21 pitches and allows the following day", () => {
+    const history = [game("old", "2026-06-20T18:00:00Z", 21)];
+    const resting = livePitchSafety([player], history, [], new Date("2026-06-21T18:00:00Z")).p1!;
+    expect(resting.allowed).toBe(false);
+    expect(resting.requiredRestDaysRemaining).toBe(1);
+    expect(livePitchSafety([player], history, [], new Date("2026-06-22T00:00:00Z")).p1!.allowed).toBe(true);
+  });
+
+  it("keeps owed rest after a later catcher-only game", () => {
+    const catching = { ...game("catching", "2026-06-21T18:00:00Z", 0), lineup: [{ p1: "C" }] };
+    const state = livePitchSafety([player], [game("pitching", "2026-06-20T18:00:00Z", 70), catching], [], new Date("2026-06-22T18:00:00Z")).p1!;
+    expect(state.allowed).toBe(false);
+    expect(state.requiredRestDaysRemaining).toBe(3);
+  });
+
+  it("preserves an archived pitcher's unchanged entry while updating an active pitcher", () => {
+    const old = { pitches: 10, innings: 1, recordedAt: "2026-06-20T18:00:00Z" };
+    const state = livePitchSafety([player], [], [], new Date("2026-06-20T18:00:00Z"));
+    expect(validatePitchCountChange({ archived: old }, {
+      archived: { ...old }, p1: { pitches: 1, innings: 0, recordedAt: old.recordedAt },
+    }, state)).toBeNull();
+    expect(validatePitchCountChange({ archived: old }, { archived: { ...old, pitches: 11 } }, state)).toMatch(/players on this team/);
+    expect(validatePitchCountChange({ archived: old }, { archived: { ...old, innings: 2 } }, state)).toMatch(/players on this team/);
+  });
   it("blocks a pitcher who still owes rest from a prior outing", () => {
     const state = livePitchSafety([player], [game("old", "2026-06-08T18:00:00Z", 70)], [], new Date("2026-06-10T18:00:00Z")).p1!;
     expect(state.allowed).toBe(false);

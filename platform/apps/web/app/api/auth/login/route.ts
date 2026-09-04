@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getRepos } from "@platform/storage";
 import { loginOrRegister, SESSION_COOKIE, SESSION_TTL_MS } from "@platform/auth";
+import { sanitizeRedirect } from "../../../lib/authRequest";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -49,9 +50,7 @@ export async function POST(req: NextRequest) {
     const fallback = session.user.role === "coach" || session.user.role === "admin"
       ? "/coach"
       : session.user.role === "parent" ? "/parent" : "/missions";
-    const redirectTo = body.redirectTo?.startsWith("/") && !body.redirectTo.startsWith("//")
-      ? body.redirectTo
-      : fallback;
+    const redirectTo = sanitizeRedirect(body.redirectTo) ?? fallback;
     const res = isForm
       ? NextResponse.redirect(new URL(redirectTo, req.url), 303)
       : NextResponse.json({

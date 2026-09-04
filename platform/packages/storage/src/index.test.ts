@@ -1,8 +1,14 @@
-import { describe, it, expect } from "vitest";
+import { afterEach, describe, it, expect, vi } from "vitest";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import { InMemoryStore, JsonFileStore, KvJsonStore, makeRepos } from "./index";
+import { gzipSync } from "node:zlib";
+import { EMPTY_DB, InMemoryStore, JsonFileStore, KvJsonStore, makeRepos } from "./index";
+
+vi.mock("node:fs", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("node:fs")>();
+  return { ...actual, renameSync: vi.fn(actual.renameSync) };
+});
 
 describe("InMemoryStore + repos", () => {
   it("isolates default state between store instances", async () => {
@@ -80,6 +86,19 @@ describe("InMemoryStore + repos", () => {
 });
 
 describe("JsonFileStore", () => {
+  it("retries a transient Windows rename denial without losing the mutation", async () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "plat-"));
+    const file = path.join(dir, "db.json");
+    const repos = makeRepos(new JsonFileStore(file));
+    await repos.users.upsert({ email: "existing@example.com", role: "coach" });
+    vi.mocked(fs.renameSync).mockImplementationOnce(() => {
+      expect(JSON.parse(fs.readFileSync(file, "utf8")).users).toHaveLength(1);
+      throw Object.assign(new Error("file briefly open"), { code: "EPERM" });
+    });
+    await repos.users.upsert({ email: "new@example.com", role: "parent" });
+    expect(await repos.users.list()).toHaveLength(2);
+    expect(fs.readdirSync(dir).filter((name) => name.endsWith(".tmp") || name.endsWith(".lock"))).toEqual([]);
+  });
   it("persists across instances", async () => {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), "plat-"));
     const file = path.join(dir, "db.json");
@@ -114,58 +133,128 @@ describe("JsonFileStore", () => {
   });
 });
 
-describe("KvJsonStore", () => {
-  it("retries concurrent mutations instead of losing an update", async () => {
-    let value: string | null = null;
-    let lockToken: string | null = null;
-    const originalFetch = globalThis.fetch;
-    globalThis.fetch = async (input, init) => {
-      const url = String(input);
-      if (url.includes("/get/")) {
-        return Response.json({ result: value });
-      }
-      if (url.includes("/set/")) {
-        const body = JSON.parse(String(init?.body)) as { value: string };
-        value = body.value;
-        return Response.json({ result: "OK" });
-      }
-      const command = JSON.parse(String(init?.body)) as Array<string | number>;
-      if (command[0] === "SET") {
-        if (lockToken) return Response.json({ result: null });
-        lockToken = String(command[2]);
-        return Response.json({ result: "OK" });
-      }
-      expect(command[0]).toBe("EVAL");
-      if (lockToken === String(command[4])) lockToken = null;
-      return Response.json({ result: 1 });
-    };
-
-    try {
-      const store = new KvJsonStore({ url: "https://kv.test", token: "test" });
-      const a = makeRepos(store);
-      const b = makeRepos(store);
-      await Promise.all([
-        a.users.upsert({ email: "first@example.com", role: "coach" }),
-        b.users.upsert({ email: "second@example.com", role: "parent" }),
-      ]);
-      expect((await store.read()).users.map((user) => user.email).sort()).toEqual([
-        "first@example.com",
-        "second@example.com",
-      ]);
-      expect(String(value).startsWith("gz:")).toBe(true);
-    } finally {
-      globalThis.fetch = originalFetch;
+/** Upstash stores a POST /set/key body verbatim, not body.value. */
+function mockKv(initial: string | null = null) {
+  const state = {
+    value: initial,
+    lockToken: null as string | null,
+    rejectedCommits: 0,
+    beforeRead: undefined as (() => Promise<void>) | undefined,
+  };
+  vi.stubGlobal("fetch", async (input: RequestInfo | URL, init?: RequestInit) => {
+    const url = String(input);
+    if (url.includes("/get/")) {
+      const snapshot = state.value;
+      await state.beforeRead?.();
+      return Response.json({ result: snapshot });
     }
+    if (url.includes("/set/")) {
+      state.value = String(init?.body);
+      return Response.json({ result: "OK" });
+    }
+    const command = JSON.parse(String(init?.body)) as Array<string | number>;
+    if (command[0] === "SET") {
+      if (state.lockToken) return Response.json({ result: null });
+      state.lockToken = String(command[2]);
+      return Response.json({ result: "OK" });
+    }
+    expect(command[0]).toBe("EVAL");
+    if (command[2] === 2) {
+      if (state.lockToken !== command[5]) {
+        state.rejectedCommits += 1;
+        return Response.json({ result: 0 });
+      }
+      state.value = String(command[6]);
+      state.lockToken = null;
+      return Response.json({ result: 1 });
+    }
+    if (state.lockToken === command[4]) state.lockToken = null;
+    return Response.json({ result: 1 });
+  });
+  return state;
+}
+
+describe("KvJsonStore", () => {
+  afterEach(() => vi.unstubAllGlobals());
+  const newStore = () => new KvJsonStore({ url: "https://kv.test", token: "test" });
+
+  it("round-trips writes using the provider's raw-value semantics", async () => {
+    const state = mockKv();
+    const repos = makeRepos(newStore());
+    await repos.users.upsert({ email: "persist@example.com", role: "coach" });
+    expect((await makeRepos(newStore()).users.list()).map((user) => user.email)).toEqual(["persist@example.com"]);
+    expect(state.value?.startsWith("gz:")).toBe(true);
   });
 
-  it("fails closed when the stored database is corrupt", async () => {
-    const originalFetch = globalThis.fetch;
-    globalThis.fetch = async () => Response.json({ result: "not-json" });
-    try {
-      const store = new KvJsonStore({ url: "https://kv.test", token: "test" });
-      await expect(store.read()).rejects.toThrow("invalid JSON");
-    } finally {
-      globalThis.fetch = originalFetch;
-    }
+  it("retries concurrent mutations instead of losing an update", async () => {
+    mockKv();
+    const a = makeRepos(newStore());
+    const b = makeRepos(newStore());
+    await Promise.all([
+      a.users.upsert({ email: "first@example.com", role: "coach" }),
+      b.users.upsert({ email: "second@example.com", role: "parent" }),
+    ]);
+    expect((await a.users.list()).map((user) => user.email).sort()).toEqual([
+      "first@example.com", "second@example.com",
+    ]);
+  });
+
+  it("rejects a stale lease and re-applies the mutation to the newer database", async () => {
+    const state = mockKv();
+    let readStarted!: () => void;
+    let releaseRead!: () => void;
+    const started = new Promise<void>((resolve) => { readStarted = resolve; });
+    const barrier = new Promise<void>((resolve) => { releaseRead = resolve; });
+    state.beforeRead = async () => {
+      state.beforeRead = undefined;
+      readStarted();
+      await barrier;
+    };
+    const a = makeRepos(newStore());
+    const b = makeRepos(newStore());
+    const delayed = a.users.upsert({ email: "slow@example.com", role: "coach" });
+    await started;
+    state.lockToken = null; // Redis expired the lease while GET was delayed.
+    await b.users.upsert({ email: "fast@example.com", role: "parent" });
+    releaseRead();
+    const saved = await delayed;
+    expect(state.rejectedCommits).toBe(1);
+    expect((await a.users.list()).map((user) => user.email).sort()).toEqual([
+      "fast@example.com", "slow@example.com",
+    ]);
+    expect((await a.users.byEmail("slow@example.com"))?.id).toBe(saved.id);
+  });
+
+  it.each(["plain", "compressed", "wrapped-plain", "wrapped-compressed"])("reads %s legacy data and migrates on mutation", async (format) => {
+    const db = { ...structuredClone(EMPTY_DB), users: [{ id: "legacy", email: "legacy@example.com", role: "coach", createdAt: "2026-01-01" }] };
+    const json = JSON.stringify(db);
+    let stored = format.endsWith("compressed") ? `gz:${gzipSync(json).toString("base64")}` : json;
+    if (format.startsWith("wrapped")) stored = JSON.stringify({ value: stored });
+    const state = mockKv(stored);
+    const repos = makeRepos(newStore());
+    expect((await repos.users.list()).map((user) => user.id)).toEqual(["legacy"]);
+    expect(state.value).toBe(stored); // Reads never rewrite the source value.
+    await repos.users.upsert({ email: "new@example.com", role: "parent" });
+    expect(state.value?.startsWith("gz:")).toBe(true);
+    expect(await repos.users.list()).toHaveLength(2);
+  });
+
+  it.each(["not-json", "", "null", "[]", "{}", '{"users":null}', '{"users":{},"teams":[]}', '{"value":"{}","users":[]}'])("refuses to overwrite malformed or ambiguous data: %s", async (raw) => {
+    const state = mockKv(raw);
+    await expect(makeRepos(newStore()).users.upsert({ email: "new@example.com", role: "coach" })).rejects.toThrow("invalid JSON or schema");
+    expect(state.value).toBe(raw);
+    expect(state.lockToken).toBeNull();
+  });
+
+  it("round-trips the public write method through the same commit protection", async () => {
+    mockKv();
+    const store = newStore();
+    await store.write(structuredClone(EMPTY_DB));
+    expect(await store.read()).toEqual(EMPTY_DB);
+  });
+
+  it("rejects provider errors instead of treating them as an empty database", async () => {
+    vi.stubGlobal("fetch", async () => Response.json({ error: "WRONGTYPE" }));
+    await expect(newStore().read()).rejects.toThrow("KV command failed");
   });
 });

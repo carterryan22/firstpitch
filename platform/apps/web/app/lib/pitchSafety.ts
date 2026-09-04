@@ -63,7 +63,7 @@ export function livePitchSafety(
       if (event.date === today) {
         if (event.activity === "game" || event.activity === "bullpen") todayCount += event.pitches ?? 0;
         todayCatchingInnings += event.catcherInnings ?? 0;
-      } else if (event.date < today && (event.activity === "game" || event.activity === "bullpen")) {
+      } else if (event.date < today && (event.pitches ?? 0) > 0 && (event.activity === "game" || event.activity === "bullpen")) {
         outingsByDate[event.date] = (outingsByDate[event.date] ?? 0) + (event.pitches ?? 0);
       }
     }
@@ -105,7 +105,14 @@ export function validatePitchCountChange(
   safety: Record<string, LivePitchSafety>,
 ): string | null {
   for (const [playerId, entry] of Object.entries(requested)) {
-    if (!safety[playerId]) return "Pitch counts may only be recorded for players on this team.";
+    if (!safety[playerId]) {
+      const previous = existing[playerId];
+      // Archived pitchers remain in historical games. Carry their unchanged
+      // entries through the merge without authorizing new or edited counts.
+      if (previous && entry?.pitches === previous.pitches && entry.innings === previous.innings
+        && entry.recordedAt === previous.recordedAt) continue;
+      return "Pitch counts may only be recorded for players on this team.";
+    }
     if (!Number.isInteger(entry?.pitches) || entry.pitches < 0 || entry.pitches > 250) {
       return "Pitch count must be a whole number between 0 and 250.";
     }

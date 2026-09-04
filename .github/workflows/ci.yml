@@ -34,6 +34,9 @@ jobs:
       - name: Vitest
         run: npm test
 
+      - name: Seed recovery tests
+        run: npm run test:seed
+
       - name: Eval suite
         run: npm run eval
 

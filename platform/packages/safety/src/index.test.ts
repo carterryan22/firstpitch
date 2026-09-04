@@ -45,7 +45,7 @@ describe("pitchSmart.canPitchToday", () => {
       },
     });
     expect(res.allowed).toBe(false);
-    expect(res.requiredRestDaysRemaining).toBe(2); // 4 required - 2 elapsed
+    expect(res.requiredRestDaysRemaining).toBe(3); // Only May 23 is a completed rest day.
   });
 
   it("blocks on reported soreness", () => {
@@ -57,6 +57,29 @@ describe("pitchSmart.canPitchToday", () => {
     });
     expect(res.allowed).toBe(false);
     expect(res.reasons[0]).toMatch(/soreness/);
+  });
+
+  it.each([0, 1, 20])("does not let a later %i-pitch outing erase an earlier rest obligation", (laterCount) => {
+    const result = canPitchToday({
+      age: 12, date: new Date("2026-06-22T00:00:00Z"), plannedPitches: 1,
+      history: { outingsByDate: { "2026-06-20": 70, "2026-06-21": laterCount }, todayCount: 0, soreToday: false, todayCatchingInnings: 0, continuousThrowingDays: 0 },
+    });
+    expect(result.allowed).toBe(false);
+    expect(result.requiredRestDaysRemaining).toBe(3);
+  });
+
+  it.each(loadPitchSmart().age_tables.flatMap((table) =>
+    table.required_rest.map((row) => ({ age: Number(table.age_band.split("-")[0]), pitches: row.pitches_min, rest: row.rest_days })),
+  ))("requires all $rest calendar rest days after $pitches pitches at age $age", ({ age, pitches, rest }) => {
+    const history = { outingsByDate: { "2026-06-20": pitches }, todayCount: 0, soreToday: false, todayCatchingInnings: 0, continuousThrowingDays: 0 };
+    if (rest > 0) {
+      const blocked = canPitchToday({ age, date: new Date(Date.UTC(2026, 5, 20 + rest)), plannedPitches: 1, history });
+      expect(blocked.allowed).toBe(false);
+      expect(blocked.requiredRestDaysRemaining).toBe(1);
+    }
+    const allowed = canPitchToday({ age, date: new Date(Date.UTC(2026, 5, 21 + rest)), plannedPitches: 1, history });
+    expect(allowed.allowed).toBe(true);
+    expect(allowed.requiredRestDaysRemaining).toBe(0);
   });
 
   it("blocks when player caught >=3 innings today", () => {

@@ -18,14 +18,14 @@ describe("buildLoadPassport", () => {
   });
 
   it("owes rest after a heavy recent outing → red with rest_owed and a forward date", () => {
-    // 70 pitches at 11-12 requires 4 rest days; thrown 2 days ago → 2 owed.
+    // Rest June 7–10 after the June 6 outing; June 8 still owes three days.
     const p = passport([{ date: "2026-06-06", activity: "game", pitches: 70 }], {
       playerName: "Quinn",
     });
     expect(p.status).toBe("red");
     expect(p.flags.some((f) => f.code === "rest_owed")).toBe(true);
-    expect(p.nextEligibleInDays).toBe(2);
-    expect(p.nextEligiblePitchDate).toBe("2026-06-10");
+    expect(p.nextEligibleInDays).toBe(3);
+    expect(p.nextEligiblePitchDate).toBe("2026-06-11");
     expect(p.bullpenOkToday).toBe(false);
     expect(p.lastOuting).toEqual({ date: "2026-06-06", pitches: 70 });
     expect(p.parentSummary).toMatch(/resting/i);

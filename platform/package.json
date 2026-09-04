@@ -10,6 +10,7 @@
     "build": "npm run --workspaces --if-present build",
     "build:web": "npm run build --workspace @platform/web",
     "test": "vitest run",
+    "test:seed": "node --test scripts/seed-test-accounts/season.test.mjs",
     "test:watch": "vitest",
     "dev": "npm run dev --workspace @platform/web",
     "start": "npm run start --workspace @platform/web",
@@ -21,7 +22,7 @@
     "qa:headed": "npm --prefix scripts/qa-agent run qa:headed",
     "launch-review": "npm --prefix scripts/launch-review run review",
     "security-review": "npm --prefix scripts/security-review run security",
-    "verify": "npm run test && npm run eval && npm run build:web"
+    "verify": "npm run test && npm run test:seed && npm run eval && npm run build:web"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
