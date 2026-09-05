@@ -23,6 +23,15 @@ The QA/UX runners and seed preflight now reject that response. Do not disable
 deployment protection or create automation-bypass credentials without approval.
 Browser-visible public pages are not proof that the API is accessible.
 
+Once temporary automation access is approved, pass its secret through the
+`VERCEL_AUTOMATION_BYPASS_SECRET` process environment and set
+`QA_AUTHORIZED_PREVIEW_ORIGIN` to the exact HTTPS Preview origin. The runners
+send the header only to that origin and exchange it for a host-scoped browser
+cookie; it is not attached globally to third-party requests. Persona switches
+clear the application session while preserving Vercel access. Revoke the
+temporary secret after the run and verify it no longer opens the protected API.
+Never place it in a URL, command argument, source file, or report.
+
 ## 3. Seed and verify
 
 From `platform/`, set `SEED_BASE_URL` to the explicitly authorized isolated demo.

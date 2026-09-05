@@ -1,5 +1,6 @@
 import type { Scenario, ScenarioContext } from "../types.ts";
 import type { BrowserContext } from "playwright";
+import { authorizePreviewContext } from "../../../automation-access.mjs";
 
 /**
  * Live authorization / multi-tenant isolation probe — the dynamic counterpart
@@ -174,6 +175,7 @@ async function newSession(
     return null;
   }
   const c = await browser.newContext({ baseURL: ctx.baseUrl });
+  await authorizePreviewContext(c, ctx.baseUrl);
   const page = await c.newPage();
   if (role) await loginAs(page, ctx, role, email);
   return c;

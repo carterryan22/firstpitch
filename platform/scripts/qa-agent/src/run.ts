@@ -1,6 +1,7 @@
 import { chromium, type Browser } from "playwright";
 import { mkdir, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
+import { automationHeaders, authorizePreviewContext } from "../../automation-access.mjs";
 import { attachRecorder } from "./recorder.ts";
 import type { Bug, RunResult, Scenario, ScenarioContext } from "./types.ts";
 
@@ -17,7 +18,8 @@ async function loadScenarios(): Promise<Scenario[]> {
 }
 
 async function preflight(): Promise<void> {
-  const res = await fetch(`${BASE_URL}/api/auth/session`).catch(() => null);
+  const sessionUrl = `${BASE_URL}/api/auth/session`;
+  const res = await fetch(sessionUrl, { headers: automationHeaders(sessionUrl), redirect: "error" }).catch(() => null);
   if (!res) {
     throw new Error(
       `Dev server not reachable at ${BASE_URL}. Start it with \`npm run dev\` from platform/ first.`,
@@ -36,6 +38,7 @@ async function preflight(): Promise<void> {
 
 async function runScenario(browser: Browser, scenario: Scenario): Promise<RunResult["scenarios"][number]> {
   const context = await browser.newContext({ baseURL: BASE_URL, viewport: { width: 1280, height: 800 } });
+  await authorizePreviewContext(context, BASE_URL);
   const page = await context.newPage();
   const recorder = attachRecorder(page);
   const collected: Bug[] = [];

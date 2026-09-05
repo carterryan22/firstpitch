@@ -14,7 +14,8 @@ export const demoSignInScenario: Scenario = {
       { label: "Athlete demo", email: "athlete1@firstpitch.test", role: "player", path: "/missions", teams: 1 },
     ]) {
       ctx.step(`${account.role} form sign-in`);
-      await ctx.context.clearCookies();
+      // Preserve only Vercel's host-scoped access cookie, not the app session.
+      await ctx.context.clearCookies({ name: "platform_session" });
       await ctx.goto("/login");
       await Promise.all([
         ctx.page.waitForURL((url) => url.pathname === account.path, { timeout: 30_000 }),

@@ -9,6 +9,7 @@ import { apiSmokeScenario } from "./api-smoke.ts";
 import { safetyScenario } from "./safety-gates.ts";
 import { athleteFlowScenario } from "./athlete-flow.ts";
 import { demoSignInScenario } from "./demo-sign-in.ts";
+import { adminAccessScenario } from "./admin-access.ts";
 import type { Scenario } from "../types.ts";
 
 export const scenarios: Scenario[] = [
@@ -22,5 +23,5 @@ export const scenarios: Scenario[] = [
   safetyScenario,
   authzIsolationScenario,
   a11yScenario,
-  ...(process.env.QA_DEMO_SIGN_IN === "1" ? [demoSignInScenario] : []),
+  ...(process.env.QA_DEMO_SIGN_IN === "1" ? [demoSignInScenario, adminAccessScenario] : []),
 ];

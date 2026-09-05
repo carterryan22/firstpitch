@@ -17,6 +17,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { seasonAnchor } from "./season.mjs";
 import { validateSeedHealth } from "./preflight.mjs";
+import { automationHeaders } from "../automation-access.mjs";
 
 const BASE = (process.env.SEED_BASE_URL || "http://localhost:3000").replace(/\/$/, "");
 const WITH_SEASON = (process.env.SEED_SEASON ?? "1") !== "0";
@@ -46,7 +47,7 @@ async function api(method, path, body) {
   const res = await fetch(`${BASE}${path}`, {
     method,
     redirect: "error",
-    headers: { "content-type": "application/json", ...(cookie ? { cookie } : {}) },
+    headers: { "content-type": "application/json", ...automationHeaders(`${BASE}${path}`), ...(cookie ? { cookie } : {}) },
     body: body === undefined ? undefined : JSON.stringify(body),
   });
   if (!res.headers.get("content-type")?.includes("application/json")) {
@@ -244,7 +245,7 @@ async function seedSeason(team, players, teamIndex) {
 async function main() {
   console.log(`[seed] target ${BASE}`);
   try {
-    const response = await fetch(`${BASE}/api/health`, { redirect: "error", signal: AbortSignal.timeout(15000) });
+    const response = await fetch(`${BASE}/api/health`, { headers: automationHeaders(`${BASE}/api/health`), redirect: "error", signal: AbortSignal.timeout(15000) });
     const health = response.headers.get("content-type")?.includes("application/json")
       ? await response.json() : null;
     validateSeedHealth(response.status, health, process.env.SEED_ALLOW_NO_EMAIL === "1");
