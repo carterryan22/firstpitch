@@ -68,6 +68,21 @@ describe("login/resolve/logout", () => {
     }
     throw new Error("should have thrown");
   });
+
+  it("does not overwrite an existing user's role during dev authentication", async () => {
+    const repos = fresh();
+    const admin = await repos.users.upsert({ email: "admin@x.com", role: "admin", name: "Admin" });
+
+    const session = await loginOrRegister(repos, {
+      email: "ADMIN@x.com",
+      role: "parent",
+      name: "Replacement",
+    });
+
+    expect(session.user.id).toBe(admin.id);
+    expect(session.user.role).toBe("admin");
+    expect(session.user.name).toBe("Admin");
+  });
 });
 
 describe("magic-link tokens", () => {
@@ -133,5 +148,28 @@ describe("magic-link tokens", () => {
     });
     const out = await consumeLoginToken(repos, issued.token);
     expect(out?.redirectTo).toBe("/parent?team=t1");
+  });
+
+  it("preserves an existing user's role through token issue and consumption", async () => {
+    const repos = fresh();
+    const coach = await repos.users.upsert({
+      email: "coach@x.com",
+      role: "coach",
+      name: "Original",
+    });
+    const issued = await issueLoginToken(repos, {
+      email: "COACH@x.com",
+      role: "parent",
+      name: "Replacement",
+    });
+
+    const record = await repos.loginTokens.byHash(hashToken(issued.token));
+    expect(record?.role).toBe("coach");
+    expect(record?.name).toBe("Original");
+
+    const out = await consumeLoginToken(repos, issued.token);
+    expect(out?.user.id).toBe(coach.id);
+    expect(out?.user.role).toBe("coach");
+    expect(out?.user.name).toBe("Original");
   });
 });

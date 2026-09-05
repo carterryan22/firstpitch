@@ -9,6 +9,7 @@ interface PatchBody {
   leagueRules?: Partial<Record<keyof TeamLeagueRules, number | boolean | null | undefined>>;
   /** Id of the rule-set preset that produced these rules, for provenance badges. */
   appliedRuleSetId?: string | null;
+  publicPageEnabled?: boolean;
 }
 
 /** Clamp + coerce an incoming numeric rule, or undefined to clear it. */
@@ -36,7 +37,7 @@ export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: strin
   if (!team) return NextResponse.json({ error: "team not found" }, { status: 404 });
 
   const body = (await req.json().catch(() => ({}))) as PatchBody;
-  const r = body.leagueRules ?? {};
+  const r = body.leagueRules ?? team.leagueRules ?? {};
 
   // Build a clean rule set; omitted/invalid fields are dropped (rule off).
   const leagueRules: TeamLeagueRules = {};
@@ -67,17 +68,22 @@ export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: strin
   ]);
   // Provenance source: keep the applied preset id only when it's a known preset;
   // an explicit null or any manual edit that doesn't pass one clears it (fully custom).
-  let appliedRuleSetId: string | undefined;
-  if (typeof body.appliedRuleSetId === "string" && VALID_PRESET_IDS.has(body.appliedRuleSetId)) {
+  let appliedRuleSetId: string | undefined = team.appliedRuleSetId;
+  if (body.appliedRuleSetId === null) {
+    appliedRuleSetId = undefined;
+  } else if (typeof body.appliedRuleSetId === "string" && VALID_PRESET_IDS.has(body.appliedRuleSetId)) {
     appliedRuleSetId = body.appliedRuleSetId === "none" ? undefined : body.appliedRuleSetId;
   }
 
-  const updated = await repos.teams.update(teamId, { leagueRules, appliedRuleSetId });
+  const publicPageEnabled =
+    typeof body.publicPageEnabled === "boolean" ? body.publicPageEnabled : team.publicPageEnabled;
+  const updated = await repos.teams.update(teamId, { leagueRules, appliedRuleSetId, publicPageEnabled });
   if (!updated) return NextResponse.json({ error: "team not found" }, { status: 404 });
 
   return NextResponse.json({
     ok: true,
     leagueRules: updated.leagueRules ?? {},
     appliedRuleSetId: updated.appliedRuleSetId ?? null,
+    publicPageEnabled: updated.publicPageEnabled === true,
   });
 }

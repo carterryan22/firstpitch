@@ -58,7 +58,9 @@ export default async function TeamMorePage({
     {
       title: "Share & assist",
       links: [
-        { label: "Press Box (public page)", href: `/teams/${team.slug}`, desc: "Parent-facing schedule + lineups. No PII beyond first names.", icon: "📣", external: true },
+        team.publicPageEnabled
+          ? { label: "Public team page", href: `/teams/${team.slug}`, desc: "Published team schedule and consent-filtered Press Box links.", icon: "📣", external: true }
+          : { label: "Publish team page", href: `${base}/settings`, desc: "Private by default. Review and explicitly publish in Settings.", icon: "📣" },
         { label: "Ask the coach AI", href: `${base}/ask`, desc: "Grounded answers about this team.", icon: "💬" },
       ],
     },

@@ -51,6 +51,13 @@ const ERROR_COPY: Record<string, string> = {
     "That magic link is expired or already used. Request a new one. They're good for 15 minutes.",
 };
 
+const DEMO_MODE = process.env.NEXT_PUBLIC_DEMO_MODE === "1";
+const DEMO_ACCOUNTS = [
+  { role: "coach" as const, email: "coach1@firstpitch.test", label: "Coach Riley", destination: "/coach" },
+  { role: "parent" as const, email: "parent1@firstpitch.test", label: "Parent demo", destination: "/parent" },
+  { role: "player" as const, email: "athlete1@firstpitch.test", label: "Athlete demo", destination: "/missions" },
+];
+
 export default function LoginPage() {
   return (
     <Suspense fallback={<div className="card">Loading…</div>}>
@@ -122,8 +129,8 @@ function LoginForm() {
             <div className="rounded-md border-2 border-warn/40 bg-warn-soft/30 p-3 text-sm">
               <p className="m-0 font-semibold text-warn">Dev mode (no email provider configured)</p>
               <p className="mt-1 text-xs text-ink/80">
-                No <code>RESEND_API_KEY</code> set, so we&apos;re showing the link inline. In
-                production this only goes to the inbox.
+                Local email console mode is enabled, so we&apos;re showing the link inline. This mode
+                is unavailable in production.
               </p>
               <p className="mt-2">
                 <a className="btn-primary no-underline hover:no-underline" href={sent.devLink}>
@@ -198,6 +205,30 @@ function LoginForm() {
           </div>
         ) : null}
       </fieldset>
+
+      {DEMO_MODE ? (
+        <section className="card space-y-3 border-brand-500/40 bg-brand-50/40" aria-labelledby="demo-sign-in-heading">
+          <div>
+            <h2 id="demo-sign-in-heading" className="m-0 text-lg">Preview demo accounts</h2>
+            <p className="mt-1 text-sm text-slate-600">
+              Jump into the seeded four-team workspace. These shortcuts are disabled in Production.
+            </p>
+          </div>
+          <div className="grid gap-2 sm:grid-cols-3">
+            {DEMO_ACCOUNTS.map((account) => (
+              <form key={account.role} method="post" action="/api/auth/login">
+                <input type="hidden" name="email" value={account.email} />
+                <input type="hidden" name="role" value={account.role} />
+                <input type="hidden" name="name" value={account.label} />
+                <input type="hidden" name="redirectTo" value={nextPath ?? account.destination} />
+                <button type="submit" className="btn-ghost w-full text-sm">
+                  {account.label}
+                </button>
+              </form>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <form onSubmit={onSubmit} className="card space-y-4">
         <div>

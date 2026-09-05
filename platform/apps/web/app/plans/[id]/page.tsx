@@ -58,6 +58,7 @@ export default async function PlanPage({ params }: { params: Promise<{ id: strin
           warnings: plan.warnings,
           blocked: plan.blocked,
           totalThrowingLoad: plan.totalThrowingLoad,
+          timeBudget: plan.timeBudget,
           qualityScore: plan.qualityScore,
           focus: plan.focus,
           suggestedMissions,

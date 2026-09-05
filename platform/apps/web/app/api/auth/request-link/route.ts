@@ -1,12 +1,11 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getRepos } from "@platform/storage";
-import { issueLoginToken, type Role } from "@platform/auth";
+import { issueLoginToken } from "@platform/auth";
 import { sendEmail, isEmailInDevMode } from "../../../lib/email";
+import { publicLoginRole, sanitizeRedirect } from "../../../lib/authRequest";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-
-const VALID_ROLES: Role[] = ["coach", "parent", "player", "admin"];
 
 // Rough in-process rate limit: max N requests per email per hour.
 // Memory-only; fine for a single-region MVP. Sessions still rotate, this just
@@ -38,7 +37,8 @@ export async function POST(req: NextRequest) {
   if (!email || email.length > 200 || !email.includes("@")) {
     return NextResponse.json({ error: "Valid email required" }, { status: 400 });
   }
-  if (!body.role || !VALID_ROLES.includes(body.role as Role)) {
+  const role = publicLoginRole(body.role);
+  if (!role) {
     return NextResponse.json({ error: "Invalid role" }, { status: 400 });
   }
   // Whitelist redirect to same-app paths only — never accept arbitrary URLs.
@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
 
   const issued = await issueLoginToken(getRepos(), {
     email,
-    role: body.role as Role,
+    role,
     name: body.name,
     redirectTo,
   });
@@ -80,21 +80,20 @@ export async function POST(req: NextRequest) {
     ].join("\n"),
   });
 
-  // In dev (no email provider configured) return the link so localhost flows
-  // don't require a real inbox. NEVER do this when a real provider is wired.
+  // Fail closed: never report success for a link the user cannot receive.
+  if (!result.ok) {
+    return NextResponse.json(
+      { error: "Sign-in email could not be sent. Try again later." },
+      { status: 503 },
+    );
+  }
+
+  // Explicit local-only console mode may return the link for development.
   const includeDevLink = isEmailInDevMode();
   return NextResponse.json({
     ok: true,
     delivery: result.provider,
     expiresAt: issued.expiresAt,
     ...(includeDevLink ? { devLink: magicLink } : {}),
-    ...(result.ok ? {} : { warning: result.error }),
   });
-}
-
-function sanitizeRedirect(raw?: string): string | undefined {
-  if (!raw) return undefined;
-  if (!raw.startsWith("/") || raw.startsWith("//")) return undefined;
-  if (raw.length > 256) return undefined;
-  return raw;
 }

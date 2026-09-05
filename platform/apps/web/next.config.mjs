@@ -1,3 +1,8 @@
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const configDir = dirname(fileURLToPath(import.meta.url));
+
 // Plausible-compatible analytics origin (only used when NEXT_PUBLIC_ANALYTICS_DOMAIN is set).
 const analyticsSrc = process.env.NEXT_PUBLIC_ANALYTICS_SRC || "https://plausible.io";
 const analyticsOrigin = (() => {
@@ -43,6 +48,9 @@ const securityHeaders = [
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   typedRoutes: false,
+  // The shared packages import the versioned corpus at repository root. Next
+  // 16's Turbopack otherwise infers the app workspace as its filesystem root.
+  turbopack: { root: resolve(configDir, "../../..") },
   transpilePackages: ["@platform/compiler", "@platform/corpus", "@platform/safety", "@platform/ai", "@platform/diagnosis", "@platform/ingest", "@platform/missions", "@platform/eval", "@platform/storage", "@platform/auth", "@platform/gear"],
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];

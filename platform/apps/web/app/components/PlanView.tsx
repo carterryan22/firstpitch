@@ -39,6 +39,16 @@ export interface PlanSummary {
   focus?: string[];
   theme?: string;
   talkingPoints?: string[];
+  timeBudget?: {
+    targetMin: number;
+    warmupMin: number;
+    skillMin: number;
+    restMin: number;
+    transitionMin: number;
+    cooldownMin: number;
+    usedMin: number;
+    slackMin: number;
+  };
   antiLine?: {
     ok: boolean;
     flaggedBlocks: Array<{ blockId: string; ratio: number; suggestedStations: number }>;
@@ -75,7 +85,13 @@ const TYPE_TONE: Record<PlanBlock["type"], "info" | "ok" | "warn"> = {
 export function PlanHeader({ plan }: { plan: PlanSummary }) {
   const stats: Array<{ label: string; value: string | number; tone?: "info" | "ok" | "warn" | "danger" }> = [
     { label: "Age band", value: plan.ageBand },
-    { label: "Duration", value: `${plan.durationMin} min` },
+    {
+      label: "Time planned",
+      value: plan.timeBudget
+        ? `${plan.timeBudget.usedMin} of ${plan.timeBudget.targetMin} min`
+        : `${plan.blocks.reduce((sum, block) => sum + block.durationMin, 0)} min`,
+      tone: plan.timeBudget && plan.timeBudget.slackMin > 10 ? "warn" : "info",
+    },
   ];
   if (typeof plan.totalThrowingLoad === "number") {
     stats.push({
@@ -297,7 +313,10 @@ function PlanShareBar({ plan }: { plan: PlanSummary }) {
         ) : (
           <Badge tone="danger">Safety blocked {blocked} item{blocked === 1 ? "" : "s"}</Badge>
         )}
-        <span className="text-ink/70">{plan.blocks.length} block{plan.blocks.length === 1 ? "" : "s"} · {plan.durationMin} min</span>
+        <span className="text-ink/70">
+          {plan.blocks.length} block{plan.blocks.length === 1 ? "" : "s"} · {plan.timeBudget?.usedMin ?? plan.blocks.reduce((sum, block) => sum + block.durationMin, 0)} min planned
+          {plan.timeBudget ? ` of ${plan.timeBudget.targetMin} requested` : ""}
+        </span>
       </div>
       <div className="flex flex-wrap gap-2">
         <PrintButton />
@@ -465,7 +484,8 @@ function ParentVersion({ plan }: { plan: PlanSummary }) {
       </header>
       <Card className="mt-3 bg-cream/60">
         <p className="m-0 text-sm">
-          <strong>{plan.durationMin} minutes</strong> · age band <strong>{plan.ageBand}</strong>
+          <strong>{plan.timeBudget?.usedMin ?? plan.blocks.reduce((sum, block) => sum + block.durationMin, 0)} minutes planned</strong>
+          {plan.timeBudget ? <> of {plan.timeBudget.targetMin} requested</> : null} · age band <strong>{plan.ageBand}</strong>
           {plan.focus && plan.focus.length > 0 ? <> · focus: {plan.focus.join(", ")}</> : null}
         </p>
         <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm">

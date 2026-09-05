@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { getRepos, type Attendance, type GameStatus, type HomeAway, type PitchEntry, type SnackDuty } from "@platform/storage";
 import { getSession } from "../../../lib/session";
 import { userCanManageTeam } from "../../../lib/teams";
+import { livePitchSafety, validatePitchCountChange } from "../../../lib/pitchSafety";
 
 export const dynamic = "force-dynamic";
 
@@ -15,7 +16,15 @@ export async function GET(_req: NextRequest, ctx: { params: Promise<{ id: string
   if (!(await userCanManageTeam(session.user.id, game.teamId))) {
     return NextResponse.json({ error: "forbidden" }, { status: 403 });
   }
-  return NextResponse.json({ game });
+  const [players, games, logs] = await Promise.all([
+    repos.players.byTeam(game.teamId),
+    repos.games.list({ teamId: game.teamId }),
+    repos.throwingLogs.list({ teamId: game.teamId }),
+  ]);
+  return NextResponse.json({
+    game,
+    pitchSafety: livePitchSafety(players, games, logs, new Date(game.startsAt)),
+  });
 }
 
 interface PatchBody {
@@ -64,7 +73,22 @@ export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: strin
   if (body.attendance) patch.attendance = body.attendance;
   if (body.lineup) patch.lineup = body.lineup;
   if (body.battingOrder) patch.battingOrder = body.battingOrder;
-  if (body.pitchCounts) patch.pitchCounts = body.pitchCounts;
+  if (body.pitchCounts) {
+    const [players, games, logs] = await Promise.all([
+      repos.players.byTeam(existing.teamId),
+      repos.games.list({ teamId: existing.teamId }),
+      repos.throwingLogs.list({ teamId: existing.teamId }),
+    ]);
+    const safety = livePitchSafety(players, games, logs, new Date(existing.startsAt));
+    // Merge rather than replace so an omitted player cannot erase today's load
+    // and then bypass the daily maximum with a second request.
+    const requestedCounts = { ...(existing.pitchCounts ?? {}), ...body.pitchCounts };
+    const pitchError = validatePitchCountChange(existing.pitchCounts ?? {}, requestedCounts, safety);
+    if (pitchError) {
+      return NextResponse.json({ error: pitchError, pitchSafety: safety }, { status: 422 });
+    }
+    patch.pitchCounts = requestedCounts;
+  }
   if (body.finalScore) patch.finalScore = body.finalScore;
   if (body.resetLineup) {
     patch.lineup = [];
@@ -99,6 +123,17 @@ export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: strin
     resource: `game:${id}`,
     metadata: { fields: Object.keys(patch) },
   });
+  if (body.pitchCounts && updated) {
+    const [players, games, logs] = await Promise.all([
+      repos.players.byTeam(existing.teamId),
+      repos.games.list({ teamId: existing.teamId }),
+      repos.throwingLogs.list({ teamId: existing.teamId }),
+    ]);
+    return NextResponse.json({
+      game: updated,
+      pitchSafety: livePitchSafety(players, games, logs, new Date(existing.startsAt)),
+    });
+  }
   return NextResponse.json({ game: updated });
 }
 

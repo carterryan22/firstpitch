@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getRepos } from "@platform/storage";
 import { loginOrRegister, SESSION_COOKIE, SESSION_TTL_MS } from "@platform/auth";
+import { sanitizeRedirect } from "../../../lib/authRequest";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -13,14 +14,26 @@ export const dynamic = "force-dynamic";
 export async function POST(req: NextRequest) {
   const isProd = process.env.NODE_ENV === "production";
   const devAllow = process.env.PLATFORM_ALLOW_DEV_LOGIN === "1";
-  if (isProd && !devAllow) {
+  if (process.env.VERCEL_ENV === "production" || (isProd && !devAllow)) {
     return NextResponse.json(
       { error: "Password-less login disabled. Request a magic link." },
       { status: 410 },
     );
   }
 
-  const body = (await req.json().catch(() => ({}))) as { email?: string; role?: string; name?: string };
+  const isForm = req.headers.get("content-type")?.includes("application/x-www-form-urlencoded") ?? false;
+  let body: { email?: string; role?: string; name?: string; redirectTo?: string };
+  if (isForm) {
+    const form = await req.formData();
+    body = {
+      email: String(form.get("email") ?? ""),
+      role: String(form.get("role") ?? ""),
+      name: String(form.get("name") ?? ""),
+      redirectTo: String(form.get("redirectTo") ?? ""),
+    };
+  } else {
+    body = (await req.json().catch(() => ({}))) as typeof body;
+  }
   if (!body.email || !body.role) {
     return NextResponse.json({ error: "email and role required" }, { status: 400 });
   }
@@ -34,10 +47,16 @@ export async function POST(req: NextRequest) {
       role: body.role as (typeof validRoles)[number],
       name: body.name,
     });
-    const res = NextResponse.json({
-      ok: true,
-      user: { id: session.user.id, email: session.user.email, role: session.user.role, name: session.user.name },
-    });
+    const fallback = session.user.role === "coach" || session.user.role === "admin"
+      ? "/coach"
+      : session.user.role === "parent" ? "/parent" : "/missions";
+    const redirectTo = sanitizeRedirect(body.redirectTo) ?? fallback;
+    const res = isForm
+      ? NextResponse.redirect(new URL(redirectTo, req.url), 303)
+      : NextResponse.json({
+          ok: true,
+          user: { id: session.user.id, email: session.user.email, role: session.user.role, name: session.user.name },
+        });
     res.cookies.set(SESSION_COOKIE, session.cookieValue, {
       httpOnly: true,
       sameSite: "lax",

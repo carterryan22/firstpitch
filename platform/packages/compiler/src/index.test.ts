@@ -30,4 +30,34 @@ describe("compile()", () => {
     });
     expect(res.warnings.join(" ")).toMatch(/exceeds 6-8 session cap 60/);
   });
+
+  it("never presents a warmup-only fallback as a filled session", () => {
+    const res = compile({
+      age: 11,
+      durationMin: 60,
+      environmentTier: "T1_field",
+      equipmentAvailable: [],
+      coaches: 1,
+      players: 8,
+      focus: ["throwing"],
+    });
+    expect(res.timeBudget.usedMin).toBeLessThan(res.timeBudget.targetMin);
+    expect(res.timeBudget.skillMin).toBe(0);
+    expect(res.blocked.join(" ")).toMatch(/No eligible skill block/);
+    expect(res.warnings.join(" ")).toMatch(/uses .* requested minutes/);
+  });
+
+  it("builds a real skill section with the field starter inventory", () => {
+    const res = compile({
+      age: 11,
+      durationMin: 60,
+      environmentTier: "T1_field",
+      equipmentAvailable: ["glove", "5_baseballs"],
+      coaches: 1,
+      players: 8,
+      focus: ["throwing"],
+    });
+    expect(res.timeBudget.skillMin).toBeGreaterThan(0);
+    expect(res.blocked).not.toContain(expect.stringMatching(/No eligible skill block/));
+  });
 });

@@ -1,6 +1,7 @@
 import { chromium, type Browser } from "playwright";
 import { mkdir, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
+import { automationHeaders, authorizePreviewContext } from "../../automation-access.mjs";
 import { auditPage } from "./heuristics.ts";
 import { renderReport } from "./report.ts";
 import { journeys } from "./journeys/index.ts";
@@ -13,9 +14,15 @@ const OUT_DIR = resolve(process.cwd(), process.env.UX_OUT ?? "ux-report");
 const FILTER = process.env.UX_ONLY?.toLowerCase();
 
 async function preflight(): Promise<void> {
-  const res = await fetch(`${BASE_URL}/api/auth/session`).catch(() => null);
+  const sessionUrl = `${BASE_URL}/api/auth/session`;
+  const res = await fetch(sessionUrl, { headers: automationHeaders(sessionUrl), redirect: "error" }).catch(() => null);
   if (!res) throw new Error(`Dev server not reachable at ${BASE_URL}. Start it with \`npm run dev\` from platform/ first.`);
   if (res.status !== 200 && res.status !== 401) throw new Error(`Preflight got HTTP ${res.status} from ${BASE_URL}`);
+  const session = res.headers.get("content-type")?.includes("application/json")
+    ? await res.json().catch(() => null) : null;
+  if (!session || typeof session !== "object" || !("user" in session)) {
+    throw new Error("Preflight did not reach the First Pitch session API. Deployment protection or a redirect may require authorized access; no journeys were run.");
+  }
   // Warm Next.js dev-compile for the pages every journey hits, so the first
   // journey doesn't pay the 30s cold-compile tax (which our heuristics would
   // mis-classify as a workflow chokepoint).
@@ -23,7 +30,7 @@ async function preflight(): Promise<void> {
   console.log(`[ux-agent] warming ${warmTargets.length} route(s)…`);
   await Promise.all(
     warmTargets.map((p) =>
-      fetch(`${BASE_URL}${p}`, { redirect: "manual" }).catch(() => undefined),
+      fetch(`${BASE_URL}${p}`, { headers: automationHeaders(`${BASE_URL}${p}`), redirect: "manual" }).catch(() => undefined),
     ),
   );
   // The coach-plan-practice journey compiles a plan as its first action. In dev,
@@ -34,7 +41,8 @@ async function preflight(): Promise<void> {
   console.log(`[ux-agent] warming /api/compile…`);
   await fetch(`${BASE_URL}/api/compile`, {
     method: "POST",
-    headers: { "content-type": "application/json" },
+    headers: { "content-type": "application/json", ...automationHeaders(`${BASE_URL}/api/compile`) },
+    redirect: "error",
     body: JSON.stringify({
       age: 11,
       durationMin: 60,
@@ -60,6 +68,7 @@ async function runJourney(browser: Browser, j: Journey): Promise<JourneyResult> 
       ? "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1 UX-Agent"
       : undefined,
   });
+  await authorizePreviewContext(context, BASE_URL);
   // tsx/esbuild injects `__name(fn, "name")` calls into transformed sources.
   // When page.evaluate ships the function to the browser, that helper is not
   // defined. Shim it for the evaluation context.

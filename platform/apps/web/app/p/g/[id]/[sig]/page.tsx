@@ -3,6 +3,7 @@ import { getRepos } from "@platform/storage";
 import { verifyGameSig } from "../../../../lib/pressBox";
 import { sortRoster } from "../../../../lib/players";
 import { formatGameWhen, statusLabel } from "../../../../lib/games";
+import { filterPlayersSafeForPublicSharing } from "../../../../lib/sharing";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -29,7 +30,9 @@ export default async function PressBoxPage({
   ]);
   if (!team) notFound();
 
-  const roster = sortRoster(players);
+  // Public links fail closed: legacy, pending, revoked, and archived profiles
+  // are omitted from every identifying surface on this page.
+  const roster = sortRoster(filterPlayersSafeForPublicSharing(players));
   const playerById = new Map(roster.map((p) => [p.id, p]));
   const status = statusLabel(game.status);
   const gameStarted = game.status !== "scheduled";
@@ -83,15 +86,15 @@ export default async function PressBoxPage({
 
       <section className="card space-y-3">
         <h2 className="m-0 text-lg">Roster</h2>
-        <p className="text-xs text-dirt-700">First names only. Parent-safe view.</p>
-        <ul className="grid grid-cols-2 gap-2 text-sm md:grid-cols-3">
+        <p className="text-xs text-dirt-700">Only players with verified sharing consent appear.</p>
+        {roster.length > 0 ? <ul className="grid grid-cols-2 gap-2 text-sm md:grid-cols-3">
           {roster.map((p) => (
             <li key={p.id} className="flex items-baseline gap-2">
               <span className="quote text-dirt-700">#{p.jerseyNumber ?? "-"}</span>
               <span>{p.firstName}</span>
             </li>
           ))}
-        </ul>
+        </ul> : <p className="text-sm text-ink/80">No players are approved for public sharing.</p>}
       </section>
 
       {showLineup ? (

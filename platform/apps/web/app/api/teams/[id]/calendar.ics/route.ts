@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { getRepos } from "@platform/storage";
+import { getSession } from "../../../../lib/session";
+import { userCanReadTeam } from "../../../../lib/teams";
 
 export const dynamic = "force-dynamic";
 
@@ -25,6 +27,11 @@ function escapeText(s: string): string {
 
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  const session = await getSession();
+  if (!session) return new NextResponse("Not found", { status: 404 });
+  if (!(await userCanReadTeam(session.user.id, id))) {
+    return new NextResponse("Not found", { status: 404 });
+  }
   const repos = getRepos();
   const team = await repos.teams.byId(id);
   if (!team) return new NextResponse("Not found", { status: 404 });
@@ -46,7 +53,6 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     const summary = `${g.homeAway === "home" ? "vs" : "@"} ${g.opponent}`;
     const desc = [
       `${g.innings} innings`,
-      g.notes ? `Notes: ${g.notes}` : null,
       g.status ? `Status: ${g.status}` : null,
     ]
       .filter(Boolean)
@@ -75,7 +81,6 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
     const desc = [
       `${p.durationMin} min practice`,
       p.focus?.length ? `Focus: ${p.focus.join(", ")}` : null,
-      p.notes ? `Notes: ${p.notes}` : null,
     ]
       .filter(Boolean)
       .join("\\n");

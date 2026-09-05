@@ -79,14 +79,16 @@ const AGE_BAND_DEFAULT: Record<TeamLite["ageBand"], number> = {
 const EQUIPMENT_PRESETS: Record<EnvironmentTier, string[]> = {
   T1_field: [
     "tee", "5_baseballs", "10_baseballs", "bat", "base", "bases",
+    "glove", "2_baseballs", "4_cones",
     "cones", "stopwatch_or_gates", "stopwatches",
     "reaction_ball", "L-screen", "catcher_gear", "wiffle_balls",
   ],
   T2_cage_gym: [
     "tee", "5_baseballs", "10_baseballs", "bat",
+    "glove", "2_baseballs", "4_cones",
     "cones", "stopwatch_or_gates", "L-screen", "reaction_ball", "wiffle_balls",
   ],
-  T3_backyard: ["tee", "5_baseballs", "bat", "cones", "reaction_ball", "wiffle_balls"],
+  T3_backyard: ["tee", "5_baseballs", "bat", "glove", "2_baseballs", "4_cones", "cones", "reaction_ball", "wiffle_balls"],
   T4_living_room: ["reaction_ball", "wiffle_balls"],
 };
 

@@ -53,12 +53,10 @@ function daysBetween(a: Date, b: Date): number {
   return Math.floor((b.getTime() - a.getTime()) / ms);
 }
 
-function mostRecentOuting(history: PitchHistory, today: Date): { date: Date; count: number } | null {
-  const entries = Object.entries(history.outingsByDate)
+function priorOutings(history: PitchHistory, today: Date): Array<{ date: Date; count: number }> {
+  return Object.entries(history.outingsByDate)
     .map(([date, count]) => ({ date: new Date(date + "T00:00:00Z"), count }))
-    .filter((e) => e.date.getTime() < today.getTime())
-    .sort((a, b) => b.date.getTime() - a.date.getTime());
-  return entries[0] ?? null;
+    .filter((e) => e.count > 0 && e.date.getTime() < today.getTime());
 }
 
 function rollingWeekTotal(history: PitchHistory, today: Date): number {
@@ -118,19 +116,23 @@ export function canPitchToday(input: CanPitchInput): CanPitchResult {
     );
   }
 
-  // Rest from last outing
+  // Every prior outing's rest obligation still applies, even if a more recent
+  // light outing (or a catcher-only event) was recorded during that period.
   let requiredRestDaysRemaining = 0;
-  const last = mostRecentOuting(input.history, input.date);
-  if (last) {
+  let restReason: string | undefined;
+  for (const last of priorOutings(input.history, input.date)) {
     const requiredRest = requiredRestForCount(table, last.count);
     const daysSince = daysBetween(last.date, input.date);
-    if (daysSince < requiredRest) {
-      requiredRestDaysRemaining = requiredRest - daysSince;
-      reasons.push(
-        `Last outing of ${last.count} pitches requires ${requiredRest} rest days; only ${daysSince} elapsed.`
-      );
+    // The outing day and today's pitching day are not completed rest days.
+    // For example, a Monday outing requiring one rest day permits Wednesday.
+    const completedRestDays = Math.max(0, daysSince - 1);
+    const remaining = requiredRest - completedRestDays;
+    if (remaining > requiredRestDaysRemaining) {
+      requiredRestDaysRemaining = remaining;
+      restReason = `Outing of ${last.count} pitches on ${isoDate(last.date)} requires ${requiredRest} rest days; only ${completedRestDays} completed.`;
     }
   }
+  if (restReason) reasons.push(restReason);
 
   // Soft warnings
   if (projectedToday > policy.pitchDailySoftCapFraction * effectiveDailyMax && reasons.length === 0) {

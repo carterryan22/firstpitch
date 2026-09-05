@@ -133,7 +133,7 @@
     "returns": "{ allowed: bool, reasons: [string], required_rest_days_remaining: number }",
     "must_block_when": [
       "plannedPitches + history.todayCount > age_table.daily_max_pitches",
-      "history.daysSinceLastOuting < required_rest_for(history.lastOutingPitches)",
+      "any prior positive-pitch outing: max(0, calendar days since outing - 1) < required_rest_for(outing.pitches)",
       "player.reported_soreness_today == true",
       "player.is_catching_today and history.todayCatchingInnings >= 3",
       "season.continuous_throwing_days > policy.max_continuous_throwing_days",
